@@ -1,0 +1,140 @@
+﻿{% extends "app/base.html" %}
+
+{% block title %} AoD | {{ title }} {% endblock title %}
+
+{% load staticfiles %}
+
+{% block extraCss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
+{% endblock extraCss %}
+
+{% block scripts %}
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+    <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#accordion > div").click(function () {              
+                var id = $(this).find('a').attr('href');
+                console.log($(id));
+                if (!$("div"+id).hasClass('in')) {
+
+                    $("#accordion").children().each(function (key) {
+                        $(this).removeClass('panel-success').addClass('panel-default');
+                        $(this).find('div > h4 > i').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                    });
+
+                    $(this).addClass('panel-success');
+                    $(this).find('div > h4 > i').addClass('fa-chevron-down').removeClass('fa-chevron-up');
+                }
+                else {
+                    $(this).addClass('panel-success');
+                    $(this).find('div > h4 > i').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                }
+            })
+        });
+    </script>
+{% endblock %}
+
+{% block navbar %}
+    {% if username %}
+        {% include "app/navbar-users.html" %}
+    {% else %}
+        {% include "app/navbar-visitors.html" %}
+    {% endif %}
+{% endblock navbar %}
+
+{% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            {% if username %}
+                <li><a href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
+                <li class="active"> Help Center</li>
+            {% else %}
+                <li class="active"><i class="fa fa-support"></i> Help Center</li>
+            {% endif %}
+        </ol>
+        {% endblock breadcrumb %}
+
+    
+        <section style="background-color:whitesmoke; padding-top:1%; padding-bottom:1%; border-radius:5px 5px;" class="col-lg-12 col-md-12 col-sm-12">
+            <header><h3>How can we help?</h3></header>
+
+            {% if not username %}
+            <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom:2%;padding-top:2%">
+                <h5><i class="fa fa-info-circle fa-lg text-success"></i> Hi! Please <a href="/login/">Log in</a> for help with your account activities.</h5>
+            </div>
+            {% endif %}
+
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                Account settings
+                            </a><i class="indicator fa fa-chevron-down  pull-right"></i>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><a href="/support/create-new-account"> Create a new account</a></li>
+                                    <li class="list-group-item"><a href="/support/log-in-out" >Login and logout actions</a></li>
+                                    <li class="list-group-item"><a href="/support/forget-password" >Forget my password</a></li>
+                                    <li class="list-group-item"><a href="/support/update-profile-steps" >Update my profile</a></li>
+                                    <li class="list-group-item"><a href="/support/change-my-password" >Change my password</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                            Service Consumer (Buyer) 
+                        </a><i class="indicator fa fa-chevron-up  pull-right"></i>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><a href="/support/services/search"> Simple search for a service</a></li>
+                                    <li class="list-group-item"><a href="/support/services/enhanced-search"> Enhanced search for a service</a></li>
+                                    <li class="list-group-item"><a href="/support/services/payment"> Payment policies</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                            Service Provider (Seller)
+                        </a><i class="indicator fa fa-chevron-up pull-right"></i>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><a href="/support/services/register"> Register a new service</a></li>
+                                    <li class="list-group-item"><a href="/support/services/update"> Update an existing service</a></li>
+                                    <li class="list-group-item"><a href="/support/services/delete"> Remove an existing service</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock content %}
+
+

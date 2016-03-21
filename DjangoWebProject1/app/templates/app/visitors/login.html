@@ -1,0 +1,179 @@
+{% extends "app/base.html" %}
+
+{% block content %}
+
+
+<div class="container body-content" style="margin-top: 70px; margin-bottom: 30px;">
+    <div class="row">
+        <div class="col-sm-3 col-lg-3"></div>
+        <div class="col-sm-6 col-lg-6 col-xs-12">
+            <section role="region" style="border:2px groove forestgreen; 
+                    background-color: whitesmoke; border-radius:20px 0px 20px 0px;">
+
+                <div class="tab-pane active"> 
+
+                    <div class="row">
+                        <div class="col-md-2 col-sm-2 col-lg-2"></div>
+                        <div class="col-sm-8 col-md-8 col-xs-12">
+                            <h3 class="text-center">Log in</h3>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-lg-2"></div>
+                    </div>
+                    <hr style="color:gray;background-color:forestgreen; border:1px solid #ddd; height:1px">
+
+
+                    {% if message %}
+                        {{ message|safe }}
+                    {% endif %}
+
+
+                    <form action="{% url 'app.views.loginAuth' %}" method="post" class="form-horizontal" id="log-in-process"  name="login-provider">
+                        <fieldset>
+                            {% csrf_token %} 
+                        
+                            <!--username-->
+                            <div class="row">
+                                <div class="col-xs-1 col-md-2 col-sm-2 col-lg-2"></div>
+                                <div class="col-sm-10 col-xs-10">
+                                    <label class="pull-left control-label" for="username">Enter your username</label>
+                                </div>
+                                <div class="col-xs-1 col-md-2 col-sm-2 col-lg-2"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-1 col-md-2 col-sm-2 col-lg-2"></div>
+                                <div class="col-md-10 col-sm-10 col-lg-10 col-xs-10 input-group">
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-user fa-fw"></span>
+                                    </span>
+                                    <input type="text" class="form-control" name="username" id="username" autocomplete="off" maxlength="200" placeholder="Username or Email" />
+                                </div> 
+                                <div class="col-md-2 col-sm-2 col-lg-2"></div>
+                            </div>
+                            <!--password-->
+                            <div class="row">
+                                <div class="col-xs-1 col-md-2 col-sm-2 col-lg-2"></div>
+                                <div class="col-sm-10 col-xs-10">
+                                    <label class="pull-left control-label" for="pwd">Enter your password</label>
+                                </div>
+                               <div class="col-xs-1 col-md-2 col-sm-2 col-lg-2"></div>
+                            </div>
+                            <div class="form-group">
+                                 <div class="col-xs-1 col-md-2 col-sm-2 col-lg-2"></div>
+                                <div class="col-md-10 col-sm-10 col-lg-10 col-xs-10 input-group">
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-lock fa-fw"></span>
+                                    </span>
+                                    <input type="password" class="form-control" name="pwd" id="pwd" autocomplete="off" maxlength="200" placeholder="Password" />
+                                </div> 
+                                <div class="col-xs-1 col-md-2 col-sm-2 col-lg-2"></div>
+                            </div>
+<!--
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-lg-2"></div>
+                                <div class="col-sm-10 col-xs-12">
+                                    <label class="pull-left control-label" for="pwd">Select your role</label>
+                                </div>
+                               <div class="col-md-2 col-sm-2 col-lg-2"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-lg-8 col-lg-offset-2 col-xs-12 input-group" id="user-role">
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-reorder fa-fw"></span>
+                                    </span> 
+                                    <select class="form-control selectpicker" data-max-options="1" data-size="5" name="role" id="role" title="-- Role --">
+                                        <option value="provider" >Provider</option>
+                                        <option value="consumer" >Consumer</option>
+                                        <option value="carer" >Carer</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-lg-2"></div>
+                            </div>
+-->
+                            <!--checkbox-->
+                            <div class="form-group">
+                                <div class="col-xs-1 col-sm-2"></div>
+                                <div class="col-xs-10 col-sm-offset-2 col-sm-10">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox"> Remember me
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--sign-in-->
+                            <div class="form-group">
+                                <div class="col-xs-1 col-sm-2"></div>
+                                <div class="col-md-8 col-sm-8 col-lg-8 col-xs-10">
+                                    <button type="submit" class="btn btn-success btn-block btn-lg" id="registry-submit" role="button">
+                                        <span class="fa fa-sign-in fa-fw" role="img"></span> Log in
+                                    </button>
+                                </div>
+                            </div> 
+                        </fieldset>  
+                    </form>
+                
+                    <div class="row">
+                        <div class="col-sm-2 col-md-2 col-xs-1"></div> 
+                        <div class="col-sm-4 col-md-4 col-xs-10">
+                            <label class=" text-center" style="color:gray;font-size:small">
+                                <a href="{% url 'forgotPassword' %}" class="text-primary btn" title="Forgot your password? Click on it">Forgot your password?</a>
+                            </label>
+                        </div>
+                    </div>
+                </div>  
+            </section>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="../../../static/app/scripts/multiselect-bootstrap/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+
+    //
+    // Authentication-authorization
+    //
+    function authorization() {
+
+        var state = true;
+        state = validate($("#username").val(), $("#pwd").val(), $("#role").val());
+        console.log(state);
+
+        if (!state) {
+            $("#login-message").removeClass("hidden");
+        }
+        else {
+            $("#login-message").addClass("hidden");
+        }
+        return false;
+    }
+
+    //
+    //
+    //
+    function validate(username, password, role) {
+        console.log("b ajax");
+        var valid = true;
+        $.ajax({
+            type: 'GET',
+            url: "authorization/",
+            async: false,
+            contentType: 'application/json',
+            headers: { 'Accept': 'application/json' },
+            data: { username:username, password:password, role:role, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+            success: function (data) {
+                valid = data.response;
+            }
+        });
+        return valid;    
+    }
+
+
+
+</script>
+
+{% endblock %}

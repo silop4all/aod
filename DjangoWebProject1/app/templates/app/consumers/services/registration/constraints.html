@@ -1,0 +1,142 @@
+﻿
+<div class="service-basic-info-box">
+    <div class="row form-group">
+        <h4 class="col-lg-offset-1 col-md-offset-1 col-sm-offset-10"> Constraints</h4>
+    </div>
+    <hr class="service-hr">
+
+    <!--language-->
+    <div class="row form-group">
+        <div class="col-sm-3 col-md-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_language_constraint">Language constraint<small>*</small></label>
+        </div> 
+        <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" >
+            <div class="btn-group btn-block" data-toggle="buttons-radio" id="srv_language_constraint">
+                <a class="btn btn-primary" href="#" name="srv_language_constraint_y" id="srv_language_constraint_y" role="button" title="Yes">
+                    <i class="fa fa-check-square-o"></i> Yes
+                </a>
+                <a class="btn btn-default" href="#" name="srv_language_constraint_n" id="srv_language_constraint_n" role="button" title="No">
+                    <i class="fa fa-square-o"></i> No
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row form-group" id="srv_language_div">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_language">Language<small>*</small></label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Declare the language associated with the service" id="srv_language_node">
+            <span class="input-group-addon">
+                <span class="fa fa-language fa-fw" role="img"></span>
+            </span>
+            <select type="text" class="selectpicker form-control" name="srv_language" id="srv_language" data-size="5"  data-header="Declare the available language" data-live-search="true" role="list" data-actions-box="true" title="-- Declare the available language --" data-selected-text-format="count>4" multiple>
+                {% if languages %}
+                    {% if service %}
+                        {% if service.language_constraint %}
+                            {% for s in service.servicelanguages_set.all %}
+                                {% for l in languages %}
+                                    {% if l.terminology == s.alias  %}
+                                        <option value="{{ l.terminology }}" selected> {{ l.name }} </option>
+                                    {% else %}
+                                        <option value="{{ l.terminology }}"> {{ l.name }} </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            {% for l in languages %}
+                                {% if l.terminology == "eng"  %}
+                                    <option value="{{ l.terminology }}" selected> {{ l.name }} </option>
+                                {% else %}
+                                    <option value="{{ l.terminology }}"> {{ l.name }} </option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% else %}
+                        {% for l in languages %}
+                            {% if l.terminology == "eng"  %}
+                                <option value="{{ l.terminology }}" selected> {{ l.name }} </option>
+                            {% else %}
+                                <option value="{{ l.terminology }}"> {{ l.name }} </option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            </select>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3">
+            <label id="srv_language_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="At least a language is required"></label>
+        </div>
+    </div>
+
+    <!--geological coordinates-->
+    <div class="row form-group">
+        <div class="col-sm-3 col-md-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_geolocation">Geographical constraint<small>*</small></label>
+        </div> 
+        <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" >
+            <div class="btn-group btn-block" data-toggle="buttons-radio" id="srv_geolocation">
+                <a class="btn btn-primary" href="#" name="srv_geolocation_y" id="srv_geolocation_y" role="button" title="Yes">
+                    <i class="fa fa-check-square-o"></i> Yes
+                </a>
+                <a class="btn btn-default" href="#" name="srv_geolocation_n" id="srv_geolocation_n" role="button" title="No">
+                    <i class="fa fa-square-o"></i> No
+                </a>
+            </div>
+        </div>
+    </div> 
+
+    <div class="row form-group srv_coordinates">
+        <div class="col-sm-3 col-md-3 col-xs-12">
+            <label class="pull-right control-label" for="Set the coordinates">Map</label>
+        </div> 
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12" >
+            <div id="map" style="height:200px"></div>
+        </div>            
+    </div> 
+
+    <div class="row form-group srv_coordinates">
+        <div class="col-sm-3 col-md-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_latitude">Latitude<small>*</small></label>
+        </div> 
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" >
+            <span class="input-group-addon">
+                <span class="fa fa-map-marker fa-fw text-danger" role="img"></span>
+            </span>
+            <input type="text" id="srv_latitude" name="srv_latitude" value="{{service.latitude}}" class="form-control" form="insert-new-service" placeholder="latitude" />
+        </div>
+    </div> 
+
+    <div class="row form-group srv_coordinates">
+        <div class="col-sm-3 col-md-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_longitude">Longitude<small>*</small></label>
+        </div> 
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" >
+            <span class="input-group-addon">
+                <span class="fa fa-map-marker fa-fw text-danger" role="img"></span>
+            </span>
+            <input type="text" id="srv_longitude" name="srv_longitude" value="{{service.longitude}}" class="form-control" form="insert-new-service" placeholder="longitude" />
+        </div>
+    </div> 
+
+    <!--other-->
+    <div class="row form-group">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_constraints">Other constraints</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Refer any other constraint" id="srv_constraints_node">
+            <span class="input-group-addon">
+                <span class="fa fa-info fa-fw" role="img"></span>
+            </span>
+            <textarea rows="4" cols="50" id="srv_constraints" name="srv_constraints" class="form-control" form="insert-new-service" maxlength="1000" placeholder="Enter any other constraint, e.g. time availability, Operational System etc">{{ service.constraints }}</textarea>  
+        </div>
+    </div>  
+
+    <!--info-->
+    <div class="row form-group">
+        <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="Mandotory fields">
+            <small class="text-center">* Mandatory fields</small>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,83 @@
+﻿{% extends "app/base.html" %}
+
+    {% block title %} 
+    AoD | {{ title }}
+    {% endblock title %}
+
+    {% block navbar %}
+        {% include "app/navbar-users.html" %}
+    {% endblock navbar %}
+
+    {% load staticfiles %}
+    {% block scripts %}
+        <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+        <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+        <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+        <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>
+        <script src="{% static 'app/scripts/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/consumers/statistics/statistics.js' %}"></script>
+    
+        <script type="text/javascript">
+            var data = [];
+
+            {% if services %}
+                {% for i in services %}
+                    data.push({'id': '{{ i.id }}', 'title': '<a href="{{i.link}}"> {{ i.title }}</a>', 'provider': '{{ i.provider}}', "price": '{{ i.price }}', 
+                        "currency": '{{ i.currency }}', 'charging_policy' : '{{ i.model }}', 'rating': '{{ i.rating }}', 'comment': '{{ i.comment }}',
+                        'purchashed_date': '{{ i.date| date:"Y-m-d H:i" }}'
+                        });
+                {% endfor %}
+            {% endif %}
+        </script>
+    {% endblock scripts %}
+
+
+    {% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+    
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            <li><a href="/index" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active"> My statistics</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <main role="main">
+            <section class="table-responsive">
+                <div class="service-list-box table-responsive">
+                    <h3>My statistics <small>(usage)</small></h3>
+                    <hr class="service-hr">
+                    <table id="table"
+                            data-classes="table table-hover table-striped"
+                            data-search="true"  
+                            data-show-toggle="false"
+                            data-show-columns="true"
+                            data-card-view="false"
+                            data-click-to-select="true"
+                            data-pagination="true"
+                            data-page-list="[5, 10, 15, 20, 30]"
+                            data-sort-name="purchashed_date" data-sort-order="desc">
+                        <thead>
+                            <tr>
+                                <th data-field="state" data-checkbox="true"></th>
+                                <th data-field="title" data-sortable="true" data-switchable="false">Title</th>
+                                <th data-field="provider" data-sortable="true" data-visible="false">Provider</th>
+                                <th data-field="currency" data-sortable="true">Currency</th>
+                                <th data-field="price" data-sortable="true">Price</th>
+                                <th data-field="charging_policy" data-sortable="true">Charging policy</th>
+                                <th data-field="rating" data-sortable="true" data-align="left">Rating</th>
+                                <th data-field="comment" data-sortable="true" data-visible="false" data-align="left">Comments</th>
+                                <th data-field="purchashed_date" data-sortable="true" data-align="left"  data-visible="true">Purchashed date</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>  
+            </section>
+        </main>
+    </div>
+    {% endblock content %}
+
+

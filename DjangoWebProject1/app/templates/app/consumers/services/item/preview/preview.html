@@ -1,0 +1,253 @@
+﻿
+    <article>
+        <div class="preview-basic-info">
+            {% if service.image.name %}
+            <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+                <div id="slider">
+                    <div data-u="slides" id="service-slider">                       
+                        <div>
+                            <img data-u="image" class="img-rounded" src="{{ MEDIA_URL }}app/services/images/{{ service.image.name }}" alt="{{ service.image.name }}"  style="border: 5px solid green"/>
+                        </div>
+                    </div>
+                    <span data-u="arrowleft" class="jssora01l" style="top: 123px; left: 8px;"></span>
+                    <span data-u="arrowright" class="jssora01r" style="top: 123px; right: 8px;"></span>
+                </div>
+            </div>
+            <br />
+            {% endif %}
+            <!-- description -->
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Brief description</label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="The description of this service">
+                    <p id="description" style="text-align:justify">{{ service.description }}</p>
+                </div>
+            </div>
+            <!-- version -->
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Version</label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="The version of this service">
+                    {% if service %}
+                        <p id="version">{{ service.version|default:"Not available" }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- license -->
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Licenses</label>
+                </div>
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="The license of this service">
+                    {% if service %}
+                        <p id="license">{{ service.license|default:"Not available" }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <!--types-->
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Type</label>
+                </div>
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="The type of this service">
+                    <p id="type">
+                        {% if service %}
+                            {% if service.type == 'M'%}
+                                The operation of this service is machine-based.
+                            {% else %}
+                                The operation of this service is human-based.
+                            {% endif %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <!--Cost-->
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Price</label>
+                </div>
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="The price and the charging policy of the service">
+                    <p id="price">
+                        {% if service %}
+                            {% if service.charging_policy_id == 1 %}
+                                Free
+                            {% else %}
+                                {{ service.unit}} {{service.price}} ({{ service.charging_policy }})
+                            {% endif %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>  
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Related categories</label>
+                </div>
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Related categories">
+                    <p id="categories">
+                        {% if categories %}
+                            {% for i in categories %}
+                                <a href="#" class="btn btn-default btn-xs">{{i.title}}</a>
+                            {% empty %}
+                                No related categories
+                            {% endfor %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <!--requirements-->
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Requirements</label>
+                </div>
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="The services requirements, if exist">
+                    <p id="requirements" style="text-align: justify">
+                        {% if service %}
+                            {% if service.requirements %}
+                                {{  service.requirements|default_if_none:"No requirements required" }}
+                            {% endif %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div> 
+            <!--installation_guide-->
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Installation guide</label>
+                </div>
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="A set of installation instructions of the service for the users">
+                    <p id="installation_guide" style="text-align: justify">
+                        {% if service %}
+                            {{  service.installation_guide|default:"No instructions provided" }}
+                        {% endif %}
+                    </p>
+                </div>
+            </div> 
+            <!--usage_guidelines-->
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Usage guide</label>
+                </div>
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="A brief set of usage instructions">
+                    <p id="usage_guidelines" style="text-align: justify">
+                        {% if service %}
+                            {{  service.usage_guidelines|default:"No instructions provided" }}
+                        {% endif %}
+                    </p>
+                </div>
+            </div> 
+            <!--downloads-->
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Downloads</label>
+                </div>
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Download the data that the service provides">
+                    <p style="text-align: justify">
+                        {% if service %}
+                            {{ service.title}}_{{ service.software.name }} <a id="download_sw" data-link="{{ MEDIA_URL }}app/services/packages/{{service.software.name}}" rel="nofollow" download href="{{ MEDIA_URL }}app/services/packages/{{service.software.name}}"> <i class="fa fa-download"></i></a>
+                        {% endif %}
+                    </p>
+                </div>
+            </div> 
+            <!--links-->
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Useful links</label>
+                </div>
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Follow this link in order to use the service">
+                    <p id="link" style="text-align: justify">
+                        {% if service %}
+                            Follow the link <a href="http://localhost:8000/provider" onclick="alert('to do'); return false;">{{  service.link|default:"http://localhost:8000/provider" }}  <i class="fa fa-external-link fa-fw"></i></a>
+                        {% endif %}
+                    </p>
+                </div>
+            </div> 
+            <!--accessibility-->
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Accessibility</label>
+                </div>
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="The accessibility rule for the service">
+                    <p id="accessibility">
+                        {% if service %}
+                            {% if service.availability %}
+                                Public - any registered user may use it
+                            {% else %}
+                                Private - only a group of users can use it
+                            {% endif %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div> 
+            <!--language_constraint-->
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Language</label>
+                </div>
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Any language constraints, if exist">
+                    <p id="language_constraint">
+                        {% if service.language_constraint %}
+                            {% for i in languages %}
+                                <a href="#" class="btn btn-default btn-xs"><i class="fa fa-language text-success"></i> {{ i }}</a>
+                            {% endfor %}
+                        {% else %}
+                            No constraint
+                        {% endif %}
+                    </p>
+                </div>
+            </div> 
+            <!--location_constraint-->
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Location constraint</label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="Any location constraints, if exist">
+                    <div id="location_constraint">
+                        {% if service %}
+                            {% if service.location_constraint %}
+                                <div id="map" style="height:40%; border:3px outset green"></div>
+                            {% else %}
+                                No
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div> 
+            <!--constraints-->
+            {% if service %}
+                {% if service.constraints %}
+                    <div class="row">
+                       <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                            <label class="pull-right">Extra constraints</label>
+                        </div>
+                        <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Any other constraints">
+                            <p id="constraints"> 
+                            {{ service.constraints }}
+                            </p>
+                        </div>
+                    </div> 
+                {% endif %}
+            {% endif %} 
+
+            <!--is_available-->
+            <br />
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="pull-right">Availability</label>
+                </div>
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="The status of the service. Is it available for users search?">
+                    <p id="availability">
+                        {% if service %}
+                            {% if service.is_available %}
+                                The service is available for usage
+                            {% else %}
+                                Not available
+                            {% endif %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div> 
+        </div>
+    </article>
+

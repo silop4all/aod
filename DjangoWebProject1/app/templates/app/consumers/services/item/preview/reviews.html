@@ -1,0 +1,30 @@
+﻿<article>
+
+    {% if reviews %}
+        {% for r in reviews %}
+            <div class="row well" style="margin:1%; border-radius:3px 3px;; border:1px solid rgba(190, 190, 190, 0.70)">
+                <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                    <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+                        <h4> <span class="text-success">{{ r.user|title }} said...</span></h4>
+                    </div>
+                    <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6 text-right" >
+                        {{ r.rating }} / 5.0
+                        <span class="fa fa-star-o fa-lg  star-colorize-yellow star-rating-1"></span>
+                        <span class="fa fa-star-o fa-lg  star-colorize-yellow star-rating-2"></span>
+                        <span class="fa fa-star-o fa-lg  star-colorize-yellow star-rating-3"></span>
+                        <span class="fa fa-star-o fa-lg  star-colorize-yellow star-rating-4"></span>
+                        <span class="fa fa-star-o fa-lg  star-colorize-yellow star-rating-5"></span>
+                    </div>
+                </div>
+                <br>
+                <hr>
+                <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12" style="padding-left:5%">
+                    <span> -{{ r.comment }} </span>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h4> No reviews found!</h4>
+    {% endif %}
+
+</article>

@@ -1,0 +1,602 @@
+﻿{% extends "app/base.html" %}
+
+    {% block title %} 
+    AoD | Welcome {% if username %} {{ username }} {% else %} user {% endif %} 
+    {% endblock title %}
+
+    {% block navbar %}
+        {% include "app/navbar-users.html" %}
+    {% endblock navbar %}
+
+    {% load staticfiles %}
+
+    {% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+    
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            <li class="active"><i class="fa fa-home"></i> Home</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <section class="row">
+            
+            {% block searchModule %}
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    <section id="search_services_module" class="panel" style="padding-left: 5px; padding-right: 5px">
+                            <form action="#" method="get" id="service-search-form" name="service-search-form">
+                                <h4 class="text-center bg-primary"  role="heading">
+                                    <span class="fa fa-search fa-lg text-muted"></span> Find your services
+                                </h4>
+                                <hr>
+                                <!--form inputs -->
+
+                                <fieldset>
+                                    <!--categories list-->
+                                    <div class="form-group" id="categories-panel">
+                                        <div class="panel-group" id="categories-id" role="tablist" aria-multiselectable="true" >
+                                            <div class="panel panel-success" style="border:0!important">
+                                                <div class="panel-heading" role="tab" id="categories-title">
+                                                      <h4 class="panel-title" title="Categories">
+                                                            <a data-toggle="collapse" data-parent="#categories-id" href="#categories-list" aria-expanded="true" aria-controls="categories-list">
+                                                                Categories
+                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                            
+                                                <div id="categories-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="categories-title">
+                                                    <div class="panel-body " style="background-color:whitesmoke">
+                                                    {% if categories %}
+                                                        {% for category in categories %}
+                                                            <div class="row form-group checkbox">
+                                                                <label for="category-{{ category.id }}">
+                                                                    <input type="checkbox" id="category-{{ category.id }}" name="category-{{ category.id }}" data-id="{{ category.id }}" data-name="category-{{ category.id }}"/> 
+                                                                    <span>{{ category.title }} </span>
+                                                                    <span class="label label-success pull-right">{{ category.servNo }} </span>
+                                                                </label>
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Companies-->
+                                    <div class="form-group" id="companies-panel">
+                                        <div class="panel-group" id="companies-id" role="tablist" aria-multiselectable="true" >
+                                            <div class="panel panel-success" style="border:0!important;">
+                                                <div class="panel-heading" role="tab" id="companies-title">
+                                                      <h4 class="panel-title" title="Companies/Providers">
+                                                            <a data-toggle="collapse" data-parent="#companies-id" href="#companies-list" aria-expanded="true" aria-controls="companies-list">
+                                                                Service providers
+                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                                <div id="companies-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="companies-title">
+                                                    <div class="panel-body" style="background-color:whitesmoke">
+                                                        {% if providers %}
+                                                            {% for provider in providers %}
+                                                            <div class="checkbox">
+                                                                <label for="provider-{{ provider.id }}">
+                                                                    <input type="checkbox" id="provider-{{ provider.id }}" name="provider-{{ provider.id }}" data-id="{{ provider.id }}" data-name="provider-{{ provider.id }}"/> 
+                                                                    <span>{{ provider.name }}</span>
+                                                                    <span class="label label-success pull-right">{{ provider.servNo }} </span>
+                                                                </label>
+                                                            </div>
+                                                            {% endfor %}
+                                                        {% endif %}
+
+                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--types-of-services-->
+                                    <div class="form-group" id="service-types-panel">
+                                        <div class="panel-group" id="service-types-id" role="tablist" aria-multiselectable="true" style="border-radius:0px!important">
+                                            <div class="panel panel-success"  style="border:0!important">
+                                                <div class="panel-heading" role="tab" id="service-types-title">
+                                                      <h4 class="panel-title" title="Types of services">
+                                                            <a data-toggle="collapse" data-parent="#service-types-id" href="#service-types-list" aria-expanded="true" aria-controls="service-types-list">
+                                                                Type
+                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                                <div id="service-types-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="service-types-title">
+                                                    <div class="panel-body " style="background-color:whitesmoke">
+                                                        <div class="checkbox">
+                                                            <label for="human_service_type">
+                                                                <input type="checkbox" id="human_service_type" name="human_service_type" data-id="h" /> Human
+                                                                <span class="label label-success pull-right">{% if servicesTypes %} {{ servicesTypes.human }} {% endif %}</span>
+                                                            </label>
+                                                        </div>       
+                                                        <div class="checkbox">
+                                                            <label for="machine_service_type">
+                                                                <input type="checkbox" id="machine_service_type" name="machine_service_type" data-id="m"/> Machine
+                                                                <span class="label label-success pull-right">{% if servicesTypes %} {{ servicesTypes.machine }} {% endif %}</span>
+                                                            </label>
+                                                        </div>     
+                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--payment policy-->
+                                    <div class="form-group" id="charging-model-panel">
+                                        <div class="panel-group" id="charging-model-id" role="tablist" aria-multiselectable="true">
+                                            <div class="panel panel-success" style="border:0!important">
+                                                <div class="panel-heading" role="tab" id="charging-model-title">
+                                                      <h4 class="panel-title" title="Payment policies">
+                                                            <a data-toggle="collapse" data-parent="#charging-model-id" href="#charging-model-list" aria-expanded="true" aria-controls="charging-model-list">
+                                                                Payment policies
+                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                                <div id="charging-model-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="charging-model-title">
+                                                    <div class="panel-body " style="background-color:whitesmoke">
+                                                    <!-- 2015.04.21 it works. -->
+                                                    {#% if chargingModels %#}
+                                                        {#% for model in chargingModels %#}
+                                                            <!--
+                                                            <div class="checkbox">
+                                                                <label for="charging-model-{#{ model.id }#}">
+                                                                    <input type="checkbox" id="charging-model-{#{ model.id }#}" name="charging-model-{#{ model.id }#}" data-id="{#{ model.id }#}" data-name="charging-model-{#{ model.id }#}"/> 
+                                                                    <span>{#{ model.name }#}</span>
+                                                                    <span class="label label-success pull-right">{#{ model.servNo }#}</span>
+                                                                </label>
+                                                            </div> 
+                                                            -->
+                                                        {#% endfor %#}
+                                                    {#% endif %#}
+                                                    <!-- 2015.04.21 -->
+
+
+                                                    {% if chargingModels %}
+                                                        {% for model in chargingModels %}
+                                                            {% if model.name == "Free" %}
+                                                            <div class="checkbox">
+                                                                <label for="charging-model-{{ model.id }}">
+                                                                    <input type="checkbox" id="charging-model-{{ model.id }}" name="charging-model-{{ model.id }}" data-id="{{ model.id }}" data-name="charging-model-{{ model.id }}"/> 
+                                                                    <span>{{ model.name }}</span>
+                                                                
+                                                                </label>
+                                                                <br>
+                                                               <label for="charging-model-0">
+                                                                    <input type="checkbox" id="charging-model-0" name="charging-model-paid" data-id="0" data-name="charging-model-paid"/> 
+                                                                    <span>Paid</span>
+                                                                
+                                                                </label>
+                                                            </div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--price-->
+                                    <div class="form-group" id="price-panel">
+                                        <div class="panel-group" id="price-id" role="tablist">
+                                            <div class="panel panel-success" style="border:0!important">
+                                                <div class="panel-heading" role="tab" id="price-title">
+                                                      <h4 class="panel-title" title="Price">
+                                                            <a data-toggle="collapse" data-parent="#price-id" href="#price-list" aria-expanded="true" aria-controls="price-list">
+                                                                Price
+                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                                <div id="price-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="price-title">
+                                                    <div class="panel-body" style="background-color:whitesmoke">
+                                                        <div class="price">
+                                                            <input type="number" step="0.01" placeholder="from" min="0" id="low_price" data-parent=".price" data-min="0.00" data-max="9999999.00" max="9999999.00" class="form-control-static" style="max-width:80px; background: whitesmoke"> € -
+                                                            <input type="number" step="0.01" placeholder="up to" min="0" id="high_price" max="9999999.00" data-parent=".price" data-min="0.00" data-max="9999999.00" class="form-control-static" style="max-width:80px; background: whitesmoke"> €
+                                                        </div> 
+                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--distance-->
+                                    <div class="form-group" id="location-panel">
+                                        <div class="panel-group" id="location-id" role="tablist">
+                                            <div class="panel panel-success" style="border:0!important">
+                                                <div class="panel-heading" role="tab" id="location-title">
+                                                      <h4 class="panel-title" title="Searches for services offered around your current location">
+                                                            <a data-toggle="collapse" data-parent="#location-id" href="#location-list" aria-expanded="true" aria-controls="location-list">
+                                                                Your current location (km)
+                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                                <div id="location-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="location-title">
+                                                    <div class="panel-body" style="background-color:whitesmoke">
+                                                        <div class="location">
+                                                            <input type="number" step="0.01" min="0.00" maxlength="20" placeholder="max distance"> 
+                                                        </div> 
+                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--QoS-->
+                                    <div class="form-group" id="quality-of-service-panel">
+                                        <div class="panel-group" id="quality-of-service-id" role="tablist" aria-multiselectable="true">
+                                            <div class="panel panel-success" style="border:0!important">
+                                                <div class="panel-heading" role="tab" id="quality-of-service-title">
+                                                      <h4 class="panel-title" title="Searches based on Quality of Services measured by serviced users from zero (worst) to five (best).">
+                                                            <a data-toggle="collapse" data-parent="#quality-of-service-id" href="#quality-of-service-list" aria-expanded="true" aria-controls="quality-of-service-list">
+                                                                Quality of Service
+                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                                <div id="quality-of-service-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="quality-of-service-title">
+                                                    <div class="panel-body " style="background-color:whitesmoke">    
+                                                        <!--  
+                                                        <div class="checkbox">
+                                                            <div class="pull-left">
+                                                                <span class="fa fa-star-o fa-2x rating-stars" id="rating-star-1" data-QoS="1" style="color:#ffbb00;background-color:transparent"></span>
+                                                                <span class="fa fa-star-o fa-2x rating-stars" id="rating-star-2" data-QoS="2" style="color:#ffbb00;background-color:transparent"></span>
+                                                                <span class="fa fa-star-o fa-2x rating-stars" id="rating-star-3" data-QoS="3" style="color:#ffbb00;background-color:transparent"></span>
+                                                                <span class="fa fa-star-o fa-2x rating-stars" id="rating-star-4" data-QoS="4" style="color:#ffbb00;background-color:transparent"></span>
+                                                                <span class="fa fa-star-o fa-2x rating-stars star-colorize-yellow" id="rating-star-5" data-QoS="5"></span>
+                                                            </div>
+                                                        </div>
+                                                        -->    
+                                                        <div id="qos">
+                                                            <input type="number" step="0.1" placeholder="e.g. 0" min="0" max="5" id="low_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control-static" style="max-width:80px; background: whitesmoke"> to
+                                                            <input type="number" step="0.1" placeholder="e.g. 5" min="0" max="5" id="high_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control-static" style="max-width:80px; background: whitesmoke">
+                                                        </div> 
+                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                    <hr class="service-hr">
+                                    <div class="col-xs-6 col-lg-6 col-sm-6 col-md-6">
+                                        <button type="reset" class="btn btn-default btn-block">Reset</button>
+                                    </div>
+                                     <div class="col-xs-6 col-lg-6 col-sm-6 col-md-6">
+                                        <button type="button" id="search-btn" class="btn btn-success btn-block">Search</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </section>
+                    </div>
+            {% endblock searchModule %}
+            
+            {% block contentTopBanner %}
+                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9" style="background-color:whitesmoke; padding-top:15px; border-radius: 4px">
+                    <div class="row">
+                        <!-- service per page dropdown -->
+                        <div class=" col-xs-5 col-sm-4 form-group">
+                            <div id="content-top-banner" style="margin-bottom: 1em;">
+                                <label for="items-per-page-id" class="pull-left" style="padding-right:3px">Services per page </label>
+                                <div role="menu" title="Number of services per page">
+                                    <select id="items-per-page-id" name="items-per-page-id" class="form-control" style="max-width:80px!important">
+                                        <option value="15" >15</option>
+                                        <option value="30" selected="selected">30</option>
+                                        <option value="45" >45</option>
+                                        <option value="60" >60</option>
+                                    </select>
+                                </div>
+                            </div>          
+                        </div>  
+                        <!-- Sort by dropdown -->
+                        <div class=" col-xs-4 col-sm-4 form-group">
+                            <label for="sortby" class="pull-left" style="padding-right:3px">Sort by </label>
+                            <div role="menu" class="my-sort-choice" title="Sort the list of registered services" aria-label="Sort the list of registered services">
+                                <select name="sortby" id="sortby" data-sort="asc_title" class="form-control" style="max-width:200px!important">
+                                    <option value="asc_price" > Price: Low to High</option>
+                                    <option value="desc_price"> Price: High to Low</option>
+                                    <option value="asc_title" selected>Title: A to Z</option>
+                                    <option value="desc_title" >Title: Z to A</option>
+                                    <option value="rating" disabled>Rating: High to Low</option>
+                                    <option value="most_popular" disabled>Most popular</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- view choices -->
+                        <div class=" col-xs-3 col-sm-4">
+                            <div class="btn-group pull-right services-view" role="group" data-view="m" aria-label="Service results presentation" style="margin-left:15px">
+                                <a id="multidata_view" class="btn btn-md btn-default" data-view="m" href="#"><i class="fa fa-th-large"></i></a>
+                                <a id="list_view" class="btn btn-md btn-default" data-view="l" href="#"><i class="fa fa-th-list"></i></a>
+                            </div>
+                            <label class="pull-right">View</label>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div id="services-result">
+                            {% include 'app/consumers/services/services.html' %}
+                        </div>
+                    </div>
+                </div>
+            {% endblock contentTopBanner %}
+
+        </section>
+    </div> 
+    {% endblock content %}
+
+
+    {% block scripts %}
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/consumers/dashboard.js' %}"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                $("#companies-id").click(function () {
+                    toggleArrows($(this));
+                });
+
+                $("#categories-id").click(function () {
+                    toggleArrows($(this));
+                });
+
+                $("#service-types-id").click(function () {
+                    toggleArrows($(this));
+                });
+
+                $("#service-price-id").click(function () {
+                    toggleArrows($(this));
+                });
+
+                $("#location-id").click(function () {
+                    toggleArrows($(this));
+                });
+
+                $("#quality-of-service-id").click(function () {
+                    toggleArrows($(this));
+                });
+
+                $(".rating-stars").click(function () {
+                    swapRatingStarColor($(this).attr("id").match(/\d+/));
+
+                });
+                $(".rating-stars").hover(function () {
+                    swapRatingStarColor($(this).attr("id").match(/\d+/));
+                });
+
+                /////////////////
+                // Add shadow on service banners if mouse enters. Else, remove shadow
+                /////////////////
+                $(".on-mouseover > div").mouseenter(function () {
+                    $(this).addClass("highlight-service-banner");
+                }).mouseleave(function () {
+                    $(this).removeClass("highlight-service-banner");
+                });
+
+                /////////////////
+                // Set the stars of any service based on its rating value
+                /////////////////
+                $(".service-banner").each(function () {
+                    var rating = $(this).find("#srv-rating-" + $(this).attr("id").match(/\d+/)).find("span").first().text();
+                    if (rating !== "None" && !(isNaN(rating))) {
+                        for (var j = 1; j <= Math.ceil(rating) ; j++) {
+                            $(this).find(".star-rating-" + j).removeClass("fa-star-o").addClass("fa-star");
+                        }
+                    }
+                });
+
+
+                ////////////////////////////////////
+                // Services per page
+                ////////////////////////////////////
+                $("#items-per-page-id").change(function () {
+                    var params = getUrlparameters();
+                    params["limit"] = $(this).find(":selected").val();
+                    var delimeter = '?';
+
+                    var url = '';
+                    for (var j in params){
+                        url += delimeter+j+'='+params[j]
+                        delimeter = '&';
+                    }
+                   // window.location.href = url;
+                });
+
+                ////////////////////////////////////
+                // Handle the sorting of services
+                ////////////////////////////////////
+                $(".my-sort-choice").change(function () {
+                    var params = getUrlparameters();
+                    params["sortby"] = $(this).find("select").val();
+                    /*
+                    var delimeter = '?';
+
+                    var url = '';
+                    for (var j in params){
+                        url += delimeter+j+'='+params[j]
+                        delimeter = '&';
+                    }
+                    window.location.href = url;
+                    */
+                    $("#sortby").data().sort = $(this).find("select").val();
+                    reload($(this).find("select").val(), $(".services-view").data().view);
+                });
+
+                ////////////////////////////////////
+                // Filter all services by type (H/M/All)
+                ////////////////////////////////////
+                $("div#service-types-list > div > div").change(function () {
+                    var type = $(this).find("input").attr("id");
+                    var params = getUrlparameters();
+                    params["type"] = type[0].toUpperCase();
+                    var delimeter = '?';
+
+                    var url = '';
+                    for (var j in params){
+                        url += delimeter+j+'='+params[j]
+                        delimeter = '&';
+                    }
+                    //window.location.href = url;
+                });
+
+            
+                ///////////////////////////////////
+                // Filter services by charging model
+                ///////////////////////////////////
+                $("div#charging-model-list > div > div").change(function () {
+                    var model = $(this).find("input").attr("id").match(/\d+/);
+                    var params = getUrlparameters();
+                    params["model"] = model[0];
+                    var delimeter = '?';
+
+                    var url = '';
+                    for (var j in params){
+                        url += delimeter+j+'='+params[j]
+                        delimeter = '&';
+                    }
+                   // window.location.href = url;
+                });
+               
+
+                //////////////////////////
+                // Keep selected the sort_by user choice
+                //////////////////////////
+                $("#content-top-banner").find("#sortby :selected").prop('selected', false);
+                $("#sortby option[value='{{ sortby }}']").attr('selected', 'selected');
+
+
+                //////////////////////////
+                //  Keep limit user choice
+                //////////////////////////
+                $("#content-top-banner").find("#items-per-page-id :selected").prop('selected', false);
+                $("#items-per-page-id option[value='{{ limit }}']").attr('selected', 'selected');
+
+            });
+
+
+            //////////////////////////////////
+            //  Parse URL and get the query parameters
+            //////////////////////////////////
+            function getUrlparameters() {
+                var vars = {};
+                var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+                    function (m, key, value) {
+                        vars[key] = value;
+                    });
+                return vars;
+            }
+
+            // get the new URL
+            function getURL(url, sort_by, srv_type, limit) {
+                if (srv_type === null) {
+                    return url + "?sortby=" + sort_by + "&limit=" + limit;
+                }
+                else {
+                    return url + "?type=" + srv_type + "&sortby=" + sort_by + "&limit=" + limit;;
+                }
+                return request;
+            }
+
+
+            ////////////////////////////////////
+            //  Swap the state of rating stars
+            ////////////////////////////////////
+            function swapRatingStarColor(index) {
+                var min = 1, max = 6;
+                for (var j = min; j < max; j++) {
+                    if (j > index) {
+                        $("#rating-star-" + j).removeClass("fa-star").addClass("fa-star-o");
+                    }
+                    else {
+                        $("#rating-star-" + j).removeClass("fa-star-o").addClass("fa-star");
+                    }
+
+                }
+            }
+
+            //////////////////////////////////////////
+            //  Swap the direction of search engine
+            //////////////////////////////////////////
+            function toggleArrows(element) {
+                if (element.find(" .panel-collapse").hasClass("in")) {
+                    element.find("i").removeClass("fa-angle-double-down").addClass("fa-angle-double-up");
+                }
+                else {
+                    element.find("i").addClass("fa-angle-double-down").removeClass("fa-angle-double-up");
+                }
+
+            }
+
+
+            //////////////////////////////
+            // Declare and load view
+            /////////////////////////////
+            $("#list_view").click(function(){
+                var params = getUrlparameters();
+                params["view"] = 'l';
+                var delimeter = '?';
+
+                var url = '';
+                for (var j in params){
+                    url += delimeter+j+'='+params[j]
+                    delimeter = '&';
+                }
+                //window.location.href = url;
+                //update(url);
+                
+                $(".services-view").data().view='l';
+                reload($("#sortby").data().sort, 'l');
+            });
+            $("#multidata_view").click(function(){
+                var params = getUrlparameters();
+                params["view"] = 'm';
+                var delimeter = '?';
+
+                var url = '';
+                for (var j in params){
+                    url += delimeter+j+'='+params[j]
+                    delimeter = '&';
+                }
+                //window.location.href = url;
+                //update(url);
+
+                $(".services-view").data().view='m';
+                reload($("#sortby").data().sort, 'm');
+            });
+
+            function update(url){
+                var u = url.replace("/index", '');
+                $.ajax({
+                    type: 'GET',
+                    url: "/services/search"+u,
+                    dataType: 'html',
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    success: function(data) {
+                        $("#services-result").empty();
+                        $("#services-result").append(data);
+                    }
+                });
+            }
+
+
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+                    }
+                }
+            });
+
+        </script>
+    {% endblock scripts %}

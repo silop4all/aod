@@ -1,0 +1,47 @@
+﻿<div class="service-basic-info-box">
+    <div class="row form-group">
+        <h4 class="col-lg-offset-1 col-md-offset-1 col-sm-offset-10"> Service Registration</h4>
+    </div>
+    <hr class="service-hr">
+
+    {% if not service %}
+    <div class="row form-group hidden">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_norms" title="Charging model of the service">Compliance to norms</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12" title="I have already read the terms of use issues">
+            <textarea rows="3" cols="50" id="srv_norms" name="srv_norms" class="form-control" form="insert-new-service" maxlength="100" placeholder="Enter any information"></textarea>  
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3">
+            <label id="srv_norms_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Compliance to norms"></label>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row form-group">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_terms" title="Check the Terms of use">Terms of use<small>*</small></label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12" title="I have already read the terms of use issues">
+            <input type="checkbox" id="srv_terms" form="insert-new-service"/>
+            <span for="srv_terms">I agree to the 
+                <a href="#" onclick="alert('To create it');">Terms of use</a>
+            </span>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3">
+            <label id="srv_terms_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Check the box, if you agree with the terms."></label>
+        </div>
+    </div>
+
+   
+    <div class="row form-group">
+        <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12"></div>
+        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+            {% if service %}
+                <button type="button" id="update-btn"  class="btn btn-success btn-block btn-lg disabled" data-id="{{ service.id }}" data-url="{{ breadcrumb.services }}/{{ alias }}/" onclick="return false;"> Submit</button>
+            {% else %}
+                <button type="button" id="register-btn"  class="btn btn-success btn-block btn-lg disabled" data-url="{{ breadcrumb.services }}" onclick="return false;"> Register</button>
+            {% endif %}
+        </div>
+    </div> 
+</div>

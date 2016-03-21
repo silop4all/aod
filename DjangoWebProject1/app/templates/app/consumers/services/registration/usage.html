@@ -1,0 +1,153 @@
+﻿<div class="service-basic-info-box">
+    <div class="row form-group">
+        <h4 class="col-lg-offset-1 col-md-offset-1 col-sm-offset-10"> Usage</h4>
+    </div>
+    <hr class="service-hr">
+
+    <div class="row form-group">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_requirements">Technical requirements<small>*</small></label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Basic requirements to use the service" id="srv_requirements_node">
+            <span class="input-group-addon">
+                <span class="fa fa-info fa-fw" role="img"></span>
+            </span>
+            <textarea rows="3" cols="50" id="srv_requirements" name="srv_requirements" class="form-control" form="insert-new-service" maxlength="1000" placeholder="Specify any requirements if needed (ie use headset inluded microphone) ">{{ service.requirements }}</textarea>  
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3">
+            <label id="srv_requirements_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Requirements are required"></label>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_installation">Installation guidelines</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Installation guidelines" id="srv_installation_node">
+            <span class="input-group-addon">
+                <span class="fa fa-gears fa-fw" role="img"></span>
+            </span>
+            <textarea rows="3" cols="50" id="srv_installation" name="srv_installation" class="form-control" form="insert-new-service" maxlength="1000" placeholder="Explain step-by-step how a user could install the service, if needed ">{{ service.installation_guide }}</textarea>  
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3">
+            <label id="srv_installation_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title=""></label>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_link">Link</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="URL/Link/API">
+            <span class="input-group-addon">
+                <span class="fa fa-link fa-fw" role="img"></span>
+            </span>
+            <input type="url" id="srv_link" name="srv_link" value="{{ service.link }}" class="form-control" form="insert-new-service" placeholder="Enter any link, if needed" />
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3">
+            <label id="srv_link_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Invalid link"></label>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_software">Software/Package</label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Upload the software packages, if needed">
+            <input type="file" id="srv_software" accept="*/*" name="srv_software" class="form-control" form="insert-new-service" size="1" style="display:none"/>
+            <div class="button-group">
+                <div class="row col-md-12 col-sm-12 col-lg-12 col-xs-12 hidden" title="Filename of the software package">
+                    <a href="#" onclick="return false;" id="srv_software_info" class="active">{{ service.software }}</a>
+                </div>
+                <div class="row col-md-6 col-sm-6 col-lg-6 col-xs-6">
+                    <a href="#" class="btn btn-default btn-sm" onclick="return addPackage();" title="Add the provided package for the service">
+                        <i class="fa fa-plus fa-fw text-primary"></i> Add package
+                    </a>
+                </div>
+                <div class="row col-md-6 col-sm-6 col-lg-6 col-xs-6 hidden" id="clear_srv_software">
+                    <a href="#" class="btn btn-default btn-sm" onclick="return removePackage();" title="Remove the provided package for the service">
+                        <i class="fa fa-remove fa-fw text-danger"></i> Remove package
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3">
+            <label id="srv_link_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Invalid link"></label>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_usage">Usage guidelines<small>*</small></label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Usage guidelines" id="srv_usage_node">
+            <span class="input-group-addon">
+                <span class="fa fa-book fa-fw" role="img"></span>
+            </span>
+            <textarea rows="3" id="srv_usage" name="srv_usage" class="form-control" form="insert-new-service" maxlength="1000" placeholder="Provide instructions related to the usage of the service (ie follow a link, book a meeting etc)">{{ service.usage_guidelines }}</textarea>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3">
+            <label id="srv_usage_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Usage instructions are required"></label>
+        </div>
+    </div>
+
+    <!--availability-->
+    <div class="row form-group">
+        <div class="col-sm-3 col-md-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_availability">Accessibility<small>*</small></label>
+        </div> 
+
+        <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" >
+            <div class="btn-group  btn-block" data-toggle="buttons-radio" id="srv_availability">
+                <a class="btn btn-primary" href="#" name="srv_availability" id="srv_availability_pb" role="button" title="Offer the service to anyone interested">
+                    <i class="fa fa-check-square-o"></i> Public
+                </a>
+                <a class="btn btn-default" href="#" name="srv_availability" id="srv_availability_pr" role="button" title="Offer the service to a group of users">
+                    <i class="fa fa-square-o"></i> Private
+                </a>
+            </div>
+        </div>
+    </div> 
+    <!--wish email-list-->
+    <div class="row form-group hidden" id="set_target_users">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_wish_list">Email list<small>*</small></label>
+        </div>
+        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12 input-group controls" title="List of all registered users">
+            <span class="input-group-addon">
+                <span class="fa fa-envelope fa-fw" role="img"></span>
+            </span>
+            <select class="form-control"  id="srv_email_list" name="srv_email_list" size="5" multiple>
+                <option value="-1" disabled> List of all users </option>
+                {% if users %}
+                    {% for i in users %}
+                        <option value="{{ i.id }}"> {{ i.email|safe }} </option>
+                    {%endfor %}
+                {% endif %}
+            </select>
+        </div>
+        <div class="col-sm-1 col-xs-12">
+            <button type="button" class="btn btn-default" id="send_to_wish_list" role="option" title="Add email to target list"> 
+                <i class="fa fa-chevron-right fa-fw"></i>
+            </button>
+            <hr>
+            <button type="button" class="btn btn-default" id="send_to_email_list" role="option" title="Remove email from target list"> 
+                <i class="fa fa-chevron-left fa-fw"></i>
+            </button>
+        </div>
+        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12 input-group controls" title="List of target users" id="srv_wish_list_node">
+            <span class="input-group-addon">
+                <span class="fa fa-group fa-fw" role="img"></span>
+            </span>
+            <select class="form-control"  id="srv_wish_list" name="srv_wish_list" size="5" multiple form="insert-new-service">
+                <option value="-1" disabled> Target users </option>
+            </select>
+        </div>
+    </div>
+    <!--info-->
+    <div class="row form-group">
+        <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="Mandotory fields">
+            <small class="text-center">* Mandatory fields</small>
+        </div>
+    </div>
+</div>

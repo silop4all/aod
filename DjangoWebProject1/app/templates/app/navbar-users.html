@@ -1,0 +1,116 @@
+﻿    <!--User navbar-->
+  
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">      
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" class="navbar-brand" title="Welcome to AssistanceOnDemand -AoD- platform">
+                    <img src="{{ MEDIA_URL }}app/aod/logos/logo2.png" alt="Prosperity 4All">
+                    <b> AoDemand</b>
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+ 
+                    {% block navbarSearch %}
+                    {% endblock navbarSearch %}
+
+
+                    {% block preferencesTab %}
+                        {% include "app/preferences.html" %}
+                    {% endblock preferencesTab %}
+                    
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" title="Settings" data-toggle="dropdown" role="button" aria-expanded="true">  
+                            <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding"  id="settings_menu">
+                                <i class="fa fa-user fa-lg"></i>{% if username %} My account {% endif %}<span class="fa fa-chevron-down fa-xs fa-fw"></span>
+                            </span>
+                        </a>   
+                        <ul class="dropdown-menu under-construction" role="menu" aria-labelledby="settings_menu">
+                            <li role="presentation">
+                                <a href="{{ links.collection }}" title="Check your activity" role="menuitem" tabindex="-1">
+                                    <i class="fa fa-archive fa-fw"></i> My offered services
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="{{ links.stats }}" title="Get your statistics" role="menuitem" tabindex="-1">
+                                    <i class="fa fa-area-chart fa-fw"></i> My statistics
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="{{ links.profile }}" title="Manage your profile" role="menuitem" tabindex="-1">
+                                    <i class="fa fa-user fa-fw"></i> My Profile
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!--link to NAS component -->
+                    {% if links.is_nas_active %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" title="Settings" data-toggle="dropdown" role="button" aria-expanded="true">  
+                            <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding"  id="guided_services">
+                               <i class="fa fa-sitemap fa-lg"></i> Services network <span class="fa fa-chevron-down fa-xs fa-fw"></span>
+                            </span>
+                        </a> 
+                        <ul class="dropdown-menu under-construction" role="menu" aria-labelledby="guided_services">
+                            <li role="presentation">
+                                <a href="{{ links.nas_requests }}" title="Manage the requests related to network of assistance services" role="menuitem" tabindex="-1">
+                                    <i class="fa fa-inbox fa-fw"></i> Carer dashboard
+                                </a>
+                            </li>
+    
+                        </ul>
+                    </li>
+                    {% endif %}
+
+                    <li>
+                        <a href="{{ links.social_network }}" target="_blank" title="Help" role="link" class="under-construction">
+                            <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button">
+                                <i class="fa fa-cloud fa-lg"></i> Social Network 
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ links.help }}"  title="Help" role="link" class="under-construction">
+                            <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button">
+                                <i class="fa fa-question-circle fa-lg"></i> Help 
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ links.cart }}" title="Shopping card" role="link" class="under-construction">
+                            <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button" style="margin-top: 12px">
+                                <i class="fa fa-shopping-cart fa-lg"></i> <!--Cart-->
+                                {% if links.cart_items > 0 %}
+                                    <span class="label label-success">{{ links.cart_items }}</span>
+                                {% endif %}
+                            </span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="{{ links.notifications }}" title="notification" role="link" class="under-construction">
+                             <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button" style="margin-top: 12px">
+                                  <i class="fa fa-bell-o fa-lg"></i> <!--Notifications-->
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}" title="Log out" role="link">
+                            <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button">
+                                <i class="fa fa-power-off fa-lg" role="img"></i> Log out
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+

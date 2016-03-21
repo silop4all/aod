@@ -1,0 +1,144 @@
+﻿
+        {% if services %}
+            {% for service in services %}
+                {% if view == 'm' %}
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 on-mouseover service-banner" id="srv-{{ service.id }}"  style="margin-bottom:25px!important">
+                        <div class="thumbnail" style="min-height:350px!important;">
+                            <img src="{{ service.cover }}" alt="Cover">
+                            <div class="caption">
+                                <span class="fa-stack fa-3x img-responsive img-circle" style="margin-top:-55px">  
+                                    {% if service.logo %}
+                                    <img src="{{ MEDIA_URL }}app/users/logos/{{ service.logo }}" alt="{{ services.logo }}" class="img-circle img-responsive" style="border: 1px solid whitesmoke" />
+                                    {% else %}
+                                        <span class="fa-stack fa-1x" >
+                                            <i class="fa fa-circle fa-stack-2x" style="color: #d7d5d5;"></i>
+                                            <i class="fa fa-user fa-stack-1x" style="color: #ebebea"></i>
+                                        </span>
+                                    {% endif %}
+                                </span>
+                                <a href="/services/{{ service.alias }}" class="btn btn-link">{{ service.title}}</a>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                        {{ service.description|slice:":80"}}...
+                                        <a href="/services/{{ service.alias }}" class="btn btn-success btn-xs">Get it! <i class="fa fa-shopping-cart"></i></a>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-7 col-lg-7 col-md-7 col-xs-7" id="srv-rating-{{ service.id }}" >
+                                        <span><b>{{ service.rating }}</b></span>
+                                        <span class="fa fa-star-o star-colorize-yellow star-rating-1"></span>
+                                        <span class="fa fa-star-o star-colorize-yellow star-rating-2"></span>
+                                        <span class="fa fa-star-o star-colorize-yellow star-rating-3"></span>
+                                        <span class="fa fa-star-o star-colorize-yellow star-rating-4"></span>
+                                        <span class="fa fa-star-o star-colorize-yellow star-rating-5"></span>
+                                    </div>
+                                    <div class="col-sm-5 col-lg-5 col-md-5 col-xs-5">
+                                        <b class="pull-right">
+                                        {% if service.charge_model.name == "Free" %}
+                                            FREE
+                                        {% else %}
+                                            {{ service.unit }} {{ service.price }}
+                                        {% endif %}
+                                        </b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-8 col-lg-8 col-md-8 col-xs-8">
+                                        <em> 
+                                        {% ifequal  service.rewiews  1 %}
+                                            <i class="fa fa-comments-o fa-1x text-primary"></i> {{ service.reviews }} review
+                                        {% else %}
+                                            <i class="fa fa-comments-o fa-1x text-primary"></i> {{ service.reviews }} reviews
+                                        {% endifequal  %}
+                                        </em>
+                                    </div>
+                                    <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">
+                                        {% if service.type == "M" %}
+                                        <abbr title="Machine-based service"><span class="fa fa-laptop pull-right fa-2x" ></span></abbr>
+                                        {% else %}
+                                        <abbr title="Human-based service"><span class="fa fa-users pull-right fa-2x" ></span></abbr>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 on-mouseover service-banner" id="srv-{{ service.id }}" style="margin-bottom: 3% ;min-height:inherit; margin-left:5px">
+                        <div class="row thumbnail">
+                            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <img src="{{ service.cover }}" alt="Cover">
+                            </div>
+                            <div class="caption col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                        {% if service.logo %}
+                                        <img src="{{ MEDIA_URL }}app/users/logos/{{ service.logo }}" alt="{{ services.logo }}" class="img-circle img-responsive" style="border: 4px solid whitesmoke;margin-left: -85%;" />
+                                        {% else %}
+                                            <span class="fa-stack fa-4x" style="margin-left: -85%; padding-top: 15%">
+                                                <i class="fa fa-circle fa-stack-2x" style="color: #d7d5d5;"></i>
+                                                <i class="fa fa-user fa-stack-1x" style="color: #ebebea"></i>
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-9 col-md-9 col-lg-9">
+                                        <a href="/services/{{ service.alias }}" style="cursor: pointer!important">{{ service.title}}</a>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                                {{ service.description|slice:":120"}}...
+                                                <a href="/services/{{ service.alias }}" class="btn btn-success btn-xs">Get it! <i class="fa fa-shopping-cart"></i></a>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-sm-7 col-lg-7 col-md-7 col-xs-7" id="srv-rating-{{ service.id }}" >
+                                                <span><b>{{ service.rating }}</b></span>
+                                                <span class="fa fa-star-o star-colorize-yellow star-rating-1"></span>
+                                                <span class="fa fa-star-o star-colorize-yellow star-rating-2"></span>
+                                                <span class="fa fa-star-o star-colorize-yellow star-rating-3"></span>
+                                                <span class="fa fa-star-o star-colorize-yellow star-rating-4"></span>
+                                                <span class="fa fa-star-o star-colorize-yellow star-rating-5"></span>
+                                            </div>
+                                            <div class="col-sm-5 col-lg-5 col-md-5 col-xs-5">
+                                                <b class="pull-right">
+                                                {% if service.charge_model.name == "Free" %}
+                                                    FREE
+                                                {% else %}
+                                                    {{ service.unit }} {{ service.price }}
+                                                {% endif %}
+                                                </b>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-8 col-lg-8 col-md-8 col-xs-8">
+                                                <em> 
+                                                {% ifequal  service.rewiews  1 %}
+                                                    <i class="fa fa-comments-o fa-1x text-primary"></i> {{ service.reviews }} review
+                                                {% else %}
+                                                    <i class="fa fa-comments-o fa-1x text-primary"></i> {{ service.reviews }} reviews
+                                                {% endifequal  %}
+                                                </em>
+                                            </div>
+                                            <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">
+                                                {% if service.type == "M" %}
+                                                <span class="fa fa-laptop pull-right fa-2x"></span>
+                                                {% else %}
+                                                <span class="fa fa-users pull-right fa-2x"></span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 jumbotron" style="background-color: inherit ;min-height:320px!important">
+                <h4 style="text-align:center">No results found!! Please refine your search.</h4>
+            </div>
+        {% endif %}

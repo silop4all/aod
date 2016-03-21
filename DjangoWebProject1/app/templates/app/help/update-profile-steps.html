@@ -1,0 +1,94 @@
+﻿{% extends "app/help/base-help.html" %}
+
+{% block title %} AoD | {{ title }} {% endblock title %}
+
+{% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em;">
+
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            {% if username %}
+                <li><a href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="/support" class="custom-inactive-breadcrumb"> Help Center</a></li>
+            {% else %}
+                <li><a href="/support" class="custom-inactive-breadcrumb"><i class="fa fa-support"></i> Help Center</a></li>
+            {% endif %}
+            <li class="active">Update my profile</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <section style="background-color:whitesmoke; padding-top:1%; padding-bottom:1%; border-radius:5px 5px;" class="col-lg-12 col-md-12 col-sm-12">
+            <header>
+                <h3>Do you want to update your profile?</h3>
+            </header>
+            <br />
+
+            {% block list %}
+            <div id="login-list" class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <h4>Instructions:</h4>
+                <ol>
+                    <li> Navigate on the top menu, click on your username and select the <a href="{{ links.profile }}" target="_blank">Profile</a> link</li>
+                    <li> The AoD platform provides the following capabilities:
+                        <ul>
+                            <li> 
+                                <i>Update your cover image.</i> 
+                                Optionally, you can update your cover image since you click on Add cover button and select an image of your interest. 
+                            </li>
+                            <li>
+                                <i>Modify your Personal information.</i> 
+                                Go to <b>Personal information</b> box and click on <a href="#" onclick="return false;" class="btn btn-default btn-sm"><i class="fa fa-pencil"> Edit</i></a> 
+                                button to alter the view in edit mode. You can fill or correct any field related to your first/last name and your geolocation options. Optionally, you could upload or change your profile logo. To store the changes, just click on <a href="#" onclick="return false;" class="btn btn-primary btn-xs">Save</a> button. To cancel your changes, click on Cancel button
+                            </li>
+                            <li> 
+                                <i>Modify your Contact information.</i> 
+                                Go to <b>Contact information</b> box and click on <a href="#" onclick="return false;" class="btn btn-default btn-sm"><i class="fa fa-pencil"> Edit</i></a> 
+                                button to alter the view in edit mode. You can fill or correct your email account and your mobile phone number. To store the changes, just click on <a href="#" onclick="return false;" class="btn btn-primary btn-xs">Save</a> button. To cancel your changes, click on Cancel button
+                            </li>
+                            <li> 
+                                <i>Modify your Platform settings.</i> 
+                                Go to <b>Platform settings</b> box and click on <a href="#" onclick="return false;" class="btn btn-default btn-sm"><i class="fa fa-pencil"> Edit</i></a> 
+                                button to alter the view in edit mode. You can fill or correct your IT experience, your desired roles in platform (e.g. service consumer, service provider or carer). 
+                                By default, any provider receives notification for crowd-funding procedures while any consumer has to specify if he/she want to receive and participate in these procedures. 
+                                Moreover, you can update the channels of your interest (service categories) from the drop down list.
+                                To store the changes, just click on <a href="#" onclick="return false;" class="btn btn-primary btn-xs">Save</a> button. To cancel your changes, click on Cancel button
+                            </li>
+                            <li> 
+                                <i>Modify your Bank settings.</i> 
+                                Under development.
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            {% endblock list %}
+
+            {% block video %}
+            <div id="create-account-video" style="padding: 3%">
+                <div class="jumbotron embed-responsive embed-responsive-16by9">
+                    <h4>Watch the following video:</h4>
+                    <video id="video" width="70%" class="embed-responsive-item" controls>
+                        <source src="{{ MEDIA_URL }}app/platform/videos/support/create_account.mp4" type="video/mp4">
+                        <source src="{{ MEDIA_URL }}app/platform/videos/support/create_account.ogg" type="video/ogg">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+            </div>
+            {% endblock video %}
+
+            {% block contact_email %}
+            <div id="contact-us" class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <h4>Need our assistance?</h4>
+                <form action="mailto:athanasoulisp@gmail.com" method="post">
+                        First name: <input type="text" name="firstname" /> 
+                        Surname: <input type="text" name="surname" />
+                        <button type="submit" class="btn btn-primary btn-sm">Contact us</button>
+                </form>
+                <h4> or </h4>
+                <div id="SkypeButton_Call_magnitakis_1"></div>
+            </div>
+            {% endblock contact_email %}
+
+        </section>
+
+    </div>
+{% endblock content %}

@@ -1,0 +1,135 @@
+﻿{% extends "app/base.html" %}
+
+{% block title %} AoD | {{ title }} {% endblock title %}
+
+ {% load staticfiles %}
+
+{% block extraCss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap-table/bootstrap-table.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/jsson-slider/slider.css' %}" />
+{% endblock extraCss %}
+
+{% block navbar %}
+    {% include "app/navbar-users.html" %}
+{% endblock navbar %}
+
+
+{% block scripts %}
+    {% load staticfiles %}
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+
+    <script>
+        $(".remove-service-cart").click(function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                type: 'DELETE',
+                url: "/cart/delete/" + $(this).data().id,
+                beforeSend: function (xhr, settings) {
+                    $.ajaxSettings.beforeSend(xhr, settings);
+                },
+                success: function (response) {
+                    if (response.state === 1) {
+                        location.reload();
+                    }
+                    else {
+                        alert("An error occured");
+                    }
+                },
+                error: function (response) {
+                    alert("An error is occured. The service modification failed");
+                }
+            });
+        });
+
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                    xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+                }
+            }
+        });
+    </script>
+
+
+{% endblock scripts %}
+
+
+{% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em;">
+
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            <li><a  href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active">My cart</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <main>
+            <div class="row">
+                <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12" style=" background-color: whitesmoke; border-radius:5px 5px;padding-bottom: 1%;">
+                    <div>
+                        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12">
+                            <h3>
+                                <i class="fa fa-bookmark fa-lg text-success"></i> Your AoD shopping cart
+                                <small>(After you log out, the list is removed)</small>
+                            </h3>
+                        </div>    
+                        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12">
+                            {% if services %}
+                                {% for s in services %}
+                                <div  style="border:1px solid rgba(234, 234, 234, 0.63); border-radius:3px 3px; padding:1%; margin-bottom:1%; background-color: rgba(234, 234, 234, 0.49)">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-sm-3 col-md-3">
+                                            <img src="{{ MEDIA_URL }}app/services/images/{{ s.image }}" class="img-responsive img-thumbnail" >
+                                        </div>
+                                        <div class="col-lg-3 col-sm-3 col-md-3">
+                                            <a href="#">{{ s.title }}</a>
+                                            <br/>
+                                            <span class="text-muted">Provider: {% for p in providers %} {% if p.service == s.id %}{{ p.owner }} {% endif %} {% endfor %}</span>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-3 col-md-3">
+                                            Quantity 1 
+                                        </div>
+                                        <div class="col-lg-3 col-sm-3 col-md-3">
+                                            Price: <b>{{ s.unit }} {{ s.price }}</b>
+                                        </div>
+                                    </div>
+                                    <div class="row text-center">
+                                        <a href="#" class="btn btn-default btn-sm remove-service-cart" data-id="{{ s.id }}"><i class="fa fa-remove text-danger"></i> Remove</a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="well border:1px solid rgba(234, 234, 234, 0.63); border-radius:3px 3px; padding-top:1%; padding-bottom:1%; margin-bottom:1%; background-color: rgba(234, 234, 234, 0.49)">
+                                    <h4>Your cart is empty.</h4>
+                                </div>
+                            {% endif %}
+                        </div> 
+                        <div class="row text-center" style="margin-top:3%;"><a href="/index" class="btn btn-link"> Continue shopping</a></div>
+                    </div>
+                </div>
+
+                <!--right menu-->
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pull-right" style=" background-color: whitesmoke; padding-bottom: 3%;border-radius:5px 5px;">
+                    <h3 class="text-center">Cart summary <small>{{services.count}}{% if services.count  > 1 %} services {%else%} service {% endif %}</small></h3>
+                    <hr class="service-hr">
+                    <div class="row text-center" style="margin-bottom: 2%">
+                        <h3>Total: {{ total }}</h3>
+                    </div>
+                    <div class="row text-center">
+                        <button type="button" class="btn btn-primary disabled"> Proceed to checkout</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+{% endblock content %}

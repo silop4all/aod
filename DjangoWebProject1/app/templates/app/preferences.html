@@ -1,0 +1,52 @@
+﻿<!-- Preferences tab in navbar -->
+{% block preferencesTab %}
+
+                    <li class="dropdown under-construction">
+                        <a href="#" class="dropdown-toggle" title="Setup your preferences" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <span class="btn navbar-btn disable-btn-box-shadow" role="button">
+                                <i class="fa fa-paint-brush fa-lg" role="img"></i> Preferences 
+                                <span class="fa fa-chevron-down fa-xs fa-fw"></span>
+                            </span>
+                        </a>  
+                        <ul class="dropdown-menu" role="menu">
+                            <!-- font size -->
+                            <li role="presentation" style="margin-left:2px">
+                                <label>FONT SIZE
+                                    <span class="btn-group  btn-block" data-toggle="buttons-radio" id="modify-font-size">
+                                        <a class="btn btn-default decrease-font-size" href="#" name="decrease-font-size" id="decrease-font-size" role="button">
+                                            <i class="fa fa-minus fa-fw"></i> 
+                                        </a>
+                                        <a class="btn btn-default increase-font-size" href="#" name="increase-font-size" id="increase-font-size" role="button">
+                                            <i class="fa fa-plus fa-fw"></i>
+                                        </a>
+                                    </span>
+                                </label> 
+                            </li>
+                            
+                            <!-- font style -->
+                            <li role="presentation" style="margin-left:2px">
+                                <label>FONT STYLE
+                                    <span class="btn-group  btn-block" data-toggle="buttons-radio" id="modify-font-style">
+                                    </span>
+                                </label> 
+                            </li>
+                            
+                            <!-- line spacing -->
+                            <li role="presentation" style="margin-left:2px">
+                                <label>LINE SPACING
+                                    <span class="btn-group  btn-block" data-toggle="buttons-radio" id="modify-line-spacing">
+                                    </span>
+                                </label> 
+                            </li>
+
+                            <!-- template -->
+                            <li role="presentation" style="margin-left:2px">
+                                <label>TEMPLATE
+                                    <span class="btn-group  btn-block" data-toggle="buttons-radio" id="alter-template">
+                                    </span>
+                                </label> 
+                            </li>
+                        </ul>
+                    </li>
+
+{% endblock preferencesTab %}

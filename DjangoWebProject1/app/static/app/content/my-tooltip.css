@@ -1,0 +1,20 @@
+﻿/* My tooltip CSS */
+
+.danger-tooltip + .tooltip > .tooltip-inner {
+    background-color: #d2322d!important;
+}
+
+.danger-right-tooltip + .tooltip > .tooltip-arrow { 
+    border-right-color: #d2322d!important; 
+}
+.danger-left-tooltip + .tooltip > .tooltip-arrow  { 
+    border-left-color: #d2322d!important; 
+}
+
+.danger-top-tooltip + .tooltip > .tooltip-arrow  { 
+    border-top-color: #d2322d!important; 
+}
+
+.danger-bottom-tooltip + .tooltip > .tooltip-arrow { 
+    border-bottom-color: #d2322d!important; 
+}

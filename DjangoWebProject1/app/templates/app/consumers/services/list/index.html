@@ -1,0 +1,136 @@
+﻿{% extends "app/base.html" %}
+
+{% block title %} AoD | My provided services {% endblock title %}
+
+ {% load staticfiles %}
+
+{% block extraCss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap-table/bootstrap-table.min.css' %}" />
+{% endblock extraCss %}
+
+
+{% block navbar %}
+    {% include "app/navbar-users.html" %}
+{% endblock navbar %}
+
+
+{% block content %}
+<div class="container body-content" style="margin-top: 50px; padding-bottom:2em;">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
+        <li class="active">Services</li>
+    </ol>
+    {% endblock breadcrumb %}
+
+
+    <main role="main">
+        <section class="table-responsive">
+            <div class="service-list-box table-responsive">
+                <h3>Services management panel</h3>
+                <hr class="service-hr">
+
+                <div id="custom-toolbar" class="btn-group" title="The toolbar provides to users of set of actions such as add,remove or search a service">
+                    <button type="button" id="new-service" class="btn btn-default" title="Add a new service">
+                        <i class="fa fa-plus-square text-success"></i> Add service
+                    </button>
+                </div>
+                <table id="table" 
+                        data-classes="table table-hover"
+                        data-search="true"  
+                        data-show-toggle="false"
+                        data-show-columns="true"
+                        data-card-view="false"
+                        data-click-to-select="true"
+                        data-toolbar="#custom-toolbar"
+                        data-pagination="true"
+                        data-query-params="queryParams"
+                        data-page-list="[5, 10, 15, 20, 30]"
+                        data-sort-name="created_date" data-sort-order="desc">
+                    <thead>
+                    <tr>
+                        <th data-field="state" data-checkbox="true"></th>
+                        <th data-field="title" data-sortable="true" data-switchable="false">Title</th>
+                        <th data-field="access" data-sortable="true">Accessibility</th>
+                        <th data-field="available" data-sortable="true" data-visible="false">Availability</th>
+                        <th data-field="currency" data-sortable="true">Currency</th>
+                        <th data-field="price" data-sortable="true">Price</th>
+                        <th data-field="charging_policy" data-sortable="true">Charging policy</th>
+                        <th data-field="type" data-sortable="true" data-align="left">Type</th>
+                        <th data-field="created_date" data-sortable="true" data-align="left">Creation date</th>
+                        <th data-field="modified_date" data-sortable="true" data-align="left"  data-visible="false">Last edit</th>
+                        <th data-field="description" data-sortable="false" data-visible="false">Description</th>
+                        <th data-field="stats" data-sortable="false" data-formatter="statsFormatter" data-align="center" data-events="statsActionEvent">Statistics</th>
+                        <th data-field="edit" data-sortable="false" data-formatter="editFormatter" data-align="center" data-events="editActionEvent">Edit</th>
+                        <th data-field="remove" data-sortable="false" data-formatter="removeFormatter" data-align="center" data-events="removeActionEvent">Remove</th>
+                        
+                    </tr>
+                    </thead>
+                </table>
+
+            </div>  
+        </section>
+    </main>
+</div>
+{% endblock content %}
+
+
+{% block scripts %}
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+    <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'app/scripts/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/consumers/services/list/provider-services.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/consumers/services/item/actions.js' %}"></script>
+    
+    <script type="text/javascript">
+    
+        var data = [];
+
+        {% if services %}
+            {% for i in services %}
+                var type = null, access, available, title, url, modified_date='-';
+
+                {% if i.type == "M" %}
+                    type = '<i class="fa fa-laptop text-default" ></i> Machine';
+                {% else %}
+                type = '<span class="fa fa-users text-default"></span> Human';
+                {% endif %}
+
+                {% if i.access %}
+                    access = 'Public';
+                {% else %}
+                    access = 'Private';
+                {% endif %}
+
+                {% if i.available %}
+                    available = 'Yes';
+                {% else %}
+                    available = 'No';
+                {% endif %}
+
+                url = "{{ breadcrumb.services }}/{{ i.alias }}/"
+                title = '{{ i.title|title }} <a href="'+url+'" title="Navigate on the service"><small><i class="fa fa-external-link"></i><small></a>';
+
+                {% if i.modified_date|date:"Y-m-d H:i" == "1970-01-01 00:25" %}
+                   modified_date = '-';
+                {% else %}
+                    modified_date = '{{ i.modified_date| date:"Y-m-d H:i" }}';
+                {% endif %}
+                
+                data.push({'id': '{{ i.id }}', 'title': title, 'charging_policy': '{{ i.charge_model }}', 
+                    'type': type, 'currency': '{{ i.unit|safe }}', 'price': '{{ i.price }}', 'description': '{{ i.description|slice:":110" }}', 
+                    'access': access, 'available': available, 'url': url, 'created_date': '{{ i.created_date| date:"Y-m-d H:i" }}',
+                    'modified_date': modified_date
+                    });
+            {% endfor %}
+        {% endif %}
+    </script>
+{% endblock scripts %}

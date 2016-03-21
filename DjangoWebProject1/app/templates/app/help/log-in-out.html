@@ -1,0 +1,75 @@
+﻿{% extends "app/help/base-help.html" %}
+
+{% block title %} AoD | {{ title }} {% endblock title %}
+
+{% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            {% if username %}
+                <li><a href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="/support" class="custom-inactive-breadcrumb"> Help Center</a></li>
+            {% else %}
+                <li><a href="/support" class="custom-inactive-breadcrumb"><i class="fa fa-support"></i> Help Center</a></li>
+            {% endif %}
+            <li class="active">Log in-out</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <section style="background-color:whitesmoke; padding-top:1%; padding-bottom:1%; border-radius:5px 5px;" class="col-lg-12 col-md-12 col-sm-12">
+            <header>
+                <h3>How to login/logout?</h3>
+            </header>
+            <br />
+
+            {% block list %}
+            <div id="login-list" class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <h4>Login process:</h4>
+                <ol>
+                    <li> Click on the Log in button located in the top navigation menu to go on the <a href="/login/">Login page</a></li>
+                    <li> Enter your credentials: the username and the password. Their combination is unique.</li>
+                    <li> Press the Log in button</li>
+                    <li> The platform will be redirect you on the Home page for registered users</li>
+                </ol>
+            </div>
+            <br />
+            <div id="logout-list" class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <h4>Logout process:</h4>
+                <ol>
+                    <li> Click on the Log out button located in the navigation top menu (visible only whether you are already logged in the AoD)</li>
+                    <li> The platform will be redirect you on the Home page for visitors</li>
+                </ol>
+            </div>
+            {% endblock list %}
+
+            {% block video %}
+            <div id="create-account-video" style="padding: 3%">
+                <div class="jumbotron embed-responsive embed-responsive-16by9">
+                    <h4>Watch the following video:</h4>
+                    <video id="video" width="70%" class="embed-responsive-item" controls>
+                        <source src="{{ MEDIA_URL }}app/platform/videos/support/login.mp4" type="video/mp4">
+                        <source src="{{ MEDIA_URL }}app/platform/videos/support/login.ogg" type="video/ogg">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+            </div>
+            {% endblock video %}
+
+            {% block contact_email %}
+            <div id="contact-us" class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <h4>Need our assistance?</h4>
+                <form action="mailto:athanasoulisp@gmail.com" method="post">
+                        First name: <input type="text" name="firstname" /> 
+                        Surname: <input type="text" name="surname" />
+                        <button type="submit" class="btn btn-primary btn-sm">Contact us</button>
+                </form>
+                <h4> or </h4>
+                <div id="SkypeButton_Call_magnitakis_1"></div>
+            </div>
+            {% endblock contact_email %}
+
+        </section>
+
+    </div>
+{% endblock content %}

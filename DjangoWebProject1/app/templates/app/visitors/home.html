@@ -1,0 +1,251 @@
+﻿{% extends "app/base.html" %}
+
+{% load staticfiles %}
+
+    {% block extraCss %}
+        <script rel="stylesheet" type="text/css"  src="{% static 'app/content/jssor-carousel/jssor-carousel.css' %}"></script>
+    {% endblock extraCss %}
+
+{% block scripts %}
+    <script src="{% static 'app/scripts/jssor-slider/jssor.slider.mini.js' %}"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".on-mouseover > div").mouseenter(function () {
+                $(this).addClass("highlight-service-banner");
+            }).mouseleave(function () {
+                $(this).removeClass("highlight-service-banner");
+            });
+
+            loadSlider();
+        });
+
+        function loadSlider() {
+            var options = {
+                $FillMode: 2,                                       //[Optional] The way to fill image in slide, 0 stretch, 1 contain (keep aspect ratio and put all inside slide), 2 cover (keep aspect ratio and cover whole slide), 4 actual size, 5 contain for large image, actual size for small image, default value is 0
+                $AutoPlay: true,                                    //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
+                $AutoPlayInterval: 4000,                            //[Optional] Interval (in milliseconds) to go for next slide since the previous stopped if the slider is auto playing, default value is 3000
+                $PauseOnHover: 1,                                   //[Optional] Whether to pause when mouse over if a slider is auto playing, 0 no pause, 1 pause for desktop, 2 pause for touch device, 3 pause for desktop and touch device, 4 freeze for desktop, 8 freeze for touch device, 12 freeze for desktop and touch device, default value is 1
+
+                $ArrowKeyNavigation: true,   			            //[Optional] Allows keyboard (arrow key) navigation or not, default value is false
+                $SlideEasing: $JssorEasing$.$EaseOutQuint,          //[Optional] Specifies easing for right to left animation, default value is $JssorEasing$.$EaseOutQuad
+                $SlideDuration: 800,                               //[Optional] Specifies default duration (swipe) for slide in milliseconds, default value is 500
+                $MinDragOffsetToSlide: 20,                          //[Optional] Minimum drag offset to trigger slide , default value is 20
+                //$SlideWidth: 600,                                 //[Optional] Width of every slide in pixels, default value is width of 'slides' container
+                //$SlideHeight: 300,                                //[Optional] Height of every slide in pixels, default value is height of 'slides' container
+                $SlideSpacing: 0, 					                //[Optional] Space between each slide in pixels, default value is 0
+                $DisplayPieces: 1,                                  //[Optional] Number of pieces to display (the slideshow would be disabled if the value is set to greater than 1), the default value is 1
+                $ParkingPosition: 0,                                //[Optional] The offset position to park slide (this options applys only when slideshow disabled), default value is 0.
+                $UISearchMode: 1,                                   //[Optional] The way (0 parellel, 1 recursive, default value is 1) to search UI components (slides container, loading screen, navigator container, arrow navigator container, thumbnail navigator container etc).
+                $PlayOrientation: 1,                                //[Optional] Orientation to play slide (for auto play, navigation), 1 horizental, 2 vertical, 5 horizental reverse, 6 vertical reverse, default value is 1
+                $DragOrientation: 1,                                //[Optional] Orientation to drag slide, 0 no drag, 1 horizental, 2 vertical, 3 either, default value is 1 (Note that the $DragOrientation should be the same as $PlayOrientation when $DisplayPieces is greater than 1, or parking position is not 0)
+
+                $BulletNavigatorOptions: {                          //[Optional] Options to specify and enable navigator or not
+                    $Class: $JssorBulletNavigator$,                 //[Required] Class to create navigator instance
+                    $ChanceToShow: 2,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+                    $AutoCenter: 1,                                 //[Optional] Auto center navigator in parent container, 0 None, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
+                    $Steps: 1,                                      //[Optional] Steps to go for each navigation request, default value is 1
+                    $Lanes: 1,                                      //[Optional] Specify lanes to arrange items, default value is 1
+                    $SpacingX: 8,                                   //[Optional] Horizontal space between each item in pixel, default value is 0
+                    $SpacingY: 8,                                   //[Optional] Vertical space between each item in pixel, default value is 0
+                    $Orientation: 1,                                //[Optional] The orientation of the navigator, 1 horizontal, 2 vertical, default value is 1
+                    $Scale: false                                   //Scales bullets navigator or not while slider scale
+                },
+
+                $ArrowNavigatorOptions: {                           //[Optional] Options to specify and enable arrow navigator or not
+                    $Class: $JssorArrowNavigator$,                  //[Requried] Class to create arrow navigator instance
+                    $ChanceToShow: 1,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+                    $AutoCenter: 2,                                 //[Optional] Auto center arrows in parent container, 0 No, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
+                    $Steps: 1                                       //[Optional] Steps to go for each navigation request, default value is 1
+                }
+            };
+            $("#slider1_container").css("display", "block");
+            var jssor_slider1 = new $JssorSlider$("slider1_container", options);
+        }
+    </script>
+{% endblock scripts %}
+
+
+{% block content %}    
+
+    {% block jssor-carousel %}
+    <!--
+    <div style="min-height: 50px;clear:both;margin-top:20px;z-index:4">
+        <div id="slider1_container" style="display: none; position: relative; margin: 0 auto;
+            top: 0px; left: 0px; width: 1349px; height: 500px; overflow: hidden;">
+            <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 1349px; height: 500px; overflow: hidden;">
+                <div>
+                    <img data-u="image" src2="{# { MEDIA_URL} #}app/modules/jssor-carousel/blue.jpg" />
+                </div>
+                <div>
+                    <img data-u="image" src2="{# { MEDIA_URL} #}app/modules/jssor-carousel/purple.jpg" />
+                </div>
+            </div>
+
+            <div u="navigator" class="jssorb21" style="bottom: 26px; right: 6px;">
+                <div u="prototype"></div>
+            </div>
+            
+            <span u="arrowleft" class="jssora21l" style="top: 123px; left: 8px;"></span>
+            <span u="arrowright" class="jssora21r" style="top: 123px; right: 8px;"></span>
+           
+        </div> 
+    </div>
+    -->
+    {% endblock jssor-carousel %}
+
+    <!-- Main content -->
+    <div class="container body-content" style="margin-top: 50px">
+
+        <div class="jumbotron">
+            <h1>P4A</h1>
+            <p class="lead">Fill in with content or load a static image</p>
+        </div>
+
+
+        <div class="row">
+
+            {% if popularService %}
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 on-mouseover service-banner" id="srv-{{ popularService.id }}" style="min-height:400px!important">
+                <div class="thumbnail">
+                    <img src="../../static/app/images/home/popular.png" alt="What's Hot">
+                    <div class="caption">
+                    <span class="fa-stack fa-3x img-responsive" style="margin-top:-55px;">
+                            <i class="fa fa-circle fa-2x fa-stack-2x text-info"></i>
+                            <i class="fa fa-user fa-lg fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <a>{{ popularService.title}}</a>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                {{ popularService.description|slice:":400"}}...
+                                <a href="login/" class="btn btn-success btn-xs">Buy it <i class="fa fa-shopping-cart"></i></a>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-8 col-lg-8 col-md-8 col-xs-8" id="srv-rating-{{ popularService.id }}" >
+                                <span><b>{{ popularService.rating }}</b></span>
+                                <span class="fa fa-star-o star-colorize-yellow star-rating-1"></span>
+                                <span class="fa fa-star-o star-colorize-yellow star-rating-2"></span>
+                                <span class="fa fa-star-o star-colorize-yellow star-rating-3"></span>
+                                <span class="fa fa-star-o star-colorize-yellow star-rating-4"></span>
+                                <span class="fa fa-star-o star-colorize-yellow star-rating-5"></span>
+                            </div>
+                            <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">
+                                <b class="pull-right">
+                                {% if popularService.charge_model.title == "Free" %}
+                                    Free
+                                {% else %}
+                                    {{ popularService.price }}{{ popularService.unit }}
+                                {% endif %}
+                                </b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-8 col-lg-8 col-md-8 col-xs-8">
+                                <em> 
+                                {% ifequal  popularService.rewiews  1 %}
+                                    {{ popularService.reviews }} review
+                                {% else %}
+                                    {{ popularService.reviews }} reviews
+                                {% endifequal  %}
+                                </em>
+                            </div>
+                            <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">
+                                {% if popularService.type == "M" %}
+                                <span class="fa fa-laptop pull-right fa-2x"></span>
+                                {% else %}
+                                <span class="fa fa-users pull-right fa-2x"></span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            {% endif %}
+        
+
+            {% if latestService %}
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 on-mouseover service-banner" id="srv-{{ latestService.id }}" style="min-height:400px!important">
+                <div class="thumbnail">
+                    <img src="../../static/app/images/home/new-2.png" alt="Most recently service">
+                    <div class="caption">
+                    <span class="fa-stack fa-3x img-responsive" style="margin-top:-55px;">
+                            <i class="fa fa-circle fa-2x fa-stack-2x text-info"></i>
+                            <i class="fa fa-user fa-lg fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <a>{{ latestService.title}}</a>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                {{ latestService.description|slice:":800"}}...
+                                <a href="login/" class="btn btn-success btn-xs">Buy it <i class="fa fa-shopping-cart"></i></a>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-8 col-lg-8 col-md-8 col-xs-8" id="srv-rating-{{ latestService.id }}" >
+                                <span><b>{{ latestService.rating }}</b></span>
+                                <span class="fa fa-star-o star-colorize-yellow star-rating-1"></span>
+                                <span class="fa fa-star-o star-colorize-yellow star-rating-2"></span>
+                                <span class="fa fa-star-o star-colorize-yellow star-rating-3"></span>
+                                <span class="fa fa-star-o star-colorize-yellow star-rating-4"></span>
+                                <span class="fa fa-star-o star-colorize-yellow star-rating-5"></span>
+                            </div>
+                            <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">
+                                <b class="pull-right">
+                                {% if latestService.charge_model.title == "Free" %}
+                                    Free
+                                {% else %}
+                                    {{ latestService.price }}{{ latestService.unit }}
+                                {% endif %}
+                                </b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-8 col-lg-8 col-md-8 col-xs-8">
+                                <em> 
+                                {% ifequal  latestService.rewiews  1 %}
+                                    {{ latestService.reviews }} review
+                                {% else %}
+                                    {{ latestService.reviews }} reviews
+                                {% endifequal  %}
+                                </em>
+                            </div>
+                            <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">
+                                {% if latestService.type == "M" %}
+                                <span class="fa fa-laptop pull-right fa-2x"></span>
+                                {% else %}
+                                <span class="fa fa-users pull-right fa-2x"></span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+            {% endif %}
+
+
+            <div class="col-sm-4 col-md-4 col-xs-12">
+                <div class="thumbnail">
+                    <img src="../../static/app/images/home/about.png" alt="Guide to the site">
+                    <div class="caption">
+                        <p style="text-align: justify">P4A AoD will adopt leading edge cloud computing technologies to efficiently 
+                            support scalable access to services from/across different hardware/software platforms. Flexibility with 
+                            respect both to the type of assistance services that will be offered through the aoD and to the way the 
+                            user is interfaced/supported in his service search, reliability, robustness and affordability are of 
+                            prime importance for the penetration of the Assistance Services that will be offered and for creating major 
+                            impact in the marketplace. 
+                        </p>
+                        <p>
+                            <a href="#" class="btn btn-primary" role="button">Read More</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+
+{% endblock %}

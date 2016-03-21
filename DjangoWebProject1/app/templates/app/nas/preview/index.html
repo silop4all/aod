@@ -1,0 +1,232 @@
+﻿{% extends "app/base.html" %}
+
+    {% block title %} 
+        AoD | Network of Assistance services preview
+    {% endblock title %}
+
+    {% load staticfiles %}
+
+    {% block extraCss %}
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap-table/bootstrap-table.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
+
+    {% endblock extraCss %}
+
+    {% block navbar %}
+        {% include "app/navbar-users.html" %}
+    {% endblock navbar %}
+
+    {% load staticfiles %}
+
+    {% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+    
+        {% block breadcrumb %}
+        <ol class="row breadcrumb">
+            <li><a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
+            <li><a href="{% url 'carer-landing-page' %}"  class="custom-inactive-breadcrumb">Network of Assistance Services</a></li>
+            <li class="active"> Preview </li>   
+        </ol>
+        {% endblock breadcrumb %}
+
+
+        <main role="main" >
+            <div class="row service-list-box" style="min-height: 700px;">
+                <div class="tabbable">
+                    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                        <li role="presentation" class="active" >
+                            <a href="#selected" data-toggle="tab">
+                                <h4 class="custom-tab-black-color">Interesting services (wish list)</h4> 
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#purchased" data-toggle="tab">
+                                <h4 class="custom-tab-black-color">Purchased services</h4>
+                            </a>
+                        </li> 
+                    </ul>
+
+                    <div id="my-tab-content" class="tab-content" style="border-left:1px solid #d9d9d9; border-right:1px solid #d9d9d9;border-bottom:1px solid #d9d9d9; background-color:#f1f1f1; padding-left:1%;padding-right:1%; border-radius: 0 1px 5px 5px" >                                      
+                        <div class="tab-pane active" id="selected">
+                            <table id="selected-services-table"
+                                    data-classes="table table-hover "
+                                    data-search="true"  
+                                    data-show-toggle="false"
+                                    data-show-columns="true"
+                                    data-card-view="false"
+                                    data-click-to-select="false"
+                                    data-toolbar="#carer-request"
+                                    data-pagination="true"
+                                    data-page-list="[5, 10, 15, 20, 30]"
+                                    data-sort-name="request_creation" data-sort-order="asc">
+                                <thead class="custom-aod-table-thead">
+                                <tr>
+                                    <th data-field="id" data-sortable="true" data-switchable="false" data-visible="false" >#</th>
+                                    <th data-field="title" data-align="center" data-sortable="true">Service title</th>
+                                    <th data-field="description" data-align="center" data-sortable="true" >Description</th>
+                                    <th data-field="type" data-align="center" data-sortable="true" data-visible="true" data-formatter="setTypeFormatter">Type</th>
+                                    <th data-field="price" data-sortable="true" data-visible="true" >Price</th>
+                                    <th data-field="price" data-sortable="true" data-visible="true" data-formatter="setRemoveFormatter">Remove</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                        <div class="tab-pane fade" id="purchased" style="color:black">
+                           <table id="purchased-services-table"
+                                    data-classes="table table-hover"
+                                    data-search="true"  
+                                    data-show-toggle="false"
+                                    data-show-columns="true"
+                                    data-card-view="false"
+                                    data-click-to-select="false"
+                                    data-toolbar="#carer-request"
+                                    data-pagination="true"
+                                    data-page-list="[5, 10, 15, 20, 30]"
+                                    data-sort-name="request_creation" data-sort-order="asc">
+                                <thead class="custom-aod-table-thead">
+                                <tr>
+                                    <th data-field="id" data-sortable="true" data-switchable="false" data-visible="false">#</th>
+                                    <th data-field="title" data-align="center" data-sortable="true">Service title</th>
+                                    <th data-field="description" data-align="center" data-sortable="true" >Description</th>
+                                    <th data-field="type" data-align="center" data-sortable="true" data-visible="true" data-formatter="setTypeFormatter">Type</th>
+                                    <th data-field="price" data-sortable="true" data-visible="true" >Price</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    {% endblock content %}
+
+
+    {% block scripts %}
+        <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+        <script src="{% static 'app/scripts/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+        <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                var selectedServices = [];
+                var purchasedServices = [];
+
+                {% if selectedServices %}
+                    {% for i in selectedServices %}
+
+                    selectedServices.push({
+                        'id': '{{ i.id }}', 
+                        'title' : '{{i.title}}',    
+                        'description': '{{ i.description }} ', 
+                        'type': '{{ i.type }}', 
+                        'price': '{{ i.price }}' +' ({{i.unit}})',
+                        'consumerId': '{{consumerId}}'
+                    });
+
+                    {% endfor %}
+                {% endif %}
+
+                $('#selected-services-table').bootstrapTable({
+                    data: selectedServices
+                });
+
+
+                {% if purchasedServices %}
+                    {% for i in purchasedServices %}
+
+                    purchasedServices.push({
+                        'id': '{{ i.id }}', 
+                        'title' : '{{i.title}}',    
+                        'description': '{{ i.description }} ', 
+                        'type': '{{ i.type }}', 
+                        'price': '{{ i.price }}' +' ({{i.unit}})'
+                    });
+
+                    {% endfor %}
+                {% endif %}
+
+                $('#purchased-services-table').bootstrapTable({
+                    data: purchasedServices
+                });
+
+            });
+
+
+
+            function setTypeFormatter(value, row, index) {
+                if (value == "H") {
+                    return '<i class="fa fa-users fa-lg"></i> Human-based';
+                }
+                return '<i class="fa fa-laptop fa-lg"></i> Machine-based';
+            }
+
+
+            function setRemoveFormatter(value, row, index){
+                return [
+                    '<button class="btn btn-danger btn-xs nas-select-btn" data-service-id="' + row["id"] + '"  data-consumer-id="' + row["consumerId"] + '">',
+                    '<i class="fa fa-remove fa-lg  cursor-pointer"></i> <span>Remove</span>',
+                    '</button>',
+                ].join('');
+            }
+
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+                    }
+                }
+            });
+
+
+            $(document).on('click', '.nas-select-btn', function(){
+                var info = { service_id: $(this).data('serviceId'), consumer_id: $(this).data('consumerId') };
+                popTemporalService(info);
+                
+            });
+
+
+            function popTemporalService(info) {
+                //var loading = new AjaxView($('#current-step-services'));
+                //loading.show();
+
+                $.ajax({
+                    type: 'delete',
+                    url: "/network-assistance-services/services/temporal-setup",
+                    data: JSON.stringify(info),
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    contentType: 'application/json',
+                    success: function (response) {
+                        console.info(response);
+                        location.reload();
+                    },
+                    error: function (response) {
+                        swal({
+                            html: false,
+                            title: "Interesting services",
+                            text: 'Sorry, an error has occurred',
+                            type: "warning",
+                            confirmButtonText: "Try again!",
+                            confirmButtonColor: "#d9534f"
+                        });
+                    },
+                    complete: function () {
+                        //loading.hide();
+                    }
+                });
+                return true;         
+            }
+
+        </script>
+
+    {% endblock scripts %}

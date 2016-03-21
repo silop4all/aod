@@ -1,0 +1,91 @@
+﻿<div class="service-basic-info-box">
+    <div class="row form-group">
+        <h4 class="col-lg-offset-1 col-md-offset-1 col-sm-offset-10"> Charging Policy</h4>
+    </div>
+    <hr class="service-hr">
+
+    <!--charging-->
+    <div class="row form-group">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_charging_model" title="Charging model of the service">Charging model<small>*</small></label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Charging model of the service" role="presentation" id="srv_charging_model_node">
+            <span class="input-group-addon">
+                <span class="fa fa-money fa-fw" role="img"></span>
+            </span>
+            <select class="selectpicker form-control"  name="srv_charging_model" id="srv_charging_model" data-max-options="1" data-size="6"  data-header="Choose a charging model" data-live-search="false" role="list" autofocus>
+                <option value="-1" disabled selected>-- Choose the charging model --</option> 
+                {% if charging_models %}
+                    {% for i in charging_models %}
+                        {% if service.charging_policy_id == i.id %}
+                            <option value="{{ i.id }}" title="{{ i.name }}" selected>{{ i.description }}</option> 
+                        {% else %}
+                            <option value="{{ i.id }}" title="{{ i.name }}">{{ i.description }}</option> 
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3">
+            <label id="srv_charging_model_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Charging model is required"></label>
+        </div>
+    </div>
+
+    <!--cost-->
+    <div class="row form-group">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_price" title="Cost of the service usage">Price<small>*</small></label>
+        </div>
+        <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group controls" title="Cost of the service usage">
+            <span class="input-group-addon">
+                <span class="fa fa-money fa-fw" role="img"></span>
+            </span>
+            <input type="number" step="0.01" min="0.00" class="form-control"  value="{{ service.price }}" name="srv_price" id="srv_price" autocomplete="off" placeholder="The price of the service" />    
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3 col-xs-4">
+            <label id="srv_price_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Cost value is required"></label>
+        </div>
+    </div>
+
+    <!--currency-->
+    <div class="row form-group">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_currency" title="Currency related to the service usage cost">Currency<small>*</small></label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Currency related to the service usage cost" id="srv_currency_node">
+            <span class="input-group-addon">
+                <span class="fa fa-money fa-fw" role="img"></span>
+            </span>
+            <select class="selectpicker form-control show-tick"  name="srv_currency" id="srv_currency" data-max-options="1" data-size="5"  data-header="Select the type of the service" data-live-search="true" role="list" title="-- Select the currency --">
+                <option value="-1" disabled selected>-- Select the currency --</option> 
+                {% if currencies %}
+                    {% for i in currencies %}
+                        {% if service %}
+                            {% if service.unit == i.letter  %}
+                                <option value="{{ i.letter }}" selected>{{ i.name }}</option> 
+                            {% else %}  
+                                <option value="{{ i.letter }}">{{ i.name }}</option> 
+                            {% endif %}
+                        {% else %}
+                            {% if i.letter == "EUR" %}
+                                <option value="{{ i.letter }}" selected>{{ i.name }}</option> 
+                            {% else %}  
+                                <option value="{{ i.letter }}">{{ i.name }}</option> 
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3">
+            <label id="srv_currency_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Currency is required"></label>
+        </div>
+    </div>
+
+    <!--info-->
+    <div class="row form-group">
+        <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="Mandotory fields">
+            <small class="text-center">* Mandatory fields</small>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,170 @@
+﻿{% extends "app/base.html" %}
+
+{% block title %} AoD | Edit your service {% endblock title %}
+
+ {% load staticfiles %}
+
+{% block extraCss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
+{% endblock extraCss %}
+
+
+{% block navbar %}
+    {% include "app/navbar-users.html" %}
+{% endblock navbar %}
+
+
+{% block scripts %}
+    {% load staticfiles %}
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>">
+    <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+    <script src="{% static 'app/scripts/p4a-lib/swap-buttons.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/service-registration.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/validators/form-validation.js' %}"></script>
+    
+    <script type="text/javascript">
+        $(window).load(function () {
+            {% if service %}
+                crowdPartState('{{ service.availability }}');
+                langBtnState('{{ service.language_constraint }}');
+                geolocationBtnState('{{ service.location_constraint }}');
+                {% if service.is_available %}
+                    $("#srv_terms").attr("checked", true);
+                    $('#update-btn').removeClass('disabled');
+                {% endif %}
+            {% endif %}
+        });
+
+       google.maps.event.addDomListener(window, 'load', getMap);
+    </script>
+{% endblock scripts %}
+
+
+{% block content %}
+
+<div class="container body-content" style="margin-top: 50px; padding-bottom:2em;">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="{{ breadcrumb.collection }}" class="custom-inactive-breadcrumb">Services</a></li>
+        <li><a href="{{ breadcrumb.services }}/{{ alias }}/" class="custom-inactive-breadcrumb">{{ service.title|title }}</a></li>
+        <li class="active">Modification</li>
+    </ol>
+    {% endblock breadcrumb %}
+
+
+    <main role="main">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <form action="#" method="post" name="insert-new-service" id="insert-new-service" enctype="multipart/form-data">
+                    <div id="service-registration-wizard">
+                        <div class="tabbable">
+                            <ul id="tabs" class="nav nav-pills nav-justified" data-tabs="tabs">
+                                <li role="presentation" class="active">
+                                    <a href="#step1" data-toggle="tab">
+                                        <h5>Basic information</h5> 
+                                    </a>
+                                </li>
+                                <li role="presentation" class="disabled">
+                                    <a href="#step2" data-toggle="tab">
+                                        <h5>Charging Policy</h5>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="disabled">
+                                    <a href="#step3" data-toggle="tab" >
+                                        <h5>Usage</h5>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="disabled">
+                                    <a href="#step4" data-toggle="tab" >
+                                        <h5>Constraints</h5>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="disabled">
+                                    <a href="#step5" data-toggle="tab" >
+                                        <h5>Technical Support</h5>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="disabled">
+                                    <a href="#step6" data-toggle="tab" >
+                                        <h5>Register</h5>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div id="my-tab-content" class="tab-content">
+                                <div class="col-lg-1 col-md-1 col-sm-1 " role="navigation" style="position:absolute">
+                                    <ul class="pager">
+                                        <li class="previous hidden" onclick="previousStep();">
+                                            <a href="#">
+                                                <i class="fa fa-chevron-left fa-3x"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="tab-pane active" id="step1">
+                                    <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
+                                        {% include "app/consumers/services/registration/basic.html" %}
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="step2" style="color:black">
+                                    <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
+                                        {% include "app/consumers/services/registration/charging.html" %}
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="step3" style="color:black">
+                                    <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
+                                        {% include "app/consumers/services/registration/usage.html" %}
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="step4" style="color:black">
+                                    <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
+                                        {% include "app/consumers/services/registration/constraints.html" %}
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="step5" style="color:black">
+                                    <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
+                                       {% include "app/consumers/services/registration/support.html" %}
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="step6" style="color:black">
+                                    <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
+                                        {% include "app/consumers/services/registration/confirm.html" %}
+                                    </div>
+                                </div>
+
+                                
+                                <div class="col-lg-1 col-md-1 col-sm-1 " role="navigation" style="position:relative" title="Procced to next step">
+                                    <ul class="pager">
+                                        <li class="next" id="navigate-next-btn" onclick="nextStep();" style="background-color:#ffd800!important">
+                                            <a href="#" class="text-center"> 
+                                                <i class="fa fa-chevron-right fa-3x"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+{% endblock content %}
+
+

@@ -1,0 +1,314 @@
+﻿{% extends "app/base.html" %}
+
+{% block content %}
+    
+<!-- Main registration form -->
+<div class="container body-content" style="margin-top: 50px; margin-bottom:2em">
+    <div class="row">
+        <div class="col-sm-1 col-lg-1"></div>
+        <div class="col-sm-10 col-lg-10 col-xs-12">
+            <section name="registrationArea" role="region" style="border:2px solid forestgreen; background-color: #e7ebe7;border-radius:10px 10px 0px 0px">
+                <form action="#" class="form-horizontal" method="post" id="registrationForm" name="registrationForm" role="form">
+                    {% csrf_token %}
+                    <h3 class="text-center" role="heading">
+                        <span>Create a new Account</span>
+                        <span class="fa fa-question-circle text-success" title="Do you want to access our platform? Create a new account now!"></span>
+                    </h3>
+
+                    <hr style="color:white;background-color:white; border:none; padding-bottom:2px; height:2px">
+                    <!--form inputs -->
+
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_name">First name<small>*</small></label>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group controls" title="Insert your name">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-info fa-fw" role="img"></span>
+                                </span>
+                                <input type="text" class="form-control" name="rg_name" id="rg_name" autocomplete="off" maxlength="200" placeholder="the name of user" autofocus/>    
+                            </div>
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <label class="label control-label label-danger pull-left hidden" id="rg_name_info">Type at least 2 characters</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_lastname">Last name<small>*</small></label>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-info fa-fw"></span>
+                                </span>
+                                <input type="text" class="form-control" name="rg_lastname" id="rg_lastname" autocomplete="off" maxlength="200" placeholder="the lastname of user" />
+                            </div>
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <label class="label pull-left label-danger hidden" id="rg_lastname_info">Type at least 2 characters</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_username">Username<small>*</small></label>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-user fa-fw"></span>
+                                </span>
+                                <input type="text" class="form-control" name="rg_username" id="rg_username" autocomplete="off" maxlength="200" placeholder="the username on platform " />
+                            </div> 
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <label class="label label-danger pull-left hidden" id="rg_username_info"></label>
+                            </div>
+                        </div>
+                            
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_email">Email account<small>*</small></label>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-envelope fa-fw"></span>
+                                </span>
+                                <input type="text" class="form-control" name="rg_email" id="rg_email" autocomplete="off" maxlength="200" placeholder="a valid email account" />
+                            </div>
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <label class="label pull-left label-danger hidden" id="rg_email_info"></label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_pwd">Password<small>*</small></label>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-lock fa-fw"></span>
+                                </span>
+                                <input type="password" class="form-control" name="rg_pwd" id="rg_pwd" autocomplete="off" maxlength="100" placeholder="a private password" />
+                            </div>
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <label class="label pull-left label-danger hidden" id="rg_pwd_info">Use at least 1 digit, 6 characters and at<br>least 1 special character (!@#$%^&*)</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_pwd_confirm">Password confirmation<small>*</small></label>
+                            </div> 
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-lock fa-fw"></span>
+                                </span>
+                                <input type="password" class="form-control" name="rg_pwd_confirm" id="rg_pwd_confirm" autocomplete="off" maxlength="100" placeholder="confirm the password" />
+                            </div>
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <label class="label pull-left label-danger hidden" id="rg_pwd_confirm_info">The password does not match</label>
+                            </div>
+                        </div> 
+                        
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_mobile">Mobile phone</label>
+                            </div> 
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-phone fa-fw"></span>
+                                </span>
+                                <input type="tel" class="form-control form-control-static" name="rg_mobile" id="rg_mobile" autocomplete="off" maxlength="15" placeholder="the mobile phone (optional)" />
+                            </div>
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <label class="label pull-left label-danger hidden" id="rg_mobile_info">Type at least 10 digits</label>
+                            </div>
+                        </div> 
+                        
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_country">Country<small>*</small></label>
+                            </div> 
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group" id="country">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-flag fa-fw"></span>
+                                </span>
+                                <select class="selectpicker form-control"  name="rg_country" id="rg_country" data-max-options="1" data-size="6"  data-header="Select a country" data-live-search="true" role="list" title="-- List --" multiple>
+                                    {% if CountriesList %}
+                                        {% for country in CountriesList %}
+                                            {% if country  %}
+                                                <option value="{{ country }}">{{ country }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <label class="label pull-left label-danger hidden" id="rg_country_info">Select a country</label>
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_it_experience">Familiarity with IT services<small>*</small></label>
+                            </div> 
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group" id="it-experience">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-list fa-fw"></span>
+                                </span>
+                                <select class="selectpicker form-control" data-max-options="1" data-header="Clarify your level" name="rg_it_experience" id="rg_it_experience" title="-- Level --" multiple>
+                                    {% if experience %}
+                                        {% for i in experience %}
+                                            <option value="{{ i.id }}">{{ i.level }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <label class="label pull-left label-danger hidden" id="rg_it_experience_info">Select a level</label>
+                            </div>
+                        </div>
+                
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_role">User role(s)<small>*</small></label>
+                            </div> 
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group" id="user-role">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-list fa-fw"></span>
+                                </span> 
+                                <select class="selectpicker form-control" name="rg_role" id="rg_role" data-header="Define one or more roles"  title="-- Role --" multiple>
+                                    <option value="provider" >Provider</option>
+                                    <option value="consumer" >Consumer</option>
+                                    <option value="carer" >Carer</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <label class="label pull-left label-danger hidden" id="rg_role_info">Select one or more roles</label>
+                            </div>
+                        </div>
+                    
+                        <div id="crowd-fund-participate" class="form-group hidden">
+                            <div class="col-sm-4 col-md-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_crowd_funding">Crowd-funding participation<small>*</small></label>
+                            </div> 
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" name="rg_crowd_funding">
+                                <div class="btn-group  btn-block" data-toggle="buttons-radio">
+                                    <a class="btn btn-primary" href="#" name="rg_crowd_funding" id="rg_crowd_funding_pos" role="button">
+                                        <i class="fa fa-check-square-o"></i> Yes
+                                    </a>
+                                    <a class="btn btn-default" href="#" name="rg_crowd_funding" id="rg_crowd_funding_neg" role="button">
+                                        <i class="fa fa-square-o"></i> No
+                                    </a>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <!-- hide or show in cases -->
+                        <div  id="crowd-fund-notify" class="form-group hidden">
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_crowd_funding">Crowd-funding notification<small>*</small></label>
+                            </div> 
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" name="rg_crowd_funding_notify">
+                                <div class="btn-group  btn-block" data-toggle="buttons-radio">
+                                    <a class="btn btn-primary" href="#" name="rg_crowd_funding_notify" id="rg_crowd_funding_notify_pos" role="button">
+                                        <i class="fa fa-check-square-o"></i> Yes
+                                    </a>
+                                    <a class="btn btn-default" href="#" name="rg_crowd_funding_notify" id="rg_crowd_funding_notify_neg" role="button">
+                                        <i class="fa fa-square-o"></i> No
+                                    </a>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <div class="form-group hidden">  
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_channels">Preferred communication channels</label>
+                            </div> 
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group" id="channels">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-info fa-fw"></span>
+                                </span>
+                                <select class="form-control selectpicker" name="rg_channels" id="rg_channels" title="-- Channels --" multiple>
+                                    {% if categories %}
+                                        {% for i in categories %}
+                                            <option value="{{ i.id }}" title="{{ i.title }}">{{ i.question }}</option>  
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <label class="label pull-left label-danger hidden" id="rg_channels_info">Select at least a channel</label>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group hidden">
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" for="rg_adventisment">Acknowledgment</label>
+                            </div> 
+                            <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12 input-group">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-info fa-fw"></span>
+                                </span>
+                                <select class="form-control" name="rg_adventisment" id="rg_adventisment" >
+                                    <option value="-1" title="How did you hear for P4A platform?" disabled selected>How did you hear for P4A platform?</option>
+                                    <option value= "1">Friend</option>
+                                    <option value= "2">Internet</option>
+                                    <option value= "3">TV/Radio</option>
+                                    <option value= "4">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12">
+                                <label class="pull-right control-label" role="note" for="rg_question">What is the sum of the <span id="literal">{{ literal }}</span>? *</label>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12">
+                                <input type="text" name="rg_question" id="rg_question" class="form-control">
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                <label class="label pull-left label-danger hidden" id="rg_question_info">Answer to the question right</label>
+                            </div>
+                        </div>
+
+                        <!-- Info -->
+                        <div class="form-group">
+                            <div class="col-sm-3 col-md-3 col-xs-12"></div> 
+                            <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12" style="font-size:x-small;text-align:center!important">
+                                <label class="text-default text-muted">* These field are mandatory in order to be completed your registration.</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12"></div>
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                                <button type="submit" class="btn btn-success btn-block btn-lg" id="registry-submit" role="button">Submit <span class="fa fa-fw" role="img"></span></button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-4 col-xs-12"></div> 
+                            <div class="col-sm-4 col-md-4 col-xs-12">
+                                <label class="text-muted text-center" style="color:gray;font-size:x-small">
+                                    By creating an account, you agree to our <a href="/" >AoD Marketplace User Agreement</a> and <a href="/">Privacy policy</a>.
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="../../../static/app/scripts/multiselect-bootstrap/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="../../../static/app/scripts/p4a-lib/validate-registration.js"></script>
+<script src="../../../static/app/scripts/p4a-lib/cookies.js"></script>
+<script src="../../../static/app/scripts/p4a-lib/swap-buttons.js"></script>
+<script src="../../../static/app/scripts/jquery.blockUI.js"></script>
+<script src="../../../static/app/scripts/p4a-lib/ajax-load.js"></script>
+{% endblock %}

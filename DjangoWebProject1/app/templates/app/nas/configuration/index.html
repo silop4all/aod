@@ -1,0 +1,1202 @@
+﻿{% extends "app/base.html" %}
+
+    {% block title %} 
+        AoD | Network of Assistance services
+    {% endblock title %}
+
+    {% load staticfiles %}
+
+    {% block extraCss %}
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap-table/bootstrap-table.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
+    {% endblock extraCss %}
+
+
+    {% block navbar %}
+        {% include "app/navbar-users.html" %}
+    {% endblock navbar %}
+
+    {% load staticfiles %}    
+
+    {% block content %}
+    <div class="container body-content padding-bottom-em-2 padding-top-50">
+    
+        {% block breadcrumb %}
+        <ol class="row breadcrumb">
+            <li><a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
+            <li><a href="{% url 'carer-landing-page' %}"  class="custom-inactive-breadcrumb">Network of Assistance Services</a></li>
+            <li class="active"> Setup </li>
+        </ol>
+        {% endblock breadcrumb %}
+
+
+        <main role="main">
+            <div class="row service-list-box" style="min-height: 700px;">
+
+                <!-- Left side -->
+                <section class="col-sm-3 col-xs-12 col-md-3 col-lg-3" style="min-height: inherit; border-radius: 4px 4px; background-color: rgba(228, 228, 228, 0.91); border-right: 1px solid whitesmoke">
+
+                    <div class="row structured-search margin-bottom-percent-5">
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                            <h6 class="text-info">Progress: <span id="progress-bar-info"> </span></h6>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                            <div class="progress active progress-bar-height-10">
+                                <div class="progress-bar progress-bar-success " role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: 1%; ">
+                                     <span class="sr-only">1% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="margin-top-percent-5 margin-bottom-percent-10">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">Search services by keywords</h5>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-sm-12 col-lg-12 col-xs-12 col-md-2 input-group ">
+                                    <input type="email" class="form-control pull-right" id="keywords" value="" placeholder="enter keywords" data-toggle="tooltip" data-placement="bottom" title="Enter your keywords of interest" data-original-title="Tooltip on bottom">
+                                    <a href="javascript:void(0)" class="input-group-addon btn btn-toolbar text-info" id="search-services"><span class="fa fa-search fa-fw"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tree-categories" class="structured-search margin-bottom-percent-5">
+                        <div id="accordion" class="panel-group">
+                        {% if categories %}
+                            {% for category in categories %}
+                                {% if category.parent == -1 %}
+                                    {% if category.order == 1 %}
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="wizard-nav" data-toggle="collapse" data-parent="#accordion" href="#cat{{category.id}}">Step {{category.order}}: {{category.title}}</a>
+                                                    <small><label class="badge total-services pull-right" style="background-color: #fff; color: gray" data-placement="right" title="Number of services">?</label></small>
+                                                </h4>
+                                            </div>
+                                            <div id="cat{{category.id}}" data-id="cat_{{category.id}}" data-step="{{category.order}}" class="panel-collapse in">
+                                                <div class="panel-body">
+                                    {% else %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="wizard-nav" data-toggle="collapse" data-parent="#accordion" href="#cat{{category.id}}">Step {{category.order}}: {{category.title}}</a>
+                                                    <small><label class="badge total-services pull-right" style="background-color: #fff; color: gray" data-placement="right" title="Number of services"></label></small>
+                                                </h4>
+                                            </div>
+                                            <div id="cat{{category.id}}"  data-id="cat_{{category.id}}"  data-step="{{category.order}}" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                    {% endif %}
+                                                    <div class="select-category" title="{{ category.description }}">
+                                                        <input type="checkbox" checked class="parent-category" data-id="{{category.id}}" id="{{category.id}}"/>
+                                                        <label for="{{ category.id }}" title="{{ category.title }}">Check/uncheck all</label>
+                                                    </div>
+                                {% else %}
+                                                    <div class="select-category padding-left-percent-15" title="{{ category.description }}">
+                                                        <input type="checkbox" checked class="child-category" data-parent-id="{{ category.parent}}" data-id="{{ category.id }}" id="{{ category.id }}"/>
+                                                        <label for="{{ category.id }}" title="{{ category.description }}">{{ category.title }}</label>
+                                                    </div>
+                                {% endif %}
+                                    
+                            {% endfor %}
+                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="wizard-nav" data-toggle="collapse" data-parent="#accordion" href="#wizard-final-step">Final step</a>
+                                    </h4>
+                                </div>
+                                <div id="wizard-final-step" data-step="-1" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p>The selected services are ordered by category. You have the capability to purchase them and optionally modify their configuration!</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- Right side -->
+                <section class="col-sm-9 col-xs-12 col-md-9 col-lg-9 structured-search">
+
+                    <div class="jumbotron">
+                        <h3>Setup the network of assistance services</h3>
+                        <p class="font-size-pt-18">
+                            <blockquote class="font-size-pt-14 text-justify">
+                                <small style="color:black">
+                                    You set up a network of assistance services on behalf of {{ consumer.name }} {{ consumer.lastname }} (<em id="target-consumer" data-target="{{ consumer.id }}">{{ consumer.username }}</em>). 
+                                </small>
+                            </blockquote>
+                        </p>
+
+                        <p class="font-size-px-16 text-justify"  id="hint">
+                            <span style="color: #F58C07"><i class="fa fa-lightbulb-o"></i> Hint:</span>
+                            <span id="steps">Please use the buttons <abbr title="Back to the previous step"><span id="previous-step-hint"><em>Previous step</em></span></abbr>  and <abbr title="Proceed to the next step"><span id="next-step-hint"><em>Next step</em></span></abbr> to navigate in the wizard step-by-step.
+                            In every step, you can filter the list of services (see the table below) by selecting the (sub)categories of your interest in the left column of page.
+                            Then, please check the services you want to use and proceed to the next step.
+                            </span>
+                            <span id="final-step" class="hidden">
+                                In this step, platform provides you an overview of the selected services that are grouped by category.
+                                Find marked with icon <span class="fa fa-exclamation-circle text-danger hint-additional-services"></span> the categories in which you did not select any service. 
+                                On the other hand, find marked with icon <span class="fa fa-check-circle text-success"></span> the categories in which you have selected at least a service.
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="row margin-bottom-percent-2" >
+                        <div class="col-sm-12 col-xs-1 col-lg-12 col-md-12">
+                            <button class="btn btn-default hidden" id="wizard-previous-step"><span class="fa fa-long-arrow-left text-info"></span> Previous step</button>
+                            <button class="pull-right btn btn-default" id="wizard-next-step"> Next step <span class="fa fa-long-arrow-right text-info"></span></button>
+                        </div>
+                    </div>
+
+                    <table class="table table-responsive services-table" style="overflow:auto; border: 1px solid #51A951!important;border-radius: 8px 8px 0px 0px!important">
+                        <thead>
+                            <tr class="custom-aod-table-thead">
+                                <th class="custom-aod-table-th">Service title</th>
+                                <th class="custom-aod-table-th text-center">Type</th>
+                                <th class="custom-aod-table-th text-center">Location limitations</th>
+                                <th class="custom-aod-table-th text-center">Price</th>
+                                <th class="custom-aod-table-th text-center">Action buttons</th>
+                            </tr>
+                        </thead>
+                        <tbody id="current-step-services"></tbody>
+                    </table>
+
+
+                    <table class="table table-responsive finalize-services-table hidden" style="overflow:auto; border: 1px solid #51A951!important;border-radius: 8px 8px 0px 0px!important">
+                        <thead>
+                            <tr class="custom-aod-table-thead">
+                                <th class="custom-aod-table-th">Category title</th>
+                                <th class="custom-aod-table-th">Service title</th>
+                                <th class="custom-aod-table-th text-center">More details</th>
+                                <th class="custom-aod-table-th text-center">Action buttons</th>
+                            </tr>
+                        </thead>
+                        <tbody id="finalize-services-body"></tbody>
+                    </table>
+                    
+                    <div id="map-container"  class="hidden">
+                        <!--<div id="map" style="height:20%; border:1px solid gray"></div>-->
+                    </div>
+
+                    <div class="col-sm-12 col-xs-1 col-lg-12 col-md-12">
+                        <span class="center">
+                            <a href="{% url 'carer-landing-page' %}" class="pull-right btn btn-default hidden center" id="return-nas-page"><span class="text-center">Return to carer dashboard</span></a>
+                        </span>
+                    </div>
+                </section>
+                
+                <!--keywords search-->
+                <section class="col-sm-9 col-xs-12 col-md-9 col-lg-9 hidden keywords-based-search">
+                                           
+                    <div class="jumbotron">
+                        <h3>Network of assistance services: installation steps </h3>
+                        <p style="font-size: 18px">
+                            <blockquote style="text-align:justify; font-size: 14pt;">
+                                <small style="color:black">
+                                    You set up a network of assistance services on behalf of {{ consumer.name }} {{ consumer.lastname }} (<em id="target-consumer" data-target="{{ consumer.id }}">{{ consumer.username }}</em>). 
+                                </small>
+                            </blockquote>
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <div class="pull-right" style="margin-bottom: 4%">
+                            <button class="btn btn-default text-info" id="swap-structured-search"><span class="fa fa-mail-forward"></span> Return to structured search </button>
+                        </div>
+                        <br />
+                        <div class="">
+                            <h4>Search results:
+                            <span id="results-number"></span> service(s) found!
+                            </h4>
+                        </div>
+                        <table class="table table-responsive finalize-services-table" style="overflow:auto; border: 1px solid #51A951!important;border-radius: 8px 8px 0px 0px!important">
+                            <thead>
+                                <tr class="custom-aod-table-thead">
+                                    <th class="custom-aod-table-th">Service</th>
+                                    <th class="custom-aod-table-th">Type</th>
+                                    <th class="custom-aod-table-th">Location</th>
+                                    <th class="custom-aod-table-th">Price</th>
+                                    <th class="custom-aod-table-th text-center">Settings</th>
+                                    <th class="custom-aod-table-th text-center">Action button</th>
+                                </tr>
+                            </thead>
+                            <tbody id="keywords-finalize-services-body"></tbody>
+                        </table>
+    
+                    </div>
+
+                </section>
+            
+            </div>
+
+        </main>
+
+    </div>
+    {% endblock content %}
+
+
+
+    {% block scripts %}
+        <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+        <script src="{% static 'app/scripts/bootstrap.min.js' %}"></script>
+        
+        
+        <script src="{% static 'app/scripts/bootbox/bootbox.min.js' %}"></script>
+        <!--<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>-->
+
+        <script type="text/javascript">
+            var consumerID = -1;
+
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+                    }
+                }
+            });
+
+            function getMap() {
+                // Initiate variables
+                var lat, lng;
+                // Initiate coordinates
+                var coordinates = new google.maps.LatLng(32.5, 43.7);
+                // Set options
+                var mapOptions = {
+                    zoom: 7,
+                    center: coordinates,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    panControl: false,
+                    scaleControl: false,
+                    streetViewControl: false,
+                    zoomControl: true,
+                    zoomControlOptions: {
+                        style: google.maps.ZoomControlStyle.SMALL,  //enables the dimension
+                        position: google.maps.ControlPosition.RIGHT_BOTTOM  //position enables
+                    },
+                    mapTypeControlOptions: {
+                        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+                    }
+                };
+                var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                var marker = new google.maps.Marker({
+                    position: coordinates,
+                    map: map,
+                    draggable: false
+                });
+
+                var infoWindow = new google.maps.InfoWindow({
+                    content: "<div><b>Latitude:</b> 32.5<br><b>Longitude:</b> 43.7</div>"
+                });
+
+                // Handle user actions
+                google.maps.event.addListener(marker, 'click', function (event) {
+                    infoWindow.open(map, marker);
+                });
+                // Set marker in center
+                map.setCenter(marker.position);
+                marker.setMap(map);
+            }
+            // Load map
+            //google.maps.event.addDomListener(window, 'load', getMap);
+
+            
+            $(document).ready(function () {
+                $(".total-services").tooltip({
+                    trigger: "hover",
+                    placement: "right"
+                });
+                $("input").tooltip({
+                    trigger: "hover",
+                    placement: "bottom"
+                });
+
+                consumerID = $("#target-consumer").data('target');
+
+                // wizard total steps
+                var totalSteps = $("#accordion").children().length;
+
+
+                $("#previous-step-hint").mouseover(function () {
+                    $("#wizard-previous-step").addClass('btn-info').removeClass('btn-default');
+                    $(this).css('cursor', 'help');
+                }).mouseleave(function () {
+                    $("#wizard-previous-step").removeClass('btn-info').addClass('btn-default');
+                    $(this).css('cursor', 'auto');
+                });
+
+
+                $("#next-step-hint").mouseover(function () {
+                    $("#wizard-next-step").addClass('btn-info').removeClass('btn-default');
+                    $(this).css('cursor', 'help');
+                }).mouseleave(function () {
+                    $("#wizard-next-step").removeClass('btn-info').addClass('btn-default');
+                    $(this).css('cursor', 'auto');
+                });
+
+
+                $(".parent-category").click(function () {
+                    var children = $(document).find("input[data-parent-id='" + $(this).data('id') + "']");
+
+                    if (this.checked) {
+                        children.each(function () {
+                            $(this).prop('checked', true);
+                        });
+                    }
+                    else {
+                        children.each(function () {
+                            $(this).prop('checked', false);
+                        });
+                    }
+
+                    // Get new services
+                    loadInitialServices();
+
+                }).mouseover(function () {
+                    $(this).css('cursor', 'pointer');
+                }).mouseleave(function () {
+                    $(this).css('cursor', 'auto');
+                });
+            
+
+                $(".child-category").click(function () {
+                    if (this.checked) {
+                        var check = 1;
+                        var children = $(document).find("input[data-parent-id='" + $(this).data('parentId') + "']");
+                        children.each(function () {
+                            var curr = ($(this).prop('checked') !== true) ? 0 : 1;
+                            check *= curr;
+                        });
+                        if (check == 1) {
+                            $(document).find("input[data-id='" + $(this).data('parentId') + "']").prop('checked', true);
+                        }
+                        else {
+                            $(document).find("input[data-id='" + $(this).data('parentId') + "']").prop('checked', false);
+                        }
+
+                    }
+                    else {
+                        $(document).find("input[data-id='" + $(this).data('parentId') + "']").prop('checked', false);
+                    }
+
+                    // Get new services
+                    loadInitialServices();
+
+                }).mouseover(function () {
+                    $(this).css('cursor', 'pointer');
+                }).mouseleave(function () {
+                    $(this).css('cursor', 'auto');
+                });
+
+
+                $("#wizard-previous-step").click(function () {
+                    GuidedWizard.previous($(this), $("div.in"), totalSteps, loadInitialServices);
+                });
+
+                $("#wizard-next-step").click(function () {
+                    GuidedWizard.next($(this), $("div.in"), totalSteps, loadInitialServices, loadTemporalServices);
+                });
+
+                $("a.wizard-nav").click(function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }).mouseover(function () {
+                        $(this).css('cursor', 'context-menu');
+                        $(this).css('text-decoration', 'none');
+
+                    //GuidedWizard.random($(this), totalSteps, loadInitialServices, loadTemporalServices);
+                    //loadInitialServices();
+                });
+
+
+                $("#help-popup").click(function () {
+                    var text = 'Please use buttons "Previous step"  and "Next step" to navigate in the wizard step-by-step.\n\n';
+                    text    += 'In each step, after you select the (sub)categories of your interest (left part of page), please check the services you want to use (right part of page).';
+
+                    swal({
+                        html:false,
+                        title: "Network of assistance services: installation steps",
+                        text: text,
+                        type: "info",
+                        confirmButtonText: "I got it, thank you!",
+                        confirmButtonColor: "#428bca"
+                    });
+                });
+
+                GuidedWizard.init(totalSteps);
+                loadInitialServices();
+            });
+
+            $(document).on('click', ".nas-config-btn", function () {
+                console.info($(this).data('serviceId'));
+            });
+
+            $(document).on('click', ".nas-buy-btn", function () {
+                console.info($(this).data('serviceId'));
+            });
+
+            $(document).on('click', ".nas-select-btn", function () {
+                if ($(this).find('i').hasClass('fa-check')) {
+                    $(this).find('i').removeClass('fa-check').addClass('fa-remove');
+                    $(this).find('span').text('Cancel it');
+                    $(this).removeClass('btn-success').addClass('btn-danger');
+                    // push service
+                    var info = { service_id: $(this).data('serviceId'), consumer_id: consumerID };
+                    pushTemporalService(info);
+                }
+                else {
+                    
+                    $(this).find('span').text('Interesting');
+                    $(this).removeClass('btn-danger').addClass('btn-success');
+                    $(this).find('i').removeClass('fa-remove').addClass('fa-check');
+                    // pop service
+                    var info = { service_id: $(this).data('serviceId'), consumer_id: consumerID };
+                    popTemporalService(info);
+                }
+            });
+
+            $(document).on('click', ".nas-submit-service", function () {
+                // modal to change the configuration
+                var pk = $(this).data('serviceId');
+                var title = "Default configuration from service provider";
+                var content = '<div id="overwrite-configuration"></div>';
+
+                retrieveEditableConfiguration(pk);
+
+                //var config = [];
+                //modalAction(title, content, "Proceed to service purchase.", function () {
+                //    for (var i in $("#overwrite-configuration").children().length) {
+                //        console.log(i);
+                //        var param = $("#config_param-" + i).text().split(":")[0];
+                //        var value = $("#config_value-" + i).val();
+                //        config.append({ parameter: param, value: value });
+                //    }
+                //    console.info(config);
+                //});
+                //return;
+
+                // prepare for services submission
+                submitSelectedServices(pk);
+                $(this).fadeOut();
+                $(this).find('span').text('Purchased');
+                $(this).fadeIn(100);
+            });
+
+            $(document).on('mouseover', '.hint-additional-services', function () {
+                $(".additional-services").css('background-color', '#D7EFB7');//.css('color', 'white');
+                $(this).css('cursor', 'help');
+            }).on('mouseleave', '.hint-additional-services', function () {
+                $(".additional-services").css('background-color', 'white');//.css('color', 'black');
+                $(this).css('cursor', 'default');
+            });
+
+            $(document).on('click', '.final-step-select-service', function () {
+                var step = $(this).data('href');
+                var targetStep = $(step);
+                var currElement = $("div.in");
+
+                if (step.split('#cat')[1] == 1){
+                   $("#wizard-previous-step").addClass('hidden');
+                }
+
+                $(".services-table").removeClass('hidden');
+                $(".finalize-services-table").addClass('hidden');
+                $("#wizard-next-step").removeClass('hidden');
+                $("#steps").removeClass('hidden');
+                $("#final-step").addClass('hidden');
+
+                // handle the progress bar
+                var totalSteps = $("#accordion").children().length;
+                progress = targetStep.data('step') * 100 / totalSteps;
+                $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
+                $("#progress-bar-info").text(progress + '%');
+
+                // manage custom wizard (collapse or no divisions)
+                currElement.removeClass('in').addClass('collapse');
+                currElement.parent().removeClass('panel-primary').addClass('panel-default');
+                targetStep.addClass('in').removeClass('collapse');
+                targetStep.parent().addClass('panel-primary').removeClass('panel-default');
+
+                // load services
+                loadInitialServices();
+            });
+
+            $(document).on('click', '#search-services', function () {
+                var input = $("#keywords").val();
+                test(input);
+                $(".structured-search").addClass('hidden');
+                $(".keywords-based-search").removeClass('hidden');
+            });
+                        
+            $(document).on('click', '#swap-structured-search', function () {
+                //$(".structured-search").removeClass('hidden');
+                //$(".keywords-based-search").addClass('hidden');
+                location.reload();
+            });
+
+            $(document).on('click', '.nas-coordinates-btn', function () {
+                $("#map-container").removeClass('hidden');
+                
+            })
+
+            $(document).on('click', '.nas-config-btn', function () {
+
+                var pk      = $(this).data('serviceId');
+                var title   = "Default configuration from service provider";
+                var content = [
+                    '<div class="row">',
+                        '<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">',
+                            '<table class="configuration-table table table-responsive">',
+                                '<thead>',
+                                    '<tr class="">',
+                                        '<th class="custom-aod-table-th">Parameters</th>',
+                                        '<th class="custom-aod-table-th">Values</th>',
+                                    '</tr>',
+                                '</thead>',
+                                '<tbody id="configuration-table-body"></tbody>',
+                            '</table>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+                retrieveConfiguration(pk);
+
+                modalAction(title, content, "Ok, I understood it", function () {})
+            })
+
+            $(document).on('click', '.service-details', function () {
+                var loading = new AjaxView($('.services-table'));
+                loading.show();
+
+                $.ajax({
+                    type: 'get',
+                    url: "/services/" + $(this).data('serviceId'),
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    headers: {'accept': 'application/json'},
+                    contentType: 'application/json',
+                    success: function (response) {
+                        console.info(response);
+
+                        var html = selected = [
+                            '<table style="border: 1px solid green;">',
+                                '<thead>',
+
+                                '<thead>',
+                                '<tbody id="configuration-table-body">',
+                                    '<tr >',
+                                        '<td class="custom-aod-table-td"><strong>Title</strong></td>',
+                                        '<td class="custom-aod-table-td">' + response.title + '</td>',
+                                    '</tr>',
+                                    '<tr>',
+                                        '<td class="custom-aod-table-td"><strong>Description</strong></td>',
+                                        '<td class="custom-aod-table-td">' + response.description + '</td>',
+                                    '</tr>',
+                                    '<tr>',
+                                        '<td class="custom-aod-table-td"><strong>Type</strong></td>',
+                                        '<td class="custom-aod-table-td">' + response.type + '</td>',
+                                    '</tr>',
+                                    '<tr>',
+                                        '<td class="custom-aod-table-td"><strong>Charging policy</strong></td>',
+                                        '<td class="custom-aod-table-td">' + response.charging_policy + '</td>',
+                                    '</tr>',
+                                    '<tr>',
+                                        '<td class="custom-aod-table-td"><strong>Price</strong></td>',
+                                        '<td class="custom-aod-table-td">' + response.price + '</td>',
+                                    '</tr>',
+                                    '<tr>',
+                                        '<td class="custom-aod-table-td"><strong>Unit</strong></td>',
+                                        '<td class="custom-aod-table-td">' + response.unit + '</td>',
+                                    '</tr>',
+                                    '<tr>',
+                                        '<td class="custom-aod-table-td"><strong>Languages</strong></td>',
+                                        '<td class="custom-aod-table-td">' + response.languages + '</td>',
+                                    '</tr>',
+                                    '<tr>',
+                                        '<td class="custom-aod-table-td"><strong>Constraints</strong></td>',
+                                        '<td class="custom-aod-table-td">' + response.constraints + '</td>',
+                                    '</tr>',
+                                    '<tr>',
+                                        '<td class="custom-aod-table-td"><strong>Requirements</strong></td>',
+                                        '<td class="custom-aod-table-td">' + response.requirements + '</td>',
+                                    '</tr>',
+                                    '<tr>',
+                                        '<td class="custom-aod-table-td"><strong>installation guidelines</strong></td>',
+                                        '<td class="custom-aod-table-td">' + response.installation_guide + '</td>',
+                                    '</tr>',
+                                '</tbody>',
+                            '</table>'
+                        ].join('');
+
+                        swal({
+                            html: true,
+                            title: "Service information",
+                            text: html,
+                            type: "info",
+                            confirmButtonText: "Continue",
+                            confirmButtonColor: "#428bca"
+                        });
+                    },
+                    error: function (response) {
+                        swal({
+                            html: false,
+                            title: "Error",
+                            text: 'Sorry, an error has occurred',
+                            type: "warning",
+                            confirmButtonText: "Try again!",
+                            confirmButtonColor: "#d9534f"
+                        });
+                    },
+                    complete: function () {
+                        loading.hide();
+                    }
+                });
+                return true;
+            });
+
+            $(document).on('keypress', '#keywords', function (event) {
+                if (event.keyCode == 13) {
+                    $("#search-services").click();
+                }
+            });
+
+            function loadInitialServices() {
+                // categories
+                var initList = [];
+                $(".in .child-category:checked").each(function (i) {
+                    initList.push($(this).data().id);
+                });
+                loadServicesList(initList);
+            }
+
+            function loadInitProgress() {
+                var totalSteps = $("#accordion").children().length;
+                var pointer = 100 / totalSteps;
+                $('.progress-bar').css('width', pointer + '%').attr('aria-valuenow', pointer);
+                $("#progress-bar-info").text(pointer + '%');
+            }
+
+            function loadServicesList(categoriesList) {
+                var loading = new AjaxView($('#current-step-services'));
+                var categories = { "categories": categoriesList, 'consumer_id': consumerID };
+
+                $.ajax({
+                    type: 'post',
+                    url: "/network-assistance-services/services/search",
+                    data: JSON.stringify(categories),
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    contentType: 'application/json',
+                    success: function (response) {
+                        var tbody = "";
+                        
+                        if (response["servicesList"].length > 0) {
+                            for (var i in response["servicesList"]) {
+                                var title = '<span class="cursor-pointer service-details"  data-service-id="' + response["servicesList"][i].id + '">' + response["servicesList"][i].title + ' <span class="fa fa-external-link text-primary preview-service"></span></span>';
+                                var type = (response["servicesList"][i].type == 'H') ? "Human-based" : "Machine-based";
+                                var price = (response["servicesList"][i].price == 0) ? 'FREE' : response["servicesList"][i].price + ' (' + response["servicesList"][i].unit + ')';
+                    
+                                var location = '';
+
+                                if (response["servicesList"][i].location_constraint == 1) {
+                                    location = "<button class='btn btn-xs btn-default nas-coordinates-btn' data-latitude='" + response["servicesList"][i].latitude + "'  data-longitude='" + response["servicesList"][i].longitude + "' title='Click here to preview the map'><span class='fa fa-map-marker fa-lg text-danger'></span> YES</button>";
+                                } 
+                                else{
+                                    location = "<span class='fa fa-globe fa-lg text-info' title='No location limitations'></span> NO";
+                                }
+
+                                var selected = '';
+                                if ((response['servicesList'][i].purchased == false)) {
+                                    if (response['servicesList'][i].temp_selected == false) {
+                                        selected = [
+                                            '<button class="btn btn-success btn-xs nas-select-btn" data-service-id="' + response["servicesList"][i].id + '">',
+                                            '<i class="fa fa-check"></i> <span>Interesting</span>',
+                                            '</button>',
+                                        ].join('');
+                                    }
+                                    else {
+                                        selected = [
+                                            '<button class="btn btn-danger btn-xs nas-select-btn" data-service-id="' + response["servicesList"][i].id + '">',
+                                            '<i class="fa fa-remove"></i> <span>Cancel it</span>',
+                                            '</button>'
+                                        ].join('');
+                                    }
+                                }
+                                else {
+                                    selected = [
+                                        '<button class="btn btn-info btn-xs disabled" data-service-id="' + response["servicesList"][i].id + '">',
+                                        '<i class="fa fa-shopping-bag"></i> <span>Purchased</span>',
+                                        '</button>'
+                                    ].join('');
+                                }
+
+                                tbody += [
+                                    '<tr>',
+                                    '<td class="custom-aod-table-td" >' + title + '</td>',
+                                    '<td class="custom-aod-table-td text-center">' + type + '</td>',
+                                    '<td class="custom-aod-table-td text-center">' + location + '</td>',
+                                    '<td class="custom-aod-table-td text-center">' + price + '</td>',
+                                    '<td class="text-center custom-aod-table-td">' + selected + '</td>',
+                                    '</tr>'
+                                ].join('');
+                            }
+                        }
+                        else {
+                            tbody = [
+                                '<tr>',
+                                    '<td colspan="4" class="text-center custom-aod-table-td">No services included in the selected categories!<td>',
+                                '</tr>'
+                            ].join('');
+                            
+                        }
+                        // append data on tbody element
+                        $("#current-step-services").empty().append(tbody);
+
+                        $('.in').parent().find(".total-services").text(response["servicesList"].length);
+                    },
+                    error: function (response) {
+                        swal({
+                            html: false,
+                            title: "Network of assistance services",
+                            text: 'Sorry, an error has occurred',
+                            type: "warning",
+                            confirmButtonText: "Try again!",
+                            confirmButtonColor: "#d9534f"
+                        });
+                    },
+                    complete: function () {
+                        loading.hide();
+                    }
+                });
+                //return true;
+            }
+    
+            function pushTemporalService(info) {
+                var loading = new AjaxView($('#current-step-services'));
+                loading.show();
+
+                $.ajax({
+                    type: 'post',
+                    url: "/network-assistance-services/services/temporal-setup",
+                    data: JSON.stringify(info),
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    contentType: 'application/json',
+                    success: function (response) {
+                        console.info(response);
+                    },
+                    error: function (response) {
+                        swal({
+                            html: false,
+                            title: "Network of assistance services",
+                            text: 'Sorry, an error has occurred',
+                            type: "warning",
+                            confirmButtonText: "Try again!",
+                            confirmButtonColor: "#d9534f"
+                        });
+                    },
+                    complete: function () {
+                        loading.hide();
+                    }
+                });
+                return true;            
+            }
+
+            function popTemporalService(info) {
+                var loading = new AjaxView($('#current-step-services'));
+                loading.show();
+
+                $.ajax({
+                    type: 'delete',
+                    url: "/network-assistance-services/services/temporal-setup",
+                    data: JSON.stringify(info),
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    contentType: 'application/json',
+                    success: function (response) {
+                        console.info(response);
+                    },
+                    error: function (response) {
+                        swal({
+                            html: false,
+                            title: "Network of assistance services",
+                            text: 'Sorry, an error has occurred',
+                            type: "warning",
+                            confirmButtonText: "Try again!",
+                            confirmButtonColor: "#d9534f"
+                        });
+                    },
+                    complete: function () {
+                        loading.hide();
+                    }
+                });
+                return true;
+            }
+
+            function loadTemporalServices() {
+                var loading = new AjaxView($('#current-step-services'));
+
+                $.ajax({
+                    type: 'get',
+                    url: "/network-assistance-services/services/temporal-setup?consumer_id=" + consumerID,
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    contentType: 'application/json',
+                    success: function (response) {
+                        var tbody = "";
+                        console.info(JSON.stringify(response));
+                        var catAlert = 1;
+
+                        if (response["servicesList"].length > 0) {
+                            for (var i in response["servicesList"]) {
+                                if (response["servicesList"][i]['services'].length > 0) {
+                                    for (var s in response["servicesList"][i]['services']) {
+                                        var type = (response["servicesList"][i].type == 'H') ? "Human-based" : "Machine-based";
+                                        var location = (response["servicesList"][i].location_constraint == 1) ? "<button class='btn btn-link nas-coordinates-btn'><span class='fa fa-globe fa-lg text-info'></span></button>" : "-";
+                                        var price = (response["servicesList"][i].price == 0) ? 'FREE' : response["servicesList"][i].price + ' (' + response["servicesList"][i].unit + ')';
+                                        var selected = '';
+
+                                        if (response['servicesList'][i].temp_selected == false) {
+                                            selected += [
+                                                '<button class="btn btn-success btn-xs nas-submit-service" data-service-id="' + response["servicesList"][i]['services'][s].id + '">',
+                                                '<i class="fa fa-check"></i> ',
+                                                '<span> Purchase</span>',
+                                                '</button>'
+                                            ].join('');
+                                        }
+                                        else {
+                                            selected += [
+                                                '<button class="btn btn-success btn-xs nas-submit-service" data-service-id="' + response["servicesList"][i]['services'][s].id + '">',
+                                                '<span> Purchase service</span>',
+                                                '</button>'
+                                            ].join('');
+                                        }
+
+                                        tbody += [
+                                            '<tr>',
+                                            '<td class="custom-aod-table-td" data-href="#cat' + response["servicesList"][i].category.id + '"><span class="fa fa-check-circle text-success"></span> ' + response["servicesList"][i].category.title + '</td>',
+                                            '<td class="custom-aod-table-td">' + response["servicesList"][i]['services'][s].title + ' <span class="fa fa-external-link text-muted preview-service"></span></td>',
+                                            '<td class="custom-aod-table-td text-center"><button class="btn btn-link nas-config-btn" data-service-id="' + response["servicesList"][i]['services'][s].id + '"><i class="fa fa-cogs fa-lg"></i></button></td>',
+                                            '<td class="text-center custom-aod-table-td">' + selected + '</td>',
+                                            '</tr>'
+                                        ].join('');
+                                    }
+                                }
+                                else {
+                                    catAlert = 0;
+                                    var selected = [
+                                                '<button class="btn btn-info btn-xs final-step-select-service" data-href="#cat' + response["servicesList"][i].category.id + '">',
+                                                '<span> Select service</span>',
+                                                '</button>'
+                                    ].join('');
+
+                                    tbody += [
+                                            '<tr class="additional-services">',
+                                            '<td class="custom-aod-table-td" data-href="#cat' + response["servicesList"][i].category.id + '"><span class="fa fa-exclamation-circle text-danger"></span> ' + response["servicesList"][i].category.title + '</td>',
+                                            '<td class="custom-aod-table-td">-</td>',
+                                            '<td class="custom-aod-table-td text-center">-</td>',
+                                            '<td class="text-center custom-aod-table-td">' + selected + '</td>',
+                                            '</tr>'
+                                    ].join('');
+                                }
+                            }
+                        }
+                        else {
+                            catAlert = 0;
+                            tbody = [
+                                '<tr>',
+                                    '<td colspan="4" class="text-center custom-aod-table-td">No services selected. Navigate in the previous steps to select some services!<td>',
+                                '</tr>'
+                            ].join('');
+                        }
+                        // append data on tbody element
+                        $("#finalize-services-body").empty().append(tbody);
+
+                        if (catAlert == 0) {
+                            categoriesAlert();
+                        }
+                    },
+                    error: function (response) {
+                        swal({
+                            html: false,
+                            title: "Network of assistance services",
+                            text: 'Sorry, an error has occurred',
+                            type: "warning",
+                            confirmButtonText: "Try again!",
+                            confirmButtonColor: "#d9534f"
+                        });
+                    },
+                    complete: function () {
+                        loading.hide();
+                    }
+                });
+                
+                return true;
+            }
+
+            function categoriesAlert() {
+                var text = "You have not selected services for all categories. If you want to declare more services as interesting or purchase more, please click on Select service button of the corresponding category.";
+
+                swal({
+                    html: false,
+                    title: "Network of assistance services",
+                    text: text,
+                    type: "info",
+                    confirmButtonText: "Confirm",
+                    confirmButtonColor: "#428bca"
+                });
+
+                return true;
+            
+            }
+
+            function submitSelectedServices(serviceID) {
+                var loading = new AjaxView($('#current-step-services'));
+                var data = { serviceID: serviceID, consumerID: consumerID };
+
+                $.ajax({
+                    type: 'post',
+                    url: "/network-assistance-services/services/submit",
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function (response) {
+                    },
+                    error: function (response) {
+                        swal({
+                            html: false,
+                            title: "Network of assistance services: installation steps",
+                            text: 'Sorry, an error has occurred',
+                            type: "warning",
+                            confirmButtonText: "Try again!",
+                            confirmButtonColor: "#d9534f"
+                        });
+                    },
+                    complete: function () {
+                        loading.hide();
+                    }
+                });
+                return true;
+
+            }
+
+            function test(input) {
+                var loading = new AjaxView($('#current-step-services'));
+
+                $.ajax({
+                    type: 'post',
+                    url: "/network-assistance-services/services/search/keywords",
+                    data: JSON.stringify({ keywords: input, consumerID: consumerID }),
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    contentType: 'application/json',
+                    success: function (response) {
+                        console.info(response);
+                        var tbody = "";
+            
+                        $("#results-number").text(response["data"].length);
+
+                        if (response["data"].length > 0) {
+                            for (var i in response["data"]) {
+                                var type = (response["data"][i]['fields'].type == "H") ? "Human-based" : "Machine-based";
+                                var location = (response["data"][i]['fields'].location_constraint == 1) ? "<button class='btn btn-link nas-coordinates-btn'><span class='fa fa-globe fa-lg text-info'></span></button>" : "-";
+                                var price = (response["data"][i]['fields'].price == 0) ? 'FREE' : response["data"][i]['fields'].price + ' (' + response["data"][i]['fields'].unit + ')';
+
+                                var selected = [
+                                    '<button class="btn btn-success btn-xs nas-submit-service" data-service-id="' + response["data"][i].pk + '">',
+                                    '<span> Purchase service</span>',
+                                    '</button>'
+                                ].join('');
+
+                                tbody += [
+                                    '<tr>',
+                                    '<td class="custom-aod-table-td">' + response["data"][i]['fields'].title + ' <span class="fa fa-external-link text-muted preview-service"></span></td>',
+                                    '<td class="custom-aod-table-td">' + type       + '</td>',
+                                    '<td class="custom-aod-table-td">' + location   + '</td>',
+                                    '<td class="custom-aod-table-td">' + price      + '</td>',
+                                    '<td class="custom-aod-table-td text-center"><button class="btn btn-link nas-config-btn" data-service-id="' + response["data"][i].pk + '"><i class="fa fa-cog fa-lg"></i></button></td>',
+                                    '<td class="text-center custom-aod-table-td">' + selected  + '</td>',
+                                    '</tr>'
+                                ].join('');
+                            }
+                        }
+                        else {
+                            tbody = [
+                                '<tr>',
+                                    '<td colspan="5" class="text-center custom-aod-table-td">No services selected. Navigate in the previous steps to select some services!<td>',
+                                '</tr>'
+                            ].join('');
+                        }
+
+                        // append data on tbody element
+                        $("#keywords-finalize-services-body").empty().append(tbody);
+
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    },
+                    complete: function () {
+                        loading.hide();
+                    }
+                });
+                return true;
+            }
+
+            function modalAction(title, content, action, f_action) {
+                bootbox.dialog({
+                    title: title,
+                    message: content,
+                    buttons: {
+                        main: {
+                            label: action,
+                            className: "btn btn-primary",
+                            callback: f_action
+                        }
+                    },
+                    closeButton: true,
+                    onEscape: function () {
+                        window.close();
+                    },
+                    keyboard: true,
+                });
+            }
+
+            function modalActionsPost(title, content, cancel, confirm, f_cancel, f_success) {
+                bootbox.dialog({
+                    title: title,
+                    message: content,
+                    buttons: {
+                        danger: {
+                            label: cancel,
+                            className: "btn btn-danger",
+                            callback: f_cancel
+                        },
+                        main: {
+                            label: confirm,
+                            className: "btn btn-success",
+                            callback: f_success
+                        }
+                    },
+                    closeButton: true,
+                    onEscape: function () {
+                        window.close();
+                    },
+                    keyboard: true,
+                });
+            }
+
+            function retrieveConfiguration(serviceID) {
+                $.ajax({
+                    type: 'get',
+                    url: "/network-assistance-services/services/" + serviceID + "/configuration",
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    contentType: 'application/json',
+                    success: function (response) {
+                        console.info(response);
+                        var tbody = "";
+
+                        if (response.data.length > 0) {
+                            for (var i in response.data) {
+                                tbody += [
+                                    '<tr>',
+                                    '<td class="custom-aod-table-td">' + response.data[i]["fields"]["parameter"] + '</td>',
+                                    '<td class="custom-aod-table-td">' + response.data[i]["fields"]["value"] + '</td>',
+                                    '</tr>'
+                                ].join('');
+                            }
+                        }
+                        else {
+                            tbody += [
+                                '<tr>',
+                                '<td colspan="2" class="custom-aod-table-td text-center">No configuration is provided!</td>',
+                                '</tr>'
+                            ].join('');
+                        }
+                        $('#configuration-table-body').empty().append(tbody);
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    },
+                    complete: function () {
+                    }
+                });
+            }
+            
+            function retrieveEditableConfiguration(serviceID) {
+                $.ajax({
+                    type: 'get',
+                    url: "/network-assistance-services/services/" + serviceID + "/configuration",
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    contentType: 'application/json',
+                    success: function (response) {
+                        console.info(response);
+                        var tbody = "";
+
+                        if (response.data.length > 0) {
+                            for (var i in response.data) {
+                                tbody += [
+                                    '<div class="row" >',
+                                        '<div class="col-sm-4 col-xs-12 col-md-4 col-lg-4">',
+                                            '<label class="pull-right" id="config_param-"'+ i + '" >' + response.data[i]["fields"]["parameter"] + ':</label>',
+                                        '</div>',
+                                        '<div class="col-sm-8 col-xs-12 col-md-8 col-lg-8">',
+                                            '<input type="text" id="config_value-"' + i + '" class="form-control pull-lefte" value="' + response.data[i]["fields"]["value"] + '" />',
+                                        '</div>',
+                                    '</div>'
+                                ].join('');
+                            }
+                        }
+                        else {
+                            tbody += [
+                                '<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">',
+                                    '<span>No configuration is provided!</span>',
+                                '</div>'
+                            ].join('');
+                        }
+                        $('#overwrite-configuration').empty().append(tbody);
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    },
+                    complete: function () {
+                    }
+                });
+            }
+
+        </script>
+
+        <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+        <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+        <script src="{% static 'app/scripts/sweetalert/sweetalert.min.js' %}"></script>
+        <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/guided_service_wizard.js' %}"></script>
+        <script src="{% static 'app/scripts/bootstrap.min.js' %}"></script>
+
+    {% endblock scripts %}
