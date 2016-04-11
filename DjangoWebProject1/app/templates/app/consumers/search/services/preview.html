@@ -22,7 +22,7 @@
     <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
     <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>
     <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM"></script>
     <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
     
     <script type="text/javascript">
@@ -277,7 +277,7 @@
                     <hr class="service-hr">
                     <!--map-->  
                     {% if service.location_constraint %}
-                        <div id="map" style="height:40%; border:1px solid gray"></div>
+                        <div id="map" style="height:40%; min-height:250px; border:1px solid gray"></div>
                     {% else %}  
                         <i class="fa fa-map-marker text-danger fa-lg fa-fw"></i> No location constraints 
                     {% endif %}

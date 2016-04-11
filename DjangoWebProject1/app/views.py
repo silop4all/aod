@@ -22,6 +22,8 @@ from django.contrib import messages
 from django.db.models import Avg, Sum, Q
 from django.db import IntegrityError
 
+from django.utils import timezone
+
 from app.models import *        # import models
 from app.decorators import *    # import custom models
 
@@ -32,6 +34,9 @@ import json                     # json lib
 import urllib
 
 from django.conf import settings
+
+from traceback import print_exc
+
 
 
 #################################
@@ -182,10 +187,10 @@ class RegistrationView(View):
             for i, v in enumerate(instance['rg_channels']):
                 user.categories.add(v)
 
-            if settings.DEBUG:
-                to = ['primary_email_here']
-            else:
-                to = [user.email]
+            #if settings.DEBUG:
+            #    to = ['pathanasoulis@ep.singularlogic.eu']
+            #else:
+            to = [user.email]
 
             domain =  request.scheme  + "://" +  request.META['HTTP_HOST'] 
 
@@ -194,7 +199,7 @@ class RegistrationView(View):
 
             # send notification to activate his/her account
             from django.core.mail import send_mail
-            subject = "AoDemand Registration"
+            subject = "AoD Registration"
             body = "Dear "+str(user.name) +" " + str(user.lastname)+",\n\n"
             body += "Your registration was successfully completed in the AoDemand marketplace.\n"
             body += "The required username is: " + user.username+".\n"
@@ -351,9 +356,9 @@ def loginAuth(request):
         request.session['username'] = user.username
         request.session['cart'] = []
         # keep roles state - for future use
-        request.session['is_provider'] = Providers.objects.get(user_id=1).is_active
-        request.session['is_consumer'] = Consumers.objects.get(user_id=user.id).is_active
-        request.session['is_carer'] = Carers.objects.get(user_id=user.id).is_active
+        request.session['is_provider']  = Providers.objects.get(user_id=user.id).is_active
+        request.session['is_consumer']  = Consumers.objects.get(user_id=user.id).is_active
+        request.session['is_carer']     = Carers.objects.get(user_id=user.id).is_active
         
         # move to his dashboard
         return redirect('/index')
@@ -768,7 +773,7 @@ def profile(request, username=None):
             }))
     except:
         raise Http404
-        
+
 def navbarLinks(request):
     """
     Return the links of navigation-bar in case of registered user
@@ -786,13 +791,13 @@ def navbarLinks(request):
         links['cart_items'] = len(request.session['cart'])
 
     links['notifications']  = "#"
-    links['social_network']  = "ip_here"
+    links['social_network']  = "http://160.40.51.143:40000/aodsocial/app/#/home?email=maher@email123.com&info=demo123!"
 
     # Network of assistance services
     nasExistance = Components.objects.get(name='network_of_assistance_services')
     links['is_nas_active']  = nasExistance.is_enabled
-    links['nas_requests']   = "/network-assistance-services/requests"
-    links['nas_configuration']    = "/network-assistance-services/configuration"
+    links['nas_requests']   = "/assistance/requests"
+    links['nas_configuration']    = "/assistance/configuration"
     return links
 
 def breadcrumbLinks(request):
@@ -800,15 +805,53 @@ def breadcrumbLinks(request):
     Return the breadcrumb' links in case of registered user
     """
     links = dict()
-    links['home']= "/index"
-    links['collection']= "/provider"
-    links['services']= "/provider/services"
-    links['nas_requests']= "/network-assistance-services/requests"
-    links['create_nas_request']= "/network-assistance-services/requests/create-new"
+    links['home']           = "/index"
+    links['collection']     = "/offerings"
+    links['services']       = "/offerings/services"
+    links['nas_requests']   = "/assistance/requests"
+    links['create_nas_request']= "/assistance/requests/create-new"
     return links
-    
+
 def getTimeZone():
-    return 'Europe/Athens'
+    return settings.TIME_ZONE
+
+def getConsumerInfo(request, userID=None):
+    try:
+        user        = Users.objects.get(pk = request.session['id'])
+        if (userID != None):
+            user    = Users.objects.get(pk = userID)
+        role        = Consumers.objects.get(user_id = user.id)  
+        return True, user, role
+    except:
+        from traceback import print_exc
+        print_exc()
+        return False, -1, -1 
+
+
+def getProviderInfo(request, userID=None):
+    try:
+        user        = Users.objects.get(pk = request.session['id'])
+        if (userID != None):
+            user    = Users.objects.get(pk = userID)
+        role        = Providers.objects.get(user_id = user.id)  
+        return True, user, role
+    except:
+        from traceback import print_exc
+        print_exc()
+        return False, -1, -1 
+
+
+def getCarerInfo(request, userID=None):
+    try:
+        user        = Users.objects.get(pk = request.session['id'])
+        if (userID != None):
+            user    = Users.objects.get(pk = userID)
+        role        = Carers.objects.get(user_id = user.id)  
+        return True, user, role
+    except:
+        from traceback import print_exc
+        print_exc()
+        return False, -1, -1 
 
 
 #################################
@@ -1161,6 +1204,9 @@ class ServiceCreate(View):
             if not payload:
                 raise Exception("JSON payload error")
 
+            if settings.DEBUG:
+                print payload
+
             # Create a new service
             dt = datetime.today()
             
@@ -1188,6 +1234,8 @@ class ServiceCreate(View):
                 location_constraint=payload["srv_geolocation"],
                 latitude=payload["srv_latitude"],
                 longitude=payload["srv_longitude"],
+                skype=payload["skype_id"],
+                coverage=payload["srv_coverage"],
                 is_available=payload["srv_terms"],
                 modified_date=datetime(1970,1,1,0,0,0, tzinfo=pytz.timezone(getTimeZone())),
                 created_date=dt
@@ -1482,10 +1530,10 @@ class ServiceUpdateView(View):
                     'users': Users.objects.exclude(pk=_pk).order_by('email'),
                     'languages': pycountry.languages,
                     'keywords': ServiceKeywords.objects.filter(service=service.id),
-                    'selected_languages': service.servicelanguages_set.all()
+                    #'selected_languages': service.servicelanguages_set.all()
                 }))
         except: 
-            pass
+            print_exc()
 
 @loginRequiredView
 class UploadServiceMedia(View):
@@ -1977,28 +2025,23 @@ class MyStats(View):
         
         template = "app/consumers/statistics/index.html" 
         try:
-            pk = request.session['id']
-            # get services of user
-            services = ConsumersToServices.objects.filter(consumer_id=pk)
-            list = []
-            for i in services:
-                s = Services.objects.get(pk=i.service_id)
-                c = ChargingPolicies.objects.get(pk=s.charging_policy_id)
-                owner = Users.objects.get(pk=s.owner_id)
-                list.append({"title": s.title, "provider": owner.username, "price": s.price, "currency": s.unit, 'model': c.name,
-                    "rating": i.rating,"comment": i.rating_rationale, "date": i.purchased_date, 'link': '/services/'+urllib.quote_plus(s.title)
-                })        
-                
+            # get ConsumerID
+            state, user, consumer = getConsumerInfo(request)
+            print state
+            #user = Users.objects.get(pk = request.session['id'])
+            #consumer = Consumers.objects.get(user_id = user.id)
+
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
-                    'title':'My statistics',
+                    'title':'My collection',
                     'year':datetime.now().year,
                     'username': request.session["username"],
                     'links': navbarLinks(request),
                     'breadcrumb': breadcrumbLinks(request),
-                    'services': list,
-                }))
+                    'consumer': {"id": consumer.id, "info": user.name + " " + user.lastname}
+                })
+            )
         except:
             raise Http404
 
@@ -2014,15 +2057,14 @@ class NetworkAssistanceServicesRequests(View):
         template = "app/nas/requests/index.html" 
 
         try:
-            #load user
+            #load user ID
             pk = request.session['id']
 
-            #load roles
+            # load carer role
+            state1, carProfile, carer = getCarerInfo(request)
             carerRequestData = []
             if request.session['is_carer']:
-                carer = Carers.objects.get(user_id=pk) 
-                #carerRecords = CarersAssistConsumers.objects.filter(carer_id=carer.id)
-                carerRecords = CarersAssistConsumers.objects.filter(carer_id=pk)
+                carerRecords = CarersAssistConsumers.objects.filter(carer_id=carer.id)
                 
                 for obj in carerRecords:                    
                     consumer = Consumers.objects.get(pk=obj.consumer_id)
@@ -2038,15 +2080,18 @@ class NetworkAssistanceServicesRequests(View):
                         "updated_at": obj.updated_at
                     })
 
+            # load consumer role
+            state1, conProfile, consumer = getConsumerInfo(request)
             consumerRequestData = []
             if request.session['is_consumer']:
-                consumer = Consumers.objects.get(user_id=pk)
-                consumerRecords = CarersAssistConsumers.objects.filter(consumer_id=pk)
+                #consumer = Consumers.objects.get(user_id=pk)
+                consumerRecords = CarersAssistConsumers.objects.filter(consumer_id=consumer.id)
 
                 for obj in consumerRecords:                    
                     carer = Carers.objects.get(pk=obj.carer_id)
                     user = Users.objects.get(pk=carer.user_id)
                     consumerRequestData.append({
+                        "id": str(obj.id),
                         "carer_id": user.id, 
                         "name": user.name, 
                         "lastname": user.lastname, 
@@ -2109,12 +2154,15 @@ class NetworkAssistanceServicesCreateRequest(View):
             instance = json.loads(request.body)
             consumerID = int(instance['consumer_id'])
 
+            carer = Carers.objects.get(user_id = request.session['id'])
+            consumer = Consumers.objects.get(user_id = consumerID)
+
             # insert record
             dt = datetime.now()
             nasRequest = CarersAssistConsumers(
-                carer_id=request.session['id'], 
-                consumer_id=consumerID,
-                created_at=datetime.now()
+                carer_id=carer.id,
+                consumer_id=consumer.id,                
+                created_at=dt
             )
             nasRequest.save()
 
@@ -2129,15 +2177,15 @@ class NetworkAssistanceServicesCreateRequest(View):
             
             if settings.DEBUG:
                 if settings.EVALUATION_PROCESS:
-                    to = ['evaluation_email_here']
+                    to = ['touliouk@certh.gr']
                 else:
-                    to = ['primary_email_here']
+                    to = ['pathanasoulis@ep.singularlogic.eu']
             else:
                 to = [receiver.email]
 
             # Create agree/disagree links
             domain =  request.scheme  + "://" +  request.META['HTTP_HOST'] 
-            path = '/network-assistance-services/requests/reply'
+            path = '/assistance/requests/reply'
             positiveLink = domain + path + "?rec=" + str(receiver.email) + "&sen=" + str(sender.email) + "&val=" + str(nasRequest.id) + "&code=true"
             negativeLink = domain + path + "?rec=" + str(receiver.email) + "&sen=" + str(sender.email) + "&val=" + str(nasRequest.id) + "&code=false"
 
@@ -2155,6 +2203,8 @@ class NetworkAssistanceServicesCreateRequest(View):
 
             return JsonResponse({"state": True})
         except:
+            from traceback import print_exc
+            print_exc()
             return JsonResponse({"state": False})
 
 class NetworkAssistanceServicesReplyRequest(View):
@@ -2171,7 +2221,8 @@ class NetworkAssistanceServicesReplyRequest(View):
             if carerEmail and receiverEmail and requestID:
                 carer     = Users.objects.get(email=carerEmail)
                 consumer  = Users.objects.get(email=receiverEmail)
-                CarersAssistConsumers.objects.filter(id=requestID, carer_id=carer.id, consumer_id=consumer.id).update(response=True, state=state, updated_at=datetime.now())
+                
+                CarersAssistConsumers.objects.filter(id=requestID, carer_id=Carers.objects.get(user_id=carer.id).id, consumer_id=Consumers.objects.get(user_id=consumer.id).id).update(response=True, state=state, updated_at=datetime.now())
 
                 from django.core.mail import send_mail, EmailMultiAlternatives
                 subject = "[P4ALL] Network of assistance services notification"
@@ -2179,9 +2230,9 @@ class NetworkAssistanceServicesReplyRequest(View):
                 
                 if settings.DEBUG:
                     if settings.EVALUATION_PROCESS:
-                        to = ['evaluation_email_here']
+                        to = ['touliouk@certh.gr']
                     else:
-                        to = ['primary_email_here']
+                        to = ['pathanasoulis@ep.singularlogic.eu']
                 else:
                     to = [receiver.email]
                 
@@ -2199,7 +2250,8 @@ class NetworkAssistanceServicesReplyRequest(View):
                 msg.attach_alternative(body, "text/html")
                 msg.send()
 
-                return redirect("/network-assistance-services/requests")
+                #return redirect("/network-assistance-services/requests")
+                return redirect(reverse('carer-landing-page'))
 
         except ObjectDoesNotExist:
             print("Model does not exist")
@@ -2209,6 +2261,152 @@ class NetworkAssistanceServicesReplyRequest(View):
             return Http404
         except:
             return Http404
+
+
+@loginRequiredView
+class NetworkAssistanceServicesInviteCarers(View):
+
+    def get(self, request):
+        """ 
+        Load the web page to send a new invitation on a carer
+        """
+
+        template = "app/nas/invitations/index.html" 
+        try:
+            #load user
+            pk = request.session['id']            
+
+            return render(request, template,
+                context_instance = RequestContext(request,
+                {
+                    'title':'Invite carers',
+                    'year': str(datetime.now().year),
+                    'username': request.session["username"],
+                    #'links': navbarLinks(request),
+                    #'breadcrumb': breadcrumbLinks(request)
+                }))
+        except:
+            if settings.DEBUG:
+                print_exc()
+            raise Http404
+
+    def post(self, request):
+
+        try:
+            # load json data
+            payload = json.loads(request.body)
+            userId = int(payload['target']) # user id as carer
+
+            #consumer= Consumers.objects.get(user_id = request.session['id'])
+            s1, sender, consumer = getConsumerInfo(request)
+
+
+            #carer   = Carers.objects.get(user_id = userId)
+            s2, receiver, carer = getCarerInfo(request, userId)
+
+            # insert record
+            if ( CarersAssistConsumers.objects.filter(carer_id=carer.id).filter(consumer_id=consumer.id).count() == 0 ):
+                nasRequest = CarersAssistConsumers(
+                    carer_id=carer.id,
+                    consumer_id=consumer.id,                
+                    created_at=datetime.now()
+                )
+                nasRequest.save()
+
+                # send notification to activate his/her account
+                from django.core.mail import send_mail, EmailMultiAlternatives
+                subject = "[P4ALL] Network of carers: invitation"
+                from_email = "no-reply@p4all.com"
+
+            
+                if settings.DEBUG:
+                    if settings.EVALUATION_PROCESS:
+                        to = ['touliouk@certh.gr']
+                    else:
+                        to = ['pathanasoulis@ep.singularlogic.eu']
+                else:
+                    to = [receiver.email]
+
+                # Create agree/disagree links
+                domain =  request.scheme  + "://" +  request.META['HTTP_HOST'] 
+                path = '/assistance/invitations/reply'
+                positiveLink = domain + path + "?rec=" + str(receiver.email) + "&sen=" + str(sender.email) + "&val=" + str(nasRequest.id) + "&code=true"
+                negativeLink = domain + path + "?rec=" + str(receiver.email) + "&sen=" + str(sender.email) + "&val=" + str(nasRequest.id) + "&code=false"
+
+                body = "<div>Dear " + receiver.name + " " + receiver.lastname + ",<br><br>"
+                body += "The authorized AoD user, " + sender.name + " " + sender.lastname + ", wants to add you in his/her personal network of carers!<br>"
+                body += "Do you want to grant permission on him/her?<br><br>"
+                body += "If you agree, click here: <a href='" + positiveLink + " '>Accept</a><br><br>"
+                body += "To decline it, click here: <a href='"+negativeLink+"'>Decline</a><br><br>"
+                body += "Sincerely,<br>The AoD administration team</div>"
+                
+                # send email with HTML code
+                msg = EmailMultiAlternatives(subject, "", from_email, to)
+                msg.attach_alternative(body, "text/html")
+                msg.send()
+
+                return JsonResponse({"state": True})
+            else:
+                return JsonResponse({"state": False, "message": "This request/invitation already has been submitted!"})
+        except:
+            print_exc()
+            return JsonResponse({"state": False, "message": "Error"})
+
+class NetworkAssistanceServicesCarerReply(View):
+
+    def get(self, request):
+        """ Carer reply on consumer invitation """
+        try:
+            carerEmail      = request.GET.get('rec')
+            receiverEmail   = request.GET.get('sen')
+            requestID       = request.GET.get('val')
+            state           = True if request.GET.get('code') in ["true", True] else False
+            
+            if carerEmail and receiverEmail and requestID:
+                carer     = Users.objects.get(email=carerEmail)
+                consumer  = Users.objects.get(email=receiverEmail)
+                
+                CarersAssistConsumers.objects.filter(id=requestID, carer_id=Carers.objects.get(user_id=carer.id).id, consumer_id=Consumers.objects.get(user_id=consumer.id).id).\
+                    update(response=True, state=state, updated_at=datetime.now())
+
+                from django.core.mail import send_mail, EmailMultiAlternatives
+                subject = "[P4ALL] Network of carer: reply"
+                from_email = "no-reply@p4all.com"
+                
+                if settings.DEBUG:
+                    if settings.EVALUATION_PROCESS:
+                        to = ['touliouk@certh.gr']
+                    else:
+                        to = ['pathanasoulis@ep.singularlogic.eu']
+                else:
+                    to = [receiver.email]
+                
+                # Advertise the carer's reply on consumer
+                body = "<div>Dear " + consumer.name + " " + consumer.lastname + ",<br><br>"
+                body += "The registered in AoD user, " + carer.name + " " + carer.lastname + ","
+                if state == True:
+                    body +=  " has accepted your invitation.<br>" +  carer.name + " is member of your personal network of carers.<br>"
+                else: 
+                    body +=  " has declined your invitation.<br>"
+                body += "<br>Regards,<br>The AoD administration team</div>"
+
+                # send email with HTML code
+                msg = EmailMultiAlternatives(subject, "", from_email, to)
+                msg.attach_alternative(body, "text/html")
+                msg.send()
+
+                #return redirect("/network-assistance-services/requests")
+                return redirect(reverse('carer-landing-page'))
+
+        except ObjectDoesNotExist:
+            print("Model does not exist")
+            return Http404
+        except MultipleObjectsReturned:
+            print("Multiple instances founded")
+            return Http404
+        except:
+            return Http404
+
 
 @loginRequiredView
 class NetworkAssistanceServicesFindUsers(View):
@@ -2246,19 +2444,18 @@ class NetworkAssistanceServices(View):
     def delete(self, request, pk):
         """ Remove an existing interest of carer """
         try:
-            #template = "app/nas/requests/index.html" 
+            userID = request.session['id']
 
             if request.is_ajax():
                 # delete object/instance
                 nasRequest = CarersAssistConsumers.objects.get(pk=pk)
                 nasRequest.delete()
 
-                pk = request.session['id']
                 carerRequestData = []
                 if request.session['is_carer']:
-                    carer = Carers.objects.get(user_id=pk) 
+                    state, user, carer = getCarerInfo(request)
                     carerRecords = CarersAssistConsumers.objects.filter(carer_id=carer.id)
-                
+              
                     for obj in carerRecords:                    
                         consumer = Consumers.objects.get(pk=obj.consumer_id)
                         user = Users.objects.get(pk=consumer.user_id)
@@ -2274,12 +2471,35 @@ class NetworkAssistanceServices(View):
                         });
                     return JsonResponse({"data": carerRequestData})
 
+                consumerRequestData = []
+                if request.session['is_consumer']:
+                    state, user, consumer = getConsumerInfo(request)
+                    carerRecords = CarersAssistConsumers.objects.filter(consumer_id=consumer.id)
+              
+                    for obj in carerRecords:
+                        carer = Carers.objects.get(pk=obj.carer_id)
+                        user = Users.objects.get(pk=carer.user_id)
+                        consumerRequestData.append({
+                            "id": str(obj.id),
+                            "carer_id": user.id, 
+                            "name": user.name, 
+                            "lastname": user.lastname, 
+                            "response": obj.response,
+                            "state": obj.state,
+                            "created_at": obj.created_at,
+                            "updated_at": obj.updated_at
+                        });
+                    return JsonResponse({"data": consumerRequestData})
+
             else:
                 raise Exception("No ajax")   
         except Exception as ex:
             return JsonResponse({"state" : -1})
         except:
+            if settings.DEBUG:
+                print_exc()
             return JsonResponse({"state" : 0})        
+
 
 
 ###############################################
@@ -2330,11 +2550,16 @@ class SearchNetworkAssistanceServices(View):
             if request.is_ajax():
                 assert isinstance(request, HttpRequest)
                 pk = request.session['id']
+                # load carer role id
+                s1, user, carer = getCarerInfo(request, pk)
 
                 # search options
                 payload = json.loads(request.body)
                 if settings.DEBUG == True:
                     print payload
+
+                # load target consumer
+                s2, targetUser, consumer = getConsumerInfo(request, payload['consumer_id'])
 
                 # Categories
                 mergeList, categories, subCategories = [], [], []
@@ -2349,17 +2574,15 @@ class SearchNetworkAssistanceServices(View):
                 services = Services.objects.filter(categories__id__in=mergeList)
 
                 # retrieve temp selected services
-                tempSelectedServices = NasTemporarySetup.objects.filter(carer_id=pk, consumer_id=payload['consumer_id'])
+                tempSelectedServices = NasTemporarySetup.objects.filter(carer_id=carer.id, consumer_id=consumer.id)
                 tempSelectedServicesList = [i.service_id for i in tempSelectedServices]
 
                 # already purchased services (by individual user)
                 perUsagePolicy = ChargingPolicies.objects.filter(description__icontains="per usage")
-                #purchasedServices = ConsumersToServices.objects.filter(consumer_id=payload['consumer_id'], is_completed=0)
-                #purchasedServicesList = [i.id for i in Services.objects.filter(pk__in=[j.service_id for j in purchasedServices], charging_policy_id=2)]
-                purchasedServicesList = [j.service_id for j in ConsumersToServices.objects.filter(consumer_id=payload['consumer_id'], is_completed=0)]
+                purchasedServicesList = [j.service_id for j in ConsumersToServices.objects.filter(consumer_id=consumer.id, is_completed=0)]
 
                 # already purchased services (by carer)
-                carerPurchasedServicesList = [c.service_id for c in NasConsumersToServices.objects.filter(consumer_id=payload['consumer_id'], is_completed=0)]
+                carerPurchasedServicesList = [c.service_id for c in NasConsumersToServices.objects.filter(consumer_id=consumer.id, is_completed=0)]
 
                 # keep a list of unique IDs
                 purchasedServicesList  = list(set(purchasedServicesList + carerPurchasedServicesList))
@@ -2377,6 +2600,7 @@ class SearchNetworkAssistanceServices(View):
                         "location_constraint": service.location_constraint,
                         "longitude": service.longitude,
                         "latitude": service.latitude,
+                        "coverage": service.coverage,
                         "temp_selected": (service.id in tempSelectedServicesList),
                         "purchased": (service.id in purchasedServicesList)
                     })
@@ -2385,6 +2609,8 @@ class SearchNetworkAssistanceServices(View):
             else:
                 return JsonResponse({"state": -1})
         except: 
+            if settings.DEBUG:
+                print_exc()
             return JsonResponse({"state": -1})
 
 @loginRequiredView
@@ -2398,10 +2624,14 @@ class NetworkAssistanceServicesQueue(View):
             if request.is_ajax():
                 assert isinstance(request, HttpRequest)
                 pk = request.session['id']
-                consumerId = request.GET.get('consumer_id')
+                s1, carerProfile, carer = getCarerInfo(request, pk)
+
+                # target consumer
+                #consumerId = request.GET.get('consumer_id')
+                s2, consProfile, consumer = getConsumerInfo(request, request.GET.get('consumer_id'))
 
                 # Retrieve the list of temporal selected instances (NasTemporarySetup model)
-                tempServices = NasTemporarySetup.objects.filter(carer_id=pk, consumer_id=consumerId)
+                tempServices = NasTemporarySetup.objects.filter(carer_id=carer.id, consumer_id=consumer.id)
                 tempServicesList = [i.service_id for i in tempServices]
 
                 # Group th categories based on relationship parent-child
@@ -2439,6 +2669,8 @@ class NetworkAssistanceServicesQueue(View):
             else:
                 return JsonResponse({"state": -1})
         except:
+            if settings.DEBUG:
+                print_exc()
             return JsonResponse({"state": -1})
 
     def post(self, request):
@@ -2455,11 +2687,16 @@ class NetworkAssistanceServicesQueue(View):
                 if settings.DEBUG == True:
                     print payload
 
+                # load carer profile
+                s1, carerProfile, carer = getCarerInfo(request)
+                # load consumer profile
+                s2, consumerProfile, consumer = getConsumerInfo(request, payload['consumer_id'])
+
                 # Insert instance in the NasTemporarySetup model
                 tempAction = NasTemporarySetup(     
                     service_id=payload['service_id'],
-                    carer_id=pk, 
-                    consumer_id=payload['consumer_id']
+                    carer_id=carer.id, 
+                    consumer_id=consumer.id
                 )
                 tempAction.save()
 
@@ -2467,6 +2704,7 @@ class NetworkAssistanceServicesQueue(View):
             else:
                 return JsonResponse({"state": -1})
         except: 
+            print_exc()
             return JsonResponse({"state": -1})
 
     def delete(self,request):
@@ -2483,13 +2721,19 @@ class NetworkAssistanceServicesQueue(View):
                 if settings.DEBUG == True:
                     print payload
 
+                # load carer profile
+                s1, carerProfile, carer = getCarerInfo(request)
+                # load consumer profile
+                s2, consumerProfile, consumer = getConsumerInfo(request, payload['consumer_id'])
+
                 # Delete instance in the NasTemporarySetup model
-                NasTemporarySetup.objects.filter(service_id=payload['service_id'], carer_id=pk, consumer_id=payload['consumer_id']).delete()
+                NasTemporarySetup.objects.filter(service_id=payload['service_id'], carer_id=carer.id, consumer_id=consumer.id).delete()
 
                 return JsonResponse({"state": 1})
             else:
                 return JsonResponse({"state": -1})
         except: 
+            print_exc()
             return JsonResponse({"state": -1})
 
 @loginRequiredView
@@ -2499,14 +2743,18 @@ class NetworkAssistanceServicesSubmit(View):
             if request.is_ajax():
                 assert isinstance(request, HttpRequest)
                 pk = request.session['id']
+                s1, carerProfile, carer = getCarerInfo(request)
 
                 # load payload
                 payload = json.loads(request.body)
                 if settings.DEBUG == True:
                     print payload
 
+                # target consumer
+                s2, receiver, consumer = getConsumerInfo(request, payload['consumerID']) 
+
                 # remove from queue
-                tempService = NasTemporarySetup.objects.filter(service_id=payload['serviceID'], carer_id=pk, consumer_id=payload['consumerID']).delete()
+                tempService = NasTemporarySetup.objects.filter(service_id=payload['serviceID'], carer_id=carer.id, consumer_id=consumer.id).delete()
                 
                 # service info
                 selService = Services.objects.get(pk=payload['serviceID'])
@@ -2515,48 +2763,34 @@ class NetworkAssistanceServicesSubmit(View):
                 nas = NasConsumersToServices(     
                     service_id=payload['serviceID'],
                     purchased_date=datetime.now(),
-                    consumer_id=payload['consumerID'],
+                    consumer_id=consumer.id,
                     cost=selService.price
                 )
                 nas.save()
-
                 curSrvId = nas.id
-                # save default configuration
-                for i in ServiceConfiguration.objects.filter(service_id=payload['serviceID']):
-                    config = NasConfiguration(     
-                        nas_id=curSrvId,
-                        parameter=i.parameter,
-                        value=i.value,
-                        is_default=1,
-                        updated=datetime.now()
-                    )
-                    config.save()
-
 
                 # send email notification to consumer
-                receiver    = Users.objects.get(pk=payload['consumerID'])
-                carer       = Users.objects.get(pk=pk)
-                
-                #to          = ['primary_email_here'] if settings.DEBUG == True else [receiver.email]
+                #to          = ['pathanasoulis@ep.singularlogic.eu'] if settings.DEBUG == True else [receiver.email]
                 if settings.DEBUG:
                     if settings.EVALUATION_PROCESS:
-                        to = ['evaluation_email_here']
+                        to = ['touliouk@certh.gr']
                     else:
-                        to = ['primary_email_here']
+                        to = ['pathanasoulis@ep.singularlogic.eu']
                 else:
                     to = [receiver.email]
 
                 subject     = "[P4ALL] Network of assistance services: purchase service"
                 body        = "<div>Dear <strong>" + receiver.name + " " + receiver.lastname + "</strong>,<br><br>"
-                body        += "The authorized AoD user, " + carer.name + " " + carer.lastname + ", just purchased the service <em>"+selService.title+"</em> for you a few minutes ago!<br>"
+                body        += "The authorized AoD user, " + carerProfile.name + " " + carerProfile.lastname + ", just purchased the service <em>"+selService.title+"</em> for you a few minutes ago!<br>"
                 body        += "<br>Sincerely,<br>The AoD administration team</div>"
-                sendEmail(carer.email, to, subject, body, True)
+                sendEmail(carerProfile.email, to, subject, body, True)
 
-                return JsonResponse({"state": 1})
+                return JsonResponse({"state": 1, "id": curSrvId, "consumerId": payload['consumerID']})
             else:
                 return JsonResponse({"state": -1})
         except Exception as e: 
             print e
+            print_exc()
             return JsonResponse({"state": -1})
 
 @loginRequiredView
@@ -2573,13 +2807,15 @@ class SearchKwdNetworkAssistanceServices(View):
                 if settings.DEBUG == True:
                     print payload
 
+                consumer = Consumers.objects.get(user_id = payload['consumerID'])
+
                 if 'keywords' in payload and 'consumerID' in payload:
                     keyword = payload['keywords']
 
                     # already purchased services (by individual user)
-                    purchasedServicesList = [j.service_id for j in ConsumersToServices.objects.filter(consumer_id=payload['consumerID'], is_completed=0)]
+                    purchasedServicesList = [j.service_id for j in ConsumersToServices.objects.filter(consumer_id=consumer.id, is_completed=0)]
                     # already purchased services (by carer)
-                    carerPurchasedServicesList = [c.service_id for c in NasConsumersToServices.objects.filter(consumer_id=payload['consumerID'], is_completed=0)]
+                    carerPurchasedServicesList = [c.service_id for c in NasConsumersToServices.objects.filter(consumer_id=consumer.id, is_completed=0)]
                     # keep a list of unique IDs
                     purchasedServicesList  = list(set(purchasedServicesList + carerPurchasedServicesList))
                     # search for keywords in service title/description and service keywords
@@ -2602,13 +2838,17 @@ class PreviewNetworkAssistanceServices(View):
         try:
             assert isinstance(request, HttpRequest)
             pk = request.session['id']
+            carer = Carers.objects.get(pk = pk)
 
             template = "app/nas/preview/index.html"
-
-            selectedList = [s.service_id for s in NasTemporarySetup.objects.filter(carer_id=pk, consumer_id=consumer)]
+            
+            targetUser  = Consumers.objects.get(user_id=consumer)
+            targetProfile     = Users.objects.get(pk=consumer)
+            
+            selectedList = [s.service_id for s in NasTemporarySetup.objects.filter(carer_id=carer.id, consumer_id=targetUser.id)]
             selectedServicesList = Services.objects.filter(pk__in=selectedList)
                 
-            purchasedList = [p.service_id for p in NasConsumersToServices.objects.filter(consumer_id=consumer)]
+            purchasedList = [p.service_id for p in NasConsumersToServices.objects.filter(consumer_id=targetUser.id)]
             purchasedServicesList = Services.objects.filter(pk__in=purchasedList)
                 
             return render(request, template,
@@ -2621,11 +2861,10 @@ class PreviewNetworkAssistanceServices(View):
                     'breadcrumb': breadcrumbLinks(request), 
                     'selectedServices': selectedServicesList,
                     'purchasedServices': purchasedServicesList,
-                    'consumerId': consumer 
+                    'consumer': {'id': consumer, 'info': targetProfile.name + " " + targetProfile.lastname}
                 }))
-
         except Exception as ex:
-            print ex        
+            print_exc()        
             return Http404
 
 
@@ -2645,8 +2884,7 @@ class ServiceConfigurationView(View):
         except Exception as ex:
             return JsonResponse({"state": -1, "data": []})
 
-
-
+@loginRequiredView
 class ServiceInstance(View):
 
     def get(self, request, pk):
@@ -2688,7 +2926,6 @@ class ServiceInstance(View):
             import traceback
             traceback.print_exc()
             return JsonResponse({"state": -1, "data": []})
-    
 
 
 
@@ -2696,7 +2933,6 @@ class ServiceInstance(View):
 def sendEmail(sender, receiversList, subject, content, include_html):
     try:
         # send notification to activate his/her account
-        
         sender = "no-reply@p4all.com"
 
         # send email with HTML code
@@ -2707,7 +2943,7 @@ def sendEmail(sender, receiversList, subject, content, include_html):
             msg.send()
         else:
             from django.core.mail import send_mail
-            send_mail(subject, content, 'no-reply@p4all.com', receiversList, fail_silently=False)
+            send_mail(subject, content, sender, receiversList, fail_silently=False)
 
     except Exception as e: 
         #import traceback        

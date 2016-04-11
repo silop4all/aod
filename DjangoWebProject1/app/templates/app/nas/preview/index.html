@@ -1,7 +1,7 @@
-﻿{% extends "app/base.html" %}
+﻿ {% extends "app/base.html" %}
 
     {% block title %} 
-        AoD | Network of Assistance services preview
+        AoD | Assistance network preview
     {% endblock title %}
 
     {% load staticfiles %}
@@ -21,35 +21,208 @@
     {% load staticfiles %}
 
     {% block content %}
-    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+    <div class="container body-content margin-top-50 padding-bottom-em-2">
     
         {% block breadcrumb %}
-        <ol class="row breadcrumb">
-            <li><a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
-            <li><a href="{% url 'carer-landing-page' %}"  class="custom-inactive-breadcrumb">Network of Assistance Services</a></li>
-            <li class="active"> Preview </li>   
+        <ol class="row breadcrumb" aria-label="breadcrumb">
+            <li>
+                <a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb" title="Home page">
+                    <span class="fa fa-home"></span> Home
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'carer-landing-page' %}"  class="custom-inactive-breadcrumb" title="Network of Assistance Services">
+                    Network of Assistance Services
+                </a>
+            </li>
+            <li class="active"> Preview</li>
         </ol>
         {% endblock breadcrumb %}
 
 
         <main role="main" >
-            <div class="row service-list-box" style="min-height: 700px;">
-                <div class="tabbable">
+            <div class="row service-list-box" style="min-height: 400px;">
+
+                <div class="margin-bottom-10">
+                    <h2 id="target-user" data-target-id="{{ consumer.id }}">Target user</h2>
+                    <span class="fa fa-user fa-fw"></span> {{ consumer.info }}
+                </div>
+
+                <div class="tabbable" style="border-bottom: 1px solid #ddd">
                     <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-                        <li role="presentation" class="active" >
-                            <a href="#selected" data-toggle="tab">
-                                <h4 class="custom-tab-black-color">Interesting services (wish list)</h4> 
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#purchased" data-toggle="tab">
+                        <li role="presentation" class="active">
+                            <a href="#purchased" data-toggle="tab" class="swap-tab" title="List of purchased services">
                                 <h4 class="custom-tab-black-color">Purchased services</h4>
                             </a>
                         </li> 
+                        <li role="presentation" >
+                            <a href="#wishlist" data-toggle="tab" class="swap-tab" title="List of interesting services (wish list)">
+                                <h4 class="custom-tab-black-color">WishList (Interesting services)</h4> 
+                            </a>
+                        </li>
                     </ul>
+                    <div id="my-tab-content" class="tab-content padding-right-20 padding-left-20 margin-top-10" style="background-color:#f1f1f1; border-radius: 0 1px 5px 5px">                                      
+                    
+                        <div class="tab-pane  active" id="purchased" style="color:black">
+                            <section class="margin-top-10">
+                                <div class="col-sm-5 col-md-5 col-lg-4 col-xs-12" style="border-right: 1px solid #d9d9d9">
+                                    <table id="purchased-services-table" class=""
+                                            data-classes="table table-hover"
+                                            data-search="false"  
+                                            data-show-toggle="false"
+                                            data-show-columns="false"
+                                            data-card-view="false"
+                                            data-color="blue"
+                                            data-click-to-select="true"
+                                            data-toolbar="#carer-request"
+                                            data-pagination="true"
+                                            data-page-list="[10, 25, 40, all]"
+                                            data-sort-name="title" data-sort-order="asc">
+                                        <thead class="custom-aod-table-thead">
+                                        <tr>
+                                            <th data-field="radio" data-radio="true" data-visible="true">#</th>
+                                            <th data-field="id" class="hidden" data-visible="false"></th>
+                                            <th data-field="title" data-align="left" data-sortable="true">Service title</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="col-sm-7 col-md-7 col-lg-8 col-xs-12 bought-service-view hidden">
 
-                    <div id="my-tab-content" class="tab-content" style="border-left:1px solid #d9d9d9; border-right:1px solid #d9d9d9;border-bottom:1px solid #d9d9d9; background-color:#f1f1f1; padding-left:1%;padding-right:1%; border-radius: 0 1px 5px 5px" >                                      
-                        <div class="tab-pane active" id="selected">
+                                    <!--generic info-->
+                                    <div class="margin-top-10 padding-bottom-percent-1">
+                                        <div class="col-lg-6 col-xs-12 col-md-6 col-sm-6 center" id="bought-service-img">
+                                            
+                                        </div>
+
+                                        <div class="col-lg-6 col-xs-12 col-md-6 col-sm-6">
+                                            <div style="padding-left: 4%">
+                                                <div class="row">
+                                                    <header class="col-md-12 col-sm-12 col-lg-12 col-xs-12" title="">
+                                                        <h3 id="bought-service-title"></h3>
+                                                    </header>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
+                                                        <h5>Categories:</h5>
+                                                    </div>
+                                                    <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
+                                                        <h5 id="bought-service-categories"></h5>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row" >
+                                                    <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
+                                                        <h5>Price:</h5>
+                                                    </div>
+                                                    <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
+                                                        <span id="bought-service-price"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="row" >
+                                                    <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
+                                                        <h5>Charging:</h5>
+                                                    </div>
+                                                    <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
+                                                        <h5 id="bought-service-policy"></h5>
+                                                    </div>
+                                                </div>
+                                                <div class="row" >
+                                                     <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
+                                                        <h5>Type:</h5>
+                                                    </div>
+                                                    <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
+                                                        <h5 id="bought-service-type"></h5>
+                                                    </div>
+                                                </div>
+                                                <div class="row bought-machine-service hidden" >
+                                                    <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
+                                                        <h5>Licences:</h5>
+                                                    </div>
+                                                    <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
+                                                        <h5 id="bought-service-license">None</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    
+                                    <!--description-->
+                                    <div class=" margin-top-10 padding-top-20 info-block" style="clear:both" >
+                                        <h3><span class="fa fa-caret-square-o-right"></span> What the service offers</h3>
+                                        <p id="bought-service-descr" class="padding-left-5"><i class="fa fa-quote-left text-muted"></i><i class="fa fa-quote-right text-muted"></i></p>
+                                    </div>
+
+                                    <!--instructions-->
+                                    <div class="margin-top-10 padding-bottom-percent-1 info-block">
+                                        <h3><span class="fa fa-book"></span> Instructions</h3>
+                                        <div class="margin-top-10 margin-bottom-10 padding-left-5">
+                                            <h4>Requirements</h4>
+                                            <div id="bought-service-requirements">None</div>
+                                        </div>
+
+                                        <div class="margin-top-10 margin-bottom-10 bought-machine-service hidden padding-left-5">
+                                            <h4>How to install it</h4>
+                                            <div id="bought-service-installation"></div>
+                                        </div>
+
+                                        <div class="margin-top-10 margin-bottom-10 padding-left-5">
+                                            <h4>How to exploit it</h4>
+                                            <div id="bought-service-usage-guide"></div>
+                                        </div>
+                                        <div class="margin-top-10 margin-bottom-10 padding-left-5 hidden">
+                                            <h4>Useful link</h4>
+                                            <div id="bought-service-link"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!--Restrictions-->
+                                    <div class="margin-top-10 padding-bottom-percent-1 info-block" >
+                                        <h3><span class="fa fa-filter"></span> Restrictions</h3>
+                                        <div class="margin-top-10 margin-bottom-10 padding-left-5">
+                                            <h4>Languages availability</h4>
+                                            <div id="bought-service-languages">All languages are supported</div>
+                                        </div>
+
+                                        <div class="margin-top-10 margin-bottom-10 hidden padding-left-5" id="bought-service-map">
+                                            <h4>Spatial coverage</h4>
+                                            <div id="map" style="height:30%; min-height:300px; overflow:visible!important; border:1px solid dimgray" ></div>
+                                        </div>
+                                        
+                                        <div class="margin-top-10 margin-bottom-10 padding-left-5">
+                                            <h4>Other comment</h4>
+                                            <div id="bought-service-other-constraints"></div>
+                                        </div>
+                                    </div>
+
+                                    <!--configuration-->
+                                    <div class="margin-top-10 padding-bottom-percent-1 hidden info-block">
+                                        <h3><span class="fa fa-bell-o"></span> Service configuration</h3>
+                                        <div id="bought-service-configuration" class="padding-left-5"></div>
+                                    </div>
+
+                                    <!--technical support-->
+                                    <div class="margin-top-10 padding-bottom-percent-1 info-block" >
+                                        <h3><span class="fa fa-support"></span> Troubleshooting</h3>
+                                        <div class="padding-left-5">
+                                            <h4>Videos</h4>
+                                            <div id="bought-service-support-videos"></div>
+                                            <h4>Documents</h4>
+                                            <div id="bought-service-support-docs"></div>
+                                            <h4>Ask a volunteer</h4>
+                                            <div id="bought-service-support-volunteers">No available</div>
+                                            <h4>Ask a professional</h4>
+                                            <div id="bought-service-support-volunteers">No available</div>
+                                            <h4> Chat with service provider</h4>
+                                            <div id="bought-service-provider-skype"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="tab-pane fade" id="wishlist">
                             <table id="selected-services-table"
                                     data-classes="table table-hover "
                                     data-search="true"  
@@ -57,47 +230,27 @@
                                     data-show-columns="true"
                                     data-card-view="false"
                                     data-click-to-select="false"
-                                    data-toolbar="#carer-request"
                                     data-pagination="true"
-                                    data-page-list="[5, 10, 15, 20, 30]"
-                                    data-sort-name="request_creation" data-sort-order="asc">
+                                    data-page-list="10, 20, 30, all]"   
+                                    data-sort-name="title" data-sort-order="asc">
                                 <thead class="custom-aod-table-thead">
                                 <tr>
-                                    <th data-field="id" data-sortable="true" data-switchable="false" data-visible="false" >#</th>
+                                    <th data-field="id" data-sortable="true" data-switchable="false" data-visible="false" ></th>
                                     <th data-field="title" data-align="center" data-sortable="true">Service title</th>
                                     <th data-field="description" data-align="center" data-sortable="true" >Description</th>
                                     <th data-field="type" data-align="center" data-sortable="true" data-visible="true" data-formatter="setTypeFormatter">Type</th>
                                     <th data-field="price" data-sortable="true" data-visible="true" >Price</th>
-                                    <th data-field="price" data-sortable="true" data-visible="true" data-formatter="setRemoveFormatter">Remove</th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
-
-                        <div class="tab-pane fade" id="purchased" style="color:black">
-                           <table id="purchased-services-table"
-                                    data-classes="table table-hover"
-                                    data-search="true"  
-                                    data-show-toggle="false"
-                                    data-show-columns="true"
-                                    data-card-view="false"
-                                    data-click-to-select="false"
-                                    data-toolbar="#carer-request"
-                                    data-pagination="true"
-                                    data-page-list="[5, 10, 15, 20, 30]"
-                                    data-sort-name="request_creation" data-sort-order="asc">
-                                <thead class="custom-aod-table-thead">
-                                <tr>
-                                    <th data-field="id" data-sortable="true" data-switchable="false" data-visible="false">#</th>
-                                    <th data-field="title" data-align="center" data-sortable="true">Service title</th>
-                                    <th data-field="description" data-align="center" data-sortable="true" >Description</th>
-                                    <th data-field="type" data-align="center" data-sortable="true" data-visible="true" data-formatter="setTypeFormatter">Type</th>
-                                    <th data-field="price" data-sortable="true" data-visible="true" >Price</th>
+                                    <th data-field="action" data-sortable="true" data-visible="true" data-formatter="setRemoveFormatter">Remove</th>
                                 </tr>
                                 </thead>
                             </table>
                         </div>
                     </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 margin-top-50" style="clear:both">
+                    <center>
+                        <a href="{% url 'carer-landing-page' %}" class="btn btn-default" >Back to carer dashboard</a>
+                    </center>
                 </div>
             </div>
         </main>
@@ -113,8 +266,13 @@
         <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
         <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
         <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/nas/preview/main.js' %}"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM"></script>
+        <script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
 
         <script type="text/javascript">
+            
+            google.maps.event.addDomListener(window, 'load', getMap);
 
             $(document).ready(function () {
                 var selectedServices = [];
@@ -129,28 +287,23 @@
                         'description': '{{ i.description }} ', 
                         'type': '{{ i.type }}', 
                         'price': '{{ i.price }}' +' ({{i.unit}})',
-                        'consumerId': '{{consumerId}}'
+                        'consumerId': '{{consumer.id}}'
                     });
-
                     {% endfor %}
                 {% endif %}
 
                 $('#selected-services-table').bootstrapTable({
                     data: selectedServices
                 });
+                
 
 
                 {% if purchasedServices %}
                     {% for i in purchasedServices %}
-
                     purchasedServices.push({
                         'id': '{{ i.id }}', 
-                        'title' : '{{i.title}}',    
-                        'description': '{{ i.description }} ', 
-                        'type': '{{ i.type }}', 
-                        'price': '{{ i.price }}' +' ({{i.unit}})'
+                        'title' : '{{i.title}}'
                     });
-
                     {% endfor %}
                 {% endif %}
 
@@ -158,75 +311,12 @@
                     data: purchasedServices
                 });
 
+                $('.fixed-table-body').css('height', 'auto').css('border-top-right-radius', '3px');
+                $("#purchased-services-table").bootstrapTable('check', 0);
             });
 
-
-
-            function setTypeFormatter(value, row, index) {
-                if (value == "H") {
-                    return '<i class="fa fa-users fa-lg"></i> Human-based';
-                }
-                return '<i class="fa fa-laptop fa-lg"></i> Machine-based';
-            }
-
-
-            function setRemoveFormatter(value, row, index){
-                return [
-                    '<button class="btn btn-danger btn-xs nas-select-btn" data-service-id="' + row["id"] + '"  data-consumer-id="' + row["consumerId"] + '">',
-                    '<i class="fa fa-remove fa-lg  cursor-pointer"></i> <span>Remove</span>',
-                    '</button>',
-                ].join('');
-            }
-
-            $.ajaxSetup({
-                beforeSend: function (xhr, settings) {
-                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                        xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
-                    }
-                }
-            });
-
-
-            $(document).on('click', '.nas-select-btn', function(){
-                var info = { service_id: $(this).data('serviceId'), consumer_id: $(this).data('consumerId') };
-                popTemporalService(info);
-                
-            });
-
-
-            function popTemporalService(info) {
-                //var loading = new AjaxView($('#current-step-services'));
-                //loading.show();
-
-                $.ajax({
-                    type: 'delete',
-                    url: "/network-assistance-services/services/temporal-setup",
-                    data: JSON.stringify(info),
-                    beforeSend: function (xhr, settings) {
-                        $.ajaxSettings.beforeSend(xhr, settings);
-                    },
-                    contentType: 'application/json',
-                    success: function (response) {
-                        console.info(response);
-                        location.reload();
-                    },
-                    error: function (response) {
-                        swal({
-                            html: false,
-                            title: "Interesting services",
-                            text: 'Sorry, an error has occurred',
-                            type: "warning",
-                            confirmButtonText: "Try again!",
-                            confirmButtonColor: "#d9534f"
-                        });
-                    },
-                    complete: function () {
-                        //loading.hide();
-                    }
-                });
-                return true;         
-            }
-
+            
         </script>
 
+        <script src="{% static 'app/scripts/sweetalert/sweetalert.min.js' %}"></script>
     {% endblock scripts %}

@@ -7,7 +7,7 @@
     <!--title-->
     <div class="row form-group">
         <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_title" title="Enter the title of the service">Title<small class="mandatory-field">*</small></label>
+            <label class="pull-right control-label" for="srv_title" title="Enter the title of the service">Title<span class="mandatory-field"> *</span></label>
         </div>
         <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Enter the title of the service">
             <span class="input-group-addon">
@@ -23,7 +23,7 @@
     <!--description-->
     <div class="row form-group">
         <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_description" title="Description of the service">Description<small class="mandatory-field">*</small></label>
+            <label class="pull-right control-label" for="srv_description" title="Description of the service">Description<span class="mandatory-field"> *</span></label>
         </div>
         <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Description of the service" id="srv_description_node">
             <span class="input-group-addon">
@@ -36,10 +36,55 @@
         </div>
     </div>
 
+    <!--service type-->
+    <div class="row form-group">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_type" title="Type of the service">Type<span class="mandatory-field"> *</span></label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Type of the service" id="srv_type_node">
+            <span class="input-group-addon">
+                <span class="fa fa-info fa-fw" role="img"></span>
+            </span>
+            <select class="selectpicker form-control show-tick"  name="srv_type" id="srv_type" data-max-options="1" data-size="3"  data-header="Select the type of the service" data-live-search="false" title="-- Select the type --">
+                <option value="-1" disabled selected>-- Select the type --</option> 
+                {% if types %}
+                    {% for i in types %}
+                        {% if service.type == i.id %}
+                            <option value="{{ i.id }}" selected>{{ i.description }}</option>
+                        {% else %}
+                            <option value="{{ i.id }}">{{ i.description }}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3">
+            <label id="srv_type_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Title required"></label>
+        </div>
+    </div>
+
+    <!--categories list-->
+    <div class="row form-group">
+        <div class="col-sm-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_category" title="Clarify the service in categories">Category<span class="mandatory-field"> *</span></label>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Clarify the service in categories" id="srv_category_node">
+            <span class="input-group-addon">
+                <span class="fa fa-info fa-fw" role="img"></span>
+            </span>
+            <select class="selectpicker form-control"  name="srv_category" id="srv_category" data-size="6"  data-header="Clarify your service" data-live-search="true" role="list" title="-- Clarify your service --" data-selected-text-format="count>3" multiple>
+                <!--append categories-->
+            </select>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3">
+            <label id="srv_category_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Title required"></label>
+        </div>
+    </div>
+
    <!--image/logo-->
     <div class="row form-group">
         <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_logo" title="The image of the service">Image<small class="mandatory-field">*</small></label>
+            <label class="pull-right control-label" for="srv_logo" title="The image of the service">Image<span class="mandatory-field"> *</span></label>
         </div>
         <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12 input-group controls" title="The logo of the service">
             {% if service %}
@@ -48,7 +93,7 @@
                 <input type="file" id="srv_logo" name="srv_logo" accept="image/*" size="1" style="display:none" form="insert-new-service" />
             {% endif %}
             <div class="row col-md-12 col-sm-12 col-lg-12 col-xs-12">
-                <img id="thumbnail" class="img-thumbnail img-responsive" src="#" style="border:1px solid #D8D8D8" alt=""/>
+                <img id="thumbnail" class="img-thumbnail img-responsive" src="{{ MEDIA_URL}}app/services/images/{{ service.image }}" style="border:1px solid #D8D8D8; max-width:450px" alt="Service logo"/>
             </div>
         </div>
         <div class="col-xs-6 col-sm-3 col-md-3">
@@ -68,30 +113,6 @@
                     <i class="fa fa-remove fa-fw text-danger"></i> Clear image
                 </a>
             </div>
-        </div>
-    </div>
-
-   <!--version-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12" title="The version and licenses of the service">
-            <label class="pull-right  control-label" for="srv_license">, Licenses</label>
-            <label class="pull-right control-label" for="srv_version">Version</label>
-        </div>
-        <div class="col-md-6 col-sm-3 col-lg-3 col-xs-12 input-group controls" title="The version of the service">
-            <span class="input-group-addon">
-                <span class="fa fa-tag fa-fw" role="img"></span>
-            </span>
-            <input type="text" class="form-control" name="srv_version" id="srv_version" value="{{ service.version|safe }}" autocomplete="off" maxlength="10" placeholder="Current version" autofocus />    
-        </div>
-        <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12 input-group controls" title="The license of the service">
-            <span class="input-group-addon">
-                <span class="fa fa-life-buoy fa-fw" role="img"></span>
-            </span>
-            <input type="text" class="form-control" name="srv_license" id="srv_license"  value="{{ service.license|safe }}" autocomplete="off" maxlength="25" placeholder="License" autofocus />    
-        </div>
-
-        <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_version_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Enter a valid version"></label>
         </div>
     </div>
 
@@ -151,82 +172,77 @@
         </div>
     </div>
 
-    <!--service type-->
+
+   <!--version-->
     <div class="row form-group">
-        <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_type" title="Type of the service">Type<small class="mandatory-field">*</small></label>
+        <div class="col-sm-3 col-xs-12" title="The version and licenses of the service">
+            <label class="pull-right  control-label" for="srv_license">, Licenses</label>
+            <label class="pull-right control-label" for="srv_version">Version</label>
         </div>
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Type of the service" id="srv_type_node">
+        <div class="col-md-6 col-sm-3 col-lg-3 col-xs-12 input-group controls" title="The version of the service">
             <span class="input-group-addon">
-                <span class="fa fa-info fa-fw" role="img"></span>
+                <span class="fa fa-tag fa-fw" role="img"></span>
             </span>
-            <select class="selectpicker form-control show-tick"  name="srv_type" id="srv_type" data-max-options="1" data-size="3"  data-header="Select the type of the service" data-live-search="false" title="-- Select the type --">
-                <option value="-1" disabled selected>-- Select the type --</option> 
-                {% if types %}
-                    {% for i in types %}
-                        {% if service.type == i.id %}
-                            <option value="{{ i.id }}" selected>{{ i.description }}</option>
-                        {% else %}
-                            <option value="{{ i.id }}">{{ i.description }}</option>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            </select>
+            <input type="text" class="form-control" name="srv_version" id="srv_version" value="{{ service.version|safe }}" autocomplete="off" maxlength="10" placeholder="Current version" autofocus />    
         </div>
+        <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12 input-group controls" title="The license of the service">
+            <span class="input-group-addon">
+                <span class="fa fa-life-buoy fa-fw" role="img"></span>
+            </span>
+            <input type="text" class="form-control" name="srv_license" id="srv_license"  value="{{ service.license|safe }}" autocomplete="off" maxlength="25" placeholder="License" autofocus />    
+        </div>
+
         <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_type_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Title required"></label>
+            <label id="srv_version_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Enter a valid version"></label>
         </div>
     </div>
 
-    <!--categories list-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_category" title="Clarify the service in categories">Category<small class="mandatory-field">*</small></label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Clarify the service in categories" id="srv_category_node">
-            <span class="input-group-addon">
-                <span class="fa fa-info fa-fw" role="img"></span>
-            </span>
-            <select class="selectpicker form-control"  name="srv_category" id="srv_category" data-size="6"  data-header="Clarify your service" data-live-search="true" role="list" title="-- Clarify your service --" data-selected-text-format="count>3" multiple>
-                {% if categories %}
-                    {% for i in categories %}
-                        {% if i in service.categories.all %}
-                            <option value="{{ i.id }}" title="{{ i.title }}" selected>{{ i.title }}</option>  
-                        {% else %}
-                            <option value="{{ i.id }}" title="{{ i.title }}">{{ i.title }}</option>  
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            </select>
-        </div>
-        <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_category_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Title required"></label>
-        </div>
-    </div>
+
 
    <!--keyword-->
     <div class="row form-group">
         <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_keyword" title="Keyword related to the service">Related Keywords<small class="mandatory-field">*</small></label>
+            <label class="pull-right control-label" for="srv_keyword" title="Keyword related to the service">Related Keywords<span class="mandatory-field"> *</span></label>
         </div>
         <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12 input-group controls" title="Keyword related to the service">
             <span class="input-group-addon">
-                <span class="fa fa-info fa-fw" role="img"></span>
+                <span class="fa fa-tag fa-fw" role="img"></span>
             </span>
-            <input type="text" class="form-control" name="srv_keyword" id="srv_keyword" autocomplete="off" maxlength="100" placeholder="Enter a keyword" />    
+            <input type="text" class="form-control" name="srv_keyword" id="srv_keyword" autocomplete="off" maxlength="100" placeholder="Enter a keyword" data-placement="right" title="Enter your keyword and press ENTER"/>    
         </div>
         <div class="col-sm-2 col-xs-6">
+            <!--
             <button type="button" class="btn btn-link" id="add_new_srv_keyword" role="option" title="Send keyword to list"> 
-                <i class="fa fa-plus fa-fw text-primary"></i> Send keyword to list
+                <span class="fa fa-plus fa-fw text-primary"></span> Send keyword to list
             </button>
+            -->
         </div>
         <div class="col-xs-6 col-sm-3 col-md-3">
             <label id="srv_keywords_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Keyword(s) is(are) required"></label>
         </div>
     </div>
 
-    <!--list of keywords-->
-    <div class="row form-group">
+    <div>
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"></div>
+        <div class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
+            <span class="fa fa-info-circle fa-fw text-primary"></span> Enter your keyword and press ENTER
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"></div>
+        <div id="test" class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
+            {% if keywords %}
+                {% for k in keywords %}
+                    <label class="label label-primary margin-right-5"><span class="fa fa-remove fa-fw remove-kwd cursor-pointer"></span> <span class="srv_keyword_list ">{{ k.title }} </span></label>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+
+    <!--list of keywords: deprecated-->
+    <div class="row form-group hidden">
         <div class="col-md-offset-3 col-md-4 col-sm-offset-3 col-lg-4 col-xs-12 input-group controls" title="List of entered keywords">
             <span class="input-group-addon">
                 <span class="fa fa-tags fa-fw" role="img"></span>
@@ -251,9 +267,12 @@
     </div>
 
     <!--info-->
+    <hr>
     <div class="row form-group">
-        <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="Mandotory fields">
-            <span class="text-center mandatory-field">*</span> Mandatory fields
+        <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="Mandatory fields">
+            <h5><span class="text-center mandatory-field">* </span>Mandatory fields</h5>
         </div>
     </div>
+
+
 </div>

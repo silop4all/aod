@@ -21,6 +21,7 @@ function deleteService(url) {
         success: function (response) {
             if (response.state === true) {
                 window.location.href = response.redirect;
+                window.location.href = "/offerings";
             }
         },
         error: function (response) {

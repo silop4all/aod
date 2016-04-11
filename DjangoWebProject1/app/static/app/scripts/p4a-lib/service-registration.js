@@ -1,12 +1,64 @@
 ﻿// On document ready..
 $(document).ready(function () {
+    // load categories in as a tree
+    $.ajax({
+        type: 'GET',
+        url: "/api/v1/categories/tree",
+        data: { level: 0 },
+        headers: { "accept": "application/json", "content-type": "application/json" },
+        beforeSend: function (xhr, settings) {
+            $.ajaxSettings.beforeSend(xhr, settings);
+        },
+        contentType: 'application/json',
+        success: function (response) {
+            // @todo on update
+            var categoriesLists = [];
+    
+            var options = '';
+            var data = response.results;
+            for (var root in data) {
+                options += '<optgroup label="' + data[root].title + '">';
+
+                var childs = data[root].children;
+                for (var i in childs) {
+                    if ($.inArray(childs[i].id, categoriesLists) > -1) {
+                        options += '<option value="' + childs[i].id + '" title="' + childs[i].title + '" selected>' + childs[i].title + ' </option>';
+                    }
+                    else {
+                        options += '<option value="' + childs[i].id + '" title="' + childs[i].title + '">' + childs[i].title + ' </option>';
+                    }
+                    
+
+                    var leafs = childs[i].children;
+                    for (var j in leafs) {
+                        if ($.inArray(leafs[j].id, categoriesLists) > -1) {
+                            options += '<option data-content="<span class=\'padding-left-20\'>  ' + leafs[j].title + '</span>" data-icon="fa fa-minus" value="' + leafs[j].id + '" selected>' + leafs[j].title + '</option>';
+                        }
+                        else {
+                            options += '<option data-content="<span class=\'padding-left-20\'>  ' + leafs[j].title + '</span>" data-icon="fa fa-minus" value="' + leafs[j].id + '">' + leafs[j].title + '</option>';
+                        }
+                    }
+                }
+                options += '</optgroup>';
+            }
+            $("#srv_category").append(options);
+            $("#srv_category").selectpicker('refresh');
+        },
+        error: function (response) {
+            console.error(response);
+        },
+        complete: function () {
+        }
+    });
+
+
     $("div#service-registration-wizard > div > ul > li").click(function () {
         return preventClickTab($(this));
     });
 
     // Initiate tooltip
-    $("[data-toggle=tooltip]").tooltip();
-
+    //$("[data-toggle=tooltip]").tooltip();
+    //$('input').tooltip({ trigger: "hover" });
 
     ///////////////////////////
     // 1st step: Basic
@@ -40,6 +92,12 @@ $(document).ready(function () {
         //return false;
     });
 
+    $('#srv_keyword').keypress(function (e) {
+        var key = e.which;
+        if (key == 13)  {
+            appendServiceKeyword();
+        }
+    });
     $("#remove_srv_keyword").click(function () {
         removeServiceKeywords();
     });
@@ -124,7 +182,24 @@ $(document).ready(function () {
         if ($(this).hasClass('disabled')) { return false; }
         setPagers(parseInt($(this).find('a').attr('href').replace(/\D/g, '')));
     })
+
+
+
 });
+
+
+$(document).on('click', ".remove-kwd", function () {
+    $(this).parent().remove();
+})
+
+$(document).on('change', "#srv_coverage", function () {
+    getMap();
+}).on('change', "#srv_latitude", function () {
+    getMap();
+}).on('change', "#srv_longitude", function () {
+    getMap();
+});
+
 
 ///////////////////////////
 //      Logo
@@ -165,10 +240,14 @@ function removeLogo() {
 
 // Append keywords for the new service
 function appendServiceKeyword() {
-    var filterVal = $("#srv_keyword").val().replace(/\s+/, '');
+    var keyword = $("#srv_keyword").val().replace(/\s+/, '');
 
-    if (filterVal.length) {
-        $("#srv_keyword_list").append('<option value="' + $("#srv_keyword").val() + '" selected>' + $("#srv_keyword").val() + '</option>');
+    if (keyword.length) {
+        var tag = '<label class="label label-primary"><span class="fa fa-remove fa-fw remove-kwd cursor-pointer"></span> <span class="srv_keyword_list">' + keyword + '</span></label> ';
+        $("#test").append(tag);
+
+    //if (filterVal.length) {
+        //$("#srv_keyword_list").append('<option value="' + $("#srv_keyword").val() + '" selected>' + $("#srv_keyword").val() + '</option>');
         $("#srv_keyword").val("");
     }
 }
@@ -268,6 +347,10 @@ function nextStep() {
             // show previous btn
 
             setPagers(newID);
+
+            if (newID == 4) {
+                getMap();
+            }
         }
     }
 }
@@ -355,7 +438,7 @@ function getMap() {
     var coordinates = new google.maps.LatLng(lat, lng);
     // Set options
     var mapOptions = {
-        zoom: 7,
+        zoom: 8,
         center: coordinates,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         panControl: false,
@@ -377,12 +460,24 @@ function getMap() {
         draggable: true
     });
 
+    var radius = ($("#srv_coverage").val() === undefined) ? 0 : $("#srv_coverage").val() * 1000;
+    var area = new google.maps.Circle({
+        strokeColor: 'red',
+        strokeOpacity: 0.8,
+        fillColor: '#AAAAAA',
+        fillOpacity: 0.4,
+        strokeWeight: 2,
+        map: map,
+        center: coordinates,
+        radius: radius
+    });
+
     // Handle user actions
     google.maps.event.addListener(marker, 'click', function (event) {
-        new setCoordinates(event);
+        new setCoordinates(event, radius, map);
     });
     google.maps.event.addListener(marker, 'dragend', function (event) {
-        new setCoordinates(event);
+        new setCoordinates(event, radius, map);
     });
     // Set marker in center
     map.setCenter(marker.position);
@@ -390,9 +485,20 @@ function getMap() {
 }
 
 // Set the coordinates
-function setCoordinates(event) {
+function setCoordinates(event, radius, map) {
     $("#srv_latitude").val(event.latLng.lat().toFixed(4));
     $("#srv_longitude").val(event.latLng.lng().toFixed(4));
+
+    var circle = new google.maps.Circle({
+        strokeColor: 'red',
+        strokeOpacity: 0.8,
+        fillColor: '#AAAAAA',
+        fillOpacity: 0.4,
+        strokeWeight: 2,
+        map: map,
+        center: new google.maps.LatLng(event.latLng.lat().toFixed(4), event.latLng.lng().toFixed(4)),
+        radius: radius
+    });
 }
 
 //////////////////////
@@ -432,7 +538,8 @@ $("#register-btn").click(function (event) {
                         if (response.state === true) {
                             setTimeout(function () {
                                 loading.hide();
-                                window.location.href = response.link;
+                                //window.location.href = response.link;
+                                window.location.href = "/offerings";
                             }, 600);
                         }
                     },
@@ -487,7 +594,7 @@ $("#update-btn").click(function (event) {
     var form = $("#insert-new-service");
     var payload = collectControlData(form);
     var url = $(this).data().url;
-    var mediaURL = "/provider/services/media/upload/";
+    var mediaURL = "/offerings/services/media/upload/";
     var files = new FormData(form[0]);
 
     var loading = new AjaxView($("#service-registration-wizard"));
@@ -549,15 +656,20 @@ function collectControlData(form) {
     if (!payload["srv_geolocation"]) {
         payload['srv_latitude'] = 0.0;
         payload['srv_longitude'] = 0.0;
+        payload['srv_coverage'] = 0;
     }
     // keywords
     payload["srv_keywords"] = []
-    $("#srv_keyword_list >option").each(function (i) {
-        var keyword = $(this).attr("value");
-        if (i != 0) {
-            payload["srv_keywords"][i] = keyword;
-        }
-    })
+    //$("#srv_keyword_list >option").each(function (i) {
+    //    var keyword = $(this).attr("value");
+    //    if (i != 0) {
+    //        payload["srv_keywords"][i] = keyword;
+    //    }
+    //})
+    $(".srv_keyword_list").each(function (i) {
+        payload["srv_keywords"][i] = $(this).text();
+    });
+
     // language constraint: null if no constraint
     payload["srv_language"] = []
     $("#srv_language >option:selected").each(function (i) {

@@ -108,24 +108,24 @@
             {% if popularService %}
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 on-mouseover service-banner" id="srv-{{ popularService.id }}" style="min-height:400px!important">
                 <div class="thumbnail">
-                    <img src="../../static/app/images/home/popular.png" alt="What's Hot">
+                    <img src="../../static/app/images/home/popular.png" alt="Most popular service">
                     <div class="caption">
                     <span class="fa-stack fa-3x img-responsive" style="margin-top:-55px;">
-                            <i class="fa fa-circle fa-2x fa-stack-2x text-info"></i>
-                            <i class="fa fa-user fa-lg fa-stack-1x fa-inverse"></i>
+                            <span class="fa fa-circle fa-2x fa-stack-2x text-info"></span>
+                            <span class="fa fa-user fa-lg fa-stack-1x fa-inverse"></span>
                         </span>
                         <a>{{ popularService.title}}</a>
                         <br>
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
                                 {{ popularService.description|slice:":400"}}...
-                                <a href="login/" class="btn btn-success btn-xs">Buy it <i class="fa fa-shopping-cart"></i></a>
+                                <a href="login/" class="btn btn-success btn-xs">Buy it <span class="fa fa-shopping-cart"></span></a>
                             </div>
                         </div>
                         <br>
                         <div class="row">
                             <div class="col-sm-8 col-lg-8 col-md-8 col-xs-8" id="srv-rating-{{ popularService.id }}" >
-                                <span><b>{{ popularService.rating }}</b></span>
+                                <span><strong>{{ popularService.rating }}</strong></span>
                                 <span class="fa fa-star-o star-colorize-yellow star-rating-1"></span>
                                 <span class="fa fa-star-o star-colorize-yellow star-rating-2"></span>
                                 <span class="fa fa-star-o star-colorize-yellow star-rating-3"></span>
@@ -133,13 +133,13 @@
                                 <span class="fa fa-star-o star-colorize-yellow star-rating-5"></span>
                             </div>
                             <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">
-                                <b class="pull-right">
+                                <strong class="pull-right">
                                 {% if popularService.charge_model.title == "Free" %}
                                     Free
                                 {% else %}
                                     {{ popularService.price }}{{ popularService.unit }}
                                 {% endif %}
-                                </b>
+                                </strong>
                             </div>
                         </div>
                         <div class="row">
@@ -172,21 +172,21 @@
                     <img src="../../static/app/images/home/new-2.png" alt="Most recently service">
                     <div class="caption">
                     <span class="fa-stack fa-3x img-responsive" style="margin-top:-55px;">
-                            <i class="fa fa-circle fa-2x fa-stack-2x text-info"></i>
-                            <i class="fa fa-user fa-lg fa-stack-1x fa-inverse"></i>
+                            <span class="fa fa-circle fa-2x fa-stack-2x text-info"></span>
+                            <span class="fa fa-user fa-lg fa-stack-1x fa-inverse"></span>
                         </span>
                         <a>{{ latestService.title}}</a>
                         <br>
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
                                 {{ latestService.description|slice:":800"}}...
-                                <a href="login/" class="btn btn-success btn-xs">Buy it <i class="fa fa-shopping-cart"></i></a>
+                                <a href="login/" class="btn btn-success btn-xs">Buy it <span class="fa fa-shopping-cart"></span></a>
                             </div>
                         </div>
                         <br>
                         <div class="row">
                             <div class="col-sm-8 col-lg-8 col-md-8 col-xs-8" id="srv-rating-{{ latestService.id }}" >
-                                <span><b>{{ latestService.rating }}</b></span>
+                                <span><strong>{{ latestService.rating }}</strong></span>
                                 <span class="fa fa-star-o star-colorize-yellow star-rating-1"></span>
                                 <span class="fa fa-star-o star-colorize-yellow star-rating-2"></span>
                                 <span class="fa fa-star-o star-colorize-yellow star-rating-3"></span>
@@ -194,13 +194,13 @@
                                 <span class="fa fa-star-o star-colorize-yellow star-rating-5"></span>
                             </div>
                             <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">
-                                <b class="pull-right">
+                                <strong class="pull-right">
                                 {% if latestService.charge_model.title == "Free" %}
                                     Free
                                 {% else %}
                                     {{ latestService.price }}{{ latestService.unit }}
                                 {% endif %}
-                                </b>
+                                </strong>
                             </div>
                         </div>
                         <div class="row">
@@ -229,7 +229,7 @@
 
             <div class="col-sm-4 col-md-4 col-xs-12">
                 <div class="thumbnail">
-                    <img src="../../static/app/images/home/about.png" alt="Guide to the site">
+                    <img src="../../static/app/images/home/about.png" alt="AoD description">
                     <div class="caption">
                         <p style="text-align: justify">P4A AoD will adopt leading edge cloud computing technologies to efficiently 
                             support scalable access to services from/across different hardware/software platforms. Flexibility with 

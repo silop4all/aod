@@ -10,6 +10,12 @@
 
     {% load staticfiles %}
 
+    {% block extraCss %}
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-tree/jquery.tree.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
+    {% endblock extraCss %}
+
     {% block content %}
     <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
     
@@ -35,7 +41,7 @@
                                     <!--categories list-->
                                     <div class="form-group" id="categories-panel">
                                         <div class="panel-group" id="categories-id" role="tablist" aria-multiselectable="true" >
-                                            <div class="panel panel-success" style="border:0!important">
+                                            <div class="panel  panel-custom-success">
                                                 <div class="panel-heading" role="tab" id="categories-title">
                                                       <h4 class="panel-title" title="Categories">
                                                             <a data-toggle="collapse" data-parent="#categories-id" href="#categories-list" aria-expanded="true" aria-controls="categories-list">
@@ -46,18 +52,10 @@
                                                 </div>
                                             
                                                 <div id="categories-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="categories-title">
-                                                    <div class="panel-body " style="background-color:whitesmoke">
-                                                    {% if categories %}
-                                                        {% for category in categories %}
-                                                            <div class="row form-group checkbox">
-                                                                <label for="category-{{ category.id }}">
-                                                                    <input type="checkbox" id="category-{{ category.id }}" name="category-{{ category.id }}" data-id="{{ category.id }}" data-name="category-{{ category.id }}"/> 
-                                                                    <span>{{ category.title }} </span>
-                                                                    <span class="label label-success pull-right">{{ category.servNo }} </span>
-                                                                </label>
-                                                            </div>
-                                                        {% endfor %}
-                                                    {% endif %}
+                                                    <div class="panel-body" style="background-color:whitesmoke">
+    
+                                                    <!--append categories tree-->
+                                                    <div id="tree" style="margin-left: -40px"></div>
                                                      </div>
                                                 </div>
                                             </div>
@@ -67,7 +65,7 @@
                                     <!--Companies-->
                                     <div class="form-group" id="companies-panel">
                                         <div class="panel-group" id="companies-id" role="tablist" aria-multiselectable="true" >
-                                            <div class="panel panel-success" style="border:0!important;">
+                                            <div class="panel panel-custom-success" >
                                                 <div class="panel-heading" role="tab" id="companies-title">
                                                       <h4 class="panel-title" title="Companies/Providers">
                                                             <a data-toggle="collapse" data-parent="#companies-id" href="#companies-list" aria-expanded="true" aria-controls="companies-list">
@@ -81,11 +79,9 @@
                                                         {% if providers %}
                                                             {% for provider in providers %}
                                                             <div class="checkbox">
-                                                                <label for="provider-{{ provider.id }}">
-                                                                    <input type="checkbox" id="provider-{{ provider.id }}" name="provider-{{ provider.id }}" data-id="{{ provider.id }}" data-name="provider-{{ provider.id }}"/> 
-                                                                    <span>{{ provider.name }}</span>
-                                                                    <span class="label label-success pull-right">{{ provider.servNo }} </span>
-                                                                </label>
+                                                                <input type="checkbox" id="provider-{{ provider.id }}" name="provider-{{ provider.id }}" data-id="{{ provider.id }}" data-name="provider-{{ provider.id }}"/> 
+                                                                <label for="provider-{{ provider.id }}" style="line-height:initial">{{ provider.name }}</label>
+                                                                <span class="label label-success pull-right">{{ provider.servNo }} </span>
                                                             </div>
                                                             {% endfor %}
                                                         {% endif %}
@@ -99,7 +95,7 @@
                                     <!--types-of-services-->
                                     <div class="form-group" id="service-types-panel">
                                         <div class="panel-group" id="service-types-id" role="tablist" aria-multiselectable="true" style="border-radius:0px!important">
-                                            <div class="panel panel-success"  style="border:0!important">
+                                            <div class="panel panel-custom-success">
                                                 <div class="panel-heading" role="tab" id="service-types-title">
                                                       <h4 class="panel-title" title="Types of services">
                                                             <a data-toggle="collapse" data-parent="#service-types-id" href="#service-types-list" aria-expanded="true" aria-controls="service-types-list">
@@ -111,16 +107,14 @@
                                                 <div id="service-types-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="service-types-title">
                                                     <div class="panel-body " style="background-color:whitesmoke">
                                                         <div class="checkbox">
-                                                            <label for="human_service_type">
-                                                                <input type="checkbox" id="human_service_type" name="human_service_type" data-id="h" /> Human
-                                                                <span class="label label-success pull-right">{% if servicesTypes %} {{ servicesTypes.human }} {% endif %}</span>
-                                                            </label>
+                                                            <input type="checkbox" id="human_service_type" name="human_service_type" data-id="h" /> 
+                                                            <label for="human_service_type" style="line-height:initial">Human</label>
+                                                            <span class="label label-success pull-right" >{% if servicesTypes %} {{ servicesTypes.human }} {% endif %}</span>
                                                         </div>       
                                                         <div class="checkbox">
-                                                            <label for="machine_service_type">
-                                                                <input type="checkbox" id="machine_service_type" name="machine_service_type" data-id="m"/> Machine
-                                                                <span class="label label-success pull-right">{% if servicesTypes %} {{ servicesTypes.machine }} {% endif %}</span>
-                                                            </label>
+                                                            <input type="checkbox" id="machine_service_type" name="machine_service_type" data-id="m"/> 
+                                                            <label for="machine_service_type" style="line-height:initial">Machine</label>
+                                                            <span class="label label-success pull-right" >{% if servicesTypes %} {{ servicesTypes.machine }} {% endif %}</span>
                                                         </div>     
                                                      </div>
                                                 </div>
@@ -131,7 +125,7 @@
                                     <!--payment policy-->
                                     <div class="form-group" id="charging-model-panel">
                                         <div class="panel-group" id="charging-model-id" role="tablist" aria-multiselectable="true">
-                                            <div class="panel panel-success" style="border:0!important">
+                                            <div class="panel panel-custom-success">
                                                 <div class="panel-heading" role="tab" id="charging-model-title">
                                                       <h4 class="panel-title" title="Payment policies">
                                                             <a data-toggle="collapse" data-parent="#charging-model-id" href="#charging-model-list" aria-expanded="true" aria-controls="charging-model-list">
@@ -163,17 +157,12 @@
                                                         {% for model in chargingModels %}
                                                             {% if model.name == "Free" %}
                                                             <div class="checkbox">
-                                                                <label for="charging-model-{{ model.id }}">
-                                                                    <input type="checkbox" id="charging-model-{{ model.id }}" name="charging-model-{{ model.id }}" data-id="{{ model.id }}" data-name="charging-model-{{ model.id }}"/> 
-                                                                    <span>{{ model.name }}</span>
-                                                                
-                                                                </label>
-                                                                <br>
-                                                               <label for="charging-model-0">
-                                                                    <input type="checkbox" id="charging-model-0" name="charging-model-paid" data-id="0" data-name="charging-model-paid"/> 
-                                                                    <span>Paid</span>
-                                                                
-                                                                </label>
+                                                                <input type="checkbox" id="charging-model-{{ model.id }}" name="charging-model-{{ model.id }}" data-id="{{ model.id }}" data-name="charging-model-{{ model.id }}"/> 
+                                                                <label for="charging-model-{{ model.id }}" style="line-height:initial">{{ model.name }}</label>
+                                                            </div>
+                                                            <div class="checkbox">
+                                                                <input type="checkbox" id="charging-model-0" name="charging-model-paid" data-id="0" data-name="charging-model-paid"/> 
+                                                                <label for="charging-model-0" style="line-height:initial">Paid</label>
                                                             </div>
                                                             {% endif %}
                                                         {% endfor %}
@@ -187,7 +176,7 @@
                                     <!--price-->
                                     <div class="form-group" id="price-panel">
                                         <div class="panel-group" id="price-id" role="tablist">
-                                            <div class="panel panel-success" style="border:0!important">
+                                            <div class="panel panel-custom-success">
                                                 <div class="panel-heading" role="tab" id="price-title">
                                                       <h4 class="panel-title" title="Price">
                                                             <a data-toggle="collapse" data-parent="#price-id" href="#price-list" aria-expanded="true" aria-controls="price-list">
@@ -198,9 +187,17 @@
                                                 </div>
                                                 <div id="price-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="price-title">
                                                     <div class="panel-body" style="background-color:whitesmoke">
-                                                        <div class="price">
-                                                            <input type="number" step="0.01" placeholder="from" min="0" id="low_price" data-parent=".price" data-min="0.00" data-max="9999999.00" max="9999999.00" class="form-control-static" style="max-width:80px; background: whitesmoke"> € -
-                                                            <input type="number" step="0.01" placeholder="up to" min="0" id="high_price" max="9999999.00" data-parent=".price" data-min="0.00" data-max="9999999.00" class="form-control-static" style="max-width:80px; background: whitesmoke"> €
+                                                        
+                                                        <div class="price input-group margin-bottom-5">
+                                                            <span for="low_price" class="input-group-addon">From</span>
+                                                            <input type="number" step="0.01" placeholder="min value" min="0" id="low_price" data-parent=".price" data-min="0.00" data-max="9999999.00" max="9999999.00" class="form-control" style="background: whitesmoke;">
+                                                            <span class="input-group-addon">€</span>                                   
+                                                        </div>
+
+                                                        <div class="price input-group">
+                                                            <span for="high_price" class="input-group-addon">Up to</span>
+                                                            <input type="number" step="0.01" placeholder="max value" min="0" id="high_price" max="9999999.00" data-parent=".price" data-min="0.00" data-max="9999999.00" class="form-control" style="background: whitesmoke">
+                                                            <span class="input-group-addon">€</span>                                   
                                                         </div> 
                                                      </div>
                                                 </div>
@@ -211,20 +208,25 @@
                                     <!--distance-->
                                     <div class="form-group" id="location-panel">
                                         <div class="panel-group" id="location-id" role="tablist">
-                                            <div class="panel panel-success" style="border:0!important">
+                                            <div class="panel panel-custom-success">
                                                 <div class="panel-heading" role="tab" id="location-title">
                                                       <h4 class="panel-title" title="Searches for services offered around your current location">
                                                             <a data-toggle="collapse" data-parent="#location-id" href="#location-list" aria-expanded="true" aria-controls="location-list">
-                                                                Your current location (km)
+                                                                Your current location
                                                                 <i class="fa fa-angle-double-down pull-right"></i>
                                                             </a>
                                                       </h4>
                                                 </div>
                                                 <div id="location-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="location-title">
                                                     <div class="panel-body" style="background-color:whitesmoke">
-                                                        <div class="location">
-                                                            <input type="number" step="0.01" min="0.00" maxlength="20" placeholder="max distance"> 
-                                                        </div> 
+                                                        <div class="location input-group" >
+                                                            <input type="number" step="0.01" min="0.00" maxlength="20" class="form-control" placeholder="max distance"> 
+                                                            <span class="input-group-addon">km</span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="fa fa-info-circle text-primary"></span> 
+                                                            <span style="font-size: 12px">Scan for services within the distance of your interest from your location</span>
+                                                        </div>
                                                      </div>
                                                 </div>
                                             </div>
@@ -234,7 +236,7 @@
                                     <!--QoS-->
                                     <div class="form-group" id="quality-of-service-panel">
                                         <div class="panel-group" id="quality-of-service-id" role="tablist" aria-multiselectable="true">
-                                            <div class="panel panel-success" style="border:0!important">
+                                            <div class="panel panel-custom-success">
                                                 <div class="panel-heading" role="tab" id="quality-of-service-title">
                                                       <h4 class="panel-title" title="Searches based on Quality of Services measured by serviced users from zero (worst) to five (best).">
                                                             <a data-toggle="collapse" data-parent="#quality-of-service-id" href="#quality-of-service-list" aria-expanded="true" aria-controls="quality-of-service-list">
@@ -244,22 +246,25 @@
                                                       </h4>
                                                 </div>
                                                 <div id="quality-of-service-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="quality-of-service-title">
-                                                    <div class="panel-body " style="background-color:whitesmoke">    
-                                                        <!--  
-                                                        <div class="checkbox">
-                                                            <div class="pull-left">
-                                                                <span class="fa fa-star-o fa-2x rating-stars" id="rating-star-1" data-QoS="1" style="color:#ffbb00;background-color:transparent"></span>
-                                                                <span class="fa fa-star-o fa-2x rating-stars" id="rating-star-2" data-QoS="2" style="color:#ffbb00;background-color:transparent"></span>
-                                                                <span class="fa fa-star-o fa-2x rating-stars" id="rating-star-3" data-QoS="3" style="color:#ffbb00;background-color:transparent"></span>
-                                                                <span class="fa fa-star-o fa-2x rating-stars" id="rating-star-4" data-QoS="4" style="color:#ffbb00;background-color:transparent"></span>
-                                                                <span class="fa fa-star-o fa-2x rating-stars star-colorize-yellow" id="rating-star-5" data-QoS="5"></span>
-                                                            </div>
-                                                        </div>
-                                                        -->    
+                                                    <div class="panel-body " style="background-color:whitesmoke;">    
                                                         <div id="qos">
-                                                            <input type="number" step="0.1" placeholder="e.g. 0" min="0" max="5" id="low_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control-static" style="max-width:80px; background: whitesmoke"> to
-                                                            <input type="number" step="0.1" placeholder="e.g. 5" min="0" max="5" id="high_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control-static" style="max-width:80px; background: whitesmoke">
+                                                            <div class="input-group margin-bottom-5" style="max-width: 90%">
+                                                                <span class="input-group-addon">
+                                                                    <span class="fa fa-star-o star-colorize-yellow" role="img" alt="Minimum value of quality of service (rating)"></span>
+                                                                </span>
+                                                                <input type="number" step="0.1" placeholder="minimum rating" min="0" max="5" id="low_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control" style="background: whitesmoke">
+                                                            </div>
+                                                            <div class="input-group" style="max-width: 90%">
+                                                                <span class="input-group-addon">
+                                                                    <span class="fa fa-star star-colorize-yellow" role="img" alt="Maximum value of quality of service (rating)"></span>
+                                                                </span>
+                                                                <input type="number" step="0.1" placeholder="maximum rating" min="0" max="5" id="high_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control" style="background: whitesmoke">
+                                                            </div>
                                                         </div> 
+                                                          <div>
+                                                            <span class="fa fa-info-circle text-primary"></span> 
+                                                            <span style="font-size: 12px">Set the QoS range of your interest</span>
+                                                        </div>
                                                      </div>
                                                 </div>
                                             </div>
@@ -334,13 +339,19 @@
 
 
     {% block scripts %}
+        
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
         <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
         <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/jquery-tree/jquery.tree.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/consumers/dashboard.js' %}"></script>
+
         <script type="text/javascript">
             $(document).ready(function () {
-
+                // get categories as a tree
+                getCategories();
+    
                 $("#companies-id").click(function () {
                     toggleArrows($(this));
                 });
@@ -483,6 +494,39 @@
             });
 
 
+            $(document).on("click", "#charging-model-1", function(){
+                if ( $(this).is(':checked')) {
+                    if (!$("#charging-model-0").is(':checked')){
+                        $("#low_price").attr('readonly', true).val('');
+                        $("#high_price").attr('readonly', true).val('');
+                    }
+                    else{
+                        $("#low_price").attr('readonly', false);
+                        $("#high_price").attr('readonly', false);
+                    }
+                }   
+                else{
+                    $("#low_price").attr('readonly', false);
+                    $("#high_price").attr('readonly', false);
+                }
+            });
+            $(document).on("click", "#charging-model-0", function(){
+                if ( $(this).is(':checked')){
+                    $("#low_price").attr('readonly', false);
+                    $("#high_price").attr('readonly', false);
+                } 
+                else{
+                    if ( $("#charging-model-1").is(':checked') ){
+                        $("#low_price").attr('readonly', true).val('');
+                        $("#high_price").attr('readonly', true).val('');
+                    }
+                    else{
+                        $("#low_price").attr('readonly', false);
+                        $("#high_price").attr('readonly', false);
+                    }
+                }
+            });
+
             //////////////////////////////////
             //  Parse URL and get the query parameters
             //////////////////////////////////
@@ -599,4 +643,6 @@
             });
 
         </script>
+
+        <script type="text/javascript" src="{% static 'app/scripts/sweetalert/sweetalert.min.js' %}"></script>
     {% endblock scripts %}

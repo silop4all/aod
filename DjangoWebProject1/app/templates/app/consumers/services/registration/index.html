@@ -13,31 +13,15 @@
     {% include "app/navbar-users.html" %}
 {% endblock navbar %}
 
-{% block scripts %}
-    {% load staticfiles %}
-    <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
-    <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>    
-    <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
-    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
-    <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
-    <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
-    <script src="{% static 'app/scripts/p4a-lib/swap-buttons.js' %}"></script>
-    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/service-registration.js' %}"></script>
-    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/validators/form-validation.js' %}"></script>
 
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
-    <script type="text/javascript">
-       google.maps.event.addDomListener(window, 'load', getMap);
-    </script>
-{% endblock scripts %}
 
 
 {% block content %}
-    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em;">
+    <div class="container body-content margin-top-50 padding-bottom-em-2">
         {% block breadcrumb %}
-        <ol class="breadcrumb custom-inactive-breadcrumb">
-            <li><a href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
-            <li><a href="{{ breadcrumb.collection }}" class="custom-inactive-breadcrumb">Services</a></li>
+        <ol class="breadcrumb custom-inactive-breadcrumb" role="navigation" aria-label="breadcrumb">
+            <li><a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb" title="Home page"><span class="fa fa-home"></span> Home</a></li>
+            <li><a href="{% url 'provider-dashboard' %}" class="custom-inactive-breadcrumb" title="My services' collection">My collection</a></li>
             <li class="active">Registration</li>
         </ol>
         {% endblock breadcrumb %}
@@ -132,7 +116,7 @@
                                         <ul class="pager">
                                             <li class="next" id="navigate-next-btn" onclick="nextStep();" style="background-color:#ffd800!important">
                                                 <a href="#" class="text-center"> 
-                                                    <i class="fa fa-chevron-right fa-3x"></i>
+                                                    <span class="fa fa-chevron-right fa-3x"></span>
                                                 </a>
                                             </li>
                                         </ul>
@@ -147,4 +131,22 @@
     </div>
 {% endblock content %}
 
- 
+ {% block scripts %}
+    
+    <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>    
+    <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/swap-buttons.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/service-registration.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/validators/form-validation.js' %}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+
+   
+
+    <script type="text/javascript">
+       google.maps.event.addDomListener(window, 'load', getMap);
+    </script>
+{% endblock scripts %}

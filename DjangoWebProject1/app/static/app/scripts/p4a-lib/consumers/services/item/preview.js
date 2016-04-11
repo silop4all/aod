@@ -1,21 +1,26 @@
 ﻿
-$(document).ready(function () {
-    // Preview tab: slider
-    loadImageSlider();
+//$(document).ready(function () {
+//    // Preview tab: slider
+//    loadImageSlider();
     
-    // Statistics tab
-    $('#table').bootstrapTable({
-        //data: loadStatistics()
-        data: data
-    });
+//    // Statistics tab
+//    $('#table').bootstrapTable({
+//        //data: loadStatistics()
+//        data: data
+//    });
+//    $("#download_sw").click(function (event) {
+//        event.preventDefault();
+//        window.location.href = $(this).data().link;
+//    });
+//});
 
 
-    $("#download_sw").click(function (event) {
-        event.preventDefault();
-        window.location.href = $(this).data().link;
-    });
-});
+//$(document).on('', '', function () {
 
+//    /api/v1/services/2/support
+
+
+//});
 
 function loadImageSlider() {
     var options = {

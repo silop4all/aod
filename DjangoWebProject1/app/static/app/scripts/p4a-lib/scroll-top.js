@@ -4,9 +4,11 @@ $(document).ready(function () {
     //Check to see if the window is top if not then display button
     $(window).scroll(function () {
         if ($(this).scrollTop() > 100) {
-            $('.scrollToTop').fadeIn();
+            //$('#top-link-block').fadeIn('slow');
+            $('#top-link-block').removeClass('hidden');
         } else {
-            $('.scrollToTop').fadeOut();
+            //$('#top-link-block').fadeOut();
+            $('#top-link-block').addClass('hidden');
         }
     });
 
@@ -16,7 +18,7 @@ $(document).ready(function () {
         return false;
     });
 
-    //goTop();
+    goTop();
 
 });
 

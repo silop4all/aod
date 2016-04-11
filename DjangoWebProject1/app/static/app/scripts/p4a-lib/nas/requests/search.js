@@ -89,7 +89,7 @@ function retrieveRegisteredUsers(email) {
 
     var loading = new AjaxView($('#search-results'));
     // set endpoint
-    var endpoint = "/network-assistance-services/requests/search";
+    var endpoint = "/assistance/requests/search";
 
     loading.show();
     $.ajax({
@@ -132,7 +132,7 @@ function submitPermissionRequest(user) {
 
     $.ajax({
         type: 'post',
-        url: "/network-assistance-services/requests/create-new",
+        url: "/assistance/requests/send",
         data: JSON.stringify({ consumer_id: user.data('userId') }),
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);

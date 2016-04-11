@@ -39,7 +39,8 @@ ServiceRegistration.prototype.init = function () {
     this.type = { control: $("#srv_type"), container: $("#srv_type_node"), error: $("#srv_type_error"), status: false };
     this.category = { control: $("#srv_category"), container: $("#srv_category_node"), error: $("#srv_category_error"), status: false };
     this.image = { control: $("#srv_logo"), container: $("#load_logo"), error: $("#srv_logo_error"), status: false };
-    this.keywords = { control: $("#srv_keyword_list"), container: null, error: $("#srv_keyword_list_error"), status: false };
+    //this.keywords = { control: $("#srv_keyword_list"), container: null, error: $("#srv_keyword_list_error"), status: false };
+    this.keywords = { control: $("#test"), container: null, error: $("#srv_keyword"), status: false };
     // tab 2
     this.model = { control: $("#srv_charging_model"), container: $("#srv_charging_model_node"), error: $("#srv_charging_model_error"), status: false };
     this.price = { control: $("#srv_price"), container: null, error: $("#srv_price_error"), status: false };
@@ -144,13 +145,17 @@ ServiceRegistration.prototype.validateImage= function () {
     }
 }
 ServiceRegistration.prototype.validateKeywords = function () {
-    if (this.keywords.control.val() === "" || this.keywords.control.val() === undefined || this.keywords.control.val() === null) {
-        this.keywords.control.parent().addClass('has-error');
+    console.log(this.keywords.control.children().length);
+
+    //if (this.keywords.control.val() === "" || this.keywords.control.val() === undefined || this.keywords.control.val() === null) {
+    if (this.keywords.control.children().length == 0) {
+        this.keywords.error.parent().addClass('has-error');
         //  this.keywords.error.tooltip('show');
         this.keywords.status = false;
     }
     else {
-        this.keywords.control.parent().removeClass("has-error");
+        //this.keywords.control.parent().removeClass("has-error");
+        this.keywords.error.parent().removeClass("has-error");
         //this.keywords.error.tooltip('hide');
         this.keywords.status = true;
     }

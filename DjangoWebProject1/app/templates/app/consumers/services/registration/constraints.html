@@ -8,7 +8,7 @@
     <!--language-->
     <div class="row form-group">
         <div class="col-sm-3 col-md-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_language_constraint">Language constraint<small>*</small></label>
+            <label class="pull-right control-label" for="srv_language_constraint">Language constraint<span class="mandatory-field"> *</span></label>
         </div> 
         <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" >
             <div class="btn-group btn-block" data-toggle="buttons-radio" id="srv_language_constraint">
@@ -24,7 +24,7 @@
 
     <div class="row form-group" id="srv_language_div">
         <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_language">Language<small>*</small></label>
+            <label class="pull-right control-label" for="srv_language">Select languages<span class="mandatory-field"> *</span></label>
         </div>
         <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Declare the language associated with the service" id="srv_language_node">
             <span class="input-group-addon">
@@ -72,7 +72,7 @@
     <!--geological coordinates-->
     <div class="row form-group">
         <div class="col-sm-3 col-md-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_geolocation">Geographical constraint<small>*</small></label>
+            <label class="pull-right control-label" for="srv_geolocation">Geographical constraint<span class="mandatory-field"> *</span></label>
         </div> 
         <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" >
             <div class="btn-group btn-block" data-toggle="buttons-radio" id="srv_geolocation">
@@ -91,13 +91,13 @@
             <label class="pull-right control-label" for="Set the coordinates">Map</label>
         </div> 
         <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12" >
-            <div id="map" style="height:200px"></div>
+            <div id="map" style="height:300px"></div>
         </div>            
     </div> 
 
     <div class="row form-group srv_coordinates">
         <div class="col-sm-3 col-md-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_latitude">Latitude<small>*</small></label>
+            <label class="pull-right control-label" for="srv_latitude">Latitude<span class="mandatory-field"> *</span></label>
         </div> 
         <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" >
             <span class="input-group-addon">
@@ -109,13 +109,25 @@
 
     <div class="row form-group srv_coordinates">
         <div class="col-sm-3 col-md-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_longitude">Longitude<small>*</small></label>
+            <label class="pull-right control-label" for="srv_longitude">Longitude<span class="mandatory-field"> *</span></label>
         </div> 
         <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" >
             <span class="input-group-addon">
                 <span class="fa fa-map-marker fa-fw text-danger" role="img"></span>
             </span>
             <input type="text" id="srv_longitude" name="srv_longitude" value="{{service.longitude}}" class="form-control" form="insert-new-service" placeholder="longitude" />
+        </div>
+    </div> 
+
+    <div class="row form-group srv_coordinates">
+        <div class="col-sm-3 col-md-3 col-xs-12">
+            <label class="pull-right control-label" for="srv_coverage">Coverage (km)<span class="mandatory-field"> *</span></label>
+        </div> 
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" >
+            <span class="input-group-addon">
+                <span class="fa fa-circle-o fa-fw text-danger" role="img"></span>
+            </span>
+            <input type="number" step="0.1" min="0" id="srv_coverage" name="srv_coverage" value="{{service.coverage}}" class="form-control" form="insert-new-service" placeholder="distance in kilometers" />
         </div>
     </div> 
 
@@ -135,7 +147,7 @@
     <!--info-->
     <div class="row form-group">
         <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="Mandotory fields">
-            <small class="text-center">* Mandatory fields</small>
+            <h5><span class="text-center mandatory-field">* </span>Mandatory fields</h5>
         </div>
     </div>
 

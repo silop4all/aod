@@ -38,11 +38,25 @@ $(document).on('click', "#search-btn", function (event) {
     search.minPrice = $("#low_price").val();
     search.maxPrice = $("#high_price").val();
     if (search.minPrice < 0 || search.maxPrice < 0) {
-        alert("The price values must be non negative numbers!");
+        swal({
+            html: false,
+            title: "Invalid input",
+            text: 'The price values must be non negative numbers!',
+            type: "warning",
+            confirmButtonText: "Continue",
+            confirmButtonColor: "#d9534f"
+        });
         return;
     }
     if (search.minPrice > search.maxPrice) {
-        alert("The price values are invalid!");
+        swal({
+            html: false,
+            title: "Invalid input",
+            text: 'The maximum price value must be greater than (or equal with) the minimum one!',
+            type: "warning",
+            confirmButtonText: "Continue",
+            confirmButtonColor: "#d9534f"
+        });
         return;
     }
     
@@ -54,15 +68,36 @@ $(document).on('click', "#search-btn", function (event) {
         search.maxQoS = $("#high_QoS").val();
     }   
     if (search.minQoS < 0 || search.minQoS > 5) {
-        alert("The minimum value of QoS is out of range [0,5]");
+        swal({
+            html: false,
+            title: "Invalid input",
+            text: 'The minimum value of Quality of Service field is out of range. Please enter a value in range [0,5]!',
+            type: "warning",
+            confirmButtonText: "Continue",
+            confirmButtonColor: "#d9534f"
+        });
         return;
     }
     if (search.maxQoS < 0 || search.maxQoS > 5) {
-        alert("The maximum value of QoS is out of range [0,5]");
+        swal({
+            html: false,
+            title: "Invalid input",
+            text: "The maximum value of Quality of Service field is out of range. Please enter a value in range [0,5]!",
+            type: "warning",
+            confirmButtonText: "Continue",
+            confirmButtonColor: "#d9534f"
+        });
         return;
     }
     if (search.minQoS > search.maxQoS) {
-        alert("The QoS values is invalid");
+        swal({
+            html: false,
+            title: "Invalid input",
+            text: "The maximum value of Quality of Service field must be greater than (or equal with) the corresponding minimum one!",
+            type: "warning",
+            confirmButtonText: "Continue",
+            confirmButtonColor: "#d9534f"
+        });
         return;
     }
 
@@ -70,16 +105,53 @@ $(document).on('click', "#search-btn", function (event) {
     // distance threshold
     search.distance = $("div#location-id").find('input').val();
     if (search.distance < 0) {
-        alert("The distance value must be a non negative number.");
+        swal({
+            html: false,
+            title: "Invalid input",
+            text: "The distance value must be a non negative number. Keep in mind that this value maps to kilometers.",
+            type: "warning",
+            confirmButtonText: "Continue",
+            confirmButtonColor: "#d9534f"
+        });
         return;
     }
     // inform user for location tracking
-    if (search.distance !== ""){
-        var retVal = confirm("The AoD platform wants your permission to track your location. Do you agree with this action?");
-        if (retVal == false) {
-            alert("The service searching was aborted.");
-            return;
-        }
+    if (search.distance !== "") {
+        swal({
+            html: false,
+            title: "AoD message",
+            text: "The AoD platform wants your permission to track your location. Do you agree with this action?",
+            type: "info",
+            showCancelButton: true,
+            confirmButtonClass: "btn-primary",
+            confirmButtonText: "Yes, I agree!",
+            cancelButtonText: "No, I do not agree!",
+            cancelButtonClass: "btn-danger",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                swal({
+                    html: false,
+                    title: "Search progress",
+                    text: "AoD scans the services that meet your requirements",
+                    type: "success",
+                    confirmButtonText: "Continue",
+                    confirmButtonColor: "btn-primary",
+                });
+            } else {
+                swal({
+                    html: false,
+                    title: "Search progress",
+                    text: "The service searching was aborted.",
+                    type: "warning",
+                    confirmButtonText: "Continue",
+                    confirmButtonColor: "#d9534f"
+                });
+            }
+        });
+
     }
 
     // get user coordinates
@@ -159,11 +231,25 @@ function reload(sortby, view) {
     search.minPrice = $("#low_price").val();
     search.maxPrice = $("#high_price").val();
     if (search.minPrice < 0 || search.maxPrice < 0) {
-        alert("The price values must be non negative numbers!");
+        swal({
+            html: false,
+            title: "Invalid input",
+            text: 'The price values must be non negative numbers!',
+            type: "warning",
+            confirmButtonText: "Continue",
+            confirmButtonColor: "#d9534f"
+        });
         return;
     }
     if (search.minPrice > search.maxPrice) {
-        alert("The price values are invalid!");
+        swal({
+            html: false,
+            title: "Invalid input",
+            text: 'The maximum price value must be greater than (or equal with) the minimum one!',
+            type: "warning",
+            confirmButtonText: "Continue",
+            confirmButtonColor: "#d9534f"
+        });
         return;
     }
 
@@ -175,15 +261,36 @@ function reload(sortby, view) {
         search.maxQoS = $("#high_QoS").val();
     }
     if (search.minQoS < 0 || search.minQoS > 5) {
-        alert("The minimum value of QoS is out of range [0,5]");
+        swal({
+            html: false,
+            title: "Invalid input",
+            text: 'The minimum value of Quality of Service field is out of range. Please enter a value in range [0,5]!',
+            type: "warning",
+            confirmButtonText: "Continue",
+            confirmButtonColor: "#d9534f"
+        });
         return;
     }
     if (search.maxQoS < 0 || search.maxQoS > 5) {
-        alert("The maximum value of QoS is out of range [0,5]");
+        swal({
+            html: false,
+            title: "Invalid input",
+            text: 'The maximum value of Quality of Service field is out of range. Please enter a value in range [0,5]!',
+            type: "warning",
+            confirmButtonText: "Continue",
+            confirmButtonColor: "#d9534f"
+        });
         return;
     }
     if (search.minQoS > search.maxQoS) {
-        alert("The QoS values is invalid");
+        swal({
+            html: false,
+            title: "Invalid input",
+            text: "The maximum value of Quality of Service field must be greater than (or equal with) the corresponding minimum one!",
+            type: "warning",
+            confirmButtonText: "Continue",
+            confirmButtonColor: "#d9534f"
+        });
         return;
     }
 
@@ -191,16 +298,52 @@ function reload(sortby, view) {
     // distance threshold
     search.distance = $("div#location-id").find('input').val();
     if (search.distance < 0) {
-        alert("The distance value must be a non negative number.");
+        swal({
+            html: false,
+            title: "Invalid input",
+            text: "The distance value must be a non negative number. Keep in mind that this value maps to kilometers.",
+            type: "warning",
+            confirmButtonText: "Continue",
+            confirmButtonColor: "#d9534f"
+        });
         return;
     }
     // inform user for location tracking
     if (search.distance !== "") {
-        var retVal = confirm("The AoD platform wants your permission to track your location. Do you agree with this action?");
-        if (retVal == false) {
-            alert("The service searching was aborted.");
-            return;
-        }
+        swal({
+            html: false,
+            title: "AoD message",
+            text: "The AoD platform wants your permission to track your location. Do you agree with this action?",
+            type: "info",
+            showCancelButton: true,
+            confirmButtonText: "Yes, I agree!",
+            confirmButtonColor: "btn-primary",
+            cancelButtonText: "No, I do not agree!",
+            cancelButtonColor: "btn-danger",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                swal({
+                    html: false,
+                    title: "Search progress",
+                    text: "AoD scans the services that meet your requirements",
+                    type: "success",
+                    confirmButtonText: "Continue",
+                    confirmButtonColor: "btn-primary",
+                });
+            } else {
+                swal({
+                    html: false,
+                    title: "Search progress",
+                    text: "The service searching was aborted.",
+                    type: "warning",
+                    confirmButtonText: "Continue",
+                    confirmButtonColor: "#d9534f"
+                });
+            }
+        });
     }
     // get user coordinates
     if (navigator.geolocation) {
@@ -231,4 +374,78 @@ function reload(sortby, view) {
             $("#services-result").append(data);
         }
     });
+}
+
+
+function getCategories() {
+
+    $.ajax({
+        type: 'GET',
+        url: "/api/v1/categories/tree",
+        data: { level: 0 },
+        headers: { "accept": "application/json", "content-type": "application/json" },
+        beforeSend: function (xhr, settings) {
+            $.ajaxSettings.beforeSend(xhr, settings);
+        },
+        contentType: 'application/json',
+        success: function (response) {
+            var options = '';
+            var data = response.results;
+            
+            var startList = '<ul><li>';
+            var startListInvisible = '<ul><li class="collapsed">';
+            var endList = '</li></ul>';
+            for (var root in data) {
+                var childs = data[root].children;
+
+                options += [
+                    ((childs.length > 0) ? startListInvisible : startList),
+                    '<input type="checkbox" id="category-' + data[root].id + '" name="category-'+data[root].id+'" data-id="'+data[root].id+'" data-name="category-'+data[root].id+'"/>',
+                    '<span for="category-' + data[root].id + '"> <strong>' + data[root].title + '</strong></span>',
+                ].join('');
+
+                
+                for (var i in childs) {
+                    var leafs = childs[i].children;
+                    options += [
+                        ((leafs .length> 0) ? startListInvisible : startList),
+                        '<input type="checkbox" id="category-' + childs[i].id + '" name="category-' + childs[i].id + '" data-id="' + childs[i].id + '" data-name="category-' + childs[i].id + '"/>',
+                        '<span for="category-' + childs[i].id + '"> ' + childs[i].title + '</span>',
+                    ].join('');
+
+                    
+                    for (var j in leafs) {
+                        options += [
+                            startList,
+                                '<input type="checkbox" id="category-' + leafs[j].id + '" name="category-' + leafs[j].id + '" data-id="' + leafs[j].id + '" data-name="category-' + leafs[j].id + '"/>',
+                                    '<span for="category-' + leafs[j].id + '"> ' + leafs[j].title + '</span>',
+                            endList
+                        ].join('');
+                    }
+                    options += endList;
+                }
+                options += endList;
+            }
+            $('#tree').append(options);
+            $('#tree').tree({
+                collapsible: true,
+                dnd: false,
+                onCheck: {
+                    node: 'expand'
+                },
+                onUncheck: {
+                    node: 'collapse'
+                }
+            });
+            $('#tree').css('border', 'none');
+            $(".daredevel-tree-anchor").css("margin-top", '4px');
+
+        },
+        error: function (response) {
+            console.error(response);
+        },
+        complete: function () {
+        }
+    });
+
 }

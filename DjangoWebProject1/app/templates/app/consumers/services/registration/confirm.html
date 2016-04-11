@@ -38,9 +38,9 @@
         <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12"></div>
         <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
             {% if service %}
-                <button type="button" id="update-btn"  class="btn btn-success btn-block btn-lg disabled" data-id="{{ service.id }}" data-url="{{ breadcrumb.services }}/{{ alias }}/" onclick="return false;"> Submit</button>
+                <button type="button" id="update-btn"  class="btn btn-success btn-block btn-lg disabled" data-id="{{ service.id }}" data-url="{% url 'insert_service' %}/{{ alias }}/" onclick="return false;"> Submit</button>
             {% else %}
-                <button type="button" id="register-btn"  class="btn btn-success btn-block btn-lg disabled" data-url="{{ breadcrumb.services }}" onclick="return false;"> Register</button>
+                <button type="button" id="register-btn"  class="btn btn-success btn-block btn-lg disabled" data-url="{% url 'insert_service' %}" onclick="return false;"> Register</button>
             {% endif %}
         </div>
     </div> 

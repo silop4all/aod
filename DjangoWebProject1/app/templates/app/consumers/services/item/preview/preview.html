@@ -6,7 +6,7 @@
                 <div id="slider">
                     <div data-u="slides" id="service-slider">                       
                         <div>
-                            <img data-u="image" class="img-rounded" src="{{ MEDIA_URL }}app/services/images/{{ service.image.name }}" alt="{{ service.image.name }}"  style="border: 5px solid green"/>
+                            <img data-u="image" class="img-rounded" src="{{ MEDIA_URL }}app/services/images/{{ service.image.name }}" alt="{{ service.image.name }}"  style="border: 1px solid dimgray"/>
                         </div>
                     </div>
                     <span data-u="arrowleft" class="jssora01l" style="top: 123px; left: 8px;"></span>
@@ -18,7 +18,7 @@
             <!-- description -->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Brief description</label>
+                    <label class="pull-right">Description</label>
                 </div>
                 <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="The description of this service">
                     <p id="description" style="text-align:justify">{{ service.description }}</p>
@@ -82,7 +82,7 @@
             </div>  
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Related categories</label>
+                    <label class="pull-right">Categories</label>
                 </div>
                 <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Related categories">
                     <p id="categories">
@@ -114,7 +114,7 @@
             <!--installation_guide-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Installation guide</label>
+                    <label class="pull-right">Installation guidelines</label>
                 </div>
                 <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="A set of installation instructions of the service for the users">
                     <p id="installation_guide" style="text-align: justify">
@@ -127,7 +127,7 @@
             <!--usage_guidelines-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Usage guide</label>
+                    <label class="pull-right">Usage guidelines</label>
                 </div>
                 <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="A brief set of usage instructions">
                     <p id="usage_guidelines" style="text-align: justify">
@@ -158,7 +158,7 @@
                 <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Follow this link in order to use the service">
                     <p id="link" style="text-align: justify">
                         {% if service %}
-                            Follow the link <a href="http://localhost:8000/provider" onclick="alert('to do'); return false;">{{  service.link|default:"http://localhost:8000/provider" }}  <i class="fa fa-external-link fa-fw"></i></a>
+                            Follow the link <a href="{{service.link}}" onclick="alert('to do'); return false;">{{  service.link|default:"http://localhost:8000" }}  <i class="fa fa-external-link fa-fw"></i></a>
                         {% endif %}
                     </p>
                 </div>
@@ -166,15 +166,15 @@
             <!--accessibility-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Accessibility</label>
+                    <label class="pull-right">Access</label>
                 </div>
                 <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="The accessibility rule for the service">
                     <p id="accessibility">
                         {% if service %}
                             {% if service.availability %}
-                                Public - any registered user may use it
+                                Public - any registered user can purchase or use it
                             {% else %}
-                                Private - only a group of users can use it
+                                Private - only a group of users can purchase or use it
                             {% endif %}
                         {% endif %}
                     </p>
@@ -183,7 +183,7 @@
             <!--language_constraint-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Language</label>
+                    <label class="pull-right">Language availability</label>
                 </div>
                 <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Any language constraints, if exist">
                     <p id="language_constraint">
@@ -192,7 +192,7 @@
                                 <a href="#" class="btn btn-default btn-xs"><i class="fa fa-language text-success"></i> {{ i }}</a>
                             {% endfor %}
                         {% else %}
-                            No constraint
+                            All languages supported
                         {% endif %}
                     </p>
                 </div>
@@ -200,15 +200,15 @@
             <!--location_constraint-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Location constraint</label>
+                    <label class="pull-right">Spatial coverage</label>
                 </div>
                 <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="Any location constraints, if exist">
                     <div id="location_constraint">
                         {% if service %}
                             {% if service.location_constraint %}
-                                <div id="map" style="height:40%; border:3px outset green"></div>
+                                <div id="map" style="height:40%; min-height:250px; border:1px solid dimgray"></div>
                             {% else %}
-                                No
+                                There is no spatial constraints
                             {% endif %}
                         {% endif %}
                     </div>
@@ -219,7 +219,7 @@
                 {% if service.constraints %}
                     <div class="row">
                        <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                            <label class="pull-right">Extra constraints</label>
+                            <label class="pull-right">Other constraints/comments</label>
                         </div>
                         <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Any other constraints">
                             <p id="constraints"> 
@@ -232,7 +232,7 @@
 
             <!--is_available-->
             <br />
-            <div class="row">
+            <div class="row hidden">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
                     <label class="pull-right">Availability</label>
                 </div>

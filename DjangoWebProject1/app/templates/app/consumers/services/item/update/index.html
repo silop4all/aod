@@ -31,6 +31,17 @@
     <script src="{% static 'app/scripts/p4a-lib/validators/form-validation.js' %}"></script>
     
     <script type="text/javascript">
+
+        var categoriesLists = [];
+        {% if categories %}
+            {% for i in categories %}
+                {% if i in service.categories.all %}
+                    categoriesLists.push("{{ i.id }}");
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        
+
         $(window).load(function () {
             {% if service %}
                 crowdPartState('{{ service.availability }}');
@@ -54,8 +65,13 @@
 
     {% block breadcrumb %}
     <ol class="breadcrumb">
-        <li><a href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
-        <li><a href="{{ breadcrumb.collection }}" class="custom-inactive-breadcrumb">Services</a></li>
+        <li>
+            <a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb" title="Home page">
+            <span class="fa fa-home"></span> Home</a>
+        </li>
+        <li>
+            <a href="{% url 'provider-dashboard' %}" class="custom-inactive-breadcrumb" title="My collection">My collection</a>
+        </li>
         <li><a href="{{ breadcrumb.services }}/{{ alias }}/" class="custom-inactive-breadcrumb">{{ service.title|title }}</a></li>
         <li class="active">Modification</li>
     </ol>

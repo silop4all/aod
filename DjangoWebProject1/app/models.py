@@ -53,12 +53,12 @@ class Categories(models.Model):
         - Tree-view of categories
     """
     
-    title = models.CharField(max_length=128, null=False, blank=False, unique=False)
+    title       = models.CharField(max_length=128, null=False, blank=False, unique=False)
     description = models.CharField(max_length=300, null=False, blank=False)
-    category = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='children')
-    question = models.CharField(max_length=255, null=False, blank=False, unique=False)
+    category    = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='children')
+    question    = models.CharField(max_length=255, null=False, blank=False, unique=False)
     # derive an intermediate table due to the many-to-many relationship
-    tags = models.ManyToManyField(Tags)
+    tags        = models.ManyToManyField(Tags)
 
     def __unicode__(self):
         """ Get the category's title """
@@ -87,8 +87,9 @@ class Users(models.Model):
     cover = models.ImageField(upload_to='app/users/covers', blank=True, null=False) 
     experience = models.ForeignKey(ItExperience)
     categories = models.ManyToManyField(Categories)
-    registration = models.DateTimeField('registration date', blank=False, null=False, default=timezone.now())
-    last_login = models.DateTimeField('last login', default=timezone.now())
+    #registration = models.DateTimeField('registration date', blank=False, null=False, default=timezone.now())
+    registration = models.DateTimeField('registration date', null=False, default=timezone.now)
+    last_login = models.DateTimeField('last login', default=timezone.now)
     is_active = models.BooleanField(default=False, blank=False, null=False)
 
     def __unicode__(self):
@@ -211,12 +212,14 @@ class Services(models.Model):
     location_constraint = models.BooleanField(default=True, blank=False, null=False)
     latitude = models.FloatField(blank=False, null=False, default=0.0)
     longitude = models.FloatField(blank=False, null=False, default=0.0)
+    coverage = models.FloatField(null=False, default=0.0)
+    skype = models.CharField(max_length=63, null=True, default='')
     language_constraint = models.BooleanField(default=True, blank=False, null=False)
     is_available = models.BooleanField(max_length=1, default=True, blank=False, null=False)
-    #created_date = models.DateTimeField(blank=False, null=False, default="1970-01-01 00:00:00")
-    #modified_date = models.DateTimeField(blank=False, null=False, default="1970-01-01 00:00:00") 
-    created_date = models.DateTimeField(blank=False, null=True, default=datetime.now())
-    modified_date = models.DateTimeField(blank=False, null=False, default=datetime.now()) 
+    #created_date = models.DateTimeField(blank=False, null=False, default=datetime.now())
+    #modified_date = models.DateTimeField(blank=False, null=False, default=datetime.now()) 
+    created_date = models.DateTimeField(blank=False, null=True, default=timezone.now)
+    modified_date = models.DateTimeField(blank=False, null=False, default=timezone.now) 
 
         
 
@@ -245,7 +248,7 @@ class ServiceKeywords(models.Model):
     Keywords that characterized a service
     """
 
-    service = models.ForeignKey(Services)
+    service = models.ForeignKey(Services, related_name='keywords')
     title = models.CharField(max_length=50, null=False, blank=False)
 
     class Meta:
@@ -262,7 +265,7 @@ class ServiceLanguages(models.Model):
     Languages that a service supports
     """
 
-    service = models.ForeignKey(Services)
+    service = models.ForeignKey(Services, related_name='languages')
     alias = models.CharField(max_length=10, null=False, blank=False)
 
     class Meta:
@@ -272,20 +275,56 @@ class ServiceLanguages(models.Model):
     def __unicode__(self):
         service = Services.objects.get(pk=self.service_id)
         return "%s: %s " % (service.title, self.alias)
-    
+
 
 class ServiceConfiguration(models.Model):
     """
     The configuration of a service that the provider registers
     """
-    service = models.ForeignKey(Services)
-    parameter = models.CharField(max_length=512, null=False, blank=False)
-    value = models.CharField(max_length=255, null=False, blank=False)
-    is_default = models.BooleanField(default=True, blank=False, null=False)
+    service     = models.ForeignKey(Services, related_name='configuration')
+    parameter   = models.CharField(max_length=512, null=False, blank=False)
+    value       = models.CharField(max_length=255, null=False, blank=False)
+    is_default  = models.BooleanField(default=True, blank=False, null=False)
 
     class Meta:
         db_table = "app_services_configuration"
         ordering = ["service_id"]
+
+
+class TechnicalSupport(models.Model):
+    """
+    Store a list of technical support types such as documents, video etc
+    """
+
+    type        = models.CharField(max_length=64, null=False, blank=False)
+    description = models.TextField(null=True, blank=False)
+
+    class Meta:
+        db_table = "app_technical_support_types"
+        ordering = ["type"]
+
+    def __unicode__(self):
+        return self.type    
+
+
+class ServicesToTechnicalSupport(models.Model):
+    """
+    Associate every service with the multiple types of technical support
+    """
+
+    service             = models.ForeignKey(Services, related_name="technical_support")
+    technical_support   = models.ForeignKey(TechnicalSupport)
+    title               = models.CharField(max_length=255, null=False) 
+    format              = models.CharField(max_length=15)
+    path                = models.CharField(max_length=255, null=False, blank=False, unique=False)
+    software_dependencies = models.TextField(null=True, blank=False)
+
+    class Meta:
+        db_table = "app_services_technical_support"
+        ordering = ["service", "technical_support"]
+
+    def __unicode__(self):
+        return self.id    
 
 
 class ConsumersToServices(models.Model):
@@ -324,47 +363,15 @@ class NasConfiguration(models.Model):
     """
     The configuration of a service that the carer selects (carer can overwrite the provider default settings)
     """
-    nas         = models.ForeignKey(NasConsumersToServices)
+    nas         = models.ForeignKey(NasConsumersToServices, related_name='configuration')
     parameter   = models.CharField(max_length=512, null=False, blank=False)
     value       = models.CharField(max_length=255, null=False, blank=False)
     is_default  = models.BooleanField(default=True, blank=False, null=False)
-    updated     = models.DateTimeField(blank=False, null=False, default="1970-01-01 00:00:00") 
+    updated     = models.DateTimeField(null=False, default=datetime.now()) 
 
     class Meta:
         db_table = "app_network_services_configuration"
         ordering = ["nas"]
 
 
-class TechnicalSupport(models.Model):
-    """
-    Store a list of technical support types such as documents, video etc
-    """
-
-    type = models.CharField(max_length=64, null=False, blank=False)
-    description = models.TextField(null=True, blank=False)
-
-    class Meta:
-        db_table = "app_technical_support_types"
-        ordering = ["type"]
-
-    def __unicode__(self):
-        return self.type    
-
-
-class ServicesToTechnicalSupport(models.Model):
-    """
-    Associate every service with the multiple types of technical support
-    """
-
-    service = models.ForeignKey(Services)
-    technical_support = models.ForeignKey(TechnicalSupport)
-    path = models.CharField(max_length=255, null=False, blank=False, unique=True)
-    software_dependencies = models.TextField(null=True, blank=False)
-
-    class Meta:
-        db_table = "app_services_technical_support"
-        ordering = ["service", "technical_support"]
-
-    def __unicode__(self):
-        return self.id    
 
