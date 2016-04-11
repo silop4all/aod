@@ -70,6 +70,7 @@ MEDIA_ROOT = path.join(PROJECT_ROOT, 'media').replace('\\', '/')
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 # MEDIA_URL = ''
+# MEDIA_URL = '/media/'
 MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
@@ -80,6 +81,7 @@ STATIC_ROOT = path.join(PROJECT_ROOT, 'static').replace('\\', '/')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
+#STATIC_URL = '/static/'
 STATIC_URL = '/static/'
 
 # Additional locations of static files
@@ -88,6 +90,7 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     # mine
+    #"C:/Users/magni_000/Documents/Visual Studio 2013/Projects/DjangoWebProject1/app/static"
 )
 
 # List of finder classes that know how to find static files in
@@ -102,11 +105,11 @@ STATICFILES_FINDERS = (
 SECRET_KEY = 'n(bd1f1c%e8=_xad02x5qtfn%wgwpi492e$8_erx+d)!tpeoim'
 
 # List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    #'django.template.loaders.eggs.Loader',
-)
+#TEMPLATE_LOADERS = (
+#    'django.template.loaders.filesystem.Loader',
+#    'django.template.loaders.app_directories.Loader',
+#    #'django.template.loaders.eggs.Loader',
+#)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -116,6 +119,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # django debug tools
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'DjangoWebProject1.urls'
@@ -138,6 +144,15 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'restapi',
+    
+    'django_extensions',
+
+    # Debug toolbar
+    'debug_toolbar',
+
+    # Grappelli admin panel
+    'grappelli',   
     'django.contrib.admin',
     'django.contrib.admindocs',
     'rest_framework',
@@ -197,7 +212,7 @@ SWAGGER_SETTINGS = {
     #'permission_denied_handler': None,
     #'resource_access_handler': None,
     'info': {
-        #'contact': 'email_here',
+        'contact': 'pathanasoulis@ep.singularlogic.eu',
         'description': 'Find below the documentation of REST web services that AoD provides.',
         'license': 'Apache 2.0',
         'licenseUrl': 'http://www.apache.org/licenses/LICENSE-2.0.html',
@@ -209,30 +224,119 @@ SWAGGER_SETTINGS = {
 
 
 # Email account for notifications
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'email_account_here'
-EMAIL_HOST_PASSWORD = 'email_pwd_here'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST          = 'smtp.gmail.com'
+EMAIL_HOST_USER     = 'gmail_account_username'
+EMAIL_HOST_PASSWORD = 'gmail_account_password'
+EMAIL_PORT          = 587
+EMAIL_USE_TLS       = True
 
 
 
-# django rest framework
+# Django rest framework
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    #'DEFAULT_PARSER_CLASSES': (
-    #    'rest_framework.parsers.JSONParser',
-    #),
-    #'DEFAULT_RENDERER_CLASSES': (
-    #    'rest_framework.renderers.JSONRenderer',
-    #),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework_xml.parsers.XMLParser',
+        'rest_framework_yaml.parsers.YAMLParser',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework_xml.renderers.XMLRenderer',
+        'rest_framework_yaml.renderers.YAMLRenderer',
+    ),
     'DEFAULT_PERMISSION_CLASSES': [
         #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
         'rest_framework.permissions.AllowAny',
     ],
-    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.DjangoFilterBackend',
+    ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 50
 }
+
+
+
+
+GRAPPELLI_ADMIN_TITLE = "AoD administration panel "
+
+# Grappelli template - admin panel
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ]  ,
+        },
+    },
+]
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.core.context_processors.request",
+    "admin_tools.template_loaders.TemplateLoader"
+)
+
+
+# django extensions
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
+
+
+# Django debug toolbar
+#DEBUG_TOOLBAR_PANELS = (
+#    'debug_toolbar.panels.version.VersionDebugPanel',
+#    'debug_toolbar.panels.timer.TimerDebugPanel',
+#    'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+#    'debug_toolbar.panels.headers.HeaderDebugPanel',
+#    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+#    'debug_toolbar.panels.template.TemplateDebugPanel',
+#    'debug_toolbar.panels.sql.SQLDebugPanel',
+#    'debug_toolbar.panels.signals.SignalDebugPanel',
+#    'debug_toolbar.panels.logger.LoggingPanel',
+#)
+
+
+# pip install pylibmc
+#CACHES = {
+#    'default': {
+#        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#        'LOCATION': '127.0.0.1:11211',
+#    }
+#}
+#def get_cache():
+#  import os
+#  try:
+#    os.environ['MEMCACHE_SERVERS'] = os.environ['MEMCACHIER_SERVERS'].replace(',', ';')
+#    os.environ['MEMCACHE_USERNAME'] = os.environ['MEMCACHIER_USERNAME']
+#    os.environ['MEMCACHE_PASSWORD'] = os.environ['MEMCACHIER_PASSWORD']
+#    return {
+#      'default': {
+#        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
+#        'TIMEOUT': 500,
+#        'BINARY': True,
+#        'OPTIONS': { 'tcp_nodelay': True }
+#      }
+#    }
+#  except:
+#    return {
+#      'default': {
+#        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+#      }
+#    }
+
+#CACHES = get_cache()
