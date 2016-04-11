@@ -24,14 +24,14 @@ from rest_framework_xml.renderers import XMLRenderer
 @api_view(('GET',))
 def api_root(request, format=None):
     return Response({
-        'It_experience':    reverse('ItExperienceList', request=request, format=format),
-        'Services':         reverse('ServicesList', request=request, format=format),
-        'Charging_policies':reverse('ChargingPoliciesList', request=request, format=format),
-        'Categories':       reverse('CategoriesList', request=request, format=format),
-        'Guided_network':   reverse('CarerAssistConsumerList', request=request, format=format),
-        'Tags':             reverse('CarerAssistConsumerList', request=request, format=format),
-        'Services_congiguration':  reverse('ServiceConfigurationList', request=request, format=format),
-        'Members':          reverse('UsersList', request=request, format=format),
+        'It_experience':        reverse('ItExperienceList', request=request, format=format),
+        'Services':             reverse('ServicesList', request=request, format=format),
+        'Charging_policies':    reverse('ChargingPoliciesList', request=request, format=format),
+        'Categories':           reverse('CategoriesList', request=request, format=format),
+        'Guided_network':       reverse('CarerAssistConsumerList', request=request, format=format),
+        'Tags':                 reverse('CarerAssistConsumerList', request=request, format=format),
+        'Services_congiguration':reverse('ServiceConfigurationList', request=request, format=format),
+        'Members':              reverse('UsersList', request=request, format=format),
     })
 
 
@@ -64,9 +64,6 @@ class ItExperienceList(generics.ListAPIView):
     """
     serializer_class = ItExperienceSerializer
     queryset = ItExperience.objects.all()    
-    parser_classes = (JSONParser, XMLParser,)
-    renderer_classes = (JSONRenderer, XMLRenderer,)
-
 
 class UsersList(generics.CreateAPIView):
     """
@@ -109,8 +106,53 @@ class UsersList(generics.CreateAPIView):
     serializer_class = UserSerializer
     queryset = Users.objects.all()
 
-    parser_classes      = (JSONParser, XMLParser,)
-    renderer_classes    = (JSONRenderer, XMLRenderer,)
+
+class UserRolesList(generics.ListAPIView):
+    """
+        Retrieve carers having specific email
+        ---
+        GET:
+            parameters:
+              - name: email
+                description: Carer email account
+                type: string
+                paramType: query
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            produces:
+              - application/json
+              - application/xml
+              - application/yaml
+    """
+
+    serializer_class = UserRoleSerializer
+    queryset = Users.objects.all()
+
+    def get_queryset(self):
+        email = self.request.query_params.get('email', None)
+        carers = [c.user_id for c in Carers.objects.filter(is_active=1)]
+        queryset = Users.objects.filter(email=email).filter(pk__in=carers)
+        return queryset
+
 
 
 class TagList(generics.ListAPIView):
@@ -143,8 +185,6 @@ class TagList(generics.ListAPIView):
 
     queryset = Tags.objects.all()
     serializer_class = TagSerializer
-    parser_classes = (JSONParser, XMLParser,)
-    renderer_classes = (JSONRenderer, XMLRenderer,)
 
 
 class CategoriesList(generics.ListCreateAPIView):
@@ -210,9 +250,53 @@ class CategoriesList(generics.ListCreateAPIView):
     """
     queryset = Categories.objects.all()
     serializer_class = CategorySerializer
-    parser_classes = (JSONParser, XMLParser,)
-    renderer_classes = (JSONRenderer, XMLRenderer,)
 
+class TreeCategoriesList(generics.ListAPIView):
+    """
+        Tree categories
+        ---
+        GET:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: level
+                description: Zero for categories layer-1
+                type: integer
+                paramType: query
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 500
+                message: Interval Server Error
+
+            produces:
+              - application/json
+              - application/xml
+    """
+    serializer_class = TreeCategorySerializer
+
+    def get_queryset(self):
+        queryset = Categories.objects.all()
+        level = self.request.query_params.get('level', None)
+        # root
+        if level is not None:
+            return queryset.filter(category__isnull=True)
+        else:
+            return queryset
 
 class CategoriesResource(generics.RetrieveDestroyAPIView):
     """
@@ -224,6 +308,7 @@ class CategoriesResource(generics.RetrieveDestroyAPIView):
                 paramType: path
                 type: integer
                 description: Primary key
+                required: true
             
             responseMessages:
               - code: 200
@@ -253,6 +338,7 @@ class CategoriesResource(generics.RetrieveDestroyAPIView):
                 paramType: path
                 type: integer
                 description: Primary key
+                required: true
 
             responseMessages:
               - code: 204
@@ -273,10 +359,7 @@ class CategoriesResource(generics.RetrieveDestroyAPIView):
 
     queryset = Categories.objects.all()
     serializer_class = CategorySerializer
-    parser_classes = (JSONParser, XMLParser,)
-    renderer_classes = (JSONRenderer, XMLRenderer,)
     lookup_field = ('pk')
-
 
 class ChargingPoliciesList(generics.ListAPIView):
     """
@@ -316,8 +399,6 @@ class ChargingPoliciesList(generics.ListAPIView):
     """
     queryset = ChargingPolicies.objects.all()
     serializer_class = ChargingPolicySerializer
-    parser_classes = (JSONParser, XMLParser,)
-    renderer_classes = (JSONRenderer, XMLRenderer,)
     filter_backends = (filters.SearchFilter,)
     search_fields   = ('name', 'description')
 
@@ -367,7 +448,7 @@ class ServicesList(generics.ListCreateAPIView):
             produces:
               - application/json
               - application/xml
-        
+              - application/yaml
 
         POST:
             omit_parameters:
@@ -408,14 +489,10 @@ class ServicesList(generics.ListCreateAPIView):
     queryset            = Services.objects.all()
     serializer_class    = ServiceSerializer
 
-    parser_classes      = (JSONParser, XMLParser,)
-    renderer_classes    = (JSONRenderer, XMLRenderer,)
-
     filter_backends     = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
     filter_fields       = ('type',  'charging_policy')
     search_fields       = ('title', 'description')
     ordering_fields     = ('title', 'created_date')
-
 
 class ServicesResource(generics.RetrieveUpdateDestroyAPIView):
     """
@@ -427,6 +504,7 @@ class ServicesResource(generics.RetrieveUpdateDestroyAPIView):
                 paramType: path
                 type: integer
                 description: Primary key
+                required: true
 
             responseMessages:
               - code: 200
@@ -451,6 +529,7 @@ class ServicesResource(generics.RetrieveUpdateDestroyAPIView):
             produces:
               - application/json
               - application/xml
+              - application/yaml
 
         PUT:
             omit_parameters:
@@ -461,6 +540,7 @@ class ServicesResource(generics.RetrieveUpdateDestroyAPIView):
                 paramType: path
                 type: integer
                 description: Primary key
+                required: true
               - name: service
                 description: Update existing service
                 type: ServiceSerializer
@@ -572,30 +652,546 @@ class ServicesResource(generics.RetrieveUpdateDestroyAPIView):
     queryset = Services.objects.all()
     lookup_field = ('pk')
 
-    parser_classes      = (JSONParser, XMLParser,)
-    renderer_classes    = (JSONRenderer, XMLRenderer,)
+class DetailedServiceResource(generics.RetrieveAPIView):
+    """
+        Detailed information per service
+        ---
+        GET:
+            parameters:
+              - name: pk
+                paramType: path
+                type: integer
+                description: Primary key
+                required: true
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            produces:
+              - application/json
+              - application/xml
+              - application/yaml
+    """
+
+    serializer_class = DetailedServiceSerializer
+    queryset = Services.objects.all()
+    lookup_field = ('pk')
+
+class ServiceConfigList(generics.RetrieveAPIView):
+    """
+       Zero configuration collection per service 
+        ---
+        GET:
+            parameters:
+              - name: pk
+                paramType: path
+                type: integer
+                description: Primary key
+                required: true
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            produces:
+              - application/json
+              - application/xml
+              - application/yaml
+    """
+
+    serializer_class = ServiceConfigurationsSerializer
+    queryset = Services.objects.all()
+    lookup_field = ('pk')
+
+class ServiceLanguagesList(generics.RetrieveAPIView):
+    """
+       Supported languages collection per service
+        ---
+        GET:
+            parameters:
+              - name: pk
+                paramType: path
+                type: integer
+                description: Primary key
+                required: true
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            produces:
+              - application/json
+              - application/xml
+              - application/yaml
+    """
+
+    serializer_class = ServiceLanguagesSerializer
+    queryset = Services.objects.all()
+    lookup_field = ('pk')
+
+class ServiceTechnicalSupportList(generics.RetrieveAPIView):
+    """
+       Provided technical support per service
+        ---
+        GET:
+            parameters:
+              - name: pk
+                paramType: path
+                type: integer
+                description: Service Primary key
+                required: true
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            produces:
+              - application/json
+              - application/xml
+              - application/yaml
+    """
+
+    serializer_class = ServiceTechicalSupportSerializer
+    queryset = Services.objects.all()
+    lookup_field = ('pk')
+
+class ServiceKeywordsList(generics.RetrieveAPIView):
+    """
+       Related keywords per service
+        ---
+        GET:
+            parameters:
+              - name: pk
+                paramType: path
+                type: integer
+                description: Service Primary key
+                required: true
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            produces:
+              - application/json
+              - application/xml
+              - application/yaml
+    """
+
+    serializer_class = ServiceKeywordsSerializer
+    queryset = Services.objects.all()
+    lookup_field = ('pk')
+
+class SupportedLanguagesResource(generics.ListAPIView):
+    """
+        Service resource
+        ---
+        GET:
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            produces:
+              - application/json
+              - application/xml
+              - application/yaml
+    """
+
+    serializer_class = ServiceLanguagesSerializer
+    queryset = ServiceLanguages.objects.all()
+
+class ServiceReviewsList(generics.ListAPIView):
+    """
+    Retrieve reviews for a service
+    ---
+        GET:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: service
+                paramType: path
+                type: integer
+                description: Primary key
+                required: true
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            produces:
+              - application/json
+              - application/xml
+              - application/yaml
+    """
+    serializer_class = ServiceReviewsSerializer
+    queryset = ConsumersToServices.objects.all()
+
+    def get_queryset(self):
+        service = self.kwargs['service']
+        queryset = ConsumersToServices.objects.filter(service=service)
+        return queryset
 
 
-class ServiceConfigurationList(generics.ListCreateAPIView):
-    serializer_class = ServiceConfigurationSerializer
+class ServiceConfigurationList(generics.UpdateAPIView):
+    """
+    Update configuration
+    ---
+        PUT:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: pk
+                paramType: path
+                type: integer
+                description: Primary key
+                required: true
+              - name: service
+                description: Update existing service
+                type: ConfigurationSerializer
+                paramType: body
+                pytype: ConfigurationSerializer
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            consumes:
+              - application/json
+            produces:
+              - application/json
+              - application/xml
+    """
+    serializer_class = ConfigurationSerializer
     queryset = ServiceConfiguration.objects.all()
     lookup_field = ('pk')
 
-    parser_classes      = (JSONParser, XMLParser,)
-    renderer_classes    = (JSONRenderer, XMLRenderer,)
 
-
-
-
-
-
-
-
-
-
-class CarerAssistConsumerList(generics.ListCreateAPIView):
+class ConsumerServicesList(generics.ListAPIView):
     """
-    Get a collection of permissions requests for the guided network 
+    Service details for specific consumer
+    ---
+        GET:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: pk
+                paramType: path
+                type: integer
+                description: User id
+                required: true
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            produces:
+              - application/json
+              - application/xml
+              - application/yaml
     """
-    queryset = CarersAssistConsumers.objects.all()
-    serializer_class = CarerAssistSerializer
+    serializer_class = ConsumerServicesSerializer
+    queryset = ConsumersToServices.objects.all()
+
+    def get_queryset(self):
+        consumer = self.kwargs['pk']
+        queryset = ConsumersToServices.objects.filter(consumer=consumer)
+        return queryset
+
+
+
+# Assistance
+class ConsumerAssistServicesList(generics.ListAPIView):
+    """
+    Service details for specific consumer
+    ---
+        GET:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: pk
+                paramType: path
+                type: integer
+                description: User id
+                required: true
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            produces:
+              - application/json
+              - application/xml
+              - application/yaml
+    """
+    queryset = NasConsumersToServices.objects.all()
+    serializer_class = ConsumerAssistServicesSerializer
+    
+    def get_queryset(self):
+        consumer = self.kwargs['pk']
+        queryset = NasConsumersToServices.objects.filter(consumer=consumer)
+        return queryset
+
+class ConsumerAssistServicesConfigurationList(generics.ListAPIView):
+    """
+       Zero configuration collection per service 
+        ---
+        GET:
+            parameters:
+              - name: pk
+                paramType: path
+                type: integer
+                description: Consumer id
+                required: true
+              - name: service
+                paramType: path
+                type: integer
+                description: Service id
+                required: true
+
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            produces:
+              - application/json
+              - application/xml
+              - application/yaml
+    """
+
+    serializer_class = ConsumerAssistServicesConfigurationSerializer
+    queryset = NasConsumersToServices.objects.all()
+
+    def get_queryset(self):
+        consumer = self.kwargs['pk']
+        service = self.kwargs['service']
+        queryset = NasConsumersToServices.objects.filter(consumer=consumer).filter(service=service)
+        return queryset
+
+class AssistanceConfigurationList(generics.CreateAPIView):
+    """
+    Insert service configuration per consumer
+    ---
+        POST:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: service configuration
+                description: Insert service configuration per consumer
+                type: AssistanceConfigurationSerializer
+                paramType: body
+                pytype: AssistanceConfigurationSerializer
+
+            responseMessages:
+              - code: 201
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            consumes:
+              - application/json
+            produces:
+              - application/json
+              - application/xml
+    """
+    serializer_class = AssistanceConfigurationSerializer
+    queryset = NasConfiguration.objects.all()
+    lookup_field = ('pk')
+
+
