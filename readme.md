@@ -1,12 +1,11 @@
-# Prosperity 4 All project
-
-## Assistance On Demand service Infrastructure
+# Prosperity4All project
+## Assistance On Demand service Infrastructure (AoD)
 
 ### Hardware requirements
-    __Operating System__: Linux (Ubuntu 14.04)
-    __RAM__: 2 GB
-    __CPU cores__: > 2
-    __Disk space__: > 20 GB
+__Operating System__: Linux (Ubuntu 14.04)
+__RAM__: 2 GB
+__CPU cores__: > 2
+__Disk space__: > 20 GB
 
 ### Software dependencies
 
@@ -30,26 +29,26 @@
     # sudo service mysql status        
 
     # mysql –uroot -p
-    $ create database pros4all; // create db
-    $ create user 'aod'@'localhost' identified by 'aod';       
-    $ grant all privileges on pros4all.* to 'aod'@'localhost'; 
-    $ flush privileges;
-    $ quit
+    # create database pros4all; // create db
+    # create user 'aod'@'localhost' identified by 'aod';       
+    # grant all privileges on pros4all.* to 'aod'@'localhost'; 
+    # flush privileges;
+    # quit
 
 #### Install Apache web server
-    $ sudo apt-get install apache2
-    $ sudo apt-get install libapache2-mod-python
-    $ sudo apt-get install libapache2-mod-wsgi
-    $ sudo apt-get install rcconf
-    $ sudo apt-get install dialog
-    $ sudo apachectl status 
-    $ sudo service apache2 restart 
+    # sudo apt-get install apache2
+    # sudo apt-get install libapache2-mod-python
+    # sudo apt-get install libapache2-mod-wsgi
+    # sudo apt-get install rcconf
+    # sudo apt-get install dialog
+    # sudo apachectl status 
+    # sudo service apache2 restart 
 
 #### Install pillow
     # sudo apt-get build-dep python-imaging
     # sudo apt-get install libjpeg8 libjpeg62-dev libfreetype6 libfreetype6-dev
 
-##### Install python packages
+#### Install python packages
 The python packages must be installed given that python with version 2.7 has already pre-installed in Ubuntu 14.04. The VM administrator needs to install the python pip package.
 
     # sudo apt-get install python-pip
