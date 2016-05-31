@@ -83,16 +83,19 @@ $ sudo python –V
 $ sudo pip freeze
 ```
 
-#### Install AoD
+#### Install and configurate the AoD project
 
-Deploy the AoD project including its applications:
+Deploy the AoD project, let's suppose {AoD}, including its applications:
 ```bash
 $ mkdir /opt/prosperity/
 $ sudo mv /home/ubuntu/{AoD} /opt/prosperity/
 $ chown –R aod:aod /opt/prosperity/
 $ cd /opt/prosperity/{AoD}/{AoD}
-$ sudo vim settings.py
+```
 
+Configurate the project database and email account for notifications:
+```bash
+$ sudo vim settings.py
 ...
 DATABASES = {
     'default': {
@@ -115,13 +118,59 @@ EMAIL_USE_TLS = True
 ...
 ```
 
-Update the wsgi.py file as following:
+Update the _wsgi.py_ file as following:
 ```bash
 import sys
 sys.path.append('/opt/prosperity/{AoD}')
-sys.path.append('/opt/ prosperity /{AoD}/{AoD}')
+sys.path.append('/opt/prosperity/{AoD}/{AoD}')
 ```
 
+Populate tha database and enter the superuser credentials, if required:
+```bash
+sudo python manage.py syncdb
+#sudo python manage.py migrate (only if the initial .sql file is provided) 
+```
 
+Collect static files:
+```bash
+sudo python manage.py collectstatic --noinput
+```
 
+Execute the command to check the success installation of AoD project:
+```bash
+$ cd /opt/prosperity/{AoD}/
+$ sudo python manage.py runserver 0.0.0.0:8080
+```
+
+#### Configurate the Apache web server
+
+As aforementioned, the Django runserver should be used only for testing or during the development phase. To solve it, the Apache web server must be configured as so AoD platform be accessible. In principle, disable the default configuration and create a new one.
+
+```bash
+$ sudo -i 
+$ cd /etc/apache2/sites-available/
+$ cp 000-default.conf aod.conf
+$ a2dissite 000-default.conf
+$ service apache2 restart
+
+$ vim aod.conf
+<VirtualHost *:80>
+    ServerAdmin root@localhost.com
+    ServerName 127.0.0.1
+    WSGIScriptAlias / /opt/prosperity/{AoD}/{AoD}/wsgi.py
+
+    <Directory /opt/prosperity/{AoD}/{AoD}>
+        <Files wsgi.py>
+            Order deny,allow
+            Require all granted
+        </Files>
+
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+</VirtualHost>
+
+$ a2ensite aod.conf
+$ service apache2 restart
+```
 
