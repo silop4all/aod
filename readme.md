@@ -120,6 +120,8 @@ EMAIL_USE_TLS = True
 
 Update the _wsgi.py_ file as following:
 ```bash
+$ vim wsgi.py
+
 import sys
 sys.path.append('/opt/prosperity/{AoD}')
 sys.path.append('/opt/prosperity/{AoD}/{AoD}')
@@ -127,13 +129,13 @@ sys.path.append('/opt/prosperity/{AoD}/{AoD}')
 
 Populate tha database and enter the superuser credentials, if required:
 ```bash
-sudo python manage.py syncdb
+$ sudo python manage.py syncdb
 #sudo python manage.py migrate (only if the initial .sql file is provided) 
 ```
 
 Collect static files:
 ```bash
-sudo python manage.py collectstatic --noinput
+$ sudo python manage.py collectstatic --noinput
 ```
 
 Execute the command to check the success installation of AoD project:
