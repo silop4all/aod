@@ -1,0 +1,118 @@
+﻿{% extends "app/base.html" %}
+
+    {% block title %} 
+        AoD | Network of Assistance services
+    {% endblock title %}
+
+    {% load staticfiles %}
+
+    {% block extraCss %}
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap-table/bootstrap-table.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
+    {% endblock extraCss %}
+
+    {% block navbar %}
+        {% include "app/navbar-users.html" %}
+    {% endblock navbar %}
+
+    {% load staticfiles %}
+
+
+    {% block content %}
+    <div class="container body-content padding-bottom-em-2 padding-top-50">
+    
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            <li><a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
+            <li><a href="{% url 'carer-landing-page' %}"  class="custom-inactive-breadcrumb">Network of Assistance Services</a></li>
+            <li class="active"> Send a permission request</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+
+        <main role="main">
+            <section class="margin-bottom-25">
+                <div class="service-list-box">
+                    <h3>Find the user you want to assist and require permission to setup his/her network of services</h3>
+                    <hr class="service-hr" />
+                    
+                    <div id="custom-search" class="row">
+                        <div class="col-sm-3 col-lg-3 col-md-3 ">
+                            <label for="consumer_email_account">Enter the user's email account:</label>
+                        </div>
+                        <div class="col-sm-4 col-lg-4 col-xs-12 col-md-4 input-group ">
+                            <input type="email" class="form-control pull-right" id="consumer_email_account" value="" placeholder="enter email account" required>
+                            <a href="javascript:void(0)" class="input-group-addon btn btn-toolbar text-success" id="retrieve-users">
+                                <span class="fa fa-search fa-fw"></span>
+                            </a>
+                        </div>
+
+                        <div class="col-sm-4 col-lg-4 col-md-4 col-xs-12 text-danger hidden" id="error-message">No valid email (The characters @ and . are required)</div>
+                    </div>
+                   
+                    <!-- search results -->
+                    <div  id="search-results">
+                        <table id="search-results-table" 
+                            data-classes="table table-hover"
+                            data-search="false"  
+                            data-show-toggle="false"
+                            data-show-columns="false"
+                            data-card-view="false"
+                            data-toolbar="#custom-search"
+                            data-click-to-select="false"
+                            data-pagination="true"
+                            data-page-list="[10, 20, 30, 40, 50]"
+                            data-sort-name="request_email" data-sort-order="asc">
+                        <thead>
+                        <tr>
+                            <th data-field="name" data-sortable="true" data-switchable="false">Name</th>
+                            <th data-field="lastname" data-align="center" data-sortable="true" >Lastname</th>
+                            <th data-field="email" data-align="center" data-sortable="true" >Email account</th>
+                            <th data-field="declare_interest" data-sortable="false" data-formatter="declareInterestFormatter" data-align="center" data-events="removeActionEvent">Send assistance request</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    </div>
+
+                    <div class="padding-top-20 padding-bottom-10" >
+                        <div class="row col-sm-12 col-lg-12 col-md-12 col-lg-12 ">
+                            <center>
+                                <a href="{% url 'carer-landing-page' %}" title="Back to carer dashboard" class="btn btn-default"> Back to guided assistance page</a>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+
+    </div>
+    {% endblock content %}
+
+    
+
+    {% block scripts %}
+        <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+        <script src="{% static 'app/scripts/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+        <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/nas/requests/search.js' %}"></script>
+        <script src="{% static 'app/scripts/sweetalert/sweetalert.min.js' %}"></script>
+
+        <script type="text/javascript">
+
+            function declareInterestFormatter(value, row, index) {
+                return [
+                    '<button class="btn btn-link declare-interest-btn" data-user-id="' + row['id'] + '" data-name="' + row['name'] + '" data-lastname="' + row['lastname'] + '" title="Declare you interest">',
+                        '<i class="fa fa-send-o fa-lg text-success"></i>',
+                    '</button>'
+                ].join('');
+            }
+
+        </script>
+
+    {% endblock scripts %}

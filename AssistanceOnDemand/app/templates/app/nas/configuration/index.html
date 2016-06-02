@@ -1,0 +1,811 @@
+﻿{% extends "app/base.html" %}
+
+    {% block title %} 
+        AoD | Guided assistance
+    {% endblock title %}
+
+    {% load staticfiles %}
+
+    {% block extraCss %}
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap-table/bootstrap-table.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
+    {% endblock extraCss %}
+
+
+    {% block navbar %}
+        {% include "app/navbar-users.html" %}
+    {% endblock navbar %}
+
+    {% load staticfiles %}    
+
+    {% block content %}
+    <div class="container body-content padding-bottom-em-2 padding-top-50">
+    
+        {% block breadcrumb %}
+        <ol class="row breadcrumb" role="navigation" aria-label="breadcrumb">
+            <li>
+                <a href="{% url 'home-page' %}" aria-label="link" class="custom-inactive-breadcrumb" title="Home page">
+                    <span class="fa fa-home"></span> Home
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'carer-landing-page' %}"  class="custom-inactive-breadcrumb" title="Network of Assistance Services">
+                    Network of Assistance Services
+                </a>
+            </li>
+            <li class="active"> Setup</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+
+        <main>
+            <div class="row service-list-box min-height-700-px">
+
+                <!-- Left side -->
+                <section class="col-sm-3 col-xs-12 col-md-3 col-lg-3" style="min-height: inherit; border-radius: 4px 4px; background-color: rgba(228, 228, 228, 0.91); border-right: 1px solid whitesmoke">
+
+                    <div class="row structured-search margin-bottom-percent-5">
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                            <h6 class="text-info" >
+                                Progress: <span id="progress-bar-info"  data-toggle="tooltip" data-placement="right" title="Completion percentage of the guided assistance process"> </span>
+                            </h6>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                            <div class="progress active progress-bar-height-10">
+                                <div class="progress-bar progress-bar-success set-width-percent-1" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100">
+                                     <span class="sr-only">1% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="margin-top-percent-5 margin-bottom-percent-10">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">Search services</h5>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-sm-12 col-lg-12 col-xs-12 col-md-2 input-group ">
+                                    <input type="text" class="form-control pull-right" id="keywords" value="" placeholder="enter keywords" data-toggle="tooltip" data-placement="bottom" title="Enter keywords">
+                                    <a href="javascript:void(0)" class="input-group-addon btn btn-toolbar text-info" role="button" aria-describedby="keywords" id="search-services">
+                                        <span class="fa fa-search fa-fw"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tree-categories" class="structured-search margin-bottom-percent-5">
+                        <div id="accordion" class="panel-group">
+                        {% if categories %}
+                            {% for category in categories %}
+                                {% if category.parent == -1 %}
+                                    {% if category.order == 1 %}
+                                        <div class="panel panel-custom-success">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="wizard-nav" data-toggle="collapse" data-parent="#accordion" href="#cat{{category.id}}">Step {{category.order}}: {{category.title}}</a>
+                                                    <small>
+                                                        <label class="badge total-services pull-right" style="background-color: #fff; color: #51A951" data-placement="right" title="Number of services in selected categories"></label>
+                                                    </small>
+                                                </h4>
+                                            </div>
+                                            <div id="cat{{category.id}}" data-id="cat_{{category.id}}" data-step="{{category.order}}" class="panel-collapse in">
+                                                <div class="panel-body">
+                                    {% else %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="wizard-nav" data-toggle="collapse" data-parent="#accordion" href="#cat{{category.id}}">Step {{category.order}}: {{category.title}}</a>
+                                                    <small>
+                                                        <label class="badge total-services pull-right" style="background-color: #fff; color: gray" data-placement="right" title="Number of services in selected categories"></label>
+                                                    </small>
+                                                </h4>
+                                            </div>
+                                            <div id="cat{{category.id}}"  data-id="cat_{{category.id}}"  data-step="{{category.order}}" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                    {% endif %}
+                                                    <div class="select-category" title="{{ category.description }}">
+                                                        <input type="checkbox" checked class="parent-category cursor-pointer" data-id="{{category.id}}" id="{{category.id}}"/>
+                                                        <label class="cursor-pointer" for="{{ category.id }}" data-placement="right" title="Check or uncheck the sub-categories of {{ category.title }} category">Check/uncheck all</label>
+                                                    </div>
+                                {% else %}
+                                                    <div class="select-category padding-left-percent-15" title="{{ category.description }}">
+                                                        <input type="checkbox" checked class="child-category cursor-pointer" data-parent-id="{{ category.parent}}" data-id="{{ category.id }}" id="{{ category.id }}"/>
+                                                        <label class="cursor-pointer" for="{{ category.id }}" title="{{ category.description }}">{{ category.title }}</label>
+                                                    </div>
+                                {% endif %}
+                                    
+                            {% endfor %}
+                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="wizard-nav" data-toggle="collapse" data-parent="#accordion" href="#wizard-final-step">Final step: Overview</a>
+                                    </h4>
+                                </div>
+                                <div id="wizard-final-step" data-step="-1" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p>The selected services are ordered by category. You have the capability to purchase them and optionally modify their configuration!</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- Right side -->
+                <section class="col-sm-9 col-xs-12 col-md-9 col-lg-9 structured-search">
+
+                    <div class="jumbotron">
+                        <h3>Setup the network of assistance services</h3>
+                        <p class="font-size-pt-18">
+                            <blockquote class="font-size-pt-14 text-justify">
+                                <small class="color-black">
+                                    You set up a network of assistance services on behalf of <span data-placement="bottom" class="cursor-context-menu" title="Target end-user">{{ consumer.name }} {{ consumer.lastname }} (<em id="target-consumer" data-target="{{ consumer.id }}">{{ consumer.username }}</em>)</span>. 
+                                </small>
+                            </blockquote>
+                        </p>
+
+                        <p class="font-size-px-16 text-justify"  id="hint">
+                            <span class="text-danger"><span class="fa fa-lightbulb-o"></span> <strong>Hint:</strong></span>
+                            <span id="steps">Please use the buttons <span id="previous-step-hint" class="cursor-help" data-placement="bottom" title="Proceed to previous step"><em>Previous step</em></span>  and <span id="next-step-hint" class="cursor-help" data-placement="bottom" title="Proceed to next step"><em>Next step</em></span> to navigate in the wizard step-by-step.
+                            In every step, you can filter the list of services (see the table below) by selecting the (sub)categories of your interest in the left column of page.
+                            Then, please check the services you want to use and proceed to the next step.
+                            </span>
+                            <span id="final-step" class="hidden">
+                                In this step, platform provides you a summary of the selected services that are grouped by category.
+                                Find marked with icon <span class="fa fa-exclamation-circle text-danger hint-additional-services cursor-help" data-placement="bottom" title="Mark categories in which none service has selected."></span> the categories in which you did not select any service. 
+                                On the other hand, find marked with icon <span class="fa fa-check-circle text-success cursor-help" data-placement="bottom" title="Categories in which the selected services belong to"></span> the categories in which you have selected at least a service.
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="row margin-bottom-percent-2" >
+                        <div class="col-sm-12 col-xs-1 col-lg-12 col-md-12">
+                            <button class="btn btn-default hidden" id="wizard-previous-step"><span class="fa fa-long-arrow-left text-info"></span> Previous step</button>
+                            <button class="pull-right btn btn-default" id="wizard-next-step"> Next step <span class="fa fa-long-arrow-right text-info"></span></button>
+                        </div>
+                    </div>
+
+                    <!--<table class="table table-responsive services-table custom-aod-table">
+                        <thead>
+                            <tr class="custom-aod-table-thead">
+                                <th class="custom-aod-table-th">Service title</th>
+                                <th class="custom-aod-table-th text-center">Type</th>
+                                <th class="custom-aod-table-th text-center">Location limitations</th>
+                                <th class="custom-aod-table-th text-center">Price</th>
+                                <th class="custom-aod-table-th text-center">Action buttons</th>
+                            </tr>
+                        </thead>
+                        <tbody id="current-step-services"></tbody>
+                    </table>-->
+
+                    <!-- services -->
+                    <table class="services-table" 
+                            data-classes="table table-hover"
+                            data-search="true"
+                            data-show-toggle="false"
+                            data-show-columns="true"
+                            data-card-view="false"
+                            data-click-to-select="false"
+                            data-toolbar="#"
+                            data-pagination="true"
+                            data-page-list="[10, 20, 30, all]"
+                            data-sort-name="title" data-sort-order="asc">
+                        <thead class="custom-aod-table-thead">
+                        <tr >
+                            <th data-field="title"  data-sortable="true" data-switchable="false" data-formatter="setServiceTitleFormatter">Service title</th>
+                            <th data-field="type"   data-align="center" data-sortable="true" data-visible="true" data-formatter="setServiceTypeFormatter">Type</th>
+                            <th data-field="price"  data-align="center" data-sortable="true" data-formatter="setServicePriceFormatter">Price</th>
+                            <th data-field="location_constraint" data-align="center" data-visible="true" data-sortable="true" data-formatter="setServiceLocationFormatter">Location constraints</th>
+                            <th data-field="interesting" data-sortable="false" data-formatter="setServiceInterestingFormatter" data-align="center">Wishlist</th>
+                            <th data-field="purchase" data-sortable="false" data-formatter="setServicePurchaseFormatter" data-align="center">Action</th>
+                        </tr>
+                        </thead>
+                    </table>
+
+                    <!-- overview -->
+                    <table class="table table-responsive finalize-services-table custom-aod-table hidden">
+                        <thead>
+                            <tr class="custom-aod-table-thead">
+                                <th class="custom-aod-table-th">Category title</th>
+                                <th class="custom-aod-table-th">Service title</th>
+                                <th class="custom-aod-table-th text-center">More details</th>
+                                <th class="custom-aod-table-th text-center">Action buttons</th>
+                            </tr>
+                        </thead>
+                        <tbody id="finalize-services-body"></tbody>
+                    </table>
+
+                    
+                    <div id="map-container" class="margin-top-10 margin-bottom-10 hidden">
+                        <div style="padding:5px; background-color: dimgray; opacity:0.8; color: white">
+                            <span id="service-title"></span>
+                            <button class="pull-right disable-service-map btn btn-default" data-alignment="bottom" title="Close"><span class="fa fa-close"></span></button> 
+                        </div>
+                        <div id="map" style="height:30%; min-height:300px; overflow:visible!important; border:1px solid dimgray" ></div>
+                    </div>
+
+                    <div class="row clearfix margin-top-10 margin-bottom-5">
+                        <center>
+                            <button data-url="{% url 'carer-landing-page' %}" role="navigation" class="btn btn-default hidden center" id="return-nas-page"><span class="text-center">Back to guided assistance page</span></button>
+                        </center>
+                    </div>
+                </section>
+                
+                <!--keywords search-->
+                <section class="col-sm-9 col-xs-12 col-md-9 col-lg-9 hidden keywords-based-search">
+                                           
+                    <div class="jumbotron">
+                        <h3>Network of assistance services: installation steps </h3>
+                        <p class="font-size-px-18">
+                            <blockquote class="font-size-pt-14 text-justify">
+                                <small class="color-black">
+                                    You set up a network of assistance services on behalf of {{ consumer.name }} {{ consumer.lastname }} (<em id="target-consumer" data-target="{{ consumer.id }}">{{ consumer.username }}</em>). 
+                                </small>
+                            </blockquote>
+                        </p>
+                    </div>
+                    
+                    <div role="presentation">
+                        <!--<table class="table table-responsive finalize-services-table" style="overflow:auto; border: 1px solid #51A951!important;border-radius: 8px 8px 0px 0px!important">
+                            <thead>
+                                <tr class="custom-aod-table-thead">
+                                    <th class="custom-aod-table-th">Service</th>
+                                    <th class="custom-aod-table-th">Type</th>
+                                    <th class="custom-aod-table-th">Location</th>
+                                    <th class="custom-aod-table-th">Price</th>
+                                    <th class="custom-aod-table-th text-center">Settings</th>
+                                    <th class="custom-aod-table-th text-center">Action button</th>
+                                </tr>
+                            </thead>
+                            <tbody id="keywords-finalize-services-body"></tbody>
+                        </table>
+                        -->
+
+                        <div id="results" class="btn-group" title="The toolbar provides to users of set of actions such as add,remove or search a service">
+                            <h4><strong>Search results:</strong>
+                                <span id="results-number"></span> service(s) found!
+                            </h4>
+                        </div>
+                        <table class="search-services-table center"
+                                data-classes="table table-hover"
+                                data-search="true"
+                                data-show-toggle="false"
+                                data-show-columns="true"
+                                data-card-view="false"
+                                data-click-to-select="false"
+                                data-toolbar="#results"
+                                data-pagination="true"
+                                data-switchable="false"
+                                data-page-list="[10, 20, 30, all]"
+                                data-sort-name="pk" data-sort-order="asc">
+                            <thead class="custom-aod-table-thead">
+                            <tr >
+                                <th data-field="title"  data-sortable="true" data-switchable="false" data-formatter="setKwdServiceFormatter">Service title</th>
+                                <th data-field="type"   data-align="center" data-sortable="true" data-visible="true" data-formatter="setKwdServiceTypeFormatter">Type</th>
+                                <th data-field="price"  data-align="center" data-sortable="true" data-formatter="seKwdtServicePriceFormatter">Price</th>
+                                <th data-field="location_constraint" data-align="center" data-visible="true" data-sortable="true" data-formatter="setKwdServiceLocationFormatter">Location constraints</th>
+                                <th data-field="pk" data-sortable="false" data-formatter="setKwdServiceConfigFormatter" data-align="center">More details</th>
+                                <th data-field="purchase" data-sortable="false" data-formatter="setKwdServicePurchaseFormatter" data-align="center">Action</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    <div id="map-container-kwd" class="margin-top-10 margin-bottom-10 hidden">
+                        <div style="padding:5px; background-color: dimgray; opacity:0.8; color: white">
+                            <span id="service-title-kwd"></span>
+                            <button class="pull-right disable-service-map-kwd btn btn-default" data-alignment="bottom" title="Close"><span class="fa fa-close"></span></button> 
+                        </div>
+                        <div id="map-kwd" style="height:30%; min-height:360px; border:1px solid dimgray" ></div>
+                    </div>
+
+                    <div class="row  margin-top-10 margin-bottom-10">
+                        <center>
+                            <button class="btn btn-default text-info" id="swap-structured-search">Back to structured search </button>
+                        </center>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    {% endblock content %}
+
+
+
+    {% block scripts %}
+        <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+        <script src="{% static 'app/scripts/bootstrap.min.js' %}"></script>
+        <script src="{% static 'app/scripts/bootbox/bootbox.min.js' %}"></script>
+        <script src="{% static 'app/scripts/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM"></script>
+
+        <script type="text/javascript">
+            var consumerID = -1;
+
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+                    }
+                }
+            });
+
+            function getMap(obj, elemID) {
+                // Initiate variables
+                var lat, lng;
+                // Initiate coordinates
+                var coordinates = new google.maps.LatLng(obj.latitude, obj.longitude);
+                // Set options
+                var mapOptions = {
+                    zoom: 10,
+                    center: coordinates,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    panControl: false,
+                    scaleControl: false,
+                    streetViewControl: false,
+                    zoomControl: true,
+                    zoomControlOptions: {
+                        style: google.maps.ZoomControlStyle.SMALL,  //enables the dimension
+                        position: google.maps.ControlPosition.RIGHT_BOTTOM  //position enables
+                    },
+                    mapTypeControlOptions: {
+                        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+                    }
+                };
+
+                var map = new google.maps.Map(document.getElementById(elemID), mapOptions);
+                var marker = new google.maps.Marker({
+                    position: coordinates,
+                    map: map,
+                    draggable: false
+                });
+
+                var coverage = new google.maps.Circle({
+                    strokeColor: 'red',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#AAAAAA',
+                    fillOpacity: 0.4,
+                    map: map,
+                    center: coordinates,
+                    radius: obj.radius * 1000
+                });
+
+                var infoWindow = new google.maps.InfoWindow({
+                    content: "<div><strong>Service:</strong> " + obj.serviceTitle  + " <br><strong>Latitude:</strong> " + obj.latitude + "<br><strong>Longitude:</strong> " + obj.longitude + "</div>"
+                });
+
+                // Handle user actions
+                google.maps.event.addListener(marker, 'click', function (event) {
+                    infoWindow.open(map, marker);
+                });
+                // Set marker in center
+                map.setCenter(marker.position);
+                marker.setMap(map);
+            }
+            // Load map
+            google.maps.event.addDomListener(window, 'load', getMap);
+
+            $(document).ready(function () {
+                GuidedWizard.init();
+                consumerID = $("#target-consumer").data('target');
+
+                //Activate tootlip
+                $(".total-services").tooltip({trigger: "hover", placement: "right"});
+                $("input").tooltip({trigger: "hover",placement: "bottom"});
+                $("span").tooltip({ trigger: "hover" });
+                $("button").tooltip({ trigger: "hover" });
+                $("label").tooltip({trigger: "hover"});
+
+                // Display hints
+                $("#previous-step-hint").mouseover(function () {
+                    $("#wizard-previous-step").addClass('btn-info').removeClass('btn-default');
+                }).mouseleave(function () {
+                    $("#wizard-previous-step").removeClass('btn-info').addClass('btn-default');
+                });
+
+                $("#next-step-hint").mouseover(function () {
+                    $("#wizard-next-step").addClass('btn-info').removeClass('btn-default');
+                }).mouseleave(function () {
+                    $("#wizard-next-step").removeClass('btn-info').addClass('btn-default');
+                });
+
+                // Handle categories
+                $(".parent-category").click(function () {
+                    var children = $(document).find("input[data-parent-id='" + $(this).data('id') + "']");
+
+                    if (this.checked) {
+                        children.each(function () {
+                            $(this).prop('checked', true);
+                        });
+                    }
+                    else {
+                        children.each(function () {
+                            $(this).prop('checked', false);
+                        });
+                    }
+                    GuidedWizard.services();
+                });           
+
+                $(".child-category").click(function () {
+                    if (this.checked) {
+                        var check = 1;
+                        var children = $(document).find("input[data-parent-id='" + $(this).data('parentId') + "']");
+                        children.each(function () {
+                            var curr = ($(this).prop('checked') !== true) ? 0 : 1;
+                            check *= curr;
+                        });
+                        if (check == 1) {
+                            $(document).find("input[data-id='" + $(this).data('parentId') + "']").prop('checked', true);
+                        }
+                        else {
+                            $(document).find("input[data-id='" + $(this).data('parentId') + "']").prop('checked', false);
+                        }
+                    }
+                    else {
+                        $(document).find("input[data-id='" + $(this).data('parentId') + "']").prop('checked', false);
+                    }
+                    GuidedWizard.services();
+
+                });
+
+                // Navigation
+                $("#wizard-previous-step").click(function () {
+                    GuidedWizard.back();
+                });
+
+                $("#wizard-next-step").click(function () {
+                    GuidedWizard.next();
+                });
+
+                $("a.wizard-nav").click(function (event) {
+                    $("#wizard-final-step").removeClass('collapse');
+                    GuidedWizard.random($(this));
+                    $("#wizard-final-step").removeClass('collapse');
+                });
+
+                $('.fixed-table-body').css('height', 'auto').css('border-top-right-radius', '3px');
+            });
+
+            $("body").on('all.bs.table', '.services-table', function (name, args) {
+                $("input").tooltip({ trigger: "hover", placement: "bottom" });
+                $("span").tooltip({ trigger: "hover" });
+                $("button").tooltip({ trigger: "hover" });
+                $("label").tooltip({ trigger: "hover" });
+                $("td").each(function () {
+                    $(this).css("vertical-align", "middle");
+                });
+            }).on('all.bs.table', '.search-services-table', function (name, args) {
+                $("input").tooltip({ trigger: "hover", placement: "bottom" });
+                $("span").tooltip({ trigger: "hover" });
+                $("button").tooltip({ trigger: "hover" });
+                $("label").tooltip({ trigger: "hover" });
+                $("td").each(function () {
+                    $(this).css("vertical-align", "middle");
+                });
+            });
+
+            $(document).on('click', ".nas-buy-btn", function () {
+                //console.info($(this).data('serviceId'));
+            });
+
+            $(document).on('click', ".nas-select-btn", function () {
+                var info = { service_id: $(this).data('serviceId'), consumer_id: consumerID };
+
+                var elem = $("span.no-interesting-service");
+                if ($(this).find(elem).length) {
+                    $(this).find('span').text('Remove');
+                    $(this).find('span').addClass('interesting-service').removeClass('no-interesting-service');
+                    $(this).removeClass('btn-success').addClass('btn-danger');
+                    // push service
+                    GuidedWizard.addWishList(info);
+                }
+                else {
+                    $(this).find('span').text('Add');
+                    $(this).find('span').removeClass('interesting-service').addClass('no-interesting-service');
+                    $(this).removeClass('btn-danger').addClass('btn-success');
+                    // pop service
+                    GuidedWizard.removeWishList(info);
+                }
+            });
+
+            $(document).on('click', ".nas-submit-service", function () {
+                var element = $(this);
+                GuidedWizard.purchase(element);
+                if (!$(".services-table").hasClass('hidden')) {
+                    GuidedWizard.services();
+                }
+                if (!$(".finalize-services-table").hasClass('hidden')) {
+                    element.fadeOut();
+                    element.addClass('disabled');
+                    element.find("span").text("Purchased");
+                    element.prepend('<span class="fa fa-shopping-bag"></span> ');
+                    element.fadeIn();
+                }
+            });
+
+            $(document).on('click', ".kwd-buy-service", function () {
+                var loading = new AjaxView($(".search-services-table"));
+                loading.show();
+                $(".search-services-table").fadeOut();
+                GuidedWizard.purchase($(this));
+                $(".search-services-table").bootstrapTable('hideRow', { index: $(this).data().index });
+                $(".search-services-table").fadeIn();
+                loading.hide();
+            });
+
+            $(document).on('mouseover', '.hint-additional-services', function () {
+                $(".additional-services").css('background-color', '#D7EFB7');
+            }).on('mouseleave', '.hint-additional-services', function () {
+                $(".additional-services").css('background-color', 'white');
+            });
+
+            $(document).on('click', '.final-step-select-service', function () {
+                GuidedWizard.select($(this));
+            });
+
+            $(document).on('click', '#search-services', function () {
+                var input = $("#keywords").val();
+                GuidedWizard.search(input);
+                $(".structured-search").addClass('hidden');
+                $(".keywords-based-search").removeClass('hidden');
+            });
+                        
+            $(document).on('click', '#swap-structured-search', function () {
+                location.reload();
+            });
+
+            $(document).on('click', '.nas-coordinates-btn', function (event) {
+                $("#map-container").removeClass('hidden');
+                $("#service-title").html($(this).data().serviceTitle);
+                
+                getMap($(this).data(), 'map');
+                $("#map").css("overflow", "visible");
+                $("body, html").animate({
+                    scrollTop: $("#map-container").offset().top / 2
+                }, 800);
+            });
+
+            $(document).on('click', '.nas-coordinates-btn-kwd', function () {
+                $("#map-container-kwd").removeClass('hidden');
+                $("#service-title-kwd").html($(this).data().serviceTitle);
+                getMap($(this).data(), 'map-kwd');
+                $("#map-kwd").css("overflow", "visible");
+                $("body, html").animate({
+                    scrollTop: $("#map-container-kwd").offset().top/2
+                }, 800);
+            })
+
+            $(document).on('click', '.nas-config-btn', function () {
+                GuidedWizard.viewConfig($(this));
+            })
+
+            $(document).on('click', '.service-details', function () {
+                var loading = new AjaxView($('.services-table'));
+                loading.show();
+
+                $.ajax({
+                    type: 'get',
+                    //url: "/services/" + $(this).data('serviceId'),
+                    url: "/api/v1/services/" + $(this).data('serviceId') + "/details",
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    headers: {'accept': 'application/json'},
+                    contentType: 'application/json',
+                    success: function (response) {
+                        var langList = '';
+                        for (var l in response.languages) {
+                            langList += response.languages[l].alias + ',';
+                        }
+
+                        var html = selected = [
+                            '<div class="text-justify" style="padding:1px">',
+                                '<h4 class="margin-bottom-10">',
+                                    response.description,
+                                '</h4>',
+                                '<br>',
+                                '<table style="border: 1px solid green;">',
+                                    '<thead>',
+                                    '<thead>',
+                                    '<tbody id="configuration-table-body">',
+                                        '<tr>',
+                                            '<td class="custom-aod-table-td"><strong>Type</strong></td>',
+                                            '<td class="custom-aod-table-td">' + ((response.type == 'H')? "Human-based" : "Machine-based") + '</td>',
+                                        '</tr>',
+                                        '<tr>',
+                                            '<td class="custom-aod-table-td"><strong>Charging policy</strong></td>',
+                                            '<td class="custom-aod-table-td">' + response.charging_policy.name + '</td>',
+                                        '</tr>',
+                                        '<tr>',
+                                            '<td class="custom-aod-table-td"><strong>Price</strong></td>',
+                                            '<td class="custom-aod-table-td">' + parseFloat(response.price) + '</td>',
+                                        '</tr>',
+                                        '<tr>',
+                                            '<td class="custom-aod-table-td"><strong>Unit</strong></td>',
+                                            '<td class="custom-aod-table-td">' + response.unit + '</td>',
+                                        '</tr>',
+                                        '<tr>',
+                                            '<td class="custom-aod-table-td"><strong>Languages</strong></td>',
+                                            '<td class="custom-aod-table-td">' + langList.slice(0, -1) + '</td>',
+                                        '</tr>',
+                                        '<tr>',
+                                            '<td class="custom-aod-table-td"><strong>Constraints</strong></td>',
+                                            '<td class="custom-aod-table-td">' + response.constraints + '</td>',
+                                        '</tr>',
+                                        '<tr>',
+                                            '<td class="custom-aod-table-td"><strong>Requirements</strong></td>',
+                                            '<td class="custom-aod-table-td">' + response.requirements + '</td>',
+                                        '</tr>',
+                                        '<tr>',
+                                            '<td class="custom-aod-table-td"><strong>installation guidelines</strong></td>',
+                                            '<td class="custom-aod-table-td">' + response.installation_guide + '</td>',
+                                        '</tr>',
+                                    '</tbody>',
+                                '</table>',
+                            '</div>'
+                        ].join('');
+
+                        swal({
+                            html: true,
+                            title: response.title,
+                            text: html,
+                            type: "info",
+                            confirmButtonText: "Continue",
+                            confirmButtonColor: "#428bca",
+                            //imageUrl: response.image
+                        });
+                    },
+                    error: function (response) {
+                        swal({
+                            html: false,
+                            title: "Error",
+                            text: 'Sorry, an error has occurred',
+                            type: "warning",
+                            confirmButtonText: "Try again!",
+                            confirmButtonColor: "#d9534f"
+                        });
+                    },
+                    complete: function () {
+                        loading.hide();
+                    }
+                });
+                return true;
+            });
+
+            $(document).on('keypress', '#keywords', function (event) {
+                if (event.keyCode == 13) {
+                    $("#search-services").click();
+                }
+            });
+
+            $(document).on('click', '.disable-service-map', function(){
+                $("#map-container").addClass('hidden');
+                goTop();
+            });
+
+            $(document).on('click', '.disable-service-map-kwd', function () {
+                $("#map-container-kwd").addClass('hidden');
+                goTop();
+            });
+
+            $(document).on('click', '#return-nas-page', function () {
+                location.href = $(this).data().url;
+            });
+
+            function setServiceTitleFormatter(value, row, index) {
+                return '<span class="cursor-pointer service-details"  data-service-id="' + row['id'] + '" data-placement="right" title="More details">' + value + ' <span class="fa fa-external-link text-primary preview-service"></span></span>';
+            }
+
+            function setServiceTypeFormatter(value, row, index) {
+                return (value === 'H') ? "<span class='fa fa-users'></span> Human-based" : "<span class='fa fa-laptop'></span> Machine-based";
+            }
+
+            function setServicePriceFormatter(value, row, index) {
+                return (value == 0) ? 'FREE' : value + ' (' + row.unit + ')';
+            }
+
+            function setServiceLocationFormatter(value, row, index) {
+                if (value == true) {
+                    return "<button class='btn btn-xs btn-default nas-coordinates-btn' data-service-title='" + row.title + "' data-latitude='" + row.latitude + "'  data-longitude='" + row.longitude + "' data-radius='" + row.coverage + "' data-placement='right' title='View on the map'><span class='fa fa-map-marker fa-lg text-danger'></span> View</button>";
+                }
+                return "-";
+            }
+
+            function setServiceInterestingFormatter(value, row, index) {
+                var selected = '';
+                if ((row.purchased == false)) {
+                    if (row.temp_selected == false) {
+                        selected = [
+                            '<button class="btn btn-success btn-xs nas-select-btn" data-service-id="' + row.id + '" data-placement="bottom" title="Denote service as interesting">',
+                                '<span class="no-interesting-service"> Add</span> ',
+                            '</button>',
+                        ].join('');
+                    }
+                    else {
+                        selected = [
+                            '<button class="btn btn-danger btn-xs nas-select-btn" data-service-id="' + row.id + '"  data-placement="bottom" title="Remove service from wishlist">',
+                                '<span class="interesting-service"> Remove</span> ',
+                            '</button>'
+                        ].join('');
+                    }
+                    return selected;
+                }
+                return "-";
+            }
+
+            function setServicePurchaseFormatter(value, row, index) {
+                var selected = '';
+                if ((row.purchased == false)) {
+                    selected = [
+                        '<button class="btn btn-info btn-xs nas-submit-service" data-service-id="' + row.id + '">',
+                            '<span data-placement="bottom" title="Purchase the ' + row.title + ' service"> Purchase</span>',
+                        '</button>'
+                    ].join('');
+                }
+                else {
+                    selected = [
+                        '<button class="btn btn-info btn-xs disabled" data-service-id="' + row.id + '">',
+                        '<span class="fa fa-shopping-bag"></span> <span data-placement="bottom" title="This service has been purchased">Purchased</span>',
+                        '</button>'
+                    ].join('');
+                }
+                return selected;
+            }
+
+            function setKwdServiceFormatter(value, row, index) {
+                return '<span class="cursor-pointer service-details"  data-service-id="' + row.pk + '" data-placement="right" title="More details">' + row['fields'].title + ' <span class="fa fa-external-link text-primary preview-service"></span></span>';
+            }
+
+            function setKwdServiceTypeFormatter(value, row, index) {
+                return (row["fields"].type === 'H') ? "<span class='fa fa-users'></span> Human-based" : "<span class='fa fa-laptop'></span> Machine-based";
+            }
+
+            function seKwdtServicePriceFormatter(value, row, index) {
+                return (row['fields'].price == 0) ? 'FREE' : row['fields'].price + ' (' + row['fields'].unit + ')';
+            }
+
+            function setKwdServiceLocationFormatter(value, row, index) {
+                if (row['fields'].location_constraint == true) {
+                    return "<button class='btn btn-xs btn-default nas-coordinates-btn-kwd' data-service-title='" + row['fields'].title + "' data-latitude='" + row['fields'].latitude + "'  data-longitude='" + row['fields'].longitude + "' data-radius='" + row['fields'].coverage + "' data-placement='right' title='View on the map'><span class='fa fa-map-marker fa-lg text-danger'></span> View</button>";
+                }
+                return "-";
+            }
+
+            function setKwdServiceConfigFormatter(value, row, index) {
+                return '<button class="btn btn-link nas-config-btn" data-service-id="' + row.pk + '"><span class="fa fa-cogs fa-lg"></span></button>';
+            }
+
+            function setKwdServicePurchaseFormatter(value, row, index) {
+                return [
+                    '<button class="btn btn-info btn-xs kwd-buy-service" data-service-id="' + row.pk + '" data-index="'+index+'">',
+                        '<span> Purchase</span>',
+                    '</button>'
+                ].join('');
+            }
+
+        </script>
+
+        <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+        <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+        <script src="{% static 'app/scripts/sweetalert/sweetalert.min.js' %}"></script>
+        <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/guided_service_wizard.js' %}"></script>
+        <script src="{% static 'app/scripts/bootstrap.min.js' %}"></script>
+
+    {% endblock scripts %}

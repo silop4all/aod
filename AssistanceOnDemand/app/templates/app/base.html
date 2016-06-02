@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="P4A AoD will adopt leading edge cloud computing technologies to efficiently 
+                            support scalable access to services from/across different hardware/software platforms. Flexibility with 
+                            respect both to the type of assistance services that will be offered through the AoD and to the way the 
+                            user is interfaced/supported in his service search, reliability, robustness and affordability are of 
+                            prime importance for the penetration of the Assistance Services that will be offered and for creating major 
+                            impact in the marketplace.">
+        <meta name="keywords" content="AoD, AssistanceOnDemand, assistance, Assistance On Demand, Prosperity4All, p4all, Singular Logic SA, Marketplace">
+        <meta name="author" content="Singular Logic SA, Athanasoulis Panagiotis">
+    
+         {% load staticfiles %}
+
+        <!--<link rel="shortcut icon" type="image/png" href="{#% static 'app/logos/favicon/favicon.png' %#}" />-->
+        <link rel="shortcut icon" type="image/png" href="{{ MEDIA_URL }}app/aod/favicon/favicon.png" />
+        <title>{% block title%} Welcome on AoD app {% endblock title %}</title>
+   
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/footer.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/multiselect-bootstrap/bootstrap-select.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+    
+        {% block extraCss %}
+        {% endblock extraCss %}
+    </head>
+
+    <body style="background-color:rgba(223, 225, 225, 0.72); min-height: 100% !important">
+        <!--Navigation bar-->
+        {% block navbar %}
+            {% include 'app/navbar-visitors.html' %}
+        {% endblock navbar %}
+
+        <!-- content -->
+        {% block content %}
+        {% endblock content %}
+
+        {% block goTop %}
+        <!--
+        <span class="fa-stack fa-lg scrollToTop pull-right">
+            <i class="fa fa-square fa-stack-2x" style="color: rgba(164, 165, 163, 0.81)"></i>
+            <i class="fa fa-chevron-up fa-stack-1x" style="color: white"></i>
+        </span>
+        -->
+        <div class="pull-right clearfix container relative" style="clear:both">
+            <span id="top-link-block" class="hidden">
+                <a href="javascript:void(0)" style="font-size:18pt;" title="Go on top" onclick="javascript: return goTop();">
+                    <span class="fa-stack fa-lg">
+                        <span class="fa fa-circle fa-stack-2x text-muted" style="color: rgba(164, 165, 163, 0.81); opacity: 0.8"></span>
+                        <span class="fa fa-arrow-up fa-stack-1x" style="color: white"></span>
+                    </span>
+                </a>        
+            </span>
+        </div>
+        {% endblock goTop %}
+
+        {% block subscribeBanner %}
+        <!-- Subscribe banner -->
+        <div class="" style="margin-top:20px; clear:both; padding-top:15px;padding-bottom:15px; background-color: #006400">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left" style="color:white">
+                        <label style="font-size:18px" for="subscription-form" role="banner">SUBSCRIBE TO OUR NEWSLETTER</label>
+                    </div>
+                    <form class="form-inline" role="form" action="." method="post">
+                        <div class="col-xs-12 col-md-6 col-sm-6 col-lg-6 text-right">
+                            <div class="input-append"> 
+                                <input type="email" id="subscription-form" class="form-control" placeholder="enter your email" style="background-color:rgba(46, 65, 57, 0.86) ;color:white; border-radius: 0px; border-color:transparent">
+                                <button type="submit" class="btn btn-default form-control-feedback">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endblock subscribeBanner %}
+
+
+
+
+        <!-- Footer base -->
+        {% block footer %}
+        <!--<div style=" background-color:rgba(25, 29, 25, 0.96)  ;color:white; padding-top:2em;padding-bottom:10em" role="contentinfo">-->
+        <div style=" background-color:#110  ;color:#fff; padding-top:2em;padding-bottom:10em" role="contentinfo">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-sm-3 col-md-3 col-xs-12 pull-left">
+                        <span>Terms of use</span> 
+                        <hr style="margin-top:2px">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-xs-12">
+                        <span>Privacy policy</span> 
+                        <hr style="margin-top:2px">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-xs-12">
+                        <span>Help center</span> 
+                        <hr style="margin-top:1px">
+                        <a href="/support/forget-password" class="text-muted clearfix">Forget my password</a>
+                        <a href="/support/update-profile-steps" class="text-muted clearfix">Update my profile</a>
+                        <a href="/support/change-my-password" class="text-muted clearfix">Change my password</a>  
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-xs-12">
+                        <!-- Social media -->
+                        <span>Follow us on social networks</span>
+                        <hr style="margin-top:1px">
+                        <a href="#" target="_blank" title="Twitter">
+                            <span class="fa-stack fa-lg fa-li" style="position: initial">
+                                <span class="fa fa-circle fa-stack-2x"></span>
+                                <span class="fa fa-twitter fa-stack-1x fa-inverse"></span> 
+                            </span>
+                        </a>
+                        <a href="#" target="_blank" class="clearfix" title="Facebook">
+                            <span class="fa-stack fa-lg fa-li" style="position: initial">
+                              <span class="fa fa-circle fa-stack-2x"></span>
+                              <span class="fa fa-facebook fa-stack-1x fa-inverse"></span>
+                            </span>
+                        </a>
+                        <a href="#" target="_blank" class="clearfix" title="Linkedin">
+                            <span class="fa-stack fa-lg fa-li" style="position: initial">
+                              <span class="fa fa-circle fa-stack-2x"></span>
+                              <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+                            </span>
+                        </a> 
+                        <a href="#" target="_blank" class="clearfix" title="YouTube">
+                            <span class="fa-stack fa-lg fa-li" style="position: initial">
+                              <span class="fa fa-circle fa-stack-2x"></span>
+                              <span class="fa fa-youtube-play fa-stack-1x fa-inverse"></span>
+                            </span>
+                        </a>                  
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock footer %}
+
+
+        {% block CopyrightBanner %}
+        <!--<div style=" background-color:rgba(12, 14, 12, 0.86) ;color:white; padding-top:1.2em;padding-bottom:1.2em" role="contentinfo">-->
+        <div style=" background-color:#131306 ;color:white; padding-top:1.2em;padding-bottom:1.2em" role="contentinfo">
+            <div class="container">
+                <div style="margin-top:10px">
+                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" >
+                        <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1 " >
+                            <img class="pull-right" alt="European commission logo" src="/media/app/aod/eu/eu.png"/>
+                        </div>
+                        <div class="col-lg-11 col-sm-11 col-md-11 col-xs-11 pull-left" >
+                            <span class="pull-left">
+                            Prosperity4All - Ecosystem infrastructure for smart and personalised inclusion and PROSPERITY for ALL stakeholders<br> 
+                            This project has received funding from the European Union’s Seventh Programme for research, technological development and demonstration under grant agreement, No 610510
+                            </span>
+                            <span><span class="fa fa-copyright"></span> 2015 - {{ year }}  <a href="http://www.prosperity4all.eu/" target="_blank" style="color: white">Prosperity4All</a></span>
+                        </div>
+                    </div>
+                    <!--
+                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12" >
+                        <span><span class="fa fa-cc-paypal fa-2x"></span></span>
+                    </div>
+                    -->
+                </div>
+            </div>    
+        </div>
+        {% endblock CopyrightBanner %}
+
+
+        <!-- Scripts -->
+        <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+        <script src="{% static 'app/scripts/bootstrap.min.js' %}"></script>
+        <script src="{% static 'app/scripts/respond.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/font.resize-1.0.js' %}"></script>
+        <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+    
+
+
+        {% block scripts %}
+        <script type="text/javascript">
+
+        
+        </script>
+        {% endblock scripts %}
+        
+    </body>
+</html>

@@ -1,0 +1,99 @@
+{% extends "app/base.html" %}
+
+{% block title %} AoD | My profile {% endblock title %}
+
+{% load staticfiles %}
+
+{% block extraCss %}
+    <!--<link rel="stylesheet" type="text/css" href="{#% static 'app/content/my-tooltip.css' %#}" />-->
+{% endblock extraCss %}
+
+{% block scripts %}
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+    <script>var l = new AjaxView($("#cover-image-region"));l.show();</script>
+    <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/profile-management.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/swap-buttons.js' %}"></script>
+{% endblock %}
+
+{% block navbar %}
+    {% include "app/navbar-users.html" %}
+{% endblock navbar %}
+
+
+{% block content %}
+    
+<div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
+        <li class="active"> My profile</li>
+    </ol>
+    {% endblock breadcrumb %}
+    
+    <!-- personalize cover image -->
+    {% if object.experience_id %}
+        {% if object.experience_id != 1  %}
+        <div id="cover-image-region" style="height:40%; border-radius:7px 7px 0 0!important">
+            <form action="#" method="post" name="update-cover" id="update-cover" enctype="multipart/form-data" onsubmit="return false;">
+                {% if cover != "/media/app/users/covers/" %}
+                    <div id="my-cover" style="background-image: url('{{ cover }}'); opacity:1; width: inherit; height: 100%; background-position: center;  background-repeat: no-repeat; border-radius:7px 7px 0 0"></div>
+                {% else %}
+                    <div id="my-cover" style="background-color: rgb(177, 195, 177); opacity:1; width: inherit; height: 100%; background-position: center; border-radius:7px 7px 0 0"></div>
+                {% endif %}
+                <input type="file" id="cover-img" name="cover-img" data-link="{{ media_url }}" accept="image/*" size="1" style="display:none" form="update-cover" onchange="return loadCover(this);"/>
+                <a href="#" id="edit-cover-img" onclick="return addCover();" class="btn btn-default btn-sm pull-right" style="margin-top:-20% !important; margin-right:1% !important; z-index:+1">
+                    <i class="fa fa-pencil fa-fw"></i> Add cover
+                </a>
+            </form>
+        </div>
+        {% endif %}
+    {% endif %}
+
+    <!-- main contents -->
+    <main>        
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            <section role="region" >
+                <!-- update profile -->
+                <form action="#" class="form-horizontal" method="post" id="profileForm" name="profileForm" role="form" onsubmit="javascript: return false;">
+                    <!--Account Information-->
+                    <fieldset id="account-info" role="main">
+                        {% block personalInformation %}
+                            {% include "app/consumers/profile/personal-info.html" %}
+                        {% endblock personalInformation %}
+                    </fieldset>
+                    <br />
+                    <!--Contact information-->
+                    <fieldset id="contact-info" role="main">
+                        {% block contactInformation  %}
+                            {% include "app/consumers/profile/contact-info.html" %}
+                        {% endblock contactInformation  %}
+                    </fieldset>
+                    <br />
+                    <!--AoD Information-->
+                    <fieldset id="platform-info" role="main">
+                        {% block platformInformation  %}
+                            {% include "app/consumers/profile/platform-info.html" %}
+                        {% endblock platformInformation  %}
+                    </fieldset>
+                    <br />
+    
+                    <!--Bank Settings-->
+                    <fieldset id="bank-settings" class="hidden" role="main" >
+                        {% block bankSettings  %}
+                            {% include "app/consumers/profile/bank-settings.html" %}
+                        {% endblock bankSettings %}
+                    </fieldset>
+                </form>
+            </section>
+        </div>
+    </main>
+</div>
+
+{% endblock content %}
+
+

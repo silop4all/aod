@@ -1,0 +1,232 @@
+
+
+<div class="platform-info-box">
+    <!--header-->
+    <div class="form-group">
+        <div class="col-sm-12 col-xs-12" role="heading">
+            <h4 title="AoD Platform settings">Platform settings</h4>
+        </div>
+    </div>
+    <!--preview-->
+    <div class="preview-platform-info">
+        <!--experience-->
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right">IT experience</label>
+            </div>
+            <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12" title="Experience level with IT services">
+            {% if experience %}
+                {% for i in experience %}
+                    {% if i.id == object.experience_id %}
+                        {{ i.level }}
+                        <ul role="presentation">
+                            <li>{{ i.description }}</li>
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            </div>
+        </div>
+        <!--roles-->
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right">Roles</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="Your roles in the platform">
+            {% if roles %}
+                {% for i in roles %}
+                    {% if i.exist %}
+                    <span >{{ i.role }}</span>
+                    <ul>
+                        <li> Do you participate in crowd funding process? {% if i.crowd_fund_participation %}Yes {% else %}No{% endif %}</li>
+                        <li> Do you receive notifications for any crowd funding process? {% if i.crowd_fund_notification %}Yes {% else %}No{% endif %}</li>
+                        {% if i.role == 'Provider' %}
+                        <li> Brand name: {% if i.brand_name %} {{ i.brand_name }} {% else %} N/A {% endif %}</li>
+                        {% endif %}
+                    </ul> 
+                    {% endif %} 
+                {% endfor %}
+            {% endif %} 
+            </div>
+        </div>
+        <!--categories-->
+        <div class="form-group hidden">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right">Categories of services</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="Categories of services you are interested for">
+
+            {% if categories %}
+                {% for i in categories %}
+                    {% if object.categories %}
+                        {% if i in object.categories.all %}
+                            <span >{{ i.title }}</span>
+                            <ul>
+                                {% if i.description %} 
+                                <li> {{ i.description}} </li>
+                                {% endif %}
+                            </ul>
+                        {% endif %}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <!--edit-->
+    <div class="editable-platform-info hidden">
+        <div class="form-group">
+            <div class="col-sm-4 col-xs-12">
+                <label class="pull-right control-label" for="rg_it_experience">Technology skills (IT)<small>*</small></label>
+            </div> 
+            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
+                <span class="input-group-addon">
+                    <span class="fa fa-list fa-fw"></span>
+                </span>
+                <select class="selectpicker form-control" data-max-options="1" data-size="5"  data-header="Clarify your level" data-live-search="false" name="rg_it_experience" id="rg_it_experience" title="-- Level --">
+                    {% if experience %}
+                        {% for i in experience %}
+                            {% if i.id == object.experience_id %}
+                                <option value="{{ i.id }}" selected>{{ i.level }}</option>  
+                            {% else %}
+                                <option value="{{ i.id }}">{{ i.level }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3">
+                <label class="label pull-left label-danger hidden" id="rg_it_experience_info">Rank your skills</label>
+            </div>
+        </div>
+                
+        <div class="form-group">
+            <div class="col-sm-4 col-xs-12">
+                <label class="pull-right control-label" for="rg_role">User roles<small>*</small></label>
+            </div> 
+            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group" id="user-role">
+                <span class="input-group-addon">
+                    <span class="fa fa-list fa-fw"></span>
+                </span> 
+                <select class="selectpicker form-control controls" name="rg_role" id="rg_role" title="-- Role --" multiple>
+                {% if roles %}
+                    {% for i in roles %}
+                        {% if i.exist %}
+                             <option value="{{ i.role|lower }}" selected>{{ i.role }}</option> 
+                        {% else %}
+                            <option value="{{ i.role|lower }}">{{ i.role }}</option> 
+                        {% endif %}
+                    {% endfor %}
+                {% endif %} 
+                </select>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3">
+                <label class="label pull-left label-danger hidden" id="rg_role_info">Select one or more roles</label>
+            </div>
+        </div>
+        
+        {% if roles %}
+            {% for i in roles %}     
+                {% if i.role == 'Consumer' and i.exist %}       
+                <div id="crowd-fund-participate" class="form-group" >
+                    <div class="col-sm-4 col-md-4 col-xs-12">
+                        <label class="pull-right control-label">Crowd-funding participation<small>*</small></label>
+                    </div> 
+                    <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12">
+                        <div class="btn-group  btn-block" data-toggle="buttons-radio">
+                        {% if  i.crowd_fund_participation %}
+                            <a class="btn btn-primary" href="#" name="rg_crowd_funding" id="rg_crowd_funding_pos" role="button">
+                                <i class="fa fa-check-square-o"></i> Yes
+                            </a>
+                            <a class="btn btn-default" href="#" name="rg_crowd_funding" id="rg_crowd_funding_neg" role="button">
+                                <i class="fa fa-square-o"></i> No
+                            </a> 
+                        {% else %}
+                            <a class="btn btn-default" href="#" name="rg_crowd_funding" id="rg_crowd_funding_pos" role="button">
+                                <i class="fa fa-square-o"></i> Yes
+                            </a>
+                            <a class="btn btn-primary" href="#" name="rg_crowd_funding" id="rg_crowd_funding_neg" role="button">
+                                <i class="fa fa-check-square-o"></i> No
+                            </a> 
+                        {% endif %}
+                        </div>
+                    </div>
+                </div> 
+                <div  id="crowd-fund-notify" class="form-group">
+                    <div class="col-sm-4 col-xs-12">
+                        <label class="pull-right control-label">Crowd-funding notification<small>*</small></label>
+                    </div> 
+                    <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12">
+                        <div class="btn-group  btn-block" data-toggle="buttons-radio">
+                        {% if i.crowd_fund_notification %}
+                            <a class="btn btn-primary" href="#" name="rg_crowd_funding_notify" id="rg_crowd_funding_notify_pos" role="button">
+                                <i class="fa fa-check-square-o"></i> Yes
+                            </a>
+                            <a class="btn btn-default" href="#" name="rg_crowd_funding_notify" id="rg_crowd_funding_notify_neg" role="button">
+                                <i class="fa fa-square-o"></i> No
+                            </a>
+                        {% else %}
+                            <a class="btn btn-default" href="#" name="rg_crowd_funding_notify" id="rg_crowd_funding_notify_pos" role="button">
+                                <i class="fa fa-square-o"></i> Yes
+                            </a>
+                            <a class="btn btn-primary" href="#" name="rg_crowd_funding_notify" id="rg_crowd_funding_notify_neg" role="button">
+                                <i class="fa fa-check-square-o"></i> No
+                            </a>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div> 
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+
+        <div class="form-group">    
+            <div class="col-sm-4 col-xs-12">
+                <label class="pull-right control-label" for="rg_channels">Channels of interest<small>*</small></label>
+            </div> 
+            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group" id="channels">
+                <span class="input-group-addon">
+                    <span class="fa fa-info fa-fw"></span>
+                </span>
+                <select class="form-control selectpicker" name="rg_channels" id="rg_channels" title="-- Channels --" multiple>
+                {% if categories %}
+                    {% for i in categories %}
+                        {% if object.categories %}
+                            {% if i in object.categories.all %}
+                                <option value="{{ i.id }}" title="{{ i.title }}" selected>{{ i.question }}</option> 
+                            {% else %}
+                                <option value="{{ i.id }}" title="{{ i.title }}">{{ i.question }}</option>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                </select>                
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3">
+                <label class="label pull-left label-danger hidden" id="rg_channels_info">Select at least a channel</label>
+            </div>
+        </div>                    
+    </div>
+    <!--buttons-->
+    <hr class="profile-hr">
+    <div id="platform-toolbar">
+        <div class="row" id="edit">
+            <div class="col-md-12 col-sm-12 text-center">
+                <button type="button" class="btn btn-default btn-sm" id="edit-platform-btn" name="edit-platform-btn" role="button"><i class="fa fa-pencil"></i> Edit</button>
+            </div>
+        </div>
+        <div class="row hidden" id="save">
+            <div class="col-md-6 col-sm-6 col-xs-6 text-center">
+                <button type="reset" class="btn btn-default btn-sm" id="reset-platform-btn" name="reset-platform-info" role="button"> Cancel</button>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6 text-center">
+                <button type="button" class="btn btn-primary btn-sm" id="save-platform-btn" name="save-platform-btn" role="button"> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
