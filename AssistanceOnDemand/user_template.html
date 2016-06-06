@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="P4A AoD will adopt leading edge cloud computing technologies to efficiently 
+            support scalable access to services from/across different hardware/software platforms. Flexibility with 
+            respect both to the type of assistance services that will be offered through the AoD and to the way the 
+            user is interfaced/supported in his service search, reliability, robustness and affordability are of 
+            prime importance for the penetration of the Assistance Services that will be offered and for creating major 
+            impact in the marketplace.">
+        <meta name="keywords" content="AoD, AssistanceOnDemand, assistance, Assistance On Demand, Prosperity4All, p4all, Singular Logic SA, Marketplace">
+        <meta name="author" content="Singular Logic SA, Athanasoulis Panagiotis">
+
+        
+        <title> AoD | Welcome ... </title>
+        <!--
+            <link rel="shortcut icon" type="image/png" href="/media/app/aod/favicon/favicon.png" />
+            <link rel="stylesheet" type="text/css" href="/static/app/content/bootstrap.min.css" />
+            <link rel="stylesheet" type="text/css" href="/static/app/content/site.css" />
+            <link rel="stylesheet" type="text/css" href="/static/app/content/footer.css" />
+            <link rel="stylesheet" type="text/css" href="/static/app/content/multiselect-bootstrap/bootstrap-select.min.css" />
+            <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+            <link rel="stylesheet" type="text/css" href="/static/app/content/jquery-ui/1.11.3/jquery-ui.min.css" />
+            <link rel="stylesheet" type="text/css" href="/static/app/content/jquery-tree/jquery.tree.min.css" />
+            <link rel="stylesheet" type="text/css" href="/static/app/content/sweetalert/sweetalert.css" />
+        -->
+    </head>
+
+    <body style="background-color:rgba(223, 225, 225, 0.72); min-height: 100% !important">
+        <!--Navigation bar-->
+            <!--User navbar-->  
+            <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+                <div class="container">      
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="/" class="navbar-brand" title="Assistance On Demand Home page">
+                            <img src="/media/app/aod/logos/logo2.png" alt="Prosperity 4 All logo">
+                            <strong> AoDemand</strong>
+                        </a>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            <!-- Preferences tab in navbar -->
+                            <li class="dropdown under-construction" aria-label="Accesibility preferences">
+                                <a href="#" class="dropdown-toggle" title="Setup your preferences" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <span class="btn navbar-btn disable-btn-box-shadow" role="button">
+                                        <span class="fa fa-paint-brush fa-lg" aria-label="Configurate your preferences"></span> Preferences 
+                                        <span class="fa fa-chevron-down fa-xs fa-fw"></span>
+                                    </span>
+                                </a>  
+                                <ul class="dropdown-menu" role="menu" >
+                                    <!-- font size -->
+                                    <li role="presentation" style="margin-left:2px">
+                                        <label>FONT SIZE
+                                            <span class="btn-group  btn-block" data-toggle="buttons-radio" id="modify-font-size">
+                                                <a class="btn btn-default decrease-font-size" href="#" id="decrease-font-size" role="button" title="Decrease font-size" aria-label="Decrease font-size">
+                                                    <span class="fa fa-minus fa-fw"></span> 
+                                                </a>
+                                                <a class="btn btn-default increase-font-size" href="#" id="increase-font-size" role="button" title="Increase font-size" aria-label="Increase font-size">
+                                                    <span class="fa fa-plus fa-fw"></span>
+                                                </a>
+                                            </span>
+                                        </label> 
+                                    </li>
+                                    
+                                    <!-- font style -->
+                                    <li role="presentation" style="margin-left:2px">
+                                        <label>FONT STYLE
+                                            <span class="btn-group  btn-block" data-toggle="buttons-radio" id="modify-font-style">
+                                            </span>
+                                        </label> 
+                                    </li>
+                                    
+                                    <!-- line spacing -->
+                                    <li role="presentation" style="margin-left:2px">
+                                        <label>LINE SPACING
+                                            <span class="btn-group  btn-block" data-toggle="buttons-radio" id="modify-line-spacing">
+                                            </span>
+                                        </label> 
+                                    </li>
+
+                                    <!-- template -->
+                                    <li role="presentation" style="margin-left:2px">
+                                        <label>TEMPLATE
+                                            <span class="btn-group  btn-block" data-toggle="buttons-radio" id="alter-template">
+                                            </span>
+                                        </label> 
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" title="Settings" data-toggle="dropdown" role="button" aria-expanded="true">  
+                                    <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding"  id="settings_menu">
+                                        <span class="fa fa-user fa-lg"></span> My account <span class="fa fa-chevron-down fa-xs fa-fw"></span>
+                                    </span>
+                                </a>   
+                                <ul class="dropdown-menu under-construction" role="menu" aria-labelledby="settings_menu">
+                                    <li role="presentation">
+                                        <a href="/en/offerings" title="Show the services you provide on AoD" role="menuitem" tabindex="-1">
+                                            <span class="fa fa-archive fa-fw"></span> My offerings
+                                        </a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="/en/collection/preview" title="Show the services you have purchased" role="menuitem" tabindex="-1">
+                                            <span class="fa fa-area-chart fa-fw"></span> My collection
+                                        </a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="/profile/vasilimoroz" title="Manage your account" role="menuitem" tabindex="-1">
+                                            <span class="fa fa-user fa-fw"></span> Account settings
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!--link to NAS component -->
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" title="Settings" data-toggle="dropdown" role="button" aria-expanded="true">  
+                                    <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding"  id="guided_services">
+                                       <span class="fa fa-sitemap fa-lg"></span> Services network <span class="fa fa-chevron-down fa-xs fa-fw"></span>
+                                    </span>
+                                </a> 
+                                <ul class="dropdown-menu under-construction" role="menu" aria-labelledby="guided_services">
+                                    <li role="presentation">
+                                        <a href="/en/assistance/requests" title="Manage the requests related to network of assistance services" role="menuitem" tabindex="-1">
+                                            <span class="fa fa-inbox fa-fw"></span> Guided assistance
+                                        </a>
+                                    </li>
+            
+                                </ul>
+                            </li>
+                            
+
+                            <li>
+                                <a href="http://160.40.51.143:40000/aodsocial/app/#/home?email=maher@email123.com&amp;info=demo123!" target="_blank" title="Social Network" class="under-construction">
+                                    <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button">
+                                        <span class="fa fa-cloud fa-lg"></span> Social Network 
+                                    </span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="/en/support"  title="Help" class="under-construction">
+                                    <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button">
+                                        <span class="fa fa-question-circle fa-lg"></span> Help 
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/en/cart/preview" title="Shopping card" class="under-construction">
+                                    <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button" style="/*margin-top: 12px*/">
+                                        <span class="fa fa-shopping-cart fa-lg"></span> <!--Cart-->
+                                        
+                                    </span>
+                                </a>
+                            </li>
+                            <li >
+                                <a href="#" title="notification" class="under-construction">
+                                     <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button" style="/*margin-top: 12px*/">
+                                          <span class="fa fa-bell-o fa-lg"></span> <!--Notifications-->
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/en/logout" title="Log out">
+                                    <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button">
+                                        <span class="fa fa-power-off fa-lg"></span> Log out
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- content -->
+            <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+                <!-- breadcrumb -->
+                <ol class="breadcrumb">
+                    <li class="active"><i class="fa fa-home"></i> Home</li>
+                </ol>
+                <!-- main content -->
+                <section class="row">
+                </section>
+            </div> 
+        
+            <!-- Subscribe banner -->
+            <div class="" style="margin-top:20px; clear:both; padding-top:15px;padding-bottom:15px; background-color: #006400">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left" style="color:white">
+                            <label style="font-size:18px" for="subscription-form" role="banner">SUBSCRIBE TO OUR NEWSLETTER</label>
+                        </div>
+                        <form class="form-inline" role="form" action="." method="post">
+                            <div class="col-xs-12 col-md-6 col-sm-6 col-lg-6 text-right">
+                                <div class="input-append"> 
+                                    <input type="email" id="subscription-form" class="form-control" placeholder="enter your email" style="background-color:rgba(46, 65, 57, 0.86) ;color:white; border-radius: 0px; border-color:transparent">
+                                    <button type="submit" class="btn btn-default form-control-feedback">Send</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Footer -->
+            <div style=" background-color:#110  ;color:#fff; padding-top:2em;padding-bottom:10em" role="contentinfo">
+                <div class="container">
+                    <div class="row ">
+                        <div class="col-sm-3 col-md-3 col-xs-12 pull-left">
+                            <span>Terms of use</span> 
+                            <hr style="margin-top:2px">
+                        </div>
+                        <div class="col-sm-3 col-md-3 col-xs-12">
+                            <span>Privacy policy</span> 
+                            <hr style="margin-top:2px">
+                        </div>
+                        <div class="col-sm-3 col-md-3 col-xs-12">
+                            <span>Help center</span> 
+                            <hr style="margin-top:1px">
+                            <a href="/support/forget-password" class="text-muted clearfix">Forget my password</a>
+                            <a href="/support/update-profile-steps" class="text-muted clearfix">Update my profile</a>
+                            <a href="/support/change-my-password" class="text-muted clearfix">Change my password</a>  
+                        </div>
+                        <div class="col-sm-3 col-md-3 col-xs-12">
+                            <!-- Social media -->
+                            <span>Follow us on social networks</span>
+                            <hr style="margin-top:1px">
+                            <a href="#" target="_blank" title="Twitter">
+                                <span class="fa-stack fa-lg fa-li" style="position: initial">
+                                    <span class="fa fa-circle fa-stack-2x"></span>
+                                    <span class="fa fa-twitter fa-stack-1x fa-inverse"></span> 
+                                </span>
+                            </a>
+                            <a href="#" target="_blank" class="clearfix" title="Facebook">
+                                <span class="fa-stack fa-lg fa-li" style="position: initial">
+                                  <span class="fa fa-circle fa-stack-2x"></span>
+                                  <span class="fa fa-facebook fa-stack-1x fa-inverse"></span>
+                                </span>
+                            </a>
+                            <a href="#" target="_blank" class="clearfix" title="Linkedin">
+                                <span class="fa-stack fa-lg fa-li" style="position: initial">
+                                  <span class="fa fa-circle fa-stack-2x"></span>
+                                  <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+                                </span>
+                            </a> 
+                            <a href="#" target="_blank" class="clearfix" title="YouTube">
+                                <span class="fa-stack fa-lg fa-li" style="position: initial">
+                                  <span class="fa fa-circle fa-stack-2x"></span>
+                                  <span class="fa fa-youtube-play fa-stack-1x fa-inverse"></span>
+                                </span>
+                            </a>                  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- project info -->
+            <div style=" background-color:#131306 ;color:white; padding-top:1.2em;padding-bottom:1.2em" role="contentinfo">
+                <div class="container">
+                    <div style="margin-top:10px">
+                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" >
+                            <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1 " >
+                                <img class="pull-right" alt="European commission logo" src="/media/app/aod/eu/eu.png"/>
+                            </div>
+                            <div class="col-lg-11 col-sm-11 col-md-11 col-xs-11 pull-left" >
+                                <span class="pull-left">
+                                Prosperity4All - Ecosystem infrastructure for smart and personalised inclusion and PROSPERITY for ALL stakeholders<br> 
+                                This project has received funding from the European Union’s Seventh Programme for research, technological development and demonstration under grant agreement, No 610510
+                                </span>
+                                <span><span class="fa fa-copyright"></span> 2015 - 2016  <a href="http://www.prosperity4all.eu/" target="_blank" style="color: white">Prosperity4All</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        
+            <!-- LOad scripts -->
+            <!--
+                <script src="/static/app/scripts/jquery-1.10.2.js"></script>
+                <script src="/static/app/scripts/bootstrap.min.js"></script>
+                <script src="/static/app/scripts/respond.js"></script>
+                <script src="/static/app/scripts/p4a-lib/font.resize-1.0.js"></script>
+                <script src="/static/app/scripts/p4a-lib/scroll-top.js"></script>
+                <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+                <script type="text/javascript" src="/static/app/scripts/p4a-lib/cookies.js"></script>
+                <script type="text/javascript" src="/static/app/scripts/p4a-lib/ajax-load.js"></script>
+                <script type="text/javascript" src="/static/app/scripts/jquery-ui/1.11.3/jquery-ui.min.js"></script>
+                <script type="text/javascript" src="/static/app/scripts/jquery-tree/jquery.tree.min.js"></script>
+                <script type="text/javascript" src="/static/app/scripts/p4a-lib/consumers/dashboard.js"></script>
+                <script type="text/javascript" src="/static/app/scripts/sweetalert/sweetalert.min.js"></script>
+            -->
+    </body>
+</html>
