@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 02, 2016 at 03:52 PM
+-- Generation Time: Sep 09, 2016 at 02:48 PM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -116,7 +116,6 @@ INSERT INTO `app_categories` (`id`, `title`, `description`, `category_id`, `ques
 (40, 'Physical impairment', 'Physical impairment', 35, 'AudPhysicalio impairment'),
 (41, 'Other aid', 'Other', 35, 'Other'),
 (42, 'Communication with public services', 'Communication with public services', NULL, 'Communication with public services'),
-(43, 'Finance Services', 'Finance Services', NULL, 'Finance Services'),
 (44, 'IT services', 'Information technology services', 5, 'Information technology services');
 
 -- --------------------------------------------------------
@@ -165,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `app_components` (
   `name` varchar(127) NOT NULL,
   `description` longtext NOT NULL,
   `is_enabled` tinyint(1) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `app_components`
@@ -173,7 +172,8 @@ CREATE TABLE IF NOT EXISTS `app_components` (
 
 INSERT INTO `app_components` (`id`, `name`, `description`, `is_enabled`) VALUES
 (1, 'network_of_assistance_services', 'Network of assistance services component allows on special users called also carers to set up a network of existing services on behalf of other registered in AoD users.', 1),
-(2, 'social_network', 'The component social_network support the interaction and communication between registered users.', 1);
+(2, 'social_network', 'The component social_network support the interaction and communication between registered users.', 1),
+(3, 'subscription_banner', 'Activate or not the subscription banner.', 1);
 
 -- --------------------------------------------------------
 
@@ -283,6 +283,22 @@ CREATE TABLE IF NOT EXISTS `app_network_services_configuration` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `app_oauth2_tokens`
+--
+
+CREATE TABLE IF NOT EXISTS `app_oauth2_tokens` (
+`id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `access_token` varchar(512) NOT NULL,
+  `refresh_token` varchar(512) NOT NULL,
+  `expires_in` int(11) NOT NULL,
+  `scope` varchar(64) NOT NULL,
+  `token_type` varchar(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `app_providers`
 --
 
@@ -300,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `app_providers` (
 --
 
 INSERT INTO `app_providers` (`id`, `user_id`, `crowd_fund_participation`, `crowd_fund_notification`, `is_active`, `company`) VALUES
-(1, 1, 1, 1, 1, 'N/A');
+(1, 1, 1, 1, 1, 'Not set');
 
 -- --------------------------------------------------------
 
@@ -414,15 +430,7 @@ CREATE TABLE IF NOT EXISTS `app_services_technical_support` (
 CREATE TABLE IF NOT EXISTS `app_tags` (
 `id` int(11) NOT NULL,
   `title` varchar(128) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `app_tags`
---
-
-INSERT INTO `app_tags` (`id`, `title`) VALUES
-(1, 'test'),
-(2, 'test2');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -533,7 +541,7 @@ CREATE TABLE IF NOT EXISTS `auth_permission` (
   `name` varchar(255) NOT NULL,
   `content_type_id` int(11) NOT NULL,
   `codename` varchar(100) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=82 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=88 ;
 
 --
 -- Dumping data for table `auth_permission`
@@ -618,9 +626,15 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (76, 'Can add nas configuration', 26, 'add_nasconfiguration'),
 (77, 'Can change nas configuration', 26, 'change_nasconfiguration'),
 (78, 'Can delete nas configuration', 26, 'delete_nasconfiguration'),
-(79, 'Can add log entry', 27, 'add_logentry'),
-(80, 'Can change log entry', 27, 'change_logentry'),
-(81, 'Can delete log entry', 27, 'delete_logentry');
+(79, 'Can add tokens', 27, 'add_tokens'),
+(80, 'Can change tokens', 27, 'change_tokens'),
+(81, 'Can delete tokens', 27, 'delete_tokens'),
+(82, 'Can add log entry', 28, 'add_logentry'),
+(83, 'Can change log entry', 28, 'change_logentry'),
+(84, 'Can delete log entry', 28, 'delete_logentry'),
+(85, 'Can add cors model', 29, 'add_corsmodel'),
+(86, 'Can change cors model', 29, 'change_corsmodel'),
+(87, 'Can delete cors model', 29, 'delete_corsmodel');
 
 -- --------------------------------------------------------
 
@@ -647,7 +661,7 @@ CREATE TABLE IF NOT EXISTS `auth_user` (
 --
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$20000$bh3Ut5h1Sovy$e5oi17riuXoB6cz9JSeRKydNswpOtyQPj4oG0jsVhy4=', '2016-06-02 12:50:16.006000', 1, 'admin', '', '', 'admin@localhost.com', 1, 1, '2016-06-02 12:39:16.771000');
+(1, 'pbkdf2_sha256$20000$bh3Ut5h1Sovy$e5oi17riuXoB6cz9JSeRKydNswpOtyQPj4oG0jsVhy4=', '2016-09-09 11:45:01.380000', 1, 'admin', '', '', 'admin@localhost.com', 1, 1, '2016-06-02 12:39:16.771000');
 
 -- --------------------------------------------------------
 
@@ -676,6 +690,17 @@ CREATE TABLE IF NOT EXISTS `auth_user_user_permissions` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `corsheaders_corsmodel`
+--
+
+CREATE TABLE IF NOT EXISTS `corsheaders_corsmodel` (
+`id` int(11) NOT NULL,
+  `cors` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `django_admin_log`
 --
 
@@ -688,14 +713,7 @@ CREATE TABLE IF NOT EXISTS `django_admin_log` (
   `change_message` longtext NOT NULL,
   `content_type_id` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `django_admin_log`
---
-
-INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`) VALUES
-(1, '2016-06-02 12:50:46.205000', '1', 'Panagiotis Athanasoulis (demo)', 2, 'Changed gender, city, address and postal_code.', 11, 1);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -707,14 +725,14 @@ CREATE TABLE IF NOT EXISTS `django_content_type` (
 `id` int(11) NOT NULL,
   `app_label` varchar(100) NOT NULL,
   `model` varchar(100) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `django_content_type`
 --
 
 INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
-(27, 'admin', 'logentry'),
+(28, 'admin', 'logentry'),
 (14, 'app', 'carers'),
 (15, 'app', 'carersassistconsumers'),
 (10, 'app', 'categories'),
@@ -734,11 +752,13 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (23, 'app', 'servicestotechnicalsupport'),
 (9, 'app', 'tags'),
 (22, 'app', 'technicalsupport'),
+(27, 'app', 'tokens'),
 (11, 'app', 'users'),
 (2, 'auth', 'group'),
 (1, 'auth', 'permission'),
 (3, 'auth', 'user'),
 (4, 'contenttypes', 'contenttype'),
+(29, 'corsheaders', 'corsmodel'),
 (5, 'sessions', 'session'),
 (6, 'sites', 'site');
 
@@ -760,17 +780,17 @@ CREATE TABLE IF NOT EXISTS `django_migrations` (
 --
 
 INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
-(1, 'contenttypes', '0001_initial', '2016-06-02 12:37:54.571000'),
-(2, 'auth', '0001_initial', '2016-06-02 12:37:55.718000'),
-(3, 'admin', '0001_initial', '2016-06-02 12:37:56.056000'),
-(4, 'contenttypes', '0002_remove_content_type_name', '2016-06-02 12:37:56.219000'),
-(5, 'auth', '0002_alter_permission_name_max_length', '2016-06-02 12:37:56.304000'),
-(6, 'auth', '0003_alter_user_email_max_length', '2016-06-02 12:37:56.387000'),
-(7, 'auth', '0004_alter_user_username_opts', '2016-06-02 12:37:56.403000'),
-(8, 'auth', '0005_alter_user_last_login_null', '2016-06-02 12:37:56.757000'),
-(9, 'auth', '0006_require_contenttypes_0002', '2016-06-02 12:37:56.757000'),
-(10, 'sessions', '0001_initial', '2016-06-02 12:37:56.923000'),
-(11, 'sites', '0001_initial', '2016-06-02 12:37:57.040000');
+(1, 'contenttypes', '0001_initial', '2016-09-09 11:29:30.549000'),
+(2, 'auth', '0001_initial', '2016-09-09 11:29:32.272000'),
+(3, 'admin', '0001_initial', '2016-09-09 11:29:32.872000'),
+(4, 'contenttypes', '0002_remove_content_type_name', '2016-09-09 11:29:33.041000'),
+(5, 'auth', '0002_alter_permission_name_max_length', '2016-09-09 11:29:33.126000'),
+(6, 'auth', '0003_alter_user_email_max_length', '2016-09-09 11:29:33.210000'),
+(7, 'auth', '0004_alter_user_username_opts', '2016-09-09 11:29:33.241000'),
+(8, 'auth', '0005_alter_user_last_login_null', '2016-09-09 11:29:33.695000'),
+(9, 'auth', '0006_require_contenttypes_0002', '2016-09-09 11:29:33.695000'),
+(10, 'sessions', '0001_initial', '2016-09-09 11:29:33.943000'),
+(11, 'sites', '0001_initial', '2016-09-09 11:29:34.112000');
 
 -- --------------------------------------------------------
 
@@ -789,7 +809,7 @@ CREATE TABLE IF NOT EXISTS `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('jpwopdpbov5m6a6j7xyiz85cvay2tszi', 'ZGJjMzQ5MGVhNzY5MGYxZjgzYTEyNTYwMTNkMWU1YzE2NDY0NWUzMjp7InVzZXJuYW1lIjoiZGVtbyIsIl9hdXRoX3VzZXJfaWQiOiIxIiwiaXNfY2FyZXIiOmZhbHNlLCJpc19jb25zdW1lciI6dHJ1ZSwiY2FydCI6W10sImlzX3Byb3ZpZGVyIjp0cnVlLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjljNWJhMjViOTI4ODI4MjhkMTQwOGVmMzE2NGFlYjMyMjJmZGY1Y2EiLCJpZCI6MX0=', '2016-06-16 12:50:16.036000');
+('ggtgj9ppx59wa3kxyav4kkzh0b72e5yl', 'NmExZWE4MzdiMTllMDQzY2Y0NWMyMjhjYWRhMDNmYWQ3M2RiM2RhMzp7InVzZXJuYW1lIjoiZGVtbyIsIl9hdXRoX3VzZXJfaWQiOiIxIiwiaXNfY2FyZXIiOmZhbHNlLCJpc19jb25zdW1lciI6dHJ1ZSwiY2FydCI6W10sImlzX3Byb3ZpZGVyIjp0cnVlLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsInJvc2V0dGFfY2FjaGVfc3RvcmFnZV9rZXlfcHJlZml4IjoiYWM1NDUzMGMxYTZkMjI1ZGU1MGQ5YmRiZDVhZGM4OTc5MjU3ZGU5ZiIsIl9hdXRoX3VzZXJfaGFzaCI6IjljNWJhMjViOTI4ODI4MjhkMTQwOGVmMzE2NGFlYjMyMjJmZGY1Y2EiLCJpZCI6MX0=', '2016-09-23 11:45:11.998000');
 
 -- --------------------------------------------------------
 
@@ -830,7 +850,7 @@ ALTER TABLE `app_carers_assist_consumers`
 -- Indexes for table `app_categories`
 --
 ALTER TABLE `app_categories`
- ADD PRIMARY KEY (`id`), ADD KEY `app_categories_category_id_61c210_fk_app_categories_id` (`category_id`);
+ ADD PRIMARY KEY (`id`), ADD KEY `app_categories_category_id_7025a9ce0061c210_fk_app_categories_id` (`category_id`);
 
 --
 -- Indexes for table `app_categories_tags`
@@ -885,6 +905,12 @@ ALTER TABLE `app_nas_temp_setup`
 --
 ALTER TABLE `app_network_services_configuration`
  ADD PRIMARY KEY (`id`), ADD KEY `app_network_ser_nas_id_464cf2a9_fk_app_nas_consumers_services_id` (`nas_id`);
+
+--
+-- Indexes for table `app_oauth2_tokens`
+--
+ALTER TABLE `app_oauth2_tokens`
+ ADD PRIMARY KEY (`id`), ADD KEY `app_oauth2_tokens_user_id_64a8663c_fk_app_users_id` (`user_id`);
 
 --
 -- Indexes for table `app_providers`
@@ -989,6 +1015,12 @@ ALTER TABLE `auth_user_user_permissions`
  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `user_id` (`user_id`,`permission_id`), ADD KEY `auth_user_user_perm_permission_id_3d7071f0_fk_auth_permission_id` (`permission_id`);
 
 --
+-- Indexes for table `corsheaders_corsmodel`
+--
+ALTER TABLE `corsheaders_corsmodel`
+ ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
@@ -1051,7 +1083,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 -- AUTO_INCREMENT for table `app_components`
 --
 ALTER TABLE `app_components`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `app_consumers`
 --
@@ -1081,6 +1113,11 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `app_network_services_configuration`
 --
 ALTER TABLE `app_network_services_configuration`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `app_oauth2_tokens`
+--
+ALTER TABLE `app_oauth2_tokens`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `app_providers`
@@ -1121,7 +1158,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `app_tags`
 --
 ALTER TABLE `app_tags`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `app_technical_support_types`
 --
@@ -1151,7 +1188,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=82;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=88;
 --
 -- AUTO_INCREMENT for table `auth_user`
 --
@@ -1168,15 +1205,20 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `auth_user_user_permissions`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `corsheaders_corsmodel`
+--
+ALTER TABLE `corsheaders_corsmodel`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `django_content_type`
 --
 ALTER TABLE `django_content_type`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
 --
 -- AUTO_INCREMENT for table `django_migrations`
 --
@@ -1208,7 +1250,8 @@ ADD CONSTRAINT `app_carers_assist_consumers_carer_id_642866b3_fk_app_carers_id` 
 -- Constraints for table `app_categories`
 --
 ALTER TABLE `app_categories`
-ADD CONSTRAINT `app_categories_category_id_61c210_fk_app_categories_id` FOREIGN KEY (`category_id`) REFERENCES `app_categories` (`id`);
+ADD CONSTRAINT `app_categories_category_id_61c210_fk_app_categories_id` FOREIGN KEY (`category_id`) REFERENCES `app_categories` (`id`),
+ADD CONSTRAINT `app_categories_category_id_7025a9ce0061c210_fk_app_categories_id` FOREIGN KEY (`category_id`) REFERENCES `app_categories` (`id`);
 
 --
 -- Constraints for table `app_categories_tags`
@@ -1250,6 +1293,12 @@ ADD CONSTRAINT `app_nas_temp_setup_service_id_5d70f487_fk_app_services_id` FOREI
 --
 ALTER TABLE `app_network_services_configuration`
 ADD CONSTRAINT `app_network_ser_nas_id_464cf2a9_fk_app_nas_consumers_services_id` FOREIGN KEY (`nas_id`) REFERENCES `app_nas_consumers_services` (`id`);
+
+--
+-- Constraints for table `app_oauth2_tokens`
+--
+ALTER TABLE `app_oauth2_tokens`
+ADD CONSTRAINT `app_oauth2_tokens_user_id_64a8663c_fk_app_users_id` FOREIGN KEY (`user_id`) REFERENCES `app_users` (`id`);
 
 --
 -- Constraints for table `app_providers`
