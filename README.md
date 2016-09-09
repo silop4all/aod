@@ -174,7 +174,7 @@ LOGIN_URL = '/callback/openam'
 OPENAM_INTEGRATION = True
 CLIENT_ID = {iam_client_id}
 CLIENT_SECRET = {iam_client_secret}
-OAUTH_SERVER = "83.235.169.221:80"
+OAUTH_SERVER = {ip:port}
 REDIRECT_URL = AOD_HOST['PROTOCOL'] + "://" + AOD_HOST['IP'] + AOD_HOST['PATH'] + LOGIN_URL
 ...
 
@@ -340,13 +340,6 @@ $ sudo a2enmod wsgi
 $ sudo service apache2 restart
 ```
 
-
-### Users management
-
-- Super user (administrator)
-    + admin/@dm!n
-- Demo user
-    + demo/1qaz@WSX
 
 
 ### Install Phpmyadmin (optional)
