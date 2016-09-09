@@ -11,7 +11,7 @@
     + set developement & deployment settings
     + set swagger settings to work on deployment environment
     + serve the media files via apache server in production mode
-    + start preparation for integration with IAM
+    + integration with IAM
     + update requirements
 - AoD admin implementation enchancements:
     +  integrate with rosseta plugin
