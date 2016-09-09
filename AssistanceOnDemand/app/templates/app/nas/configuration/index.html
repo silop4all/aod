@@ -1,7 +1,8 @@
 ﻿{% extends "app/base.html" %}
-
+{% load i18n %}
+{% load l10n %}
     {% block title %} 
-        AoD | Guided assistance
+        AoD | {% trans 'Guided assistance' %}
     {% endblock title %}
 
     {% load staticfiles %}
@@ -26,16 +27,16 @@
         {% block breadcrumb %}
         <ol class="row breadcrumb" role="navigation" aria-label="breadcrumb">
             <li>
-                <a href="{% url 'home-page' %}" aria-label="link" class="custom-inactive-breadcrumb" title="Home page">
+                <a href="{% url 'home_page' %}" aria-label="link" class="custom-inactive-breadcrumb" title="Home page">
                     <span class="fa fa-home"></span> Home
                 </a>
             </li>
             <li>
-                <a href="{% url 'carer-landing-page' %}"  class="custom-inactive-breadcrumb" title="Network of Assistance Services">
-                    Network of Assistance Services
+                <a href="{% url 'guided_assistance_landing_page' %}"  class="custom-inactive-breadcrumb" title="{% trans 'Network of Assistance Services' %}">
+                    {% trans 'Network of Assistance Services' %}
                 </a>
             </li>
-            <li class="active"> Setup</li>
+            <li class="active"> {% trans 'Setup' %}</li>
         </ol>
         {% endblock breadcrumb %}
 
@@ -49,13 +50,13 @@
                     <div class="row structured-search margin-bottom-percent-5">
                         <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
                             <h6 class="text-info" >
-                                Progress: <span id="progress-bar-info"  data-toggle="tooltip" data-placement="right" title="Completion percentage of the guided assistance process"> </span>
+                                {% trans 'Progress' %}: <span id="progress-bar-info"  data-toggle="tooltip" data-placement="right" title="{% trans 'Completion percentage of the guided assistance process' %}"> </span>
                             </h6>
                         </div>
                         <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
                             <div class="progress active progress-bar-height-10">
                                 <div class="progress-bar progress-bar-success set-width-percent-1" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100">
-                                     <span class="sr-only">1% Complete</span>
+                                     <span class="sr-only">1% {% trans 'Complete' %}</span>
                                 </div>
                             </div>
                         </div>
@@ -64,11 +65,11 @@
                     <div class="margin-top-percent-5 margin-bottom-percent-10">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h5 class="panel-title">Search services</h5>
+                                <h5 class="panel-title">{% trans 'Search services' %}</h5>
                             </div>
                             <div class="panel-body">
                                 <div class="col-sm-12 col-lg-12 col-xs-12 col-md-2 input-group ">
-                                    <input type="text" class="form-control pull-right" id="keywords" value="" placeholder="enter keywords" data-toggle="tooltip" data-placement="bottom" title="Enter keywords">
+                                    <input type="text" class="form-control pull-right" id="keywords" value="" placeholder="{% trans 'enter keywords' %}" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Enter keywords' %}">
                                     <a href="javascript:void(0)" class="input-group-addon btn btn-toolbar text-info" role="button" aria-describedby="keywords" id="search-services">
                                         <span class="fa fa-search fa-fw"></span>
                                     </a>
@@ -86,7 +87,7 @@
                                         <div class="panel panel-custom-success">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
-                                                    <a class="wizard-nav" data-toggle="collapse" data-parent="#accordion" href="#cat{{category.id}}">Step {{category.order}}: {{category.title}}</a>
+                                                    <a class="wizard-nav" data-toggle="collapse" data-parent="#accordion" href="#cat{{category.id}}">{% trans 'Step' %} {{category.order}}: {{category.title}}</a>
                                                     <small>
                                                         <label class="badge total-services pull-right" style="background-color: #fff; color: #51A951" data-placement="right" title="Number of services in selected categories"></label>
                                                     </small>
@@ -148,7 +149,7 @@
                 <section class="col-sm-9 col-xs-12 col-md-9 col-lg-9 structured-search">
 
                     <div class="jumbotron">
-                        <h3>Setup the network of assistance services</h3>
+                        <h3>{% trans 'Setup the network of assistance services' %}</h3>
                         <p class="font-size-pt-18">
                             <blockquote class="font-size-pt-14 text-justify">
                                 <small class="color-black">
@@ -239,7 +240,7 @@
 
                     <div class="row clearfix margin-top-10 margin-bottom-5">
                         <center>
-                            <button data-url="{% url 'carer-landing-page' %}" role="navigation" class="btn btn-default hidden center" id="return-nas-page"><span class="text-center">Back to guided assistance page</span></button>
+                            <button data-url="{% url 'guided_assistance_landing_page' %}" role="navigation" class="btn btn-default hidden center" id="return-nas-page"><span class="text-center">Back to guided assistance page</span></button>
                         </center>
                     </div>
                 </section>
@@ -289,7 +290,7 @@
                                 data-toolbar="#results"
                                 data-pagination="true"
                                 data-switchable="false"
-                                data-page-list="[10, 20, 30, all]"
+                                data-page-list="[10, 20, 30, 50]"
                                 data-sort-name="pk" data-sort-order="asc">
                             <thead class="custom-aod-table-thead">
                             <tr >
@@ -400,7 +401,10 @@
             google.maps.event.addDomListener(window, 'load', getMap);
 
             $(document).ready(function () {
+                var urlss = GuidedWizard.setURLs("{% url 'guided_assistance_retrieve_services' %}", "{% url 'guided_assistance_temp_services' %}", "{% url 'guided_assistance_search_by_keywords' %}", "{% url 'guided_assistance_submit_services' %}", "{% url 'private_api:service_consumer_configuration'%}");
+
                 GuidedWizard.init();
+
                 consumerID = $("#target-consumer").data('target');
 
                 //Activate tootlip
@@ -480,6 +484,8 @@
                 $('.fixed-table-body').css('height', 'auto').css('border-top-right-radius', '3px');
             });
 
+
+
             $("body").on('all.bs.table', '.services-table', function (name, args) {
                 $("input").tooltip({ trigger: "hover", placement: "bottom" });
                 $("span").tooltip({ trigger: "hover" });
@@ -499,10 +505,8 @@
             });
 
             $(document).on('click', ".nas-buy-btn", function () {
-                //console.info($(this).data('serviceId'));
-            });
 
-            $(document).on('click', ".nas-select-btn", function () {
+            }).on('click', ".nas-select-btn", function () {
                 var info = { service_id: $(this).data('serviceId'), consumer_id: consumerID };
 
                 var elem = $("span.no-interesting-service");
@@ -520,9 +524,8 @@
                     // pop service
                     GuidedWizard.removeWishList(info);
                 }
-            });
 
-            $(document).on('click', ".nas-submit-service", function () {
+            }).on('click', ".nas-submit-service", function () {
                 var element = $(this);
                 GuidedWizard.purchase(element);
                 if (!$(".services-table").hasClass('hidden')) {
@@ -535,9 +538,8 @@
                     element.prepend('<span class="fa fa-shopping-bag"></span> ');
                     element.fadeIn();
                 }
-            });
 
-            $(document).on('click', ".kwd-buy-service", function () {
+            }).on('click', ".kwd-buy-service", function () {
                 var loading = new AjaxView($(".search-services-table"));
                 loading.show();
                 $(".search-services-table").fadeOut();
@@ -545,30 +547,26 @@
                 $(".search-services-table").bootstrapTable('hideRow', { index: $(this).data().index });
                 $(".search-services-table").fadeIn();
                 loading.hide();
-            });
 
-            $(document).on('mouseover', '.hint-additional-services', function () {
+            }).on('mouseover', '.hint-additional-services', function () {
                 $(".additional-services").css('background-color', '#D7EFB7');
+
             }).on('mouseleave', '.hint-additional-services', function () {
                 $(".additional-services").css('background-color', 'white');
-            });
 
-            $(document).on('click', '.final-step-select-service', function () {
+            }).on('click', '.final-step-select-service', function () {
                 GuidedWizard.select($(this));
-            });
 
-            $(document).on('click', '#search-services', function () {
+            }).on('click', '#search-services', function () {
                 var input = $("#keywords").val();
                 GuidedWizard.search(input);
                 $(".structured-search").addClass('hidden');
                 $(".keywords-based-search").removeClass('hidden');
-            });
-                        
-            $(document).on('click', '#swap-structured-search', function () {
-                location.reload();
-            });
 
-            $(document).on('click', '.nas-coordinates-btn', function (event) {
+            }).on('click', '#swap-structured-search', function () {
+                location.reload();
+
+            }).on('click', '.nas-coordinates-btn', function (event) {
                 $("#map-container").removeClass('hidden');
                 $("#service-title").html($(this).data().serviceTitle);
                 
@@ -577,9 +575,8 @@
                 $("body, html").animate({
                     scrollTop: $("#map-container").offset().top / 2
                 }, 800);
-            });
 
-            $(document).on('click', '.nas-coordinates-btn-kwd', function () {
+            }).on('click', '.nas-coordinates-btn-kwd', function () {
                 $("#map-container-kwd").removeClass('hidden');
                 $("#service-title-kwd").html($(this).data().serviceTitle);
                 getMap($(this).data(), 'map-kwd');
@@ -587,20 +584,16 @@
                 $("body, html").animate({
                     scrollTop: $("#map-container-kwd").offset().top/2
                 }, 800);
-            })
 
-            $(document).on('click', '.nas-config-btn', function () {
+            }).on('click', '.nas-config-btn', function () {
                 GuidedWizard.viewConfig($(this));
-            })
 
-            $(document).on('click', '.service-details', function () {
+            }).on('click', '.service-details', function () {
                 var loading = new AjaxView($('.services-table'));
                 loading.show();
-
                 $.ajax({
-                    type: 'get',
-                    //url: "/services/" + $(this).data('serviceId'),
-                    url: "/api/v1/services/" + $(this).data('serviceId') + "/details",
+                    type: 'GET',
+                    url: $(this).data('resource'),
                     beforeSend: function (xhr, settings) {
                         $.ajaxSettings.beforeSend(xhr, settings);
                     },
@@ -666,6 +659,7 @@
                             type: "info",
                             confirmButtonText: "Continue",
                             confirmButtonColor: "#428bca",
+                            customClass: "text-justify",
                             //imageUrl: response.image
                         });
                     },
@@ -684,30 +678,27 @@
                     }
                 });
                 return true;
-            });
 
-            $(document).on('keypress', '#keywords', function (event) {
+            }).on('keypress', '#keywords', function (event) {
                 if (event.keyCode == 13) {
                     $("#search-services").click();
                 }
-            });
 
-            $(document).on('click', '.disable-service-map', function(){
+            }).on('click', '.disable-service-map', function(){
                 $("#map-container").addClass('hidden');
                 goTop();
-            });
 
-            $(document).on('click', '.disable-service-map-kwd', function () {
+            }).on('click', '.disable-service-map-kwd', function () {
                 $("#map-container-kwd").addClass('hidden');
                 goTop();
-            });
 
-            $(document).on('click', '#return-nas-page', function () {
+            }).on('click', '#return-nas-page', function () {
                 location.href = $(this).data().url;
             });
 
+
             function setServiceTitleFormatter(value, row, index) {
-                return '<span class="cursor-pointer service-details"  data-service-id="' + row['id'] + '" data-placement="right" title="More details">' + value + ' <span class="fa fa-external-link text-primary preview-service"></span></span>';
+                return '<span class="cursor-pointer service-details" data-resource="' + row['details_url'] +'" data-service-id="' + row['id'] + '" data-placement="right" title="More details">' + value + ' <span class="fa fa-external-link text-primary preview-service"></span></span>';
             }
 
             function setServiceTypeFormatter(value, row, index) {
@@ -751,7 +742,7 @@
                 var selected = '';
                 if ((row.purchased == false)) {
                     selected = [
-                        '<button class="btn btn-info btn-xs nas-submit-service" data-service-id="' + row.id + '">',
+                        '<button class="btn btn-info btn-xs nas-submit-service" data-action="' + row.submit_service_url + '" data-resource="' + row.service_config_url + '" data-service-id="' + row.id + '">',
                             '<span data-placement="bottom" title="Purchase the ' + row.title + ' service"> Purchase</span>',
                         '</button>'
                     ].join('');
@@ -767,31 +758,31 @@
             }
 
             function setKwdServiceFormatter(value, row, index) {
-                return '<span class="cursor-pointer service-details"  data-service-id="' + row.pk + '" data-placement="right" title="More details">' + row['fields'].title + ' <span class="fa fa-external-link text-primary preview-service"></span></span>';
+                return '<span class="cursor-pointer service-details" data-resource="' + row.details_url + '" data-service-id="' + row.id + '" data-placement="right" title="More details">' + row.title + ' <span class="fa fa-external-link text-primary preview-service"></span></span>';
             }
 
             function setKwdServiceTypeFormatter(value, row, index) {
-                return (row["fields"].type === 'H') ? "<span class='fa fa-users'></span> Human-based" : "<span class='fa fa-laptop'></span> Machine-based";
+                return (row.type === 'H') ? "<span class='fa fa-users'></span> Human-based" : "<span class='fa fa-laptop'></span> Machine-based";
             }
 
             function seKwdtServicePriceFormatter(value, row, index) {
-                return (row['fields'].price == 0) ? 'FREE' : row['fields'].price + ' (' + row['fields'].unit + ')';
+                return (row.price == 0) ? 'FREE' : row.price + ' (' + row.unit + ')';
             }
 
             function setKwdServiceLocationFormatter(value, row, index) {
-                if (row['fields'].location_constraint == true) {
-                    return "<button class='btn btn-xs btn-default nas-coordinates-btn-kwd' data-service-title='" + row['fields'].title + "' data-latitude='" + row['fields'].latitude + "'  data-longitude='" + row['fields'].longitude + "' data-radius='" + row['fields'].coverage + "' data-placement='right' title='View on the map'><span class='fa fa-map-marker fa-lg text-danger'></span> View</button>";
+                if (row.location_constraint == true) {
+                    return "<button class='btn btn-xs btn-default nas-coordinates-btn-kwd' data-service-title='" + row.title + "' data-latitude='" + row.latitude + "'  data-longitude='" + row.longitude + "' data-radius='" + row.coverage + "' data-placement='right' title='View on the map'><span class='fa fa-map-marker fa-lg text-danger'></span> View</button>";
                 }
                 return "-";
             }
 
             function setKwdServiceConfigFormatter(value, row, index) {
-                return '<button class="btn btn-link nas-config-btn" data-service-id="' + row.pk + '"><span class="fa fa-cogs fa-lg"></span></button>';
+                return '<button class="btn btn-link nas-config-btn" data-url="' + row.details_url + '" data-service-id="' + row.id + '"><span class="fa fa-cogs fa-lg"></span></button>';
             }
 
             function setKwdServicePurchaseFormatter(value, row, index) {
                 return [
-                    '<button class="btn btn-info btn-xs kwd-buy-service" data-service-id="' + row.pk + '" data-index="'+index+'">',
+                    '<button class="btn btn-info btn-xs kwd-buy-service" data-resource="'+ row.service_config_url +'" data-service-id="' + row.id + '" data-index="'+index+'">',
                         '<span> Purchase</span>',
                     '</button>'
                 ].join('');

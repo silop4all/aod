@@ -1,12 +1,14 @@
-
+{% load i18n %}
+{% load l10n %}
 <div class="personal-info-box">
     <div class="form-group">
         <div class="col-md-4 col-sm-4 col-xs-12 pull-left text-center" style="text-align: center">
-            <input type="file" id="logo" name="logo" data-link="{{ media_url }}" accept="image/*" size="1" style="display:none" onchange="return loadLogo(this);"/>
+            <input type="file" id="logo" name="logo" data-link="{% url 'profile_media' object.id %}" accept="image/*" size="1" style="display:none" onchange="return loadLogo(this);"/>
             <a href="#" class="img-responsive" title="Update logo" id="edit-logo" onclick="return addLogo();" style="position:relative;" >
-                {% if logo != "/media/app/users/logos/" %}
+                
+                {% if object.logo %}
                     <img src="{{ logo }}" alt="{{ object.name}}_{{ object.lastname}}_logo" class="img-rounded personal-info-profile-img" style="height:150px;width:150px; cursor: pointer" />                                  
-                    <label id="text" class="hidden"><i class="fa fa-camera fa-lg"></i> Upload logo</label>
+                    <label id="text" class="hidden"><i class="fa fa-camera fa-lg"></i> {% trans 'Upload logo' %}</label>
                 {% else %}
                 <div style="cursor: pointer">
                     <span class="fa-stack fa-5x" >
@@ -208,6 +210,9 @@
     </div>
 
     <!--edit area-->
+    {% if readonly %}
+
+    {% else %}
     <hr class="profile-hr">
     <div id="personal-toolbar">
         <div class="row" id="edit">
@@ -220,10 +225,11 @@
                 <button type="reset" class="btn btn-default btn-sm" id="reset-personal-btn" name="reset-personal-info" role="button"> Cancel</button>
             </div>
             <div class="col-md-6 col-sm-6 text-center">
-                <button type="button" class="btn btn-primary btn-sm" id="save-personal-btn" name="save-personal-info-btn" role="button"> Save</button>
+                <button type="button" class="btn btn-primary btn-sm" id="save-personal-btn" data-url="{% url 'personal_profile_update' object.id %}" name="save-personal-info-btn" role="button"> Save</button>
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
 
 

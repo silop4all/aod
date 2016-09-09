@@ -3,7 +3,7 @@ $(document).ready(function () {
     // load categories in as a tree
     $.ajax({
         type: 'GET',
-        url: "/api/v1/categories/tree",
+        url: $("#srv_category").data('resource'),
         data: { level: 0 },
         headers: { "accept": "application/json", "content-type": "application/json" },
         beforeSend: function (xhr, settings) {
@@ -183,19 +183,15 @@ $(document).ready(function () {
         setPagers(parseInt($(this).find('a').attr('href').replace(/\D/g, '')));
     })
 
-
-
-});
-
-
-$(document).on('click', ".remove-kwd", function () {
+}).on('click', ".remove-kwd", function () {
     $(this).parent().remove();
-})
 
-$(document).on('change', "#srv_coverage", function () {
+}).on('change', "#srv_coverage", function () {
     getMap();
+
 }).on('change', "#srv_latitude", function () {
     getMap();
+
 }).on('change', "#srv_longitude", function () {
     getMap();
 });
@@ -506,9 +502,8 @@ function setCoordinates(event, radius, map) {
 //////////////////////
 $("#register-btn").click(function (event) {
     event.preventDefault();
-
-    var url = $(this).data().url;
-    var mediaURL = url + "/media/upload/"
+    var url = $(this).data('url');
+    var succesUrl = $(this).data('successUrl');
     var form = $("#insert-new-service");
     var payload = collectControlData(form);
     var files = new FormData($("#insert-new-service")[0]);
@@ -529,21 +524,22 @@ $("#register-btn").click(function (event) {
                 // media
                 $.ajax({
                     type: 'POST',
-                    url: mediaURL + response.id,
+                    url: url + "media/upload/" + response.id,
                     data: files,
                     cache: false,
                     contentType: false,
                     processData: false,
                     success: function (response) {
                         if (response.state === true) {
-                            setTimeout(function () {
-                                loading.hide();
-                                //window.location.href = response.link;
-                                window.location.href = "/offerings";
-                            }, 600);
+                            console.info("Success registration");
                         }
                     },
                     error: function () {
+                        console.error("Fail in registration");
+                    },
+                    complete: function () {
+                        loading.hide();
+                        location.href = succesUrl;
                     }
                 });
             }
@@ -593,8 +589,9 @@ $("#update-btn").click(function (event) {
     event.preventDefault();
     var form = $("#insert-new-service");
     var payload = collectControlData(form);
-    var url = $(this).data().url;
-    var mediaURL = "/offerings/services/media/upload/";
+    var url = $(this).data('url');
+    var mediaURL = $(this).data('mediaUrl');
+    var successURL = $(this).data('successUrl');
     var files = new FormData(form[0]);
 
     var loading = new AjaxView($("#service-registration-wizard"));
@@ -613,7 +610,7 @@ $("#update-btn").click(function (event) {
                 // media
                 $.ajax({
                     type: 'POST',
-                    url: mediaURL + response.id,
+                    url: mediaURL,
                     data: files,
                     cache: false,
                     contentType: false,
@@ -622,7 +619,7 @@ $("#update-btn").click(function (event) {
                         if (response.state === true) {
                             setTimeout(function () {
                                 loading.hide();
-                                window.location.href = response.link;
+                                location.href = successURL;
                             }, 600);
                         }
                     },

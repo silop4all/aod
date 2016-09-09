@@ -1,5 +1,6 @@
 ﻿{% extends "app/base.html" %}
-
+    {% load i18n %}
+    {% load l10n %}
     {% block title %} 
     AoD | {{ title }}
     {% endblock title %}
@@ -23,7 +24,7 @@
     
         {% block breadcrumb %}
         <ol class="breadcrumb">
-            <li><a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb" title="Home page"><span class="fa fa-home"></span> Home</a></li>
+            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="Home page"><span class="fa fa-home"></span> {% trans 'Home' %}</a></li>
             <li class="active"> {{ title }}</li>
         </ol>
         {% endblock breadcrumb %}

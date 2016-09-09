@@ -1,5 +1,6 @@
 ﻿{% extends "app/base.html" %}
-
+{% load i18n %}
+{% load l10n %}
 {% block title %} AoD | {{ service.title }} {% endblock title %}
 
  {% load staticfiles %}
@@ -23,12 +24,12 @@
     {% block breadcrumb %}
     <ol class="breadcrumb" aria-label="breadcrumb">
         <li>
-            <a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb" title="Home page">
-                <span class="fa fa-home"></span> Home
+            <a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="Home page">
+                <span class="fa fa-home"></span> {% trans 'Home' %}
             </a>
         </li>
         <li>
-            <a href="{% url 'provider-dashboard' %}" class="custom-inactive-breadcrumb" title="My offerings">My offerings</a>
+            <a href="{% url 'provider_dashboard' %}" class="custom-inactive-breadcrumb" title="My offerings">{% trans 'My offerings' %}</a>
         </li>
         <li class="active">{{ service.title }}</li>
     </ol>
@@ -42,20 +43,20 @@
             <!--header-->
             <div style="padding: 1%">
                 <div class="row">
-                    <header class="col-md-12 col-sm-12 col-lg-12 col-xs-12" title="Service title is {{ service.title }}">
-                        <h3 id="title" data-service-id="{{ service.id }}">{{ service.title }}</h3> 
+                    <header class="col-md-12 col-sm-12 col-lg-12 col-xs-12" title="{% trans 'Service title is'%} {{ service.title }}">
+                        <h3 id="title" data-service-id="{{ service.id }}" >{{ service.title }}</h3>
                     </header>
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
-                        <span class="fa fa-calendar text-success"></span> Created at {{ service.created_date| date:"M d, Y"}}
+                        <span class="fa fa-calendar text-success"></span> {% trans 'Created at' %} {{ service.created_date| date:"M d, Y"}}
                         <span class="fa fa-clock-o text-success"></span> {{ service.created_date| date:"H:i"}}
                     </div>
                     <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
-                        <a href="#" id="delete_service" class="btn btn-default btn-sm pull-right" style="margin-right:5px!important"><span class="fa fa-trash text-danger fa-lg"></span> Remove</a>
-                        <a href="modify" id="edit_service" class="btn btn-default btn-sm pull-right" style="margin-right:5px!important"><span class="fa fa-edit text-success fa-lg"></span> Edit</a>
-                        <a href="#" class="btn btn-default btn-sm disabled pull-right" style="margin-right:5px!important"><span class="fa fa-print text-muted fa-lg"></span> Print</a>
-                        <a href="#" class="btn btn-default btn-sm disabled pull-right" style="margin-right:5px!important"><span class="fa fa-share-alt text-danger fa-lg"></span> Share</a>
+                        <a href="{% url 'public_service_view' alias %}" data-redirect="{% url 'provider_dashboard' %}" id="delete_service" class="btn btn-default btn-sm pull-right" style="margin-right:5px!important"><span class="fa fa-trash text-danger fa-lg"></span> {% trans 'Remove' %}</a>
+                        <a href="{% url 'update_service' alias %}" id="edit_service" class="btn btn-default btn-sm pull-right" style="margin-right:5px!important"><span class="fa fa-edit text-success fa-lg"></span> {% trans 'Edit' %}</a>
+                        <a href="#" class="btn btn-default btn-sm disabled pull-right" style="margin-right:5px!important"><span class="fa fa-print text-muted fa-lg"></span> {% trans 'Print' %}</a>
+                        <a href="#" class="btn btn-default btn-sm disabled pull-right" style="margin-right:5px!important"><span class="fa fa-share-alt text-danger fa-lg"></span> {% trans 'Share' %}</a>
                     </div>
                 </div>
 
@@ -63,28 +64,28 @@
             <div class="tabbable">
                 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
                     <li role="presentation" class="active" >
-                        <a href="#info" data-toggle="tab">
-                            <h4><span class="fa fa-bookmark fa-lg"></span> Service details</h4> 
+                        <a href="#info" data-toggle="tab" data-resource="{% url 'private_api:service_entity' service.id %}">
+                            <h4><span class="fa fa-bookmark fa-lg"></span> {% trans 'Service details' %}</h4> 
                         </a>
                     </li>
                     <li role="presentation">
-                        <a id="stats_tab" href="#stats" data-toggle="tab">
-                            <h4><span class="fa fa-bar-chart-o fa-lg"></span> Statistics</h4>
+                        <a id="stats_tab" href="#stats" data-toggle="tab" data-resource="{% url 'private_api:service_reviews' service.id %}">
+                            <h4><span class="fa fa-bar-chart-o fa-lg"></span> {% trans 'Statistics' %}</h4>
                         </a>
                     </li> 
                     <li role="presentation">
-                        <a id="support_tab" href="#support" data-toggle="tab" title="Technical support of the service">
-                            <h4><span class="fa fa-cogs fa-lg"></span> Technical support</h4> 
+                        <a id="support_tab" href="#support" data-toggle="tab" data-resource="{% url 'private_api:service_technical_support' service.id %}" title="Technical support of the service">
+                            <h4><span class="fa fa-cogs fa-lg"></span> {% trans 'Technical support' %}</h4> 
                         </a>
                     </li>  
                     <li role="presentation">
-                        <a id="reviews_tab" href="#reviews" data-toggle="tab">
-                            <h4><span class="fa fa-comments-o fa-lg"></span> Reviews</h4>
+                        <a id="reviews_tab" href="#reviews" data-toggle="tab" data-resource="{% url 'private_api:service_reviews' service.id %}">
+                            <h4><span class="fa fa-comments-o fa-lg"></span> {% trans 'Reviews' %}</h4>
                         </a>
                     </li> 
                 </ul>
 
-                <div id="my-tab-content" class="tab-content" style="border-left:1px solid #d9d9d9; border-right:1px solid #d9d9d9;border-bottom:1px solid #d9d9d9; background-color:#f1f1f1; padding-left:1%;padding-right:1%; border-radius: 0 1px 5px 5px" >                                      
+                <div id="my-tab-content" class="tab-content" style="border-left:1px solid #d9d9d9; border-right:1px solid #d9d9d9;border-bottom:1px solid #d9d9d9; background-color:#fff; padding-left:1%;padding-right:1%; border-radius: 0 1px 5px 5px" >                                      
                     <div class="tab-pane active" id="info">
                         {% include "app/consumers/services/item/preview/preview.html" %}
                     </div>
@@ -106,21 +107,21 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12" title="A set of keywords that characterize the service">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12" title="{% trans 'A set of keywords that characterize the service' %}">
                     <h5 id="keywords" class="pull-left">
                         {% if keywords %}
                             {% for i in keywords %}
                                 <a href="#" class="btn btn-default btn-xs" onclick="return false;"><i class="fa fa-tag text-success"></i> {{i.title}}</a>
                             {% empty %}
-                                No keywords
+                                {% trans 'No keywords' %}
                             {% endfor %}
                         {% endif %}
                     </h5>
                 </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12" title="Last date that the service was modified">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12" title="{% trans 'Last date that the service was modified' %}">
                     {% if service %}
                         {% if service.modified_date|date:"d M Y" != "01 Jan 1970" %}
-                            <h6 class="text-muted pull-right"> Last edit at {{ service.modified_date| date:"M d, Y"}} <span class="fa fa-clock-o text-muted"></span> {{ service.modified_date| date:"H:i"}}</h6>
+                            <h6 class="text-muted pull-right">{% trans 'Last edit at' %} {{ service.modified_date| date:"M d, Y"}} <span class="fa fa-clock-o text-muted"></span> {{ service.modified_date| date:"H:i"}}</h6>
                         {% endif %}
                     {% endif %} 
                 </div>

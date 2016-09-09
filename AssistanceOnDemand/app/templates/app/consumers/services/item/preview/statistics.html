@@ -1,4 +1,6 @@
-﻿<article>
+﻿{% load i18n %}
+{% load l10n %}
+<article>
     <div id="stats_container" class="margin-top-10">
 
         <table id="stats_table"
@@ -20,11 +22,11 @@
             <thead>
             <tr>
                 <th data-field="state" data-checkbox="true"></th>
-                <th data-field="user" data-sortable="true" data-switchable="false" data-align="center">User details</th>
-                <th data-field="purchased_date" data-sortable="true" data-align="center">Purchased date</th>
-                <th data-field="price" data-sortable="true" data-align="center">Charging</th>
-                <th data-field="payment_status" data-sortable="true" data-formatter="editFormatter" data-align="center">Payment status</th>
-                <th data-field="payment_date" data-sortable="true" data-align="center">Payment date</th>        
+                <th data-field="user" data-sortable="true" data-switchable="false" data-align="center">{% trans 'User details' %}</th>
+                <th data-field="purchased_date" data-sortable="true" data-align="center">{% trans 'Purchased date' %}</th>
+                <th data-field="price" data-sortable="true" data-align="center">{% trans 'Charging' %}</th>
+                <th data-field="payment_status" data-sortable="true" data-formatter="editFormatter" data-align="center">{% trans 'Payment status' %}</th>
+                <th data-field="payment_date" data-sortable="true" data-align="center">{% trans 'Payment date' %}</th>        
             </tr>
             </thead>
         </table>

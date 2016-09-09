@@ -14,8 +14,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods, require_GET, require_POST, require_safe
 
 from django.core import serializers
-from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+
+from django.conf import settings
 
 from django.contrib import messages
 
@@ -23,19 +24,26 @@ from django.db.models import Avg, Sum, Q
 from django.db import IntegrityError
 
 from django.utils import timezone
+from django.utils.translation import ugettext as _
 
 from app.models import *        # import models
 from app.decorators import *    # import custom models
+from app.utilities import *
+from app.openamAuth import *
+
 
 from functools import wraps
 from datetime import datetime   # date/time module
 import pytz
 import json                     # json lib
-import urllib
-
-from django.conf import settings
 
 from traceback import print_exc
+
+from rest_framework import viewsets, status
+from base64 import b64decode, b64encode
+import httplib
+import urllib
+
 
 
 
@@ -187,28 +195,26 @@ class RegistrationView(View):
             for i, v in enumerate(instance['rg_channels']):
                 user.categories.add(v)
 
+            subject = "[P4ALL] AoD Registration"
             to = [user.email]
-
-            domain =  request.scheme  + "://" +  request.META['HTTP_HOST'] 
+            domain = domainURL() 
 
             # create a hash for activation link
             hash = hashPassword(user.email)
 
             # send notification to activate his/her account
-            from django.core.mail import send_mail
-            subject = "AoD Registration"
             body = "Dear "+str(user.name) +" " + str(user.lastname)+",\n\n"
             body += "Your registration was successfully completed in the AoDemand marketplace.\n"
             body += "The required username is: " + user.username+".\n"
             body += "Please follow the below link to activate your account:\n\n"
-            body += domain+ "/account/activation?p="+ user.email +"&q="+ hash + "\n\n"
+            body += domain + reverse('account_activation') + "?p="+ user.email +"&q="+ hash + "\n\n"
             body += "We don't check this mailbox, so please don't reply to this message.\n\n"
             body += "Sincerely,\nThe AoD administrator team"
             # send email
-            send_mail(subject, body, 'no-reply@p4all.com', to, fail_silently=False)
+            sendEmail(to, subject, body, False)
 
             # server response in success
-            return JsonResponse({"state": True, "redirect": domain+"/account/signup-success/"})
+            return JsonResponse({"state": True, "redirect": domain + reverse('account_success_registration')})
             
         except:  
             # server response in failure
@@ -358,7 +364,7 @@ def loginAuth(request):
         request.session['is_carer']     = Carers.objects.get(user_id=user.id).is_active
         
         # move to his dashboard
-        return redirect('/index')
+        return redirect(reverse('home_page'))
 
     except Exception as e:
         # preview the following message on user
@@ -766,7 +772,8 @@ def profile(request, username=None):
                 'media_url': "/profile/media/" + str(pk),
                 'error': False,
                 'cover': settings.MEDIA_URL + "app/users/covers/" + str(customer.cover),
-                'logo': settings.MEDIA_URL + "app/users/logos/" + str(customer.logo)
+                'logo': settings.MEDIA_URL + "app/users/logos/" + str(customer.logo),   
+                'readonly': settings.OPENAM_INTEGRATION
             }))
     except:
         raise Http404
@@ -910,7 +917,7 @@ class ServiceSearch(View):
 
             if request.GET.get('type') not in [None, "A"]:
                 for service in Services.objects.filter(type=request.GET.get('type')).filter(charging_policy_id__in=chModel).order_by(sortby)[:limit]:
-                    servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover,
+                    servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover.replace('/media/', ''),
                         "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
                         "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], 
                         "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), "type": service.type,
@@ -919,7 +926,7 @@ class ServiceSearch(View):
                     })
             else:
                 for service in Services.objects.filter(charging_policy_id__in=chModel).order_by(sortby)[:limit]:
-                    servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover,
+                    servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover.replace('/media/', ''),
                         "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
                         "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], 
                         "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), "type": service.type,
@@ -927,11 +934,10 @@ class ServiceSearch(View):
                         "image": service.image
                     })
 
-
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
-                    'year':datetime.now().year,
+                    'year': datetime.now().year,
                     'userID': request.session['id'],
                     'username': request.session['username'],
                     'links': navbarLinks(request),
@@ -1048,13 +1054,13 @@ class ServiceSearchResults(View):
                                 
                                 if minQoS != None and maxQoS != None: 
                                     if int(reviews) > 0 and float(minQoS) <= float(rating) <= float(maxQoS):
-                                        servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover,
+                                        servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover.replace('/media/', ''),
                                             "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
                                             "rating": rating, "reviews": reviews, "type": service.type,
                                             "logo": Users.objects.get(pk=service.owner_id).logo.name, "alias":  urllib.quote_plus(service.title)
                                         })
                                 else:
-                                    servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover,
+                                    servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover.replace('/media/', ''),
                                         "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
                                         "rating": rating, "reviews": reviews, "type": service.type,
                                         "logo": Users.objects.get(pk=service.owner_id).logo.name, "alias":  urllib.quote_plus(service.title)
@@ -1068,13 +1074,13 @@ class ServiceSearchResults(View):
                                 
                         if minQoS != None and maxQoS != None:
                             if int(reviews) > 0 and float(minQoS) <= float(rating) <= float(maxQoS):
-                                servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover,
+                                servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover.replace('/media/', ''),
                                     "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
                                     "rating": rating, "reviews": reviews, "type": service.type,
                                     "logo": Users.objects.get(pk=service.owner_id).logo.name, "alias":  urllib.quote_plus(service.title)
                                 })
                         else:
-                            servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover,
+                            servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover.replace('/media/', ''),
                                 "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
                                 "rating": rating, "reviews": reviews, "type": service.type,
                                 "logo": Users.objects.get(pk=service.owner_id).logo.name, "alias":  urllib.quote_plus(service.title)
@@ -1088,7 +1094,7 @@ class ServiceSearchResults(View):
 
                 return render(request, template, response_dic)
             else:
-                return redirect("/index")
+                return redirect(reverse('home_page'))
 
         except AttributeError as at:
             print "400"
@@ -1184,7 +1190,9 @@ class ServiceCreate(View):
                 }))
     
         except:
-           return redirect('/')
+            if settings.DEBUG:
+                print_exc()
+            return redirect(reverse('aod_login_page'))
 
     def post(self, request):
         """
@@ -1327,6 +1335,7 @@ class ServiceView(View):
                     'breadcrumb': breadcrumbLinks(request),
                     'servicesLink': '/provider/services',
                     'service': service,
+                    "alias": urllib.quote_plus(service.title),
                     'keywords': keywords,
                     'categories': service.categories.all(),
                     'languages': languages,
@@ -1334,6 +1343,8 @@ class ServiceView(View):
                 }))
 
         except:
+            if settings.DEBUG:
+                print_exc()
             pass
 
     def put(self, request, alias=None):
@@ -1576,6 +1587,7 @@ class UploadServiceMedia(View):
             
             links = breadcrumbLinks(request)
             return JsonResponse({"state": True, "link": links["collection"]})
+            #return redirect(reverse('provider_dashboard'), permanent=True)
         except Exception as e:
             return JsonResponse({"state": False, "reason":e.args})            
         except:
@@ -2167,24 +2179,17 @@ class NetworkAssistanceServicesCreateRequest(View):
             receiver = Users.objects.get(pk=consumerID)
 
             # send notification to activate his/her account
-            from django.core.mail import send_mail, EmailMultiAlternatives
             subject = "[P4ALL] Network of assistance services notification"
-            from_email = "no-reply@p4all.com"
-
             
             if settings.DEBUG:
-                if settings.EVALUATION_PROCESS:
-                    to = [settings.EVALUATION_EMAIL]
-                else:
-                    to = [settings.AOD_EMAIL]
+                to = settings.RECEIVER_EMAIL
             else:
                 to = [receiver.email]
 
             # Create agree/disagree links
-            domain =  request.scheme  + "://" +  request.META['HTTP_HOST'] 
-            path = '/assistance/requests/reply'
-            positiveLink = domain + path + "?rec=" + str(receiver.email) + "&sen=" + str(sender.email) + "&val=" + str(nasRequest.id) + "&code=true"
-            negativeLink = domain + path + "?rec=" + str(receiver.email) + "&sen=" + str(sender.email) + "&val=" + str(nasRequest.id) + "&code=false"
+            path = domainURL() + reverse('guided_assistance_reply_to_request')
+            positiveLink = path + "?rec=" + str(receiver.email) + "&sen=" + str(sender.email) + "&val=" + str(nasRequest.id) + "&code=true"
+            negativeLink = path + "?rec=" + str(receiver.email) + "&sen=" + str(sender.email) + "&val=" + str(nasRequest.id) + "&code=false"
 
             body = "<div>Dear <strong>" + receiver.name + " " + receiver.lastname + "</strong>,<br><br>"
             body += "The authorized AoD user, " + sender.name + " " + sender.lastname + ", requires privileges to setup your personal network of assistance services!<br>"
@@ -2194,10 +2199,7 @@ class NetworkAssistanceServicesCreateRequest(View):
             body += "Sincerely,<br>The AoD administration team</div>"
 
             # send email with HTML code
-            msg = EmailMultiAlternatives(subject, "", from_email, to)
-            msg.attach_alternative(body, "text/html")
-            msg.send()
-
+            sendEmail(to, subject, body, True)
             return JsonResponse({"state": True})
         except:
             from traceback import print_exc
@@ -2221,17 +2223,8 @@ class NetworkAssistanceServicesReplyRequest(View):
                 
                 CarersAssistConsumers.objects.filter(id=requestID, carer_id=Carers.objects.get(user_id=carer.id).id, consumer_id=Consumers.objects.get(user_id=consumer.id).id).update(response=True, state=state, updated_at=datetime.now())
 
-                from django.core.mail import send_mail, EmailMultiAlternatives
                 subject = "[P4ALL] Network of assistance services notification"
-                from_email = "no-reply@p4all.com"
-                
-                if settings.DEBUG:
-                    if settings.EVALUATION_PROCESS:
-                        to = [settings.EVALUATION_EMAIL]
-                    else:
-                        to = [settings.AOD_EMAIL]
-                else:
-                    to = [receiver.email]
+                to = settings.RECEIVER_EMAIL if settings.DEBUG == True else [carer.email]
                 
                 # Inform the carer the consumer has replied on his/her request
                 body = "<div>Dear <strong>" + carer.name + " " + carer.lastname + "</strong>,<br><br>"
@@ -2243,12 +2236,8 @@ class NetworkAssistanceServicesReplyRequest(View):
                 body += "<br>Regards,<br>The AoD administration team</div>"
 
                 # send email with HTML code
-                msg = EmailMultiAlternatives(subject, "", from_email, to)
-                msg.attach_alternative(body, "text/html")
-                msg.send()
-
-                #return redirect("/network-assistance-services/requests")
-                return redirect(reverse('carer-landing-page'))
+                sendEmail(to, subject, body, True)
+                return redirect(reverse('guided_assistance_landing_page'))
 
         except ObjectDoesNotExist:
             print("Model does not exist")
@@ -2257,6 +2246,7 @@ class NetworkAssistanceServicesReplyRequest(View):
             print("Multiple instances founded")
             return Http404
         except:
+            print_exc()
             return Http404
 
 
@@ -2311,24 +2301,14 @@ class NetworkAssistanceServicesInviteCarers(View):
                 nasRequest.save()
 
                 # send notification to activate his/her account
-                from django.core.mail import send_mail, EmailMultiAlternatives
                 subject = "[P4ALL] Network of carers: invitation"
-                from_email = "no-reply@p4all.com"
-
-            
-                if settings.DEBUG:
-                    if settings.EVALUATION_PROCESS:
-                        to = [settings.EVALUATION_EMAIL]
-                    else:
-                        to = [settings.AOD_EMAIL]
-                else:
-                    to = [receiver.email]
+                to      = settings.RECEIVER_EMAIL if settings.DEBUG == True else [receiver.email]
 
                 # Create agree/disagree links
-                domain =  request.scheme  + "://" +  request.META['HTTP_HOST'] 
-                path = '/assistance/invitations/reply'
-                positiveLink = domain + path + "?rec=" + str(receiver.email) + "&sen=" + str(sender.email) + "&val=" + str(nasRequest.id) + "&code=true"
-                negativeLink = domain + path + "?rec=" + str(receiver.email) + "&sen=" + str(sender.email) + "&val=" + str(nasRequest.id) + "&code=false"
+                # path = '/assistance/invitations/reply'
+                path = domainURL() + reverse('guided_assistance_reply_consumer_invitation')
+                positiveLink = path + "?rec=" + str(receiver.email) + "&sen=" + str(sender.email) + "&val=" + str(nasRequest.id) + "&code=true"
+                negativeLink = path + "?rec=" + str(receiver.email) + "&sen=" + str(sender.email) + "&val=" + str(nasRequest.id) + "&code=false"
 
                 body = "<div>Dear " + receiver.name + " " + receiver.lastname + ",<br><br>"
                 body += "The authorized AoD user, " + sender.name + " " + sender.lastname + ", wants to add you in his/her personal network of carers!<br>"
@@ -2338,10 +2318,7 @@ class NetworkAssistanceServicesInviteCarers(View):
                 body += "Sincerely,<br>The AoD administration team</div>"
                 
                 # send email with HTML code
-                msg = EmailMultiAlternatives(subject, "", from_email, to)
-                msg.attach_alternative(body, "text/html")
-                msg.send()
-
+                sendEmail(to, subject, body, True)
                 return JsonResponse({"state": True})
             else:
                 return JsonResponse({"state": False, "message": "This request/invitation already has been submitted!"})
@@ -2366,17 +2343,8 @@ class NetworkAssistanceServicesCarerReply(View):
                 CarersAssistConsumers.objects.filter(id=requestID, carer_id=Carers.objects.get(user_id=carer.id).id, consumer_id=Consumers.objects.get(user_id=consumer.id).id).\
                     update(response=True, state=state, updated_at=datetime.now())
 
-                from django.core.mail import send_mail, EmailMultiAlternatives
                 subject = "[P4ALL] Network of carer: reply"
-                from_email = "no-reply@p4all.com"
-                
-                if settings.DEBUG:
-                    if settings.EVALUATION_PROCESS:
-                        to = [settings.EVALUATION_EMAIL]
-                    else:
-                        to = [settings.AOD_EMAIL]
-                else:
-                    to = [receiver.email]
+                to      = settings.RECEIVER_EMAIL if settings.DEBUG == True else [receiver.email]
                 
                 # Advertise the carer's reply on consumer
                 body = "<div>Dear " + consumer.name + " " + consumer.lastname + ",<br><br>"
@@ -2388,12 +2356,8 @@ class NetworkAssistanceServicesCarerReply(View):
                 body += "<br>Regards,<br>The AoD administration team</div>"
 
                 # send email with HTML code
-                msg = EmailMultiAlternatives(subject, "", from_email, to)
-                msg.attach_alternative(body, "text/html")
-                msg.send()
-
-                #return redirect("/network-assistance-services/requests")
-                return redirect(reverse('carer-landing-page'))
+                sendEmail(to, subject, body, True)
+                return redirect(reverse('guided_assistance_landing_page'))
 
         except ObjectDoesNotExist:
             print("Model does not exist")
@@ -2599,7 +2563,10 @@ class SearchNetworkAssistanceServices(View):
                         "latitude": service.latitude,
                         "coverage": service.coverage,
                         "temp_selected": (service.id in tempSelectedServicesList),
-                        "purchased": (service.id in purchasedServicesList)
+                        "purchased": (service.id in purchasedServicesList),
+                        "details_url": reverse('private_api:detailed_service', kwargs={'pk':service.id}),
+                        "service_config_url": reverse('private_api:service_configuration', kwargs={'pk':service.id}),
+                        "submit_service_url": reverse('guided_assistance_submit_services')
                     })
                 
                 return JsonResponse({"state": 1, "servicesList": servicesList})
@@ -2655,6 +2622,9 @@ class NetworkAssistanceServicesQueue(View):
                             "location_constraint": service.location_constraint,
                             "longitude": service.longitude,
                             "latitude": service.latitude,
+                            "details_url": reverse('private_api:detailed_service', kwargs={'pk':service.id}),
+                            "service_config_url": reverse('private_api:service_configuration', kwargs={'pk':service.id}),
+                            "submit_service_url": reverse('guided_assistance_submit_services')
                         })
                     categoriesDict['services'] = servicesList
                     response.append(categoriesDict)
@@ -2767,19 +2737,13 @@ class NetworkAssistanceServicesSubmit(View):
                 curSrvId = nas.id
 
                 # send email notification to consumer
-                if settings.DEBUG:
-                    if settings.EVALUATION_PROCESS:
-                        to = [settings.EVALUATION_EMAIL]
-                    else:
-                        to = [settings.AOD_EMAIL]
-                else:
-                    to = [receiver.email]
+                to = settings.RECEIVER_EMAIL if settings.DEBUG == True else  [receiver.email]
 
                 subject     = "[P4ALL] Network of assistance services: purchase service"
                 body        = "<div>Dear <strong>" + receiver.name + " " + receiver.lastname + "</strong>,<br><br>"
                 body        += "The authorized AoD user, " + carerProfile.name + " " + carerProfile.lastname + ", just purchased the service <em>"+selService.title+"</em> for you a few minutes ago!<br>"
                 body        += "<br>Sincerely,<br>The AoD administration team</div>"
-                sendEmail(carerProfile.email, to, subject, body, True)
+                sendEmail(to, subject, body, True)
 
                 return JsonResponse({"state": 1, "id": curSrvId, "consumerId": payload['consumerID']})
             else:
@@ -2819,13 +2783,34 @@ class SearchKwdNetworkAssistanceServices(View):
 
                     # retrieve services
                     services = Services.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword) | Q(pk__in=servicesKwdList)).exclude(pk__in=purchasedServicesList).distinct()
-                    data     = serializers.serialize("json", services)
+                    
+                    #data     = serializers.serialize("json", services)
+                    #return JsonResponse({"data": json.loads(data)})
 
-                    return JsonResponse({"data": json.loads(data)})
+                    servicesList = []
+                    for service in services:
+                        servicesList.append({
+                            "id": service.id, 
+                            "title":service.title, 
+                            "description": service.description, 
+                            "price":service.price, 
+                            "unit":service.unit, 
+                            "type": service.type,
+                            "location_constraint": service.location_constraint,
+                            "longitude": service.longitude,
+                            "latitude": service.latitude,
+                            "coverage": service.coverage,
+                            "details_url": reverse('private_api:detailed_service', kwargs={'pk':service.id}),
+                            "service_config_url": reverse('private_api:service_configuration', kwargs={'pk':service.id}),
+                            "submit_service_url": reverse('guided_assistance_submit_services')
+                        })
+                
+                    return JsonResponse({"state": 1, "data": servicesList})
             
                 return JsonResponse({"data": []})
         except Exception as e:
             print e         
+            print_exc()
             return Http404
 
 @loginRequiredView
@@ -2834,7 +2819,8 @@ class PreviewNetworkAssistanceServices(View):
         try:
             assert isinstance(request, HttpRequest)
             pk = request.session['id']
-            carer = Carers.objects.get(pk = pk)
+            #carer = Carers.objects.get(pk = pk)
+            carer = Carers.objects.get(user_id = pk)
 
             template = "app/nas/preview/index.html"
             
@@ -2861,7 +2847,7 @@ class PreviewNetworkAssistanceServices(View):
                 }))
         except Exception as ex:
             print_exc()        
-            return Http404
+            print str(ex)
 
 
 @loginRequiredView
@@ -2925,28 +2911,6 @@ class ServiceInstance(View):
 
 
 
-
-def sendEmail(sender, receiversList, subject, content, include_html):
-    try:
-        # send notification to activate his/her account
-        sender = "no-reply@p4all.com"
-
-        # send email with HTML code
-        if include_html == True:
-            from django.core.mail import EmailMultiAlternatives
-            msg = EmailMultiAlternatives(subject, "", sender, receiversList)
-            msg.attach_alternative(content, "text/html")
-            msg.send()
-        else:
-            from django.core.mail import send_mail
-            send_mail(subject, content, sender, receiversList, fail_silently=False)
-
-    except Exception as e: 
-        #import traceback        
-        print e
-
-
-
 #################################
 ##      TO fix them
 #################################
@@ -2996,3 +2960,314 @@ def server_error(request):
             'title':'Internal server error',
             'year':datetime.now().year,
         }))
+
+
+##############################################
+##  Integration with OpenAM OAuth 2.0 server
+##############################################
+class Oauth2Login(View):
+    """
+    Integrate the AoD platform with the IAM/OPENAM services with respect to the login process.
+
+    - Case 1:
+    If user has been landed in the visitor area after log off, then user is directed to the IAM login form to enter the credentials and obtain access in the AoD protected area
+    - Case 2:
+    If the user's access_token is still valid, user is directed in the home page of the protected area
+    - Case 3:
+    If the user's access_token has expired but the user's refresh_token is still valid, then user's access_token, refresh_token, profile and roles has been updated and is directed in the home page of the protected area
+    - Case 4:
+    If both the user's access_token and refresh_token have expired, user is directed to the IAM login form to enter the credentials and obtain access in the AoD protected area
+    """
+
+    def get(self, request):
+        try:
+            ows = OpenamAuth()
+            url = ows.getAuthorizeURL()
+
+            # if user has logged off
+            if 'id' not in request.session.keys() and 'username' not in request.session.keys():
+                return HttpResponseRedirect(url)
+
+            username = request.session['username']
+            tokenInstance = Tokens.objects.get(user_id=request.session['id'])
+            if not tokenInstance:
+                if settings.DEBUG:
+                    print 'Access token is required'
+                return redirect(reverse('logout'), permanent=True)
+            else:
+                accessToken = tokenInstance.access_token
+                refreshToken = tokenInstance.refresh_token
+                status, response = ows.validateAccessToken(accessToken)
+                if int(status) in [200]:
+                    return redirect(reverse('home_page'), permanent=True)
+                else:
+                    refreshTokenStatus, refreshTokenData = ows.refreshExpiredAccessToken(refreshToken)
+                    if settings.DEBUG:
+                        print "Try refresh_token"
+                        print refreshTokenStatus, refreshTokenData
+                    refreshTokenJsonData = json.loads(refreshTokenData)
+                    accessToken = refreshTokenJsonData['access_token']
+
+
+                    if int(refreshTokenStatus) in [200]:
+                        # Retrieve the fully profile
+                        fullProfileStatus, fullProfileData = ows.retrieveFullyProfile(accessToken)
+                        fullProfileJson = json.loads(fullProfileData)
+
+                        # Retrieve the list of roles
+                        roles = []
+                        rolesListStatus, rolesListData = ows.retrieveRolesList(accessToken)
+                        rolesJson =  json.loads(rolesListData)
+                        if int(rolesListStatus) == 200:
+                            for i in rolesJson:
+                                roles.append(i['application_role']['role'].values()[0])
+
+                        # Update all
+                        user = updateUserProfile(username, fullProfileJson)
+                        updateUserRoles(user.id, roles)
+                        updateUserAccessToken(user.id, refreshTokenJsonData)
+                        request.session.flush()
+                        setSessionValues(request, user.id, username)
+                        return redirect(reverse('home_page'), permanent=True)
+
+            return HttpResponseRedirect(url)
+        except:
+            if settings.DEBUG:
+                print_exc()
+            return redirect(reverse('home_page'))
+
+class Oauth2SignUp(View):
+
+    def get(self, request):
+        try:
+            ows = OpenamAuth()
+            return HttpResponseRedirect(ows.getSignupURL())
+
+        except Exception as ex:
+            return Http404
+
+class Callback(viewsets.ViewSet):
+    """
+        Retrieve the code that OpenAM authorization server provides and asks for:
+            1. access token
+            2. user basic profile
+            3. user full profile
+            4. user roles
+    """
+
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            payload=request.GET
+            redirectUri = settings.REDIRECT_URL
+            code = request.GET.get('code')
+
+            ows = OpenamAuth()
+            accessTokenStatus, accessTokenData = ows.retrieveAccessToken(code, redirectUri)
+
+            if int(accessTokenStatus) == 200:
+                accessTokenJsonData = json.loads(accessTokenData)
+                accessToken         = str(accessTokenJsonData['access_token'])
+                refreshToken        = str(accessTokenJsonData['refresh_token'])
+
+                # Retrieve the basic profile
+                basicProfileStatus, basicProfileData = ows.retrieveBasicProfile(accessToken)
+                basicProfileJsonData= json.loads(basicProfileData)
+                username            = basicProfileJsonData['sub']
+
+                # Retrieve the fully profile
+                fullProfileStatus, fullProfileData = ows.retrieveFullyProfile(accessToken)
+                fullProfileJson = json.loads(fullProfileData)
+
+                # Retrieve the list of roles
+                roles = []
+                rolesListStatus, rolesListData = ows.retrieveRolesList(accessToken)
+                rolesJson =  json.loads(rolesListData)
+                if int(rolesListStatus) == 200:
+                    for i in rolesJson:
+                        roles.append(i['application_role']['role'].values()[0])
+
+                userExistence = Users.objects.filter(username__exact=username).count()
+                # INSERTS
+                if userExistence == 0: 
+                    user = insertUserProfile(fullProfileJson)
+                    insertUserRoles(user.id, roles)
+                    insertUserAccessToken(user.id, accessTokenJsonData)
+                # UPDATES
+                elif userExistence == 1:
+                    user = updateUserProfile(username, fullProfileJson)
+                    updateUserRoles(user.id, roles)
+                    updateUserAccessToken(user.id, accessTokenJsonData)
+
+                if settings.DEBUG:
+                    print "accessToken:=", accessToken
+                    print "username:=", username
+                    print fullProfileJson
+                    print "roles:=", roles
+                    print user.id
+
+                request.session.flush()
+                setSessionValues(request, user.id, username)
+
+                response = redirect(reverse('home_page'), permanent=True)
+                return response
+            else: 
+                return redirect(reverse('landing_page'), permanent=True)
+
+        except Exception, e:
+            print_exc()
+            return JsonResponse(data={"message": str(e), "code": status.HTTP_400_BAD_REQUEST, "reason": "Bad request"}, status=status.HTTP_400_BAD_REQUEST)
+
+class Logout(View):
+    
+    def get(self, request):
+        try:
+            request.session.flush()
+            response = redirect(reverse('landing_page'))
+
+            return response
+        except:
+            pass
+
+def insertUserProfile(payload):
+    try:
+        user = Users(
+            name=payload['name'], 
+            lastname=payload['surname'],
+            username=payload['username'], 
+            gender=payload['gender'],
+            pwd=-1, 
+            email=payload['mail'],
+            mobile=payload['phone'], 
+            country=payload['country'], 
+            city=payload['city'], 
+            address=payload['address'], 
+            postal_code=payload['postcode'], 
+            is_active=True,
+            experience=ItExperience.objects.get(level__iexact=payload['skills']), 
+            last_login=datetime.today(),
+            registration=datetime.today()
+        )
+        user.save()
+        return user
+    except:
+        if settings.DEBUG:
+            print_exc()
+        return -1
+
+def updateUserProfile(username, payload):
+    try:
+        Users.objects.filter(username__exact=username).update(
+            name=payload["name"], 
+            lastname=payload["surname"],
+            gender=payload['gender'], 
+            email=payload['mail'],
+            mobile=payload['phone'],
+            country=payload["country"], 
+            city=payload["city"], 
+            address=payload["address"], 
+            postal_code=payload["postcode"],
+            experience=ItExperience.objects.get(level__iexact=payload['skills']),
+            last_login=datetime.today()
+        )
+        return Users.objects.get(username__exact=username)
+    except:
+        if settings.DEBUG:
+            print_exc()
+        return -1
+
+def insertUserRoles(user_id, roles):
+    try:
+        rolesList = ["service_provider", "service_consumer", "carer"]
+        for i in rolesList:
+            if i in roles:
+                # cases
+                if i in ["service_provider"]:
+                    provider = Providers(user=Users.objects.get(pk=user_id), is_active=True, company="Not set")
+                    provider.save()
+                if i in ["service_consumer"]:
+                    consumer = Consumers(user=Users.objects.get(pk=user_id), crowd_fund_notification=False, crowd_fund_participation=False, is_active=True)
+                    consumer.save()
+                if i in ["carer"]:
+                    carer = Carers(user=Users.objects.get(pk=user_id), is_active=True)
+                    carer.save()
+            else:
+                # cases
+                if i in  ["service_provider"]:
+                    provider = Providers(user=Users.objects.get(pk=user_id), is_active=False, company="Not set")
+                    provider.save()
+                if i in ["service_consumer"]:
+                    consumer = Consumers(user=Users.objects.get(pk=user_id), crowd_fund_notification=False, crowd_fund_participation=False, is_active=False)
+                    consumer.save()
+                if i in ["carer"]:
+                    carer = Carers(user=Users.objects.get(pk=user_id), is_active=False)
+                    carer.save()
+
+    except:
+        if settings.DEBUG:
+            print_exc()
+        pass
+
+def updateUserRoles(user_id, roles):
+    try:
+        rolesList = ["service_provider", "service_consumer", "carer"]
+        if type(roles) is list:
+            for i in rolesList:
+                if i in roles:
+                    if i in ["service_provider"]:
+                        provider = Providers.objects.filter(user_id=user_id).update(is_active=True, company="Not set")
+                    if i in ["service_consumer"]:
+                        consumer = Consumers.objects.filter(user_id=user_id).update(crowd_fund_notification=False, crowd_fund_participation=False, is_active=True)
+                    if i in ["carer"]:
+                        carer = Carers.objects.filter(user_id=user_id).update(is_active=True)
+                else:
+                    if i in ["service_provider"]:
+                        provider = Providers.objects.filter(user_id=user_id).update(is_active=False)
+                    if i in ["service_consumer"]:
+                        consumer = Consumers.objects.filter(user_id=user_id).update(is_active=False)
+                    if i in ["carer"]:
+                        carer = Carers.objects.filter(user_id=user_id).update(is_active=False)
+    except:
+        if settings.DEBUG:
+            print_exc()
+        pass
+
+def insertUserAccessToken(user_id, accessTokenJsonData):
+    try:
+        token = Tokens(
+            user_id=user_id,
+            access_token=accessTokenJsonData['access_token'],
+            refresh_token=accessTokenJsonData['refresh_token'],
+            expires_in=accessTokenJsonData['expires_in'],
+            scope=accessTokenJsonData['scope'],
+            token_type=accessTokenJsonData['token_type']
+        )
+        token.save()
+    except:
+        if settings.DEBUG:
+            print_exc()
+
+def updateUserAccessToken(user_id, accessTokenJsonData):
+    try:
+        Tokens.objects.filter(user_id=user_id).update(
+            access_token=accessTokenJsonData['access_token'],
+            refresh_token=accessTokenJsonData['refresh_token'],
+            expires_in=accessTokenJsonData['expires_in'],
+            scope=accessTokenJsonData['scope'],
+            token_type=accessTokenJsonData['token_type']
+        )
+    except:
+        if settings.DEBUG:
+            print_exc()
+
+def setSessionValues(request, user_id, username):
+    try:
+        request.session['id'] = user_id
+        request.session['username'] = username
+        request.session['cart'] = []
+        request.session['is_provider']  = Providers.objects.get(user_id=user_id).is_active
+        request.session['is_consumer']  = Consumers.objects.get(user_id=user_id).is_active
+        request.session['is_carer']     = Carers.objects.get(user_id=user_id).is_active
+    except:
+        if settings.DEBUG:
+            print_exc()
+        pass

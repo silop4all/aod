@@ -1,6 +1,7 @@
 ﻿{% extends "app/base.html" %}
-
-{% block title %} AoD | My offerings {% endblock title %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} AoD | {% trans 'My offerings'%} {% endblock title %}
 
  {% load staticfiles %}
 
@@ -21,8 +22,8 @@
 
     {% block breadcrumb %}
     <ol class="breadcrumb">
-        <li><a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb" title="Home page"><span class="fa fa-home"></span> Home</a></li>
-        <li class="active">My offerings</li>
+        <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="Home page"><span class="fa fa-home"></span> {% trans 'Home' %}</a></li>
+        <li class="active">{% trans 'My offerings'%}</li>
     </ol>
     {% endblock breadcrumb %}
 
@@ -30,12 +31,12 @@
     <main role="main">
         <section class="table-responsive">
             <div class="service-list-box table-responsive">
-                <h3>Services management panel</h3>
+                <h3>{% trans 'Services management panel'%}</h3>
                 <hr class="service-hr">
 
                 <div id="custom-toolbar" class="btn-group" title="The toolbar provides to users of set of actions such as add,remove or search a service">
-                    <button type="button" id="new-service" class="btn btn-default" title="Add a new service" data-href="{% url 'insert_service' %}">
-                        <span class="fa fa-plus-square text-success"></span> Register service
+                    <button type="button" id="new-service" class="btn btn-default" title="{% trans 'Add a new service'%}" data-href="{% url 'insert_service' %}">
+                        <span class="fa fa-plus-square text-success"></span> {% trans 'Register service'%}
                     </button>
                 </div>
                 <table id="table" 
@@ -53,19 +54,19 @@
                     <thead>
                     <tr>
                         <th data-field="state" data-checkbox="true"></th>
-                        <th data-field="title" data-sortable="true" data-switchable="false">Title</th>
-                        <th data-field="access" data-sortable="true">Accessibility</th>
-                        <th data-field="available" data-sortable="true" data-visible="false">Availability</th>
-                        <th data-field="currency" data-sortable="true">Currency</th>
-                        <th data-field="price" data-sortable="true">Price</th>
-                        <th data-field="charging_policy" data-sortable="true">Charging policy</th>
-                        <th data-field="type" data-sortable="true" data-align="left">Type</th>
-                        <th data-field="created_date" data-sortable="true" data-align="left">Creation date</th>
-                        <th data-field="modified_date" data-sortable="true" data-align="left"  data-visible="false">Last edit</th>
-                        <th data-field="description" data-sortable="false" data-visible="false">Description</th>
-                        <th data-field="stats" data-sortable="false" data-formatter="statsFormatter" data-align="center" data-events="statsActionEvent">Statistics</th>
-                        <th data-field="edit" data-sortable="false" data-formatter="editFormatter" data-align="center" data-events="editActionEvent">Edit</th>
-                        <th data-field="remove" data-sortable="false" data-formatter="removeFormatter" data-align="center" data-events="removeActionEvent">Remove</th>
+                        <th data-field="title" data-sortable="true" data-switchable="false">{% trans 'Title' %}</th>
+                        <th data-field="access" data-sortable="true">{% trans 'Accessibility' %}</th>
+                        <th data-field="available" data-sortable="true" data-visible="false">{% trans 'Availability' %}</th>
+                        <th data-field="currency" data-sortable="true">{% trans 'Currency' %}</th>
+                        <th data-field="price" data-sortable="true">{% trans 'Price' %}</th>
+                        <th data-field="charging_policy" data-sortable="true">{% trans 'Charging policy' %}</th>
+                        <th data-field="type" data-sortable="true" data-align="left">{% trans 'Type' %}</th>
+                        <th data-field="created_date" data-sortable="true" data-align="left">{% trans 'Creation date' %}</th>
+                        <th data-field="modified_date" data-sortable="true" data-align="left"  data-visible="false">{% trans 'Last edit' %}</th>
+                        <th data-field="description" data-sortable="false" data-visible="false">{% trans 'Description' %}</th>
+                        <th data-field="stats" data-sortable="false" data-formatter="statsFormatter" data-align="center" data-events="statsActionEvent">{% trans 'Statistics' %}</th>
+                        <th data-field="edit" data-sortable="false" data-formatter="editFormatter" data-align="center" data-events="editActionEvent">{% trans 'Edit' %}</th>
+                        <th data-field="remove" data-sortable="false" data-formatter="removeFormatter" data-align="center" data-events="removeActionEvent">{% trans 'Remove' %}</th>
                         
                     </tr>
                     </thead>
@@ -99,26 +100,25 @@
                 var type = null, access, available, title, url, modified_date='-';
 
                 {% if i.type == "M" %}
-                    type = '<i class="fa fa-laptop text-default" ></i> Machine';
+                    type = '<i class="fa fa-laptop text-default" ></i> {% trans 'Machine' %}';
                 {% else %}
-                type = '<span class="fa fa-users text-default"></span> Human';
+                type = '<span class="fa fa-users text-default"></span> {% trans 'Human' %}';
                 {% endif %}
 
                 {% if i.access %}
-                    access = 'Public';
+                    access = '{% trans 'Public' %}';
                 {% else %}
-                    access = 'Private';
+                    access = '{% trans 'Private' %}';
                 {% endif %}
 
                 {% if i.available %}
-                    available = 'Yes';
+                    available = '{% trans 'Yes' %}';
                 {% else %}
-                    available = 'No';
+                    available = '{% trans 'No' %}';
                 {% endif %}
 
-                
-                url =   "{% url 'insert_service' %}/{{ i.alias }}/";
-                title = '{{ i.title|title }} <a href="'+url+'" title="Navigate on the service"><small><span class="fa fa-external-link"></span><small></a>';
+                url = "{% url 'public_service_view' i.alias %}";
+                title = '{{ i.title|title }} <a href="'+url+'" title="{% trans 'Navigate on the service' %}"><small><span class="fa fa-external-link"></span><small></a>';
 
                 {% if i.modified_date|date:"Y-m-d H:i" == "1970-01-01 00:25" %}
                    modified_date = '-';

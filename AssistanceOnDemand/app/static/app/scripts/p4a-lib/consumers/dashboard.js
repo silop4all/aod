@@ -1,5 +1,159 @@
-﻿
-$(document).on('click', "#search-btn", function (event) {
+﻿var form = '#service-search-form';
+
+$.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+        if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+            xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+        }
+    }
+});
+
+$(document).ready(function () {
+    // get categories as a tree
+    getCategories();
+
+    $("#companies-id").click(function () {
+        toggleArrows($(this));
+    });
+
+    $("#categories-id").click(function () {
+        toggleArrows($(this));
+    });
+
+    $("#service-types-id").click(function () {
+        toggleArrows($(this));
+    });
+
+    $("#service-price-id").click(function () {
+        toggleArrows($(this));
+    });
+
+    $("#location-id").click(function () {
+        toggleArrows($(this));
+    });
+
+    $("#quality-of-service-id").click(function () {
+        toggleArrows($(this));
+    });
+
+    $(".rating-stars").click(function () {
+        swapRatingStarColor($(this).attr("id").match(/\d+/));
+
+    });
+    $(".rating-stars").hover(function () {
+        swapRatingStarColor($(this).attr("id").match(/\d+/));
+    });
+
+    /////////////////
+    // Add shadow on service banners if mouse enters. Else, remove shadow
+    /////////////////
+    $(".on-mouseover > div").mouseenter(function () {
+        $(this).addClass("highlight-service-banner");
+    }).mouseleave(function () {
+        $(this).removeClass("highlight-service-banner");
+    });
+
+    /////////////////
+    // Set the stars of any service based on its rating value
+    /////////////////
+    $(".service-banner").each(function () {
+        var rating = $(this).find("#srv-rating-" + $(this).attr("id").match(/\d+/)).find("span").first().text();
+        if (rating !== "None" && !(isNaN(rating))) {
+            for (var j = 1; j <= Math.ceil(rating) ; j++) {
+                $(this).find(".star-rating-" + j).removeClass("fa-star-o").addClass("fa-star");
+            }
+        }
+    });
+
+
+    ////////////////////////////////////
+    // Services per page
+    ////////////////////////////////////
+    $("#items-per-page-id").change(function () {
+        var params = getUrlparameters();
+        params["limit"] = $(this).find(":selected").val();
+        var delimeter = '?';
+
+        var url = '';
+        for (var j in params) {
+            url += delimeter + j + '=' + params[j]
+            delimeter = '&';
+        }
+        // window.location.href = url;
+    });
+
+    ////////////////////////////////////
+    // Handle the sorting of services
+    ////////////////////////////////////
+    $(".my-sort-choice").change(function () {
+        var params = getUrlparameters();
+        params["sortby"] = $(this).find("select").val();
+        /*
+        var delimeter = '?';
+
+        var url = '';
+        for (var j in params){
+            url += delimeter+j+'='+params[j]
+            delimeter = '&';
+        }
+        window.location.href = url;
+        */
+        $("#sortby").data().sort = $(this).find("select").val();
+        reload($(this).find("select").val(), $(".services-view").data().view);
+    });
+
+    ////////////////////////////////////
+    // Filter all services by type (H/M/All)
+    ////////////////////////////////////
+    $("div#service-types-list > div > div").change(function () {
+        var type = $(this).find("input").attr("id");
+        var params = getUrlparameters();
+        params["type"] = type[0].toUpperCase();
+        var delimeter = '?';
+
+        var url = '';
+        for (var j in params) {
+            url += delimeter + j + '=' + params[j]
+            delimeter = '&';
+        }
+        //window.location.href = url;
+    });
+
+
+    ///////////////////////////////////
+    // Filter services by charging model
+    ///////////////////////////////////
+    $("div#charging-model-list > div > div").change(function () {
+        var model = $(this).find("input").attr("id").match(/\d+/);
+        var params = getUrlparameters();
+        params["model"] = model[0];
+        var delimeter = '?';
+
+        var url = '';
+        for (var j in params) {
+            url += delimeter + j + '=' + params[j]
+            delimeter = '&';
+        }
+        // window.location.href = url;
+    });
+
+
+    //////////////////////////
+    // Keep selected the sort_by user choice
+    //////////////////////////
+    $("#content-top-banner").find("#sortby :selected").prop('selected', false);
+    //$("#sortby option[value='{{ sortby }}']").attr('selected', 'selected');
+    $("#sortby option[value='"+sortby+"']").attr('selected', 'selected');
+
+
+    //////////////////////////
+    //  Keep limit user choice
+    //////////////////////////
+    $("#content-top-banner").find("#items-per-page-id :selected").prop('selected', false);
+    //$("#items-per-page-id option[value='{{ limit }}']").attr('selected', 'selected');
+    $("#items-per-page-id option[value='" + limit + "']").attr('selected', 'selected');
+
+}).on('click', "#search-btn", function (event) {
     event.preventDefault();
     
     var search = {
@@ -169,8 +323,8 @@ $(document).on('click', "#search-btn", function (event) {
     
 
     $.ajax({
-        type: 'POST',
-        url: "/services/search",
+        type: $(form).attr('method'),
+        url: $(form).attr('action'),
         dataType: 'html',
         //cache: false,
         data: JSON.stringify(search),
@@ -182,15 +336,149 @@ $(document).on('click', "#search-btn", function (event) {
             $("#services-result").append(data);
         }
     });
-});
 
-$.ajaxSetup({
-    beforeSend: function (xhr, settings) {
-        if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-            xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+}).on("click", "#charging-model-1", function () {
+    if ($(this).is(':checked')) {
+        if (!$("#charging-model-0").is(':checked')) {
+            $("#low_price").attr('readonly', true).val('');
+            $("#high_price").attr('readonly', true).val('');
+        }
+        else {
+            $("#low_price").attr('readonly', false);
+            $("#high_price").attr('readonly', false);
+        }
+    }
+    else {
+        $("#low_price").attr('readonly', false);
+        $("#high_price").attr('readonly', false);
+    }
+
+}).on("click", "#charging-model-0", function () {
+    if ($(this).is(':checked')) {
+        $("#low_price").attr('readonly', false);
+        $("#high_price").attr('readonly', false);
+    }
+    else {
+        if ($("#charging-model-1").is(':checked')) {
+            $("#low_price").attr('readonly', true).val('');
+            $("#high_price").attr('readonly', true).val('');
+        }
+        else {
+            $("#low_price").attr('readonly', false);
+            $("#high_price").attr('readonly', false);
         }
     }
 });
+
+
+//////////////////////////////////
+//  Parse URL and get the query parameters
+//////////////////////////////////
+function getUrlparameters() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+        function (m, key, value) {
+            vars[key] = value;
+        });
+    return vars;
+}
+
+// get the new URL
+function getURL(url, sort_by, srv_type, limit) {
+    if (srv_type === null) {
+        return url + "?sortby=" + sort_by + "&limit=" + limit;
+    }
+    else {
+        return url + "?type=" + srv_type + "&sortby=" + sort_by + "&limit=" + limit;;
+    }
+    return request;
+}
+
+
+////////////////////////////////////
+//  Swap the state of rating stars
+////////////////////////////////////
+function swapRatingStarColor(index) {
+    var min = 1, max = 6;
+    for (var j = min; j < max; j++) {
+        if (j > index) {
+            $("#rating-star-" + j).removeClass("fa-star").addClass("fa-star-o");
+        }
+        else {
+            $("#rating-star-" + j).removeClass("fa-star-o").addClass("fa-star");
+        }
+
+    }
+}
+
+//////////////////////////////////////////
+//  Swap the direction of search engine
+//////////////////////////////////////////
+function toggleArrows(element) {
+    if (element.find(" .panel-collapse").hasClass("in")) {
+        element.find("i").removeClass("fa-angle-double-down").addClass("fa-angle-double-up");
+    }
+    else {
+        element.find("i").addClass("fa-angle-double-down").removeClass("fa-angle-double-up");
+    }
+
+}
+
+
+//////////////////////////////
+// Declare and load view
+/////////////////////////////
+$("#list_view").click(function () {
+    var params = getUrlparameters();
+    params["view"] = 'l';
+    var delimeter = '?';
+
+    var url = '';
+    for (var j in params) {
+        url += delimeter + j + '=' + params[j]
+        delimeter = '&';
+    }
+    //window.location.href = url;
+    //update(url);
+
+    $(".services-view").data().view = 'l';
+    reload($("#sortby").data().sort, 'l');
+});
+$("#multidata_view").click(function () {
+    var params = getUrlparameters();
+    params["view"] = 'm';
+    var delimeter = '?';
+
+    var url = '';
+    for (var j in params) {
+        url += delimeter + j + '=' + params[j]
+        delimeter = '&';
+    }
+    //window.location.href = url;
+    //update(url);
+
+    $(".services-view").data().view = 'm';
+    reload($("#sortby").data().sort, 'm');
+});
+
+//function update(url) {
+//    var u = url.replace("/index", '');
+//    alert(u);
+//    $.ajax({
+//        type: 'GET',
+//        url: "/services/search" + u,
+//        dataType: 'html',
+//        beforeSend: function (xhr, settings) {
+//            $.ajaxSettings.beforeSend(xhr, settings);
+//        },
+//        success: function (data) {
+//            $("#services-result").empty();
+//            $("#services-result").append(data);
+//        }
+//    });
+//}
+
+
 
 function reload(sortby, view) {
     event.preventDefault();
@@ -361,8 +649,8 @@ function reload(sortby, view) {
 
 
     $.ajax({
-        type: 'POST',
-        url: "/services/search",
+        type: $(form).attr('method'),
+        url: $(form).attr('action'),
         dataType: 'html',
         //cache: false,
         data: JSON.stringify(search),
@@ -381,7 +669,7 @@ function getCategories() {
 
     $.ajax({
         type: 'GET',
-        url: "/api/v1/categories/tree",
+        url: $('#tree').data('resource'),
         data: { level: 0 },
         headers: { "accept": "application/json", "content-type": "application/json" },
         beforeSend: function (xhr, settings) {

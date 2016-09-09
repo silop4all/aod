@@ -1,11 +1,12 @@
 ﻿{% extends "app/base.html" %}
-
+{% load i18n %}
+{% load l10n %}
 {% block title %} AoD | {{ title }} {% endblock title %}
 
 {% load staticfiles %}
 
 {% block extraCss %}
-    <link rel="stylesheet" type="text/css" href="../../../static/app/content/my-tooltip.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
 {% endblock extraCss %}
 
 {% block scripts %}
@@ -21,6 +22,8 @@
         "participants": ["magnitakis"],
         "imageSize": 24
     });
+
+
     </script>
 {% endblock %}
 
@@ -38,12 +41,12 @@
         {% block breadcrumb %}
         <ol class="breadcrumb">
             {% if username %}
-                <li><a href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="/support" class="custom-inactive-breadcrumb"> Help Center</a></li>
+                <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+                <li><a href="{% url 'platform_technical_support_page' %}" class="custom-inactive-breadcrumb"> {% trans 'Help Center' %}</a></li>
             {% else %}
-                <li><a href="/support" class="custom-inactive-breadcrumb"><i class="fa fa-support"></i> Help Center</a></li>
+                <li><a href="{% url 'platform_technical_support_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-support"></i> {% trans 'Help Center' %}</a></li>
             {% endif %}
-            <li class="active">Create new account</li>
+            <li class="active">{% trans 'Create new account' %}</li>
         </ol>
         {% endblock breadcrumb %}
 
@@ -87,18 +90,54 @@
             {% block contact_email %}
             <div id="contact-us" class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
                 <h4>Need our assistance?</h4>
-                <form action="mailto:athanasoulisp@gmail.com" method="post">
+                <form action="mailto:example@domain.organization" method="post">
                         First name: <input type="text" name="firstname" /> 
                         Surname: <input type="text" name="surname" />
                         <button type="submit" class="btn btn-primary btn-sm">Contact us</button>
                 </form>
-                <h4> or </h4>
+                <h4> or  contact with the administrator in</h4> 
                 <div id="SkypeButton_Call_magnitakis_1"></div>
                 
             </div>
             {% endblock contact_email %}
 
-        </section>
 
+            <!--static ocntent-->
+            <hr>
+            <div id="contact-us" class=" row col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <div class="col-sm-6 col-lg-6 col-md-6 col-xs-12">
+                    <h4>Volunteers</h4>
+                    <div id="volunteers-list" >
+                        <a class="list-group-item">
+                            <h5 class="list-group-item-heading"><span class="fa fa-circle text-success"></span> Nick Kalathes <span class="fa fa-chevron-down pull-right"></span></h5>
+                            <p class="list-group-item-text">
+                                Contact me in <div id="SkypeButton_Call_magnitakis_1"></div>
+                            </p>
+                        </a>
+                        <a class="list-group-item">
+                            <h5 class="list-group-item-heading"><span class="fa fa-circle text-success"></span> James Smith <span class="fa fa-chevron-right pull-right"></h5>
+                        </a>
+                        <a class="list-group-item">
+                            <h5 class="list-group-item-heading"><span class="fa fa-circle text-danger"></span> Kostas Papadopoulos <span class="fa fa-chevron-right pull-right"></h5>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-6 col-md-6 col-xs-12">
+                    <h4>Professionals</h4>
+                    <div id="volunteers-list" >
+                        <a class="list-group-item">
+                            <h5 class="list-group-item-heading"><span class="fa fa-circle text-danger"></span> Vasili Erden - 50 &#8364; per usage <span class="fa fa-chevron-right pull-right"></span></h5>
+                        </a>
+                        <a class="list-group-item">
+                            <h5 class="list-group-item-heading"><span class="fa fa-circle text-danger"></span> Olga Littersky - 120 &#8364; per usage <span class="fa fa-chevron-right pull-right"></h5>
+                        </a>
+                        <a class="list-group-item">
+                            <h5 class="list-group-item-heading"><span class="fa fa-circle text-danger"></span> Massimo Vardez - 78 &#8364; per usage <span class="fa fa-chevron-right pull-right"></h5>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 {% endblock content %}

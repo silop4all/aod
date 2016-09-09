@@ -10,17 +10,23 @@ var purchaseTableSelector = '#purchased-services-table';
 
 
 $(document).on('click', '.nas-select-btn', function () {
-    var info = { service_id: $(this).data('serviceId'), consumer_id: $(this).data('consumerId') };
-    popTemporalService($(this).data('index'), info);
+    var payload = {
+        service_id: $(this).data('serviceId'),
+        consumer_id: $(this).data('consumerId')
+    };
+    var url = $(this).data('url');
+    popTemporalService(url, payload);
 }).on('all.bs.table', purchaseTableSelector, function (name, args) {
-    $("td").each(function () { $(this).css('vertical-align', 'middle').attr('role', 'navigation'); });
+    $("td").each(function () {
+        $(this).css('vertical-align', 'middle').attr('role', 'navigation');
+    });
 }).on('page-change.bs.table', purchaseTableSelector, function (name, args) {
     $("#purchased-services-table").bootstrapTable('check', 0);
 }).on('check.bs.table ', purchaseTableSelector, function (name, service) {
 
     $.ajax({
         type: 'GET',
-        url: "/api/v1/services/" + service.id + "/details",
+        url: service.details_url,
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
         },
@@ -32,7 +38,7 @@ $(document).on('click', '.nas-select-btn', function () {
             var imageElement = '';
             if (response.image != null && response.image.includes("/")) {
                 var img = response.image.split("/");
-                imageElement = '<img src="/media/app/services/images/' + img[img.length - 1] + '" alt="Service logo" class="img-responsive img-rounded" style="max-height:200px; border-radius:3px 3px" />';
+                imageElement = '<img src="' + service.image_url + img[img.length - 1] + '" alt="Service logo" class="img-responsive img-rounded" style="max-height:200px; border-radius:3px 3px" />';
             }
             else {
                 imageElement = [
@@ -109,10 +115,9 @@ $(document).on('click', '.nas-select-btn', function () {
             // Load configuration (default or updated)
             var config = '';
             if (response.configuration.length > 0) {
-                var trgUser = $("#target-user").data().targetId;
                 $.ajax({
                     type: 'GET',
-                    url: "/api/v1/assistance/consumers/" + trgUser + "/services/" + service.id + "/configuration",
+                    url: service.config_url,
                     beforeSend: function (xhr, settings) {
                         $.ajaxSettings.beforeSend(xhr, settings);
                     },
@@ -215,23 +220,24 @@ $(document).on('click', '.nas-select-btn', function () {
             $(".bought-service-view").fadeIn();
         }
     });
+
 }).on('click', '.access-resource', function () {
     var targetVideo = $(this).attr('href');
     $(targetVideo).toggle('fast');
+
 }).on('click', '.swap-tab', function () {
         //var url = location.href.split("#");
         //location.href = url[0] + $(this).attr('href');
-});
+}).on('mouseover', "h3", function () {
 
-
-$(document).on('mouseover', "h3", function () {
     $(this).css('text-decoration', 'underline');
+
 }).on('mouseleave', "h3", function () {
     $(this).css('text-decoration', 'none');
-});
 
-$(document).on('mouseover', ".info-block", function () {
+}).on('mouseover', ".info-block", function () {
     $(this).css('background', 'rgba(230, 230, 230, 0.58)');
+
 }).on('mouseleave', ".info-block", function () {
     $(this).css('background', 'whitesmoke');
 });
@@ -302,17 +308,17 @@ function setTypeFormatter(value, row, index) {
 
 function setRemoveFormatter(value, row, index) {
     return [
-        '<button class="btn btn-danger btn-xs nas-select-btn" data-service-id="' + row["id"] + '" data-index="'+index+'" data-consumer-id="' + row["consumerId"] + '">',
+        '<button class="btn btn-danger btn-xs nas-select-btn" data-url="' + row['url'] + '" data-service-id="' + row["id"] + '" data-index="'+index+'" data-consumer-id="' + row["consumerId"] + '">',
             '<span class="fa fa-remove fa-lg  cursor-pointer"></span> <span>Remove</span>',
         '</button>',
     ].join('');
 }
 
-function popTemporalService(index, info) {
+function popTemporalService(url, payload) {
     $.ajax({
         type: 'DELETE',
-        url: "/assistance/services/temporal-setup",
-        data: JSON.stringify(info),
+        url: url,
+        data: JSON.stringify(payload),
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
         },

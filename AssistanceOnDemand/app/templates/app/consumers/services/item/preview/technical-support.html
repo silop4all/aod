@@ -1,4 +1,6 @@
-﻿<article>
+﻿{% load i18n %}
+{% load l10n %}
+<article>
     <div id="support_container" class="margin-top-10">
         <div class="jumbotron">
             <p>
@@ -9,17 +11,17 @@
         </div>
     
         <div class="padding-left-20 margin-bottom-25">
-            <h4>Videos preview</h4>
+            <h4>{% trans 'Videos preview' %}</h4>
             <div id="service-support-videos" class="padding-left-20"></div>
         </div>
 
         <div class="padding-left-20 margin-bottom-25">
-            <h4>Documents preview</h4>
+            <h4>{% trans 'Documents preview' %}</h4>
             <div id="service-support-docs" class="padding-left-20"></div>
         </div>
 
         <div class="padding-left-20 margin-bottom-25" style="float: inherit; clear: both">
-            <h4>Your skype account</h4>
+            <h4>{% trans 'Your skype account' %}</h4>
             <div id="service-provider-skype"></div>
         </div>
     </div>

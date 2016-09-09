@@ -6,7 +6,7 @@
     $('#table').parent().css("height", "auto");
 
     $("#new-service").click(function (event) {
-        location.href = $(this).data().href;
+        location.href = $(this).data('href');
     });
 
 });

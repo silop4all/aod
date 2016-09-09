@@ -1,6 +1,7 @@
 ﻿{% extends "app/base.html" %}
-
-{% block title %} AoD | Register your services {% endblock title %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} AoD | {% trans 'Register your services' %} {% endblock title %}
 
  {% load staticfiles %}
 
@@ -20,9 +21,9 @@
     <div class="container body-content margin-top-50 padding-bottom-em-2">
         {% block breadcrumb %}
         <ol class="breadcrumb custom-inactive-breadcrumb" role="navigation" aria-label="breadcrumb">
-            <li><a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb" title="Home page"><span class="fa fa-home"></span> Home</a></li>
-            <li><a href="{% url 'provider-dashboard' %}" class="custom-inactive-breadcrumb" title="My services' collection">My collection</a></li>
-            <li class="active">Registration</li>
+            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="Home page"><span class="fa fa-home"></span> {% trans 'Home' %}</a></li>
+            <li><a href="{% url 'provider_dashboard' %}" class="custom-inactive-breadcrumb" title="My services' collection">{% trans 'My collection' %}</a></li>
+            <li class="active">{% trans 'Registration' %}</li>
         </ol>
         {% endblock breadcrumb %}
         <main role="main">

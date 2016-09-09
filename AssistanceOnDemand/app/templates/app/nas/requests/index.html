@@ -1,7 +1,8 @@
 ﻿{% extends "app/base.html" %}
-
+{% load i18n %}
+{% load l10n %}
     {% block title %} 
-        AoD | Network of Assistance services
+        AoD | {% trans 'Network of Assistance Services' %}
     {% endblock title %}
 
     {% load staticfiles %}
@@ -25,11 +26,11 @@
         {% block breadcrumb %}
         <ol class="breadcrumb" aria-label="breadcrumb">
             <li>
-                <a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb" title="Home page">
-                    <span class="fa fa-home"></span> Home
+                <a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="Home page">
+                    <span class="fa fa-home"></span> {% trans 'Home' %}
                 </a>
             </li>
-            <li class="active"> Network of Assistance Services</li>
+            <li class="active"> {% trans 'Network of Assistance Services' %}</li>
         </ol>
         {% endblock breadcrumb %}
 
@@ -43,7 +44,7 @@
                     <hr class="service-hr" />
 
                     <div id="carer-request" class="btn-group" title="The toolbar provides to users of set of actions such as add,remove or search a service">
-                        <a id="carer-new-request" role="navigation" href="{% url 'carer-find-enduser' %}" class="btn btn-default btn-md" data-placement="top" title="Search users to provide assistance">
+                        <a id="carer-new-request" role="navigation" href="{% url 'guided_assistance_carer_request' %}" class="btn btn-default btn-md" data-placement="top" title="Search users to provide assistance">
                             <span class="fa fa-plus-square fa-fw text-success"></span> Send assistance request
                         </a>
                     </div>
@@ -85,7 +86,7 @@
                     <hr class="service-hr" />
 
                     <div id="consumer-request" class="btn-group" title="Add new carer in your assistance network">
-                        <a id="consumer-new-request" role="navigation" href="{% url 'consumer_invite_carer' %}" class="btn btn-default" data-placement="top" title="Invite new carer">
+                        <a id="consumer-new-request" role="navigation" href="{% url 'guided_assistance_consumer_invitation' %}" class="btn btn-default" data-placement="top" title="Invite new carer">
                             <span class="fa fa-plus-square text-success"></span> Invite carer
                         </a>
                     </div>
@@ -155,12 +156,16 @@
                             'request_response': '{{ i.response }}', 
                             'request_state': '{{ i.state }}', 
                             'request_creation': '{{ i.created_at| date:"Y-m-d H:i" }}', 
-                            'request_feedback': '{{ i.updated_at| date:"Y-m-d H:i" }}'
+                            'request_feedback': '{{ i.updated_at| date:"Y-m-d H:i" }}',
+                            'resource': "{% url 'guided_assistance_request' i.id %}",
+                            'view_network': "{% url 'guided_assistance_network_preview' i.consumer_id %}",
+                            'setup_network': "{% url 'guided_assistance_network_setup' i.consumer_id %}"
                         });
 
                     {% endfor %}
                 {% endif %}
             {% endif %}
+            console.log(carerRequests);
 
             {% if is_consumer %}
                 {% if consumer_requests %}
@@ -172,7 +177,8 @@
                             'request_response': '{{ i.response }}', 
                             'request_state': '{{ i.state }}', 
                             'request_creation': '{{ i.created_at| date:"Y-m-d H:i" }}', 
-                            'request_feedback': '{{ i.updated_at| date:"Y-m-d H:i" }}'
+                            'request_feedback': '{{ i.updated_at| date:"Y-m-d H:i" }}',
+                            'resource': "{% url 'guided_assistance_request' i.id %}"
                         });
 
                     {% endfor %}

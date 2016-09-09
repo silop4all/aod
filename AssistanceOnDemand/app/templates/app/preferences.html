@@ -4,8 +4,8 @@
                     <li class="dropdown under-construction" aria-label="Accesibility preferences">
                         <a href="#" class="dropdown-toggle" title="Setup your preferences" data-toggle="dropdown" role="button" aria-expanded="false">
                             <span class="btn navbar-btn disable-btn-box-shadow" role="button">
-                                <span class="fa fa-paint-brush fa-lg" aria-label="Configurate your preferences"></span> Preferences 
-                                <span class="fa fa-chevron-down fa-xs fa-fw"></span>
+                                {#<span class="fa fa-paint-brush" aria-label="Configurate your preferences"></span>#} Preferences 
+                                <span class="fa fa-caret-down"></span>
                             </span>
                         </a>  
                         <ul class="dropdown-menu" role="menu" >
@@ -22,7 +22,7 @@
                                     </span>
                                 </label> 
                             </li>
-                            
+                            <li role="separator" class="divider"></li>
                             <!-- font style -->
                             <li role="presentation" style="margin-left:2px">
                                 <label>FONT STYLE
@@ -30,7 +30,7 @@
                                     </span>
                                 </label> 
                             </li>
-                            
+                            <li role="separator" class="divider"></li>
                             <!-- line spacing -->
                             <li role="presentation" style="margin-left:2px">
                                 <label>LINE SPACING
@@ -38,7 +38,7 @@
                                     </span>
                                 </label> 
                             </li>
-
+                            <li role="separator" class="divider"></li>
                             <!-- template -->
                             <li role="presentation" style="margin-left:2px">
                                 <label>TEMPLATE

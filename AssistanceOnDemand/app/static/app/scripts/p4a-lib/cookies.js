@@ -36,3 +36,15 @@ Cookies.prototype.getValue = function (name) {
     // get the cookie value
     return this.value;
 }
+
+
+Cookies.prototype.setValue = function (name, value, expiration) {
+    this.name   = name;
+    this.value = value;
+    this.expiration = expiration;
+
+    var CookieDate = new Date;
+    CookieDate.setFullYear(CookieDate.getFullYear() + expiration);
+    this.value = escape(this.value) + ((expiration == null) ? "" : "; expires=" + CookieDate.toGMTString());
+    document.cookie = this.name + "=" + this.value;
+}

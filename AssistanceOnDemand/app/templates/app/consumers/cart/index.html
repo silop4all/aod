@@ -1,5 +1,6 @@
 ﻿{% extends "app/base.html" %}
-
+{% load i18n %}
+{% load l10n %}
 {% block title %} AoD | {{ title }} {% endblock title %}
 
  {% load staticfiles %}
@@ -31,7 +32,7 @@
 
             $.ajax({
                 type: 'DELETE',
-                url: "/cart/delete/" + $(this).data().id,
+                url: $(this).data('url'),
                 beforeSend: function (xhr, settings) {
                     $.ajaxSettings.beforeSend(xhr, settings);
                 },
@@ -67,8 +68,8 @@
 
         {% block breadcrumb %}
         <ol class="breadcrumb">
-            <li><a  href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
-            <li class="active">My cart</li>
+            <li><a  href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+            <li class="active">{% trans 'My cart' %}</li>
         </ol>
         {% endblock breadcrumb %}
 
@@ -93,7 +94,7 @@
                                         <div class="col-lg-3 col-sm-3 col-md-3">
                                             <a href="#">{{ s.title }}</a>
                                             <br/>
-                                            <span class="text-muted">Provider: {% for p in providers %} {% if p.service == s.id %}{{ p.owner }} {% endif %} {% endfor %}</span>
+                                            <span class="text-muted">{% trans 'Provider' %}: {% for p in providers %} {% if p.service == s.id %}{{ p.owner }} {% endif %} {% endfor %}</span>
                                         </div>
                                         <div class="col-lg-3 col-sm-3 col-md-3">
                                             Quantity 1 
@@ -103,29 +104,29 @@
                                         </div>
                                     </div>
                                     <div class="row text-center">
-                                        <a href="#" class="btn btn-default btn-sm remove-service-cart" data-id="{{ s.id }}"><i class="fa fa-remove text-danger"></i> Remove</a>
+                                        <a href="#" class="btn btn-default btn-sm remove-service-cart" data-url="{% url 'remove_item_cart' s.id%}" data-id="{{ s.id }}"><i class="fa fa-remove text-danger"></i> Remove</a>
                                     </div>
                                 </div>
                                 {% endfor %}
                             {% else %}
                                 <div class="well border:1px solid rgba(234, 234, 234, 0.63); border-radius:3px 3px; padding-top:1%; padding-bottom:1%; margin-bottom:1%; background-color: rgba(234, 234, 234, 0.49)">
-                                    <h4>Your cart is empty.</h4>
+                                    <h4>{% trans 'Your cart is empty'%}.</h4>
                                 </div>
                             {% endif %}
                         </div> 
-                        <div class="row text-center" style="margin-top:3%;"><a href="/index" class="btn btn-link"> Continue shopping</a></div>
+                        <div class="row text-center" style="margin-top:3%;"><a href="{% url 'home_page'%}" class="btn btn-link"> {% trans 'Continue shopping' %}</a></div>
                     </div>
                 </div>
 
                 <!--right menu-->
                 <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pull-right" style=" background-color: whitesmoke; padding-bottom: 3%;border-radius:5px 5px;">
-                    <h3 class="text-center">Cart summary <small>{{services.count}}{% if services.count  > 1 %} services {%else%} service {% endif %}</small></h3>
+                    <h3 class="text-center">{% trans 'Cart summary' %} <small>{{services.count}}{% if services.count == 1 %} {% trans 'services' %} {%else%} {% trans 'service' %} {% endif %}</small></h3>
                     <hr class="service-hr">
                     <div class="row text-center" style="margin-bottom: 2%">
-                        <h3>Total: {{ total }}</h3>
+                        <h3>{% trans 'Total' %}: {{ total|default_if_none:"-" }}</h3>
                     </div>
                     <div class="row text-center">
-                        <button type="button" class="btn btn-primary disabled"> Proceed to checkout</button>
+                        <button type="button" class="btn btn-primary disabled"> {% trans 'Proceed to checkout' %}</button>
                     </div>
                 </div>
             </div>

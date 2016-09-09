@@ -1,5 +1,6 @@
 ﻿{% extends "app/base.html" %}
-
+    {% load i18n %}
+    {% load l10n %}
     {% block title %} 
         AoD | Network of Assistance services
     {% endblock title %}
@@ -25,8 +26,8 @@
     
         {% block breadcrumb %}
         <ol class="breadcrumb">
-            <li><a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
-            <li><a href="{% url 'carer-landing-page' %}"  class="custom-inactive-breadcrumb">Network of Assistance Services</a></li>
+            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
+            <li><a href="{% url 'guided_assistance_landing_page' %}"  class="custom-inactive-breadcrumb">Network of Assistance Services</a></li>
             <li class="active"> Send a permission request</li>
         </ol>
         {% endblock breadcrumb %}
@@ -44,7 +45,7 @@
                         </div>
                         <div class="col-sm-4 col-lg-4 col-xs-12 col-md-4 input-group ">
                             <input type="email" class="form-control pull-right" id="consumer_email_account" value="" placeholder="enter email account" required>
-                            <a href="javascript:void(0)" class="input-group-addon btn btn-toolbar text-success" id="retrieve-users">
+                            <a href="javascript:void(0)" data-filter="{% url 'guided_assistance_consumer_search' %}" class="input-group-addon btn btn-toolbar text-success" id="retrieve-users">
                                 <span class="fa fa-search fa-fw"></span>
                             </a>
                         </div>
@@ -79,7 +80,7 @@
                     <div class="padding-top-20 padding-bottom-10" >
                         <div class="row col-sm-12 col-lg-12 col-md-12 col-lg-12 ">
                             <center>
-                                <a href="{% url 'carer-landing-page' %}" title="Back to carer dashboard" class="btn btn-default"> Back to guided assistance page</a>
+                                <a href="{% url 'guided_assistance_landing_page' %}" title="Back to carer dashboard" class="btn btn-default"> Back to guided assistance page</a>
                             </center>
                         </div>
                     </div>
@@ -107,7 +108,7 @@
 
             function declareInterestFormatter(value, row, index) {
                 return [
-                    '<button class="btn btn-link declare-interest-btn" data-user-id="' + row['id'] + '" data-name="' + row['name'] + '" data-lastname="' + row['lastname'] + '" title="Declare you interest">',
+                    '<button class="btn btn-link declare-interest-btn" data-resource="{% url 'guided_assistance_carer_request' %}" data-user-id="' + row['id'] + '" data-name="' + row['name'] + '" data-lastname="' + row['lastname'] + '" title="Declare you interest">',
                         '<i class="fa fa-send-o fa-lg text-success"></i>',
                     '</button>'
                 ].join('');

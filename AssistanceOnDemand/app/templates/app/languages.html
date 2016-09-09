@@ -1,0 +1,19 @@
+{% block languageList %}
+<li class="dropdown under-construction" aria-label="Language preference">
+<a href="#" class="dropdown-toggle" title="Set your language" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="btn navbar-btn disable-btn-box-shadow" role="button">
+        <span class="fa fa-flag" aria-label="Set your language"></span>
+        <span class="fa fa-caret-down fa-xs"></span>
+    </span>
+</a>  
+<ul class="dropdown-menu" role="menu" >
+    <li role="presentation" style="padding-left:20px"><label>Select a language:</label></li>
+    <li role="separator" class="divider"></li>
+    <li role="presentation" style="margin-left:2px">
+        {% for i in LANGUAGES %}
+        <a href="/{{i.0}}/"><img src="{{MEDIA_URL}}app/aod/flags/{{i.0}}.png" alt="" width="20"/> {{i.1}}</a>
+        {% endfor %}
+    </li>
+</ul>
+</li>
+{% endblock languageList %}

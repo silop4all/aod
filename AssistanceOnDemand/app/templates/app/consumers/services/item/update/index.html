@@ -1,6 +1,7 @@
 ﻿{% extends "app/base.html" %}
-
-{% block title %} AoD | Edit your service {% endblock title %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} AoD | {% trans 'Edit your service' %} {% endblock title %}
 
  {% load staticfiles %}
 
@@ -66,13 +67,13 @@
     {% block breadcrumb %}
     <ol class="breadcrumb">
         <li>
-            <a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb" title="Home page">
-            <span class="fa fa-home"></span> Home</a>
+            <a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="Home page">
+            <span class="fa fa-home"></span> {% trans 'Home' %} </a>
         </li>
         <li>
-            <a href="{% url 'provider-dashboard' %}" class="custom-inactive-breadcrumb" title="My collection">My collection</a>
+            <a href="{% url 'provider_dashboard' %}" class="custom-inactive-breadcrumb" title="My collection">{% trans 'My offerings' %}</a>
         </li>
-        <li><a href="{{ breadcrumb.services }}/{{ alias }}/" class="custom-inactive-breadcrumb">{{ service.title|title }}</a></li>
+        <li><a href="{% url 'public_service_view' alias %}" class="custom-inactive-breadcrumb">{{ service.title|title }}</a></li>
         <li class="active">Modification</li>
     </ol>
     {% endblock breadcrumb %}
@@ -87,32 +88,32 @@
                             <ul id="tabs" class="nav nav-pills nav-justified" data-tabs="tabs">
                                 <li role="presentation" class="active">
                                     <a href="#step1" data-toggle="tab">
-                                        <h5>Basic information</h5> 
+                                        <h5>{% trans 'Basic information'%}</h5> 
                                     </a>
                                 </li>
                                 <li role="presentation" class="disabled">
                                     <a href="#step2" data-toggle="tab">
-                                        <h5>Charging Policy</h5>
+                                        <h5>{% trans 'Charging Policy' %}</h5>
                                     </a>
                                 </li>
                                 <li role="presentation" class="disabled">
                                     <a href="#step3" data-toggle="tab" >
-                                        <h5>Usage</h5>
+                                        <h5>{% trans 'Usage' %}</h5>
                                     </a>
                                 </li>
                                 <li role="presentation" class="disabled">
                                     <a href="#step4" data-toggle="tab" >
-                                        <h5>Constraints</h5>
+                                        <h5>{% trans 'Constraints' %}</h5>
                                     </a>
                                 </li>
                                 <li role="presentation" class="disabled">
                                     <a href="#step5" data-toggle="tab" >
-                                        <h5>Technical Support</h5>
+                                        <h5>{% trans 'Technical Support' %}</h5>
                                     </a>
                                 </li>
                                 <li role="presentation" class="disabled">
                                     <a href="#step6" data-toggle="tab" >
-                                        <h5>Register</h5>
+                                        <h5>{% trans 'Register' %}</h5>
                                     </a>
                                 </li>
                             </ul>

@@ -59,6 +59,7 @@ input[type="checkbox"].input-validation-error {
 
 /* Disable the box shadow of a bootstrap button, if needed */
 .disable-btn-box-shadow {
+    color: #fff !important;
     -webkit-box-shadow: none!important;
     -moz-box-shadow: none!important;
     box-shadow: none!important;
@@ -72,7 +73,8 @@ input[type="checkbox"].input-validation-error {
 }
 
 .disable-btn-box-shadow:active:hover {
-    color: #000!important;
+    /*color: #000!important;*/
+    color: #fff;
     -webkit-box-shadow: none!important;
     -moz-box-shadow: none!important;
     box-shadow: none!important;

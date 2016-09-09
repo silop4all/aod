@@ -55,7 +55,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'GET',
-            url: "/api/v1/assistance/carers",
+            url: $(this).data('filter'),
             data: { email: $("#carer_email_account").val() },
             beforeSend: function (xhr, settings) {
                 $.ajaxSettings.beforeSend(xhr, settings);
@@ -63,6 +63,7 @@ $(document).ready(function () {
             headers: { "accept": "application/json" },
             contentType: 'application/json',
             success: function (response) {
+                console.log(response.results);
                 $('#invite-carers-table').bootstrapTable({ data: response.results });
                 $(".fixed-table-body").css("height", "auto");
             },
@@ -114,7 +115,7 @@ function submitPermissionRequest(user) {
 
     $.ajax({
         type: 'POST',
-        url: "/assistance/invitations",
+        url: $("#search-results").data('resource'), 
         data: JSON.stringify({ target: user.data('userId') }),
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);

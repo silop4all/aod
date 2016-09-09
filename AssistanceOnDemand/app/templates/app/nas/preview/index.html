@@ -1,7 +1,8 @@
 ﻿ {% extends "app/base.html" %}
-
+    {% load i18n %}
+    {% load l10n %}
     {% block title %} 
-        AoD | Assistance network preview
+        AoD | {% trans 'Assistance network preview' %}
     {% endblock title %}
 
     {% load staticfiles %}
@@ -26,22 +27,22 @@
         {% block breadcrumb %}
         <ol class="row breadcrumb" aria-label="breadcrumb">
             <li>
-                <a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb" title="Home page">
-                    <span class="fa fa-home"></span> Home
+                <a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="Home page">
+                    <span class="fa fa-home"></span> {% trans 'Home' %}
                 </a>
             </li>
             <li>
-                <a href="{% url 'carer-landing-page' %}"  class="custom-inactive-breadcrumb" title="Network of Assistance Services">
-                    Network of Assistance Services
+                <a href="{% url 'guided_assistance_landing_page' %}"  class="custom-inactive-breadcrumb" title="{% trans 'Network of Assistance Services' %}">
+                    {% trans 'Network of Assistance Services' %}
                 </a>
             </li>
-            <li class="active"> Preview</li>
+            <li class="active"> {% trans 'Preview' %}</li>
         </ol>
         {% endblock breadcrumb %}
 
 
         <main role="main" >
-            <div class="row service-list-box" style="min-height: 400px;">
+            <div class="row service-list-box" style="min-height: 100%;">
 
                 <div class="margin-bottom-10">
                     <h2 id="target-user" data-target-id="{{ consumer.id }}"><span class="fa fa-user fa-fw"></span> {{ consumer.info }}</h2>
@@ -52,21 +53,21 @@
                     <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
                         <li role="presentation" class="active">
                             <a href="#purchased" data-toggle="tab" class="swap-tab" title="List of purchased services">
-                                <h4 class="custom-tab-black-color">Purchased services</h4>
+                                <h4 class="custom-tab-black-color">{% trans 'Purchased services' %}</h4>
                             </a>
                         </li> 
                         <li role="presentation" >
                             <a href="#wishlist" data-toggle="tab" class="swap-tab" title="List of interesting services (wish list)">
-                                <h4 class="custom-tab-black-color">WishList (Interesting services)</h4> 
+                                <h4 class="custom-tab-black-color">{% trans 'WishList'%} {% trans '(Interesting services)' %}</h4> 
                             </a>
                         </li>
                     </ul>
-                    <div id="my-tab-content" class="tab-content padding-right-20 padding-left-20 margin-top-10" style="background-color:#f1f1f1; border-radius: 0 1px 5px 5px">                                      
+                    <div id="my-tab-content" class="tab-content padding-right-20 padding-left-20 padding-top-10" style="background-color:#fff; border-radius: 0 1px 5px 5px">                                      
                     
-                        <div class="tab-pane  active" id="purchased" style="color:black">
-                            <section class="margin-top-10">
-                                <div class="col-sm-5 col-md-5 col-lg-4 col-xs-12" style="border-right: 1px solid #d9d9d9">
-                                    <table id="purchased-services-table" class=""
+                        <div class="tab-pane  active" id="purchased" style="color:black;">
+                            <section class="row margin-top-10">
+                                <div class="col-sm-5 col-md-5 col-lg-4 col-xs-12" >
+                                    <table id="purchased-services-table" 
                                             data-classes="table table-hover"
                                             data-search="false"  
                                             data-show-toggle="false"
@@ -76,18 +77,18 @@
                                             data-click-to-select="true"
                                             data-toolbar="#carer-request"
                                             data-pagination="true"
-                                            data-page-list="[10, 25, 40, all]"
+                                            data-page-list="[10, 25, 40, 75]"
                                             data-sort-name="title" data-sort-order="asc">
                                         <thead class="custom-aod-table-thead">
                                         <tr>
                                             <th data-field="radio" data-radio="true" data-visible="true">#</th>
                                             <th data-field="id" class="hidden" data-visible="false"></th>
-                                            <th data-field="title" data-align="left" data-sortable="true">Service title</th>
+                                            <th data-field="title" data-align="left" data-sortable="true">{% trans 'Service title' %}</th>
                                         </tr>
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="col-sm-7 col-md-7 col-lg-8 col-xs-12 bought-service-view hidden">
+                                <div class="col-sm-7 col-md-7 col-lg-8 col-xs-12 bought-service-view hidden" style="background-color: whitesmoke">
 
                                     <!--generic info-->
                                     <div class="margin-top-10 padding-bottom-percent-1">
@@ -104,7 +105,7 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
-                                                        <h5>Categories:</h5>
+                                                        <h5>{% trans 'Categories' %}:</h5>
                                                     </div>
                                                     <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
                                                         <h5 id="bought-service-categories"></h5>
@@ -113,7 +114,7 @@
 
                                                 <div class="row" >
                                                     <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
-                                                        <h5>Price:</h5>
+                                                        <h5>{% trans 'Price'%}:</h5>
                                                     </div>
                                                     <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
                                                         <span id="bought-service-price"></span>
@@ -121,7 +122,7 @@
                                                 </div>
                                                 <div class="row" >
                                                     <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
-                                                        <h5>Charging:</h5>
+                                                        <h5>{% trans 'Charging'%}:</h5>
                                                     </div>
                                                     <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
                                                         <h5 id="bought-service-policy"></h5>
@@ -129,7 +130,7 @@
                                                 </div>
                                                 <div class="row" >
                                                      <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
-                                                        <h5>Type:</h5>
+                                                        <h5>{% trans 'Type' %}:</h5>
                                                     </div>
                                                     <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
                                                         <h5 id="bought-service-type"></h5>
@@ -137,7 +138,7 @@
                                                 </div>
                                                 <div class="row bought-machine-service hidden" >
                                                     <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
-                                                        <h5>Licences:</h5>
+                                                        <h5>{% trans 'Licences' %}:</h5>
                                                     </div>
                                                     <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
                                                         <h5 id="bought-service-license">None</h5>
@@ -150,29 +151,29 @@
                                     
                                     <!--description-->
                                     <div class=" margin-top-10 padding-top-20 info-block" style="clear:both" >
-                                        <h3><span class="fa fa-caret-square-o-right"></span> What the service offers</h3>
+                                        <h3><span class="fa fa-caret-square-o-right"></span> {% trans 'What the service offers' %}</h3>
                                         <p id="bought-service-descr" class="padding-left-5"><i class="fa fa-quote-left text-muted"></i><i class="fa fa-quote-right text-muted"></i></p>
                                     </div>
 
                                     <!--instructions-->
                                     <div class="margin-top-10 padding-bottom-percent-1 info-block">
-                                        <h3><span class="fa fa-book"></span> Instructions</h3>
+                                        <h3><span class="fa fa-book"></span> {% trans 'Instructions'%}</h3>
                                         <div class="margin-top-10 margin-bottom-10 padding-left-5">
-                                            <h4>Requirements</h4>
+                                            <h4>{% trans 'Requirements'%}</h4>
                                             <div id="bought-service-requirements">None</div>
                                         </div>
 
                                         <div class="margin-top-10 margin-bottom-10 bought-machine-service hidden padding-left-5">
-                                            <h4>How to install it</h4>
+                                            <h4>{% trans 'How to install it' %}</h4>
                                             <div id="bought-service-installation"></div>
                                         </div>
 
                                         <div class="margin-top-10 margin-bottom-10 padding-left-5">
-                                            <h4>How to exploit it</h4>
+                                            <h4>{% trans 'How to exploit it' %}</h4>
                                             <div id="bought-service-usage-guide"></div>
                                         </div>
                                         <div class="margin-top-10 margin-bottom-10 padding-left-5 hidden">
-                                            <h4>Useful link</h4>
+                                            <h4>{% trans 'Useful link' %}</h4>
                                             <div id="bought-service-link"></div>
                                         </div>
                                     </div>
@@ -181,30 +182,30 @@
                                     <div class="margin-top-10 padding-bottom-percent-1 info-block" >
                                         <h3><span class="fa fa-filter"></span> Restrictions</h3>
                                         <div class="margin-top-10 margin-bottom-10 padding-left-5">
-                                            <h4>Languages availability</h4>
-                                            <div id="bought-service-languages">All languages are supported</div>
+                                            <h4>{% trans 'Languages availability'%}</h4>
+                                            <div id="bought-service-languages">{% trans 'All languages are supported'%}</div>
                                         </div>
 
                                         <div class="margin-top-10 margin-bottom-10 hidden padding-left-5" id="bought-service-map">
-                                            <h4>Spatial coverage</h4>
+                                            <h4>{% trans 'Spatial coverage'%}</h4>
                                             <div id="map" style="height:30%; min-height:300px; overflow:visible!important; border:1px solid dimgray" ></div>
                                         </div>
                                         
                                         <div class="margin-top-10 margin-bottom-10 padding-left-5">
-                                            <h4>Other comment</h4>
+                                            <h4>{% trans 'Other comment'%}</h4>
                                             <div id="bought-service-other-constraints"></div>
                                         </div>
                                     </div>
 
                                     <!--configuration-->
                                     <div class="margin-top-10 padding-bottom-percent-1 hidden info-block">
-                                        <h3><span class="fa fa-bell-o"></span> Service configuration</h3>
+                                        <h3><span class="fa fa-bell-o"></span> {% trans 'Service configuration' %}</h3>
                                         <div id="bought-service-configuration" class="padding-left-5"></div>
                                     </div>
 
                                     <!--technical support-->
                                     <div class="margin-top-10 padding-bottom-percent-1 info-block" >
-                                        <h3><span class="fa fa-support"></span> Troubleshooting</h3>
+                                        <h3><span class="fa fa-support"></span> {% trans 'Troubleshooting'%}</h3>
                                         <div class="padding-left-5">
                                             <h4>Videos</h4>
                                             <div id="bought-service-support-videos"></div>
@@ -223,7 +224,7 @@
                         </div>
 
                         <div class="tab-pane fade" id="wishlist">
-                            <table id="selected-services-table"
+                            <table id="selected-services-table" 
                                     data-classes="table table-hover "
                                     data-search="true"  
                                     data-show-toggle="false"
@@ -231,7 +232,7 @@
                                     data-card-view="false"
                                     data-click-to-select="false"
                                     data-pagination="true"
-                                    data-page-list="10, 20, 30, all]"   
+                                    data-page-list="10, 20, 30, 50]" 
                                     data-sort-name="title" data-sort-order="asc">
                                 <thead class="custom-aod-table-thead">
                                 <tr>
@@ -244,12 +245,15 @@
                                 </tr>
                                 </thead>
                             </table>
+
                         </div>
+
+                        <br>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 margin-top-50" style="clear:both">
                     <center>
-                        <a href="{% url 'carer-landing-page' %}" class="btn btn-default" >Back to carer dashboard</a>
+                        <a href="{% url 'guided_assistance_landing_page' %}" class="btn btn-default" >Back to carer dashboard</a>
                     </center>
                 </div>
             </div>
@@ -287,10 +291,12 @@
                         'description': '{{ i.description }} ', 
                         'type': '{{ i.type }}', 
                         'price': '{{ i.price }}' +' ({{i.unit}})',
-                        'consumerId': '{{consumer.id}}'
+                        'consumerId': '{{consumer.id}}',
+                        'url': "{% url 'guided_assistance_temp_services' %}"
                     });
                     {% endfor %}
-                {% endif %}
+                {% endif %} 
+                console.log(selectedServices);
 
                 $('#selected-services-table').bootstrapTable({
                     data: selectedServices
@@ -302,7 +308,10 @@
                     {% for i in purchasedServices %}
                     purchasedServices.push({
                         'id': '{{ i.id }}', 
-                        'title' : '{{i.title}}'
+                        'title' : '{{i.title}}',
+                        'details_url': '{% url 'private_api:detailed_service' i.id %}',
+                        'config_url': '{% url 'private_api:assist_consumer_service_config' consumer.id i.id %}',
+                        'image_url': '{{MEDIA_URL}}app/services/images/'
                     });
                     {% endfor %}
                 {% endif %}

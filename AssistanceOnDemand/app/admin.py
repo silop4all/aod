@@ -1,5 +1,7 @@
 from django.contrib import admin
 from app.models import *
+from import_export.admin import ImportExportModelAdmin
+
 
 class ComponentsAdmin(admin.ModelAdmin):
     list_display = ['name', 'is_enabled']
@@ -202,3 +204,5 @@ class NasConfigurationAdmin(admin.ModelAdmin):
         return obj.nas.service.title
 
 admin.site.register(NasConfiguration, NasConfigurationAdmin)
+
+

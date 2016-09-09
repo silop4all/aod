@@ -1,4 +1,5 @@
-﻿
+﻿{% load i18n %}
+{% load l10n %}
     <article>
         <div class="preview-basic-info">
             {% if service.image.name %}
@@ -18,18 +19,18 @@
             <!-- description -->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Description</label>
+                    <label class="pull-right">{% trans 'Description' %}</label>
                 </div>
-                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="The description of this service">
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="{% trans 'The description of this service' %}">
                     <p id="description" style="text-align:justify">{{ service.description }}</p>
                 </div>
             </div>
             <!-- version -->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Version</label>
+                    <label class="pull-right">{% trans 'Version' %}</label>
                 </div>
-                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="The version of this service">
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="{% trans 'The version of this service' %}">
                     {% if service %}
                         <p id="version">{{ service.version|default:"Not available" }}</p>
                     {% endif %}
@@ -38,9 +39,9 @@
             <!-- license -->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Licenses</label>
+                    <label class="pull-right">{% trans 'Licenses' %}</label>
                 </div>
-                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="The license of this service">
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="{% trans 'The license of this service' %}">
                     {% if service %}
                         <p id="license">{{ service.license|default:"Not available" }}</p>
                     {% endif %}
@@ -49,15 +50,15 @@
             <!--types-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Type</label>
+                    <label class="pull-right">{% trans 'Type' %}</label>
                 </div>
                 <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="The type of this service">
                     <p id="type">
                         {% if service %}
                             {% if service.type == 'M'%}
-                                The operation of this service is machine-based.
+                                {% trans 'The operation of this service is machine-based' %}.
                             {% else %}
-                                The operation of this service is human-based.
+                                {% trans 'The operation of this service is human-based' %}.
                             {% endif %}
                         {% endif %}
                     </p>
@@ -66,13 +67,13 @@
             <!--Cost-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Price</label>
+                    <label class="pull-right">{% trans 'Price' %}</label>
                 </div>
-                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="The price and the charging policy of the service">
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="{% trans 'The price and the charging policy of the service' %}">
                     <p id="price">
                         {% if service %}
                             {% if service.charging_policy_id == 1 %}
-                                Free
+                                {% trans 'Free' %}
                             {% else %}
                                 {{ service.unit}} {{service.price}} ({{ service.charging_policy }})
                             {% endif %}
@@ -82,15 +83,15 @@
             </div>  
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Categories</label>
+                    <label class="pull-right">{% trans 'Categories' %}</label>
                 </div>
-                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Related categories">
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="{% trans 'Related categories' %}">
                     <p id="categories">
                         {% if categories %}
                             {% for i in categories %}
                                 <a href="#" class="btn btn-default btn-xs">{{i.title}}</a>
                             {% empty %}
-                                No related categories
+                                {% trans 'No related categories' %}
                             {% endfor %}
                         {% endif %}
                     </p>
@@ -99,9 +100,9 @@
             <!--requirements-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Requirements</label>
+                    <label class="pull-right">{% trans 'Requirements' %}</label>
                 </div>
-                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="The services requirements, if exist">
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="{% trans 'The services requirements, if exist' %}">
                     <p id="requirements" style="text-align: justify">
                         {% if service %}
                             {% if service.requirements %}
@@ -114,9 +115,9 @@
             <!--installation_guide-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Installation guidelines</label>
+                    <label class="pull-right">{% trans 'Installation guidelines' %}</label>
                 </div>
-                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="A set of installation instructions of the service for the users">
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="{% trans 'A set of installation instructions of the service for the users' %}">
                     <p id="installation_guide" style="text-align: justify">
                         {% if service %}
                             {{  service.installation_guide|default:"No instructions provided" }}
@@ -127,22 +128,24 @@
             <!--usage_guidelines-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Usage guidelines</label>
+                    <label class="pull-right">{% trans 'Usage guidelines' %}</label>
                 </div>
-                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="A brief set of usage instructions">
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="{% trans 'A brief set of usage instructions' %}">
                     <p id="usage_guidelines" style="text-align: justify">
                         {% if service %}
                             {{  service.usage_guidelines|default:"No instructions provided" }}
                         {% endif %}
                     </p>
                 </div>
-            </div> 
+            </div>
+
+
             <!--downloads-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Downloads</label>
+                    <label class="pull-right">{% trans 'Downloads' %}</label>
                 </div>
-                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Download the data that the service provides">
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="{% trans 'Download the data that the service provides' %}">
                     <p style="text-align: justify">
                         {% if service %}
                             {{ service.title}}_{{ service.software.name }} <a id="download_sw" data-link="{{ MEDIA_URL }}app/services/packages/{{service.software.name}}" rel="nofollow" download href="{{ MEDIA_URL }}app/services/packages/{{service.software.name}}"> <i class="fa fa-download"></i></a>
@@ -153,9 +156,9 @@
             <!--links-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Useful links</label>
+                    <label class="pull-right">{% trans 'Useful links' %}</label>
                 </div>
-                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Follow this link in order to use the service">
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="{% trans 'Follow this link in order to use the service' %}">
                     <p id="link" style="text-align: justify">
                         {% if service %}
                             Follow the link <a href="{{service.link}}" onclick="alert('to do'); return false;">{{  service.link|default:"http://localhost:8000" }}  <i class="fa fa-external-link fa-fw"></i></a>
@@ -166,15 +169,15 @@
             <!--accessibility-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Access</label>
+                    <label class="pull-right">{% trans 'Access' %}</label>
                 </div>
-                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="The accessibility rule for the service">
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="{% trans 'The accessibility rule for the service' %}">
                     <p id="accessibility">
                         {% if service %}
                             {% if service.availability %}
-                                Public - any registered user can purchase or use it
+                                {% trans 'Public - any registered user can purchase or use it' %}
                             {% else %}
-                                Private - only a group of users can purchase or use it
+                                {% trans 'Private - only a group of users can purchase or use it' %}
                             {% endif %}
                         {% endif %}
                     </p>
@@ -183,7 +186,7 @@
             <!--language_constraint-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Language availability</label>
+                    <label class="pull-right">{% trans 'Language availability' %}</label>
                 </div>
                 <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Any language constraints, if exist">
                     <p id="language_constraint">
@@ -200,7 +203,7 @@
             <!--location_constraint-->
             <div class="row">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Spatial coverage</label>
+                    <label class="pull-right">{% trans 'Spatial coverage' %}</label>
                 </div>
                 <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="Any location constraints, if exist">
                     <div id="location_constraint">
@@ -208,7 +211,7 @@
                             {% if service.location_constraint %}
                                 <div id="map" style="height:40%; min-height:250px; border:1px solid dimgray"></div>
                             {% else %}
-                                There is no spatial constraints
+                                {% trans 'There is no spatial constraints' %}
                             {% endif %}
                         {% endif %}
                     </div>
@@ -219,35 +222,35 @@
                 {% if service.constraints %}
                     <div class="row">
                        <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                            <label class="pull-right">Other constraints/comments</label>
+                            <label class="pull-right">{% trans 'Other constraints/comments' %}</label>
                         </div>
-                        <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="Any other constraints">
+                        <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="{% trans 'Any other constraints' %}">
                             <p id="constraints"> 
                             {{ service.constraints }}
                             </p>
                         </div>
                     </div> 
                 {% endif %}
-            {% endif %} 
+            {% endif %}
 
             <!--is_available-->
             <br />
             <div class="row hidden">
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                    <label class="pull-right">Availability</label>
+                    <label class="pull-right">{% trans 'Availability' %}</label>
                 </div>
-                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="The status of the service. Is it available for users search?">
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="{% trans 'The status of the service. Is it available for users search?' %}">
                     <p id="availability">
                         {% if service %}
                             {% if service.is_available %}
-                                The service is available for usage
+                                {% trans 'The service is available for usage' %}
                             {% else %}
-                                Not available
+                                {% trans 'Not available' %}
                             {% endif %}
                         {% endif %}
                     </p>
                 </div>
-            </div> 
+            </div>
         </div>
     </article>
 

@@ -77,7 +77,7 @@ function editFormatter(value, row, index) {
 
 function removeInterestFormatter(value, row, index) {
     return [
-        '<a class="btn btn-toolbar delete-interest" href="javascript:void(0)" data-placement="bottom" title="Cancel your assistance on ' + row['user_info'] + ' without the network removal" data-request-id="' + row['id'] + '">',
+        '<a class="btn btn-toolbar delete-interest" data-resource="' + row['resource'] + '" href="javascript:void(0)" data-placement="bottom" title="Cancel your assistance on ' + row['user_info'] + ' without the network removal" data-request-id="' + row['id'] + '">',
             '<span class="fa fa-remove fa-lg text-danger"></span> <span class="text-danger">Cancel</span>',
         '</a>'
     ].join('');
@@ -86,7 +86,7 @@ function removeInterestFormatter(value, row, index) {
 function setNetworkFormatter(value, row, index) {
     if (row['request_state'] == "True") {
         return [
-            '<a class="btn btn-link" href="/assistance/configuration/' + row['consumer_id'] + '" data-placement="bottom" title="Set up the network of assistance services of ' + row['user_info'] + '" data-request-id="' + row['consumer_id'] + '">',
+            '<a class="btn btn-link" href="' + row['setup_network'] + '" data-placement="bottom" title="Set up the network of assistance services of ' + row['user_info'] + '" data-request-id="' + row['consumer_id'] + '">',
                 '<span class="fa fa-play-circle fa-lg text-success"></span> <span class="text-success">Start</span>',
             '</a>'
         ].join('');
@@ -99,7 +99,7 @@ function setNetworkFormatter(value, row, index) {
 function previewNetworkFormatter(value, row, index) {
     if (row['request_state'] == "True") {
         return [
-            '<a class="btn btn-link" data-consumer-id="' + row['consumer_id'] + '" href="/assistance/services/preview/' + row['consumer_id'] + '" data-placement="bottom" title="Access the network of assistance services of ' + row['user_info'] + '">',
+            '<a class="btn btn-link" data-consumer-id="' + row['consumer_id'] + '" href="' + row['view_network'] + '" data-placement="bottom" title="Access the network of assistance services of ' + row['user_info'] + '">',
             '<i class="fa fa-search fa-lg text-info"></i> <span class="text-primary">View</span>',
             '</a>'
         ].join('');
@@ -129,11 +129,9 @@ function setRequestStateFormatter(value, row, index) {
 }
 
 function deleteNasRequest(element) {
-    var endpoint = "/assistance/requests/" + element.data('request-id');
-
     $.ajax({
         type: 'DELETE',
-        url: endpoint,
+        url: element.data('resource'),
         dataType: "json",
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);

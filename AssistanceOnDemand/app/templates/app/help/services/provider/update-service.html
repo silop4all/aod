@@ -1,5 +1,6 @@
 ﻿{% extends "app/help/base-help.html" %}
-
+{% load i18n %}
+{% load l10n %}
 {% block title %} AoD | {{ title }} {% endblock title %}
 
 {% block content %}
@@ -7,7 +8,8 @@
 
         {% block breadcrumb %}
         <ol class="breadcrumb">
-            <li><a href="/support"><i class="fa fa-support"></i> Help Center</a></li>
+            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+            <li><a href="{% url 'platform_technical_support_page' %}" class="custom-inactive-breadcrumb"> Help Center</a></li>
             <li class="active">Update service</li>
         </ol>
         {% endblock breadcrumb %}

@@ -88,13 +88,10 @@ $.ajaxSetup({
 function retrieveRegisteredUsers(email) {
 
     var loading = new AjaxView($('#search-results'));
-    // set endpoint
-    var endpoint = "/assistance/requests/search";
-
     loading.show();
     $.ajax({
-        type: 'get',
-        url: endpoint,
+        type: 'GET',
+        url: $("#retrieve-users").data('filter'),
         data: {email: email},
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
@@ -131,15 +128,14 @@ function submitPermissionRequest(user) {
     var loading = new AjaxView($('#search-results-table'));
 
     $.ajax({
-        type: 'post',
-        url: "/assistance/requests/send",
+        type: 'POST',
+        url: $(".declare-interest-btn").data('resource'),
         data: JSON.stringify({ consumer_id: user.data('userId') }),
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
         },
         contentType: 'application/json',
         success: function (response) {
-            //console.log(response);
             swal({
                 title: "Network of assistance services ",
                 text: "You need permission from " + receiver + " to setup his/her network of assistance services on behalf of him/her.\nYour request has been submitted.",

@@ -1,4 +1,5 @@
-
+{% load i18n %}
+{% load l10n %}
 
 <div class="platform-info-box">
     <!--header-->
@@ -211,6 +212,9 @@
         </div>                    
     </div>
     <!--buttons-->
+    {% if readonly %}
+
+    {% else %}
     <hr class="profile-hr">
     <div id="platform-toolbar">
         <div class="row" id="edit">
@@ -223,10 +227,11 @@
                 <button type="reset" class="btn btn-default btn-sm" id="reset-platform-btn" name="reset-platform-info" role="button"> Cancel</button>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 text-center">
-                <button type="button" class="btn btn-primary btn-sm" id="save-platform-btn" name="save-platform-btn" role="button"> Save</button>
+                <button type="button" class="btn btn-primary btn-sm" id="save-platform-btn" data-url="{% url 'platform_profile_update' object.id %}" name="save-platform-btn" role="button"> Save</button>
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
 
 

@@ -12,8 +12,9 @@ $(document).ready(function () {
     service = $("#title").data().serviceId;
     var url = window.location.pathname;
 
-    $("#delete_service").click(function () {
-        deleteService(url);
+    $("#delete_service").click(function (e) {
+        e.preventDefault();
+        deleteService($(this).attr('href'), $(this).data('redirect'));
     });
     $("#edit_service").click(function () {
         editService(url);
@@ -24,7 +25,7 @@ $(document).ready(function () {
     
     $.ajax({
         type: 'GET',
-        url: "/api/v1/services/" + service,
+        url: $("#info").data('resource'),
         headers: { "Accept": "application/json", "Content-Type": "application/json", },
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
@@ -50,11 +51,10 @@ $(document).ready(function () {
 }).on('click', '#stats_tab', function () {
     var loading = new AjaxView($("#stats_container"));
     loading.show();
-    var url = "/api/v1/services/" + service + "/reviews";
 
     $.ajax({
         type: 'GET',
-        url: url,
+        url: $(this).data('resource'),
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
         },
@@ -75,14 +75,13 @@ $(document).ready(function () {
 }).on('click', '#support_tab', function () {
     var loading = new AjaxView($("#support_container"));
     loading.show();
-    var url = "/api/v1/services/" + service + "/support";
 
     var videos = 'Service owner does not provide videos';
     var docs = 'Service owner does not provide further documents (pdf, office documents, images, etc..)';
     var skype = "magnitakis";
     $.ajax({
         type: 'GET',
-        url: url,
+        url: $(this).data('resource'),
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
         },
@@ -166,11 +165,10 @@ $(document).ready(function () {
 }).on('click', '#reviews_tab', function () {
     var loading = new AjaxView($("#reviews_container"));
     loading.show();
-    var url = "/api/v1/services/" + service + "/reviews";
 
     $.ajax({
         type: 'GET',
-        url: url,
+        url: $(this).data('resource'),
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
         },
@@ -276,7 +274,7 @@ function loadImageSlider() {
     var jssor_slider1 = new $JssorSlider$('slider', options);
 }
 
-function deleteService(url) {
+function deleteService(url, successURL) {
     var loading = new AjaxView($(".platform-info-box"));
     loading.show();
     $.ajax({
@@ -290,7 +288,7 @@ function deleteService(url) {
         success: function (response) {
             if (response.state === true) {
                 //window.location.href = response.redirect;
-                location.href = "/offerings";
+                location.href = successURL;
             }
         },
         error: function (response) {

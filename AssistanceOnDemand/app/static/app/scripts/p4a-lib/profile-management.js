@@ -142,13 +142,13 @@ $("#cover-img").on(function (event) {
 
     var form = $('#update-cover');
     var media = new FormData(form[0]);
-    var link = form.find('input#cover-img').data().link;
+    var link = form.find('input#cover-img').data('link');
 
     //var loading = new AjaxView(form);
     //loading.show();
     $.ajax({
         type: 'POST',
-        url: "/profile/media/1",
+        url: link, //"/profile/media/1",
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
         },
@@ -200,7 +200,7 @@ function updatePersonalInfo() {
     loading.show();
     $.ajax({
         type: 'POST',
-        url: "/profile/personal/" + $(".p4a-username").data().link,
+        url: $("#save-personal-btn").data('url'),
         dataType: "html",
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
@@ -239,7 +239,7 @@ function updateContactlInfo() {
     loading.show();
     $.ajax({
         type: 'POST',
-        url: "/profile/contact/" + $(".p4a-username").data().link,
+        url: $("#save-contact-btn").data('url'),
         dataType: "html",
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
@@ -287,7 +287,7 @@ function updatePlatformInfo() {
     loading.show();
     $.ajax({
         type: 'POST',
-        url: "/profile/platform/" + $(".p4a-username").data().link,
+        url: $("#save-platform-btn").data('url'),
         dataType: "html",
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
@@ -346,7 +346,7 @@ function loadCover(input) {
 
     var form = $('#update-cover');
     var media = new FormData(form[0]);
-    var link = form.find('input#cover-img').data().link;
+    var link = form.find('input#cover-img').data('link');
 
     $.ajax({
         type: 'POST',
@@ -389,7 +389,7 @@ function loadLogo(input) {
 
     var form = $('#profileForm');
     var media = new FormData(form[0]);
-    var link = form.find('input#logo').data().link;
+    var link = form.find('input#logo').data('link');
 
     $.ajax({
         type: 'POST',
@@ -540,8 +540,8 @@ function validateEmail(email, label) {
     var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     var valid = true;
     var message = "";
-    var unique = uniqueConstraint("/users/" +$(".p4a-username").attr("title"), email);
-        
+    var unique = uniqueConstraint($("#rg_email").data('url'), email);
+
     if (!regex.test(email.val())) {
         valid = false;
         message = "Invalid email";

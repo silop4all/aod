@@ -1,5 +1,6 @@
 ﻿{% extends "app/base.html" %}
-
+{% load i18n %}
+{% load l10n %}
 {% block title %} AoD | {{ title }} {% endblock title %}
 
 {% load staticfiles %}
@@ -51,10 +52,10 @@
         {% block breadcrumb %}
         <ol class="breadcrumb">
             {% if username %}
-                <li><a href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
-                <li class="active"> Help Center</li>
+                <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+                <li class="active"> {% trans 'Help Center' %}</li>
             {% else %}
-                <li class="active"><i class="fa fa-support"></i> Help Center</li>
+                <li class="active"><i class="fa fa-support"></i> {% trans 'Help Center' %}</li>
             {% endif %}
         </ol>
         {% endblock breadcrumb %}
@@ -65,7 +66,7 @@
 
             {% if not username %}
             <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom:2%;padding-top:2%">
-                <h5><i class="fa fa-info-circle fa-lg text-success"></i> Hi! Please <a href="/login/">Log in</a> for help with your account activities.</h5>
+                <h5><i class="fa fa-info-circle fa-lg text-success"></i> Hi! Please <a href="/login/">Log in</a> for help with your account activities or visit the <a href="https://wiki.gpii.net/w/AOD_-_Assistance_on_Demand_Infrastructure" target="_blank">AoD wiki</a> for more information.</h5>
             </div>
             {% endif %}
 
@@ -82,11 +83,11 @@
                         <div class="panel-body">
                             <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
                                 <ul class="list-group">
-                                    <li class="list-group-item"><a href="/support/create-new-account"> Create a new account</a></li>
-                                    <li class="list-group-item"><a href="/support/log-in-out" >Login and logout actions</a></li>
-                                    <li class="list-group-item"><a href="/support/forget-password" >Forget my password</a></li>
-                                    <li class="list-group-item"><a href="/support/update-profile-steps" >Update my profile</a></li>
-                                    <li class="list-group-item"><a href="/support/change-my-password" >Change my password</a></li>
+                                    <li class="list-group-item"><a href="{% url 'create_aod_account_guide' %}"> Create a new account</a></li>
+                                    <li class="list-group-item"><a href="{% url 'log_in_out_guide' %}" >Login and logout actions</a></li>
+                                    <li class="list-group-item"><a href="{% url 'reset_password_guide' %}" >Forget my password</a></li>
+                                    <li class="list-group-item"><a href="{% url 'update_profile_guide' %}" >Update my profile</a></li>
+                                    <li class="list-group-item"><a href="{% url 'change_password_guide' %}" >Change my password</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -104,9 +105,9 @@
                         <div class="panel-body">
                             <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
                                 <ul class="list-group">
-                                    <li class="list-group-item"><a href="/support/services/search"> Simple search for a service</a></li>
-                                    <li class="list-group-item"><a href="/support/services/enhanced-search"> Enhanced search for a service</a></li>
-                                    <li class="list-group-item"><a href="/support/services/payment"> Payment policies</a></li>
+                                    <li class="list-group-item"><a href="#"> Simple search for a service</a></li>
+                                    <li class="list-group-item"><a href="#"> Enhanced search for a service</a></li>
+                                    <li class="list-group-item"><a href="#"> Payment policies</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -124,9 +125,9 @@
                         <div class="panel-body">
                             <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
                                 <ul class="list-group">
-                                    <li class="list-group-item"><a href="/support/services/register"> Register a new service</a></li>
-                                    <li class="list-group-item"><a href="/support/services/update"> Update an existing service</a></li>
-                                    <li class="list-group-item"><a href="/support/services/delete"> Remove an existing service</a></li>
+                                    <li class="list-group-item"><a href="{% url 'register_service_guide' %}"> Register a new service</a></li>
+                                    <li class="list-group-item"><a href="{% url 'update_service_guide' %}"> Update an existing service</a></li>
+                                    <li class="list-group-item"><a href="{% url 'remove_service_guide' %}"> Remove an existing service</a></li>
                                 </ul>
                             </div>
                         </div>

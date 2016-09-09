@@ -1,4 +1,5 @@
-
+{% load i18n %}
+{% load l10n %}
 <div class="contact-info-box">
 
     <!--header-->
@@ -45,7 +46,7 @@
                 <span class="input-group-addon">
                     <span class="fa fa-envelope fa-fw" role="img"></span>
                 </span>
-                <input type="text" class="form-control" name="rg_email" id="rg_email" value="{{ object.email }}"  autocomplete="off" maxlength="255" placeholder="your email account" />
+                <input type="text" class="form-control" name="rg_email" id="rg_email" data-url="{% url 'validate_profile_field' object.id %}" value="{{ object.email }}"  autocomplete="off" maxlength="255" placeholder="your email account" />
             </div>
             <div class="col-xs-6 col-sm-3 col-md-3">
                 <label class="label control-label label-danger pull-left hidden" id="rg_email_info">No valid email account</label>
@@ -68,6 +69,9 @@
         </div> 
     </div>
     <!--edit area-->
+    {% if readonly %}
+
+    {% else %}
     <hr class="profile-hr">
     <div id="contact-toolbar">
         <div class="row" id="edit">
@@ -80,10 +84,11 @@
                 <button type="reset" class="btn btn-default btn-sm" id="reset-contact-btn" name="reset-contact-info" role="button"> Cancel</button>
             </div>
             <div class="col-md-6 col-sm-6 text-center">
-                <button type="button" class="btn btn-primary btn-sm" id="save-contact-btn" name="save-contact-info-btn" role="button"> Save</button>
+                <button type="button" class="btn btn-primary btn-sm" id="save-contact-btn" data-url="{% url 'contact_profile_update' object.id %}" name="save-contact-info-btn" role="button"> Save</button>
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
 
 

@@ -1,6 +1,8 @@
-﻿<!DOCTYPE html>
+﻿{% load analytical %}
+<!DOCTYPE html>
 <html lang="en">
     <head>
+        {% analytical_head_top %}
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="P4A AoD will adopt leading edge cloud computing technologies to efficiently 
@@ -11,8 +13,10 @@
                             impact in the marketplace.">
         <meta name="keywords" content="AoD, AssistanceOnDemand, assistance, Assistance On Demand, Prosperity4All, p4all, Singular Logic SA, Marketplace">
         <meta name="author" content="Singular Logic SA, Athanasoulis Panagiotis">
-    
-         {% load staticfiles %}
+        {% load i18n %}
+        {% load l10n %}
+        {% load staticfiles %}
+        {% get_current_language as LANGUAGE_CODE %}
 
         <!--<link rel="shortcut icon" type="image/png" href="{#% static 'app/logos/favicon/favicon.png' %#}" />-->
         <link rel="shortcut icon" type="image/png" href="{{ MEDIA_URL }}app/aod/favicon/favicon.png" />
@@ -23,12 +27,17 @@
         <link rel="stylesheet" type="text/css" href="{% static 'app/content/footer.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'app/content/multiselect-bootstrap/bootstrap-select.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
-    
+
         {% block extraCss %}
         {% endblock extraCss %}
+        {% analytical_head_bottom %}
     </head>
 
     <body style="background-color:rgba(223, 225, 225, 0.72); min-height: 100% !important">
+        {% analytical_body_top %}
+        {% load i18n %}
+        {% load l10n %}
+
         <!--Navigation bar-->
         {% block navbar %}
             {% include 'app/navbar-visitors.html' %}
@@ -69,7 +78,7 @@
                         <div class="col-xs-12 col-md-6 col-sm-6 col-lg-6 text-right">
                             <div class="input-append"> 
                                 <input type="email" id="subscription-form" class="form-control" placeholder="enter your email" style="background-color:rgba(46, 65, 57, 0.86) ;color:white; border-radius: 0px; border-color:transparent">
-                                <button type="submit" class="btn btn-default form-control-feedback">Send</button>
+                                <button type="submit" class="btn btn-default form-control-feedback">{% trans 'Send' %}</button>
                             </div>
                         </div>
                     </form>
@@ -98,7 +107,7 @@
                     <div class="col-sm-3 col-md-3 col-xs-12">
                         <span>Help center</span> 
                         <hr style="margin-top:1px">
-                        <a href="/support/forget-password" class="text-muted clearfix">Forget my password</a>
+                        <a href="/support/forget-password" class="text-muted clearfix">{% trans 'Forget my password' %}</a>
                         <a href="/support/update-profile-steps" class="text-muted clearfix">Update my profile</a>
                         <a href="/support/change-my-password" class="text-muted clearfix">Change my password</a>  
                     </div>
@@ -144,7 +153,8 @@
                 <div style="margin-top:10px">
                     <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" >
                         <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1 " >
-                            <img class="pull-right" alt="European commission logo" src="/media/app/aod/eu/eu.png"/>
+                            <!--img class="pull-right" alt="European commission logo" src="/media/app/aod/eu/eu.png"/>-->
+                            <img class="pull-right" alt="European commission logo" src="{{ MEDIA_URL }}app/aod/eu/eu.png"/>
                         </div>
                         <div class="col-lg-11 col-sm-11 col-md-11 col-xs-11 pull-left" >
                             <span class="pull-left">
@@ -171,15 +181,22 @@
         <script src="{% static 'app/scripts/respond.js' %}"></script>
         <script src="{% static 'app/scripts/p4a-lib/font.resize-1.0.js' %}"></script>
         <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
-    
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".nav.navbar-nav li.dropdown").mouseover(function () {
+                    $(this).addClass('open');
+                }).mouseleave(function () {
+                    $(this).removeClass('open');
+                });
+            })
+        </script>
 
 
         {% block scripts %}
-        <script type="text/javascript">
 
-        
-        </script>
         {% endblock scripts %}
         
+        {% analytical_body_bottom %}
     </body>
 </html>

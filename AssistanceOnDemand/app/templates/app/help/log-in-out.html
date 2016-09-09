@@ -1,5 +1,6 @@
 ﻿{% extends "app/help/base-help.html" %}
-
+{% load i18n %}
+{% load l10n %}
 {% block title %} AoD | {{ title }} {% endblock title %}
 
 {% block content %}
@@ -8,10 +9,10 @@
         {% block breadcrumb %}
         <ol class="breadcrumb">
             {% if username %}
-                <li><a href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="/support" class="custom-inactive-breadcrumb"> Help Center</a></li>
+                <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="{% url 'platform_technical_support_page' %}" class="custom-inactive-breadcrumb"> Help Center</a></li>
             {% else %}
-                <li><a href="/support" class="custom-inactive-breadcrumb"><i class="fa fa-support"></i> Help Center</a></li>
+                <li><a href="{% url 'platform_technical_support_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-support"></i> Help Center</a></li>
             {% endif %}
             <li class="active">Log in-out</li>
         </ol>

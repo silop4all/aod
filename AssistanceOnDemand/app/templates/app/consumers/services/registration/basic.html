@@ -1,4 +1,6 @@
-﻿<div class="service-basic-info-box">
+﻿{% load i18n %}
+{% load l10n %}
+<div class="service-basic-info-box">
     <div class="row form-group">
         <h4 class="col-lg-offset-1 col-xs-offset-1 col-md-offset-1 col-sm-offset-10 text-center"> Basic information</h4>
     </div>
@@ -72,7 +74,7 @@
             <span class="input-group-addon">
                 <span class="fa fa-info fa-fw" role="img"></span>
             </span>
-            <select class="selectpicker form-control"  name="srv_category" id="srv_category" data-size="6"  data-header="Clarify your service" data-live-search="true" role="list" title="-- Clarify your service --" data-selected-text-format="count>3" multiple>
+            <select class="selectpicker form-control"  name="srv_category" id="srv_category" data-size="6" data-resource="{% url 'private_api:categories_tree' %}" data-header="Clarify your service" data-live-search="true" role="list" title="-- Clarify your service --" data-selected-text-format="count>3" multiple>
                 <!--append categories-->
             </select>
         </div>

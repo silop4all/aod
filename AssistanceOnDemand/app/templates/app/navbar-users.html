@@ -1,6 +1,6 @@
     <!--User navbar-->
-  
-
+    {% load i18n %}
+    {% load l10n %}
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">      
             <div class="navbar-header">
@@ -9,7 +9,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="/" class="navbar-brand" title="Assistance On Demand Home page">
+                <a href="{% url 'home_page' %}" class="navbar-brand" title="Assistance On Demand - Home page">
                     <img src="{{ MEDIA_URL }}app/aod/logos/logo2.png" alt="Prosperity 4 All logo">
                     <strong> AoDemand</strong>
                 </a>
@@ -26,86 +26,82 @@
                     {% endblock preferencesTab %}
                     
 
+
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" title="Settings" data-toggle="dropdown" role="button" aria-expanded="true">  
+                        <a href="#" class="dropdown-toggle" title="Settings" data-toggle="dropdown" role="button" aria-expanded="true">
                             <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding"  id="settings_menu">
-                                <span class="fa fa-user fa-lg"></span>{% if username %} My account {% endif %}<span class="fa fa-chevron-down fa-xs fa-fw"></span>
+                                <span class="fa fa-user"></span>{% if username %} {% trans 'My account' %} {% endif %}<span class="fa fa-caret-down"></span>
                             </span>
                         </a>   
                         <ul class="dropdown-menu under-construction" role="menu" aria-labelledby="settings_menu">
                             <li role="presentation">
-                                <a href="{% url 'provider-dashboard' %}" title="Show the services you provide on AoD" role="menuitem" tabindex="-1">
-                                    <span class="fa fa-archive fa-fw"></span> My offerings
+                                <a href="{% url 'provider_dashboard' %}" title="Show the services you provide on AoD" role="menuitem" tabindex="-1">
+                                    <span class="fa fa-archive fa-fw"></span> {% trans 'My offerings' %}
                                 </a>
                             </li>
                             <li role="presentation">
-                                <a href="{% url 'consumer-dashboard' %}" title="Show the services you have purchased" role="menuitem" tabindex="-1">
-                                    <span class="fa fa-area-chart fa-fw"></span> My collection
+                                <a href="{% url 'consumer_dashboard' %}" title="Show the services you have purchased" role="menuitem" tabindex="-1">
+                                    <span class="fa fa-area-chart fa-fw"></span> {% trans 'My collection' %}
                                 </a>
                             </li>
+
+                            <li>
+                                <a href="{% url 'cart_preview' %}" title="{% trans 'Shopping card' %}" class="under-construction">
+                                    <span class="fa fa-shopping-cart"></span> My Cart
+                                    {% if links.cart_items > 0 %}
+                                        <span class="label label-success">{{ links.cart_items }}</span>
+                                    {% endif %}
+                                </a>
+                            </li>
+
                             <li role="presentation">
-                                <a href="{{ links.profile }}" title="Manage your account" role="menuitem" tabindex="-1">
-                                    <span class="fa fa-user fa-fw"></span> Account settings
+                                <a href="{% url 'user_profile' username %}" title="Manage your account" role="menuitem" tabindex="-1">
+                                    <span class="fa fa-user fa-fw"></span> {% trans 'Account settings' %}
+                                </a>
+                            </li>
+
+                            <li >
+                                <a href="#" title="notification" class="under-construction">
+                                    <span class="fa fa-bell-o fa-fw"></span> My Notifications
                                 </a>
                             </li>
                         </ul>
                     </li>
 
                     <!--link to NAS component -->
-                    {% if links.is_nas_active %}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" title="Settings" data-toggle="dropdown" role="button" aria-expanded="true">  
-                            <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding"  id="guided_services">
-                               <span class="fa fa-sitemap fa-lg"></span> Services network <span class="fa fa-chevron-down fa-xs fa-fw"></span>
-                            </span>
-                        </a> 
-                        <ul class="dropdown-menu under-construction" role="menu" aria-labelledby="guided_services">
-                            <li role="presentation">
-                                <a href="{% url 'carer-landing-page' %}" title="Manage the requests related to network of assistance services" role="menuitem" tabindex="-1">
-                                    <span class="fa fa-inbox fa-fw"></span> Guided assistance
-                                </a>
-                            </li>
-    
-                        </ul>
-                    </li>
-                    {% endif %}
+                    {% block guidedAssistanceList %}
+                        {% if links.is_nas_active %}
+                            {% include "app/guidedAssistanceLinks.html" %}
+                        {% endif %}
+                    {% endblock guidedAssistanceList %}
+
 
                     <li>
-                        <a href="{{ links.social_network }}" target="_blank" title="Social Network" class="under-construction">
+                        <a href="{{ links.social_network }}" target="_blank" title="{% trans 'Social Network' %}" class="under-construction">
                             <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button">
-                                <span class="fa fa-cloud fa-lg"></span> Social Network 
+                                <span class="fa fa-cloud"></span> {% trans 'Social Network' %}
                             </span>
                         </a>
                     </li>
 
                     <li>
-                        <a href="{%url 'help' %}"  title="Help" class="under-construction">
+                        <a href="{% url 'platform_technical_support_page' %}"  title="{% trans 'Help' %}" class="under-construction">
                             <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button">
-                                <span class="fa fa-question-circle fa-lg"></span> Help 
+                                <span class="fa fa-question-circle"></span> {% trans 'Help' %}
                             </span>
                         </a>
                     </li>
+
+
+
+                    {% block languageList %}
+                        {% include "app/languages.html" %}
+                    {% endblock languageList %}
+
                     <li>
-                        <a href="{% url 'cart' %}" title="Shopping card" class="under-construction">
-                            <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button" style="/*margin-top: 12px*/">
-                                <span class="fa fa-shopping-cart fa-lg"></span> <!--Cart-->
-                                {% if links.cart_items > 0 %}
-                                    <span class="label label-success">{{ links.cart_items }}</span>
-                                {% endif %}
-                            </span>
-                        </a>
-                    </li>
-                    <li >
-                        <a href="#" title="notification" class="under-construction">
-                             <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button" style="/*margin-top: 12px*/">
-                                  <span class="fa fa-bell-o fa-lg"></span> <!--Notifications-->
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'logout' %}" title="Log out">
+                        <a href="{% url 'logout' %}" title="{% trans 'Log out' %}">
                             <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button">
-                                <span class="fa fa-power-off fa-lg"></span> Log out
+                                <span class="fa fa-power-off"></span> {% trans 'Log out' %}
                             </span>
                         </a>
                     </li>

@@ -1,5 +1,6 @@
 {% extends "app/base.html" %}
-
+    {% load i18n %}
+    {% load l10n %}
     {% block title %} 
         AoD | {{ title }}
     {% endblock title %}
@@ -26,10 +27,10 @@
         {% block breadcrumb %}
         <ol class="breadcrumb" aria-label="breadcrumb">
             <li>
-                <a href="{% url 'home-page' %}" class="custom-inactive-breadcrumb" title="Home page"><span class="fa fa-home"></span> Home</a>
+                <a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="Home page"><span class="fa fa-home"></span> {% trans 'Home' %}</a>
             </li>
             <li>
-                <a href="{% url 'carer-landing-page' %}"  class="custom-inactive-breadcrumb" title="Guided assistance">Network of Assistance Services</a>
+                <a href="{% url 'guided_assistance_landing_page' %}"  class="custom-inactive-breadcrumb" title="Guided assistance">{% trans 'Network of Assistance Services' %}</a>
             </li>
             <li class="active"> {{ title }}</li>
         </ol>
@@ -47,7 +48,7 @@
                         </div>
                         <div class="col-sm-4 col-lg-4 col-xs-12 col-md-4 input-group ">
                             <input type="email" class="form-control pull-right" id="carer_email_account" value="" placeholder="enter email account" required>
-                            <a href="#" role="button" class="input-group-addon btn btn-toolbar text-success" id="retrieve-carers">
+                            <a href="#" role="button" data-filter="{% url 'private_api:carers_list' %}" class="input-group-addon btn btn-toolbar text-success" id="retrieve-carers">
                                 <span class="fa fa-search fa-fw"></span>
                             </a>
                         </div>
@@ -55,7 +56,7 @@
                     </div>
                    
                     <!-- search results -->
-                    <div  id="search-results">
+                    <div  id="search-results" data-resource="{% url 'guided_assistance_consumer_invitation' %}">
                         <table id="invite-carers-table" 
                             data-classes="table table-hover"
                             data-search="false"  
@@ -81,7 +82,7 @@
                     <div class="padding-top-20 padding-bottom-10" >
                         <div class="row col-sm-12 col-lg-12 col-md-12 col-lg-12 ">
                             <center>
-                                <a href="{% url 'carer-landing-page' %}" title="Back to carer dashboard" class="btn btn-default"> Back to guided assistance</a>
+                                <a href="{% url 'guided_assistance_landing_page' %}" title="Back to carer dashboard" class="btn btn-default"> Back to guided assistance</a>
                             </center>
                         </div>
                     </div>

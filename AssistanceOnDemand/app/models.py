@@ -201,7 +201,7 @@ class Services(models.Model):
     owner = models.ForeignKey(Providers)
     price = models.FloatField(blank=False, null=True)   # null cost means FREE??
     unit = models.TextField(max_length=10, null=False, blank=False)
-    requirements = models.TextField(max_length=500, null=False, blank=False)        
+    requirements = models.TextField(max_length=500, null=False, blank=False)
     installation_guide = models.TextField(null=True, blank=False)
     software = models.FileField(upload_to='app/services/packages', blank=True, null=False)
     link = models.CharField(max_length=100, blank=False, null=True)
@@ -375,3 +375,17 @@ class NasConfiguration(models.Model):
 
 
 
+class Tokens(models.Model):
+    """
+    The access tokens in case of IAM/OPENAM usage
+    """
+
+    user            = models.ForeignKey(Users)
+    access_token    = models.CharField(max_length=512, null=False, blank=False)
+    refresh_token   = models.CharField(max_length=512, null=False, blank=False)
+    expires_in      = models.IntegerField(max_length=8, null=False, blank=False)
+    scope           = models.CharField(max_length=64, null=False, blank=False)
+    token_type      = models.CharField(max_length=16, null=False, blank=False)
+    
+    class Meta:
+        db_table = "app_oauth2_tokens"

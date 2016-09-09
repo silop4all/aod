@@ -29,7 +29,13 @@ var GuidedWizard = GuidedWizard || (function () {
     var badgeElement            = $(".total-services");
     var goNasBtn                = $("#return-nas-page");
 
-
+    var endpoints  = {
+        'load_services': null,
+        'load_temporary_setup': null,
+        'load_services_via_keywords': null,
+        'submit_selected_services': null,
+        'service_consumer_configuration': null
+    }
 
     var panelSettings = {
         "active": {
@@ -52,7 +58,7 @@ var GuidedWizard = GuidedWizard || (function () {
         'label_no':             "NO"
     };
 
-    loadServicesList
+    
     //private methods
     var yieldProgress = function (current, total) {
         progress = Math.ceil(current * 100 / total);
@@ -130,19 +136,16 @@ var GuidedWizard = GuidedWizard || (function () {
     var loadServicesList = function loadServicesList(categoriesList, elem) {
         var loading = new AjaxView($('#current-step-services'));
         var payload = { "categories": categoriesList, 'consumer_id': consumerID };
-        
-        console.log(categoriesList);
 
         $.ajax({
             type: 'POST',
-            url: "/assistance/services/search",
+            url: endpoints['load_services'],
             data: JSON.stringify(payload),
             beforeSend: function (xhr, settings) {
                 $.ajaxSettings.beforeSend(xhr, settings);
             },
             contentType: 'application/json',
-            success: function (response) {
-                
+            success: function (response) {                
                 $('.finalize-services-table').bootstrapTable('destroy');
                 $('.services-table').bootstrapTable('destroy');
                 $('.services-table').bootstrapTable({ data: response["servicesList"] });
@@ -150,70 +153,6 @@ var GuidedWizard = GuidedWizard || (function () {
 
                 $("button").tooltip({ trigger: "hover" });
                 $("span").tooltip({ trigger: "hover" });
-
-                //var tbody = "";
-                //if (response["servicesList"].length > 0) {
-                    //for (var i in response["servicesList"]) {
-                    //    break;
-
-                    //    var title = '<span class="cursor-pointer service-details"  data-service-id="' + response["servicesList"][i].id + '">' + response["servicesList"][i].title + ' <span class="fa fa-external-link text-primary preview-service"></span></span>';
-                    //    var type = (response["servicesList"][i].type == 'H') ? translation["label_human_based"] : translation["label_machine_based"];
-                    //    var price = (response["servicesList"][i].price == 0) ? translation['label_cost_free'] : response["servicesList"][i].price + ' (' + response["servicesList"][i].unit + ')';
-
-                    //    var location = '';
-                    //    if (response["servicesList"][i].location_constraint == 1) {
-                    //        location = "<button class='btn btn-xs btn-default nas-coordinates-btn' data-latitude='" + response["servicesList"][i].latitude + "'  data-longitude='" + response["servicesList"][i].longitude + "' title='Click here to preview the map'><span class='fa fa-map-marker fa-lg text-danger'></span> " + translation['label_yes'] + "</button>";
-                    //    }
-                    //    else {
-                    //        location = "<span class='fa fa-globe fa-lg text-info' title='No location limitations'></span> " + translation['label_no'];
-                    //    }
-
-                    //    var selected = '';
-                    //    if ((response['servicesList'][i].purchased == false)) {
-                    //        if (response['servicesList'][i].temp_selected == false) {
-                    //            selected = [
-                    //                '<button class="btn btn-success btn-xs nas-select-btn" data-service-id="' + response["servicesList"][i].id + '">',
-                    //                '<i class="fa fa-check"></i> <span data-placement="right" title="Denote service as interesting">Interesting</span>',
-                    //                '</button>',
-                    //            ].join('');
-                    //        }
-                    //        else {
-                    //            selected = [
-                    //                '<button class="btn btn-danger btn-xs nas-select-btn" data-service-id="' + response["servicesList"][i].id + '">',
-                    //                '<i class="fa fa-remove"></i> <span data-placement="right" title="Not interesting service">Cancel it</span>',
-                    //                '</button>'
-                    //            ].join('');
-                    //        }
-                    //    }
-                    //    else {
-                    //        selected = [
-                    //            '<button class="btn btn-info btn-xs disabled" data-service-id="' + response["servicesList"][i].id + '">',
-                    //            '<i class="fa fa-shopping-bag"></i> <span data-placement="right" title="Purchased service">Purchased</span>',
-                    //            '</button>'
-                    //        ].join('');
-                    //    }
-
-                    //    tbody += [
-                    //        '<tr>',
-                    //            '<td class="custom-aod-table-td" >' + title + '</td>',
-                    //            '<td class="custom-aod-table-td text-center">' + type + '</td>',
-                    //            '<td class="custom-aod-table-td text-center">' + location + '</td>',
-                    //            '<td class="custom-aod-table-td text-center">' + price + '</td>',
-                    //            '<td class="text-center custom-aod-table-td">' + selected + '</td>',
-                    //        '</tr>'
-                    //    ].join('');
-                //}
-                //}
-                //else {
-                //    tbody = [
-                //        '<tr>',
-                //            '<td colspan="4" class="text-center custom-aod-table-td">No services included in the selected categories!<td>',
-                //        '</tr>'
-                //    ].join('');
-
-                //}
-                // append data on tbody element
-                //$("#current-step-services").empty().append(tbody);
 
                 if (elem) {
                     elem.parent().find(".total-services").text(response["servicesList"].length);
@@ -255,7 +194,7 @@ var GuidedWizard = GuidedWizard || (function () {
 
         $.ajax({
             type: 'POST',
-            url: "/assistance/services/temporal-setup",
+            url: endpoints['load_temporary_setup'],
             data: JSON.stringify(payload),
             beforeSend: function (xhr, settings) {
                 $.ajaxSettings.beforeSend(xhr, settings);
@@ -285,7 +224,7 @@ var GuidedWizard = GuidedWizard || (function () {
 
         $.ajax({
             type: 'DELETE',
-            url: "/assistance/services/temporal-setup",
+            url: endpoints['load_temporary_setup'],
             data: JSON.stringify(payload),
             beforeSend: function (xhr, settings) {
                 $.ajaxSettings.beforeSend(xhr, settings);
@@ -314,13 +253,17 @@ var GuidedWizard = GuidedWizard || (function () {
         var loading = new AjaxView($('#current-step-services'));
 
         $.ajax({
-            type: 'get',
-            url: "/assistance/services/temporal-setup?consumer_id=" + consumerID,
+            type: 'GET',
+            url: endpoints['load_temporary_setup'],
+            data: {consumer_id: consumerID},
             beforeSend: function (xhr, settings) {
                 $.ajaxSettings.beforeSend(xhr, settings);
             },
             contentType: 'application/json',
             success: function (response) {
+
+                console.log(response);
+
                 var tbody = "";
                 var catAlert = 1;
 
@@ -335,7 +278,7 @@ var GuidedWizard = GuidedWizard || (function () {
 
                                 if (response['servicesList'][i].temp_selected == false) {
                                     selected += [
-                                        '<button class="btn btn-success btn-xs nas-submit-service" data-service-id="' + response["servicesList"][i]['services'][s].id + '">',
+                                        '<button class="btn btn-success btn-xs nas-submit-service" data-action="" data-resource="" data-service-id="' + response["servicesList"][i]['services'][s].id + '">',
                                         '<i class="fa fa-check"></i> ',
                                         '<span> Purchase</span>',
                                         '</button>'
@@ -343,7 +286,7 @@ var GuidedWizard = GuidedWizard || (function () {
                                 }
                                 else {
                                     selected += [
-                                        '<button class="btn btn-info btn-xs nas-submit-service" data-service-id="' + response["servicesList"][i]['services'][s].id + '">',
+                                        '<button class="btn btn-info btn-xs nas-submit-service" data-action="' + response["servicesList"][i]['services'][s].submit_service_url + '" data-resource="' + response["servicesList"][i]['services'][s].service_config_url + '" data-service-id="' + response["servicesList"][i]['services'][s].id + '">',
                                             '<span data-placement="bottom" title="Purchase the ' + response["servicesList"][i]['services'][s].title  + ' service"> Purchase</span>',
                                         '</button>'
                                     ].join('');
@@ -358,7 +301,7 @@ var GuidedWizard = GuidedWizard || (function () {
                                         '<span class="text-muted preview-service"></span>',
                                     '</td>',
                                     '<td class="custom-aod-table-td text-center">',
-                                        '<button class="btn btn-link nas-config-btn" data-service-id="' + response["servicesList"][i]['services'][s].id + '" data-placement="bottom" title="Access the service configuration\n that provider suggests">',
+                                        '<button class="btn btn-link nas-config-btn" data-url="' + response["servicesList"][i]['services'][s].details_url + '" data-service-id="' + response["servicesList"][i]['services'][s].id + '" data-placement="bottom" title="Access the service configuration\n that provider suggests">',
                                         '<span class="fa fa-cogs fa-lg"></span></button>',
                                     '</td>',
                                     '<td class="text-center custom-aod-table-td">' + selected + '</td>',
@@ -428,62 +371,23 @@ var GuidedWizard = GuidedWizard || (function () {
         $('.search-services-table').bootstrapTable('destroy');
 
         $.ajax({
-            type: 'post',
-            url: "/assistance/services/search/keywords",
+            type: 'POST',
+            url: endpoints['load_services_via_keywords'],
             data: JSON.stringify({ keywords: input, consumerID: consumerID }),
             async: false,
             beforeSend: function (xhr, settings) {
                 $.ajaxSettings.beforeSend(xhr, settings);
             },
             contentType: 'application/json',
-            success: function (response) {               
+            success: function (response) {
                 $('.search-services-table').bootstrapTable({ data: response["data"] });
                 $('.fixed-table-body').css('height', 'auto');
                 $("#results-number").text(response["data"].length);
                 $("button").tooltip({ trigger: "hover" });
                 $("span").tooltip({ trigger: "hover" });
-                
-                //var tbody = "";
-                //$("#results-number").text(response["data"].length);
-
-                //if (response["data"].length > 0) {
-                //    for (var i in response["data"]) {
-                //        var type = (response["data"][i]['fields'].type == "H") ? "Human-based" : "Machine-based";
-                //        var location = (response["data"][i]['fields'].location_constraint == 1) ? "<button class='btn btn-link nas-coordinates-btn'><span class='fa fa-globe fa-lg text-info'></span></button>" : "-";
-                //        var price = (response["data"][i]['fields'].price == 0) ? 'FREE' : response["data"][i]['fields'].price + ' (' + response["data"][i]['fields'].unit + ')';
-
-                //        var selected = [
-                //            '<button class="btn btn-success btn-xs nas-submit-service" data-service-id="' + response["data"][i].pk + '">',
-                //            '<span> Purchase service</span>',
-                //            '</button>'
-                //        ].join('');
-
-                //        tbody += [
-                //            '<tr>',
-                //            '<td class="custom-aod-table-td">' + response["data"][i]['fields'].title + ' <span class="fa fa-external-link text-muted preview-service"></span></td>',
-                //            '<td class="custom-aod-table-td">' + type + '</td>',
-                //            '<td class="custom-aod-table-td">' + location + '</td>',
-                //            '<td class="custom-aod-table-td">' + price + '</td>',
-                //            '<td class="custom-aod-table-td text-center"><button class="btn btn-link nas-config-btn" data-service-id="' + response["data"][i].pk + '"><span class="fa fa-cog fa-lg"></span></button></td>',
-                //            '<td class="text-center custom-aod-table-td">' + selected + '</td>',
-                //            '</tr>'
-                //        ].join('');
-                //    }
-                //}
-                //else {
-                //    tbody = [
-                //        '<tr>',
-                //            '<td colspan="5" class="text-center custom-aod-table-td">No services selected. Navigate in the previous steps to select some services!<td>',
-                //        '</tr>'
-                //    ].join('');
-                //}
-
-                //// append data on tbody element
-                //$("#keywords-finalize-services-body").empty().append(tbody);
-
             },
             error: function (response) {
-                //console.log(response);
+                console.error("Error in services' retrieval");
             },
             complete: function () {
                 loading.hide();
@@ -513,7 +417,7 @@ var GuidedWizard = GuidedWizard || (function () {
 
         $.ajax({
             type: 'POST',
-            url: "/assistance/services/submit",
+            url : endpoints['submit_selected_services'],
             beforeSend: function (xhr, settings) {
                 $.ajaxSettings.beforeSend(xhr, settings);
             },
@@ -541,11 +445,10 @@ var GuidedWizard = GuidedWizard || (function () {
         return id;
     }
 
-    var retrieveEditableConfiguration = function retrieveEditableConfiguration(serviceID) {
+    var retrieveEditableConfiguration = function retrieveEditableConfiguration(url) {
         $.ajax({
             type: 'GET',
-            //url: "/assistance/services/" + serviceID + "/configuration",
-            url: "/api/v1/services/" + serviceID + "/configuration",
+            url: url,
             beforeSend: function (xhr, settings) {
                 $.ajaxSettings.beforeSend(xhr, settings);
             },
@@ -584,11 +487,10 @@ var GuidedWizard = GuidedWizard || (function () {
         });
     }
 
-    var retrieveConfiguration = function retrieveConfiguration(serviceID) {
+    var retrieveConfiguration = function retrieveConfiguration(url) {
         $.ajax({
             type: 'GET',
-            //url: "/assistance/services/" + serviceID + "/configuration",
-            url: "/api/v1/services/" + serviceID + "/details",
+            url: url,
             beforeSend: function (xhr, settings) {
                 $.ajaxSettings.beforeSend(xhr, settings);
             },
@@ -689,6 +591,13 @@ var GuidedWizard = GuidedWizard || (function () {
 
     // public methods
     return {
+        setURLs: function (loadServicesURL, loadTemporaryServicesURL, searchServicesByKwdsURL, submitSelectedServicesURL, serviceConsumerConfigurationURL) {
+            endpoints['load_services']                  = loadServicesURL;
+            endpoints['load_temporary_setup']           = loadTemporaryServicesURL;
+            endpoints['load_services_via_keywords']     = searchServicesByKwdsURL;
+            endpoints['submit_selected_services']       = submitSelectedServicesURL;
+            endpoints['service_consumer_configuration'] = serviceConsumerConfigurationURL;
+        },
         customize:  function (activeColor, activeBgColor, activePanel, inactivePanel) {
 
             $("#accordion").find($('.panel')).removeClass('panel-success').removeClass('panel-custom-success');
@@ -856,12 +765,12 @@ var GuidedWizard = GuidedWizard || (function () {
         },
         addWishList: pushTemporalService,
         removeWishList: popTemporalService,
-        purchase:     function (element) {
+        purchase: function (element) {
             // Consumer purchases a service (write configuration and relationship)
             var serviceId = element.data('serviceId');
             var title = "Customize the service configuration";
             var content = '<div id="update-configuration"></div>';
-            retrieveEditableConfiguration(serviceId);
+            retrieveEditableConfiguration(element.data('resource'));
             var nasID = submitSelectedServices(serviceId);
 
             modalAction(title, content, "Proceed to service purchase", function (feedback) {
@@ -875,7 +784,7 @@ var GuidedWizard = GuidedWizard || (function () {
                         };
                         $.ajax({
                             type: 'POST',
-                            url: "/api/v1/assistance/configuration",
+                            url: endpoints['service_consumer_configuration'],
                             beforeSend: function (xhr, settings) {
                                 $.ajaxSettings.beforeSend(xhr, settings);
                             },
@@ -892,7 +801,7 @@ var GuidedWizard = GuidedWizard || (function () {
         },
         viewConfig: function (element) {
             // Load and preview service configuration
-            var serviceId = element.data('serviceId');
+            var url = element.data('url');
             var title = "Service configuration that provider offers";
             var content = [
                 '<div class="row">',
@@ -910,7 +819,7 @@ var GuidedWizard = GuidedWizard || (function () {
                 '</div>'
             ].join('');
 
-            retrieveConfiguration(serviceId);
+            retrieveConfiguration(url);
 
             modalAction(title, content, "Continue", function () { });
         },

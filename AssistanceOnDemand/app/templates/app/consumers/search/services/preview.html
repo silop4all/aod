@@ -1,4 +1,6 @@
 ﻿{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
 
 {% block title %} AoD | {{ service.title }} {% endblock title %}
 
@@ -77,13 +79,13 @@
             event.preventDefault();
             $.ajax({
                 type: 'POST',
-                url: "/cart/update/"+$(this).data().id,
+                url: $(this).data('url'),
                 beforeSend: function (xhr, settings) {
                     $.ajaxSettings.beforeSend(xhr, settings);
                 },
                 success: function (response) {
                     if (response.state === 1) {
-                        window.location.href = "/cart/preview";
+                        window.location.href = "{% url 'cart_preview'%}";
                     }
                     else {
                         alert("An error occured");
@@ -114,9 +116,8 @@
 
         {% block breadcrumb %}
         <ol class="breadcrumb">
-            <li><a href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> Home</a></li>
-            <li><a href="{{ breadcrumb.home }}" class="custom-inactive-breadcrumb">Search</a></li>
-            <li class="active">{{ service.title| title }}</li>
+            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+            <li class="active">{% trans 'Search' %}: {{ service.title| title }}</li>
         </ol>
         {% endblock breadcrumb %}
 
@@ -137,10 +138,10 @@
                             <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-3"></span>
                             <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-4"></span>
                             <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-5"></span>
-                            <span><abbr title="The count of comments for this service and its average score"> {{ reviews|default:'0' }} reviews</abbr></span>
+                            <span><abbr title="{% trans 'The count of comments for this service and its average score' %}"> {{ reviews|default:'0' }} {% trans 'reviews' %}</abbr></span>
                         </div>
                         <div class="col-lg-3 col-xs-12 col-md-3 col-sm-3 pull-right">
-                            <i class="fa fa-comments-o fa-lg text-primary"></i> {% if service.comments %} {{ service.comments| default_if_none:'0' }} {% else %} 0 {% endif%} comments
+                            <i class="fa fa-comments-o fa-lg text-primary"></i> {% if service.comments %} {{ service.comments| default_if_none:'0' }} {% else %} 0 {% endif%} {% trans 'comments' %}
                         </div>
                     </div>
                     <div class="col-lg-6 col-xs-12 col-md-6 col-sm-6 ">
@@ -152,20 +153,20 @@
                             </div>
                             <div class="row" title="Usage cost of service">
                                 <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
-                                    <h5>Price:</h5>
+                                    <h5>{% trans 'Price' %}:</h5>
                                 </div>
                                 <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
                                     {% if service.charging_policy_id != 1 %}
                                     <h5>{{ service.unit }} {{ service.price }}</h5>
                                     {% else %}
-                                    <h5>Free </h5>
+                                    <h5>{% trans 'Free' %} </h5>
                                     {% endif %}
                                 </div>
                             </div>
                             {% if service.charging_policy_id != 1 %}
                             <div class="row" title="Usage cost of service">
                                 <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
-                                    <h5>Charging policy:</h5>
+                                    <h5>{% trans 'Charging policy'%}:</h5>
                                 </div>
                                 <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
                                     <h5>{{ model.name }}</h5>
@@ -174,16 +175,16 @@
                             {% endif %}
                             <div class="row" title="Usage cost of service">
                                  <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
-                                    <h5><abbr title="Declares the type of service">Type:</abbr></h5>
+                                    <h5><abbr title="Declares the type of service">{% trans 'Type' %}:</abbr></h5>
                                 </div>
                                 <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
-                                    <h5>{% if service.type == 'H' %} Human based {% else %} Machine based {% endif %}</h5>
+                                    <h5>{% if service.type == 'H' %}  {% trans 'Human based' %} {% else %}  {% trans 'Machine based' %} {% endif %}</h5>
                                 </div>
                             </div>
                             {% if service.type == 'M' %}
                             <div class="row" title="Usage cost of service">
                                 <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
-                                    <h5><abbr title="The provider declares the licenses for the service.">Licences:</abbr></h5>
+                                    <h5><abbr title="The provider declares the licenses for the service."> {% trans 'Licences' %}:</abbr></h5>
                                 </div>
                                 <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
                                     <h5>{{ service.license|default_if_none:"Not available" }} (Software version: {{service.version| default_if_none:"Not available" }})</h5>
@@ -192,7 +193,7 @@
                             {% endif %}
                             <div class="row" title="Service provider information">
                                 <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
-                                    <h5>Provider:</h5>
+                                    <h5>{% trans 'Provider' %}:</h5>
                                 </div>
                                 <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
                                     <h5>by<a href="#"> {{ provider.name|title }} {{ provider.lastname | title}}</a></h5>
@@ -200,19 +201,31 @@
                             </div>
                             <br>
                             <div class="row" title="Service provider information">
-                                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12 text-center" >
-                                    <button type="button" class="btn btn-lg btn-primary disabled"> Get the service!</button>
-                                    <br>
-                                    <span style="text-align: center!important">or</span>
-                                    <br>
-                                    <button type="button" id="btn-add-cart" class="btn btn-lg btn-success" data-id="{{service.id}}" data-name="{{service.title}}"> Add to cart</button>
+                                <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 " >
+                                    <button type="button" class="btn btn-lg btn-primary disabled"> {% trans 'Get the service' %}!</button>
+                                    <!--br-->
+                                    <span style="text-align: center!important; margin-left:20px; margin-right:20px">or</span>
+                                    <!--br-->
+                                    <button type="button" id="btn-add-cart" class="btn btn-lg btn-success" data-url="{% url 'add_item_cart' service.id %}" data-id="{{service.id}}" data-name="{{service.title}}"> {% trans 'Add to cart' %} <span class="fa fa-shopping-cart" style="margin-left:5px;"></span></button>
                                 </div>
                             </div>
+
+                            <br>
+
+                            <div class="row" title="Service provider information">
+                                <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 " >
+                                    <h4> 
+                                        <span style="margin-right:20px"">{% trans 'Not satisfied'%}?</span>
+                                        <button type="button" class="btn btn-lg btn-warning" >{% trans 'Try different'%} <span style="margin-left:5px;" class="fa fa-hand-o-up"></span> </button>
+                                    </h4>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
                 <hr class="service-hr">
-                Related keywords:
+                 {% trans 'Related keywords' %}:
                 {% if keywords %}
                     {% for i in keywords %}
                         <span style="margin-right:1%"><i class="fa fa-tag text-success"></i> {{ i.title }}</span>
@@ -223,7 +236,7 @@
             <div class="row  service-consumer-view-box" style="margin-bottom: 2%">
                 <div class="jumbotron" style="background-color:white;color:#171717;">
                     <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12">
-                        <h3>Brief description<small> </small></h3>
+                        <h3> {% trans 'Brief description' %}<small> </small></h3>
                     </div>
                     <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 ">
                         <blockquote style="text-align:justify; font-size: 14pt;">
@@ -243,7 +256,7 @@
                     </h4>
                     <hr class="service-hr">
                     <article style="text-align:justify">
-                        <label>Requirements.</label> 
+                        <label> {% trans 'Requirements'%}.</label> 
                             {{ service.requirements|default:"None" }}
                     </article>
                 </div>
@@ -257,12 +270,12 @@
                     </h4>
                     <hr class="service-hr">
                     <article style="text-align:justify;margin-bottom:1%">
-                        <label>How to install it.</label> 
+                        <label> {% trans 'How to install it' %}.</label> 
                         {{ service.installation_guide|default:"No instructions" }}
                     </article>
             
                     <article style="text-align:justify">
-                        <label>How to use it.</label> 
+                        <label> {% trans 'How to use it' %}.</label> 
                         {{ service.usage_guidelines|default:"No instructions" }}
                     </article>
                 </div>
@@ -279,7 +292,7 @@
                     {% if service.location_constraint %}
                         <div id="map" style="height:40%; min-height:250px; border:1px solid gray"></div>
                     {% else %}  
-                        <i class="fa fa-map-marker text-danger fa-lg fa-fw"></i> No location constraints 
+                        <i class="fa fa-map-marker text-danger fa-lg fa-fw"></i>  {% trans 'No location constraints' %} 
                     {% endif %}
                     <br>
                     <!--lang-->
@@ -291,7 +304,7 @@
                             {% endfor %}
                         {% endif %}
                     {% else %} 
-                        No language constraints 
+                         {% trans 'No language constraints' %}
                     {% endif %}
                     
                     <br>
@@ -303,7 +316,7 @@
             <div class="row col-lg-6 col-xs-12 col-md-6 col-sm-6 service-consumer-view-box">
                 <div class="row">
                 <div class="col-lg-6 col-xs-12 col-md-6 col-sm-6">
-                    <h4>Reviews for service </h4>
+                    <h4> {% trans 'Reviews for service' %}</h4>
                     <h5>
                         <small>
                             <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-1"></span>
@@ -311,7 +324,7 @@
                             <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-3"></span>
                             <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-4"></span>
                             <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-5"></span>
-                            <span>from {{ reviews|default:'0' }} reviews</span>
+                            <span>from {{ reviews|default:'0' }}  {% trans 'reviews' %}</span>
                         </small>
                     </h5>
 
@@ -319,7 +332,7 @@
                     <div class="col-lg-6 col-xs-12 col-md-6 col-sm-6">
                         <div class="row">
                             <div class="col-lg-4 col-xs-6 col-md-4 col-sm-4">
-                                <label style="margin-top:-10px">5 stars</label>
+                                <label style="margin-top:-10px">5  {% trans 'stars' %}</label>
                             </div>
                             <div class="col-lg-8 col-xs-6 col-md-8 col-sm-8">
                                   <div class="progress" style="height:10px">
@@ -330,7 +343,7 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-4 col-xs-6 col-md-4 col-sm-4">
-                                <label style="margin-top:-10px">4 stars</label>
+                                <label style="margin-top:-10px">4  {% trans 'stars' %}</label>
                             </div>
                             <div class="col-lg-8 col-xs-6 col-md-8 col-sm-8">
                                   <div class="progress"  style="height:10px">
@@ -341,7 +354,7 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-4 col-xs-6 col-md-4 col-sm-4">
-                                <label style="margin-top:-10px">3 stars</label>
+                                <label style="margin-top:-10px">3  {% trans 'stars' %}</label>
                             </div>
                             <div class="col-lg-8 col-xs-6 col-md-8 col-sm-8">
                                   <div class="progress" style="height:10px">
@@ -352,7 +365,7 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-4 col-xs-6 col-md-4 col-sm-4">
-                                <label style="margin-top:-10px">2 stars</label>
+                                <label style="margin-top:-10px">2  {% trans 'stars' %}</label>
                             </div>
                             <div class="col-lg-8 col-xs-6 col-md-8 col-sm-8">
                                   <div class="progress" style="height:10px">
@@ -363,7 +376,7 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-4 col-xs-6 col-md-4 col-sm-4">
-                                <label style="margin-top:-10px">1 star</label>
+                                <label style="margin-top:-10px">1  {% trans 'star' %}</label>
                             </div>
                             <div class="col-lg-8 col-xs-6 col-md-8 col-sm-8">
                                   <div class="progress" style="height:10px">
@@ -376,18 +389,18 @@
                 </div>
                 <hr class="service-hr">
                 {% if reviews == 0 %}
-                    No reviews found!
+                    {% trans 'No reviews found'%}!
                 {% else %}
                     
                 {% endif %}
             </div>
         
             <div class="row col-lg-6 col-xs-12 col-md-6 col-sm-6 pull-right service-consumer-view-box">
-                <h4>Tips for first timers</h4>
+                <h4>{% trans 'Tips for first timers' %}</h4>
                 <hr class="service-hr" />
             </div>
             <div class="row col-lg-6 col-xs-12 col-md-6 col-sm-6 pull-right service-consumer-view-box">
-                <h4>Technical support</h4>
+                <h4>{% trans 'Technical support ' %}</h4>
                 <hr class="service-hr" />
             </div>
         </div>
