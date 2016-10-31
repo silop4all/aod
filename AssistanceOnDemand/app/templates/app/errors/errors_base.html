@@ -1,0 +1,17 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} 
+    AoD | {{ title }}
+{% endblock title %}
+
+{% block content %}
+    <div class="container body-content margin-top-50 padding-bottom-em-2">
+        <div class="row text-center" style="min-height: 75%; background-color: white; border:1px solid lightgray; border-radius:4px; padding-top:10%">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-sm-12">
+            {% block message %}
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

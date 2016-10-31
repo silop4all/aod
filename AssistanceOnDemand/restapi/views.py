@@ -777,7 +777,8 @@ class ServiceLanguagesList(generics.RetrieveAPIView):
     queryset = Services.objects.all()
     lookup_field = ('pk')
 
-class ServiceTechnicalSupportList(generics.RetrieveAPIView):
+
+class ServiceMaterialsList(generics.RetrieveAPIView):
     """
        Provided technical support per service
         ---
@@ -818,6 +819,49 @@ class ServiceTechnicalSupportList(generics.RetrieveAPIView):
     serializer_class = ServiceTechicalSupportSerializer
     queryset = Services.objects.all()
     lookup_field = ('pk')
+
+class ServiceMaterialResource(generics.RetrieveAPIView):
+    """
+       Provided technical support per service
+        ---
+        GET:
+            parameters:
+              - name: pk
+                paramType: path
+                type: integer
+                description: Primary key of technical support material 
+                required: true
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 409
+                message: Conflict
+              - code: 500
+                message: Interval Server Error
+
+            produces:
+              - application/json
+              - application/xml
+              - application/yaml
+    """
+
+    serializer_class = ServiceTechnicalSupportSerializer
+    queryset = ServicesToTechnicalSupport.objects.all()
+    lookup_field = ('pk')
+
 
 class ServiceKeywordsList(generics.RetrieveAPIView):
     """
@@ -1198,3 +1242,43 @@ class AssistanceConfigurationList(generics.CreateAPIView):
     lookup_field = ('pk')
 
 
+class PublishQuestionList(generics.CreateAPIView):
+    """
+        Publish user question to application's admin
+        ---
+        POST:
+            omit_parameters:
+              - form
+            parameters:
+              - name: JSON structure
+                description: Publish question in AoD
+                type: PublishQuestionSerializer
+                paramType: body
+                pytype: PublishQuestionSerializer
+
+            responseMessages:
+              - code: 201
+                message: Created
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 500
+                message: Interval Server Error
+
+            consumes:
+              - application/json
+            produces:
+              - application/json
+              - application/xml
+    """
+    serializer_class = PublishQuestionSerializer
+    queryset = IncomingQuestions.objects.all()

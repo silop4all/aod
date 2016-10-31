@@ -14,7 +14,10 @@ framework.
 
 """
 import os
-
+# Uncomment the following three lines
+#import sys
+#sys.path.append('/opt/prosperity/AssistanceOnDemand')
+#sys.path.append('/opt/prosperity/AssistanceOnDemand/AssistanceOnDemand')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "AssistanceOnDemand.settings")
 
 # This application object is used by any WSGI server configured to use this

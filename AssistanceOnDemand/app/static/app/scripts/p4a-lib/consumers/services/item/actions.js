@@ -7,27 +7,49 @@
 });
 
 // Delete a service instance
-function deleteService(url) {
+function deleteService(service) {
     var loading = new AjaxView($(".platform-info-box"));
     loading.show();
+    var successUrl = "";
+    var auth = ""; 
+
     $.ajax({
         type: 'DELETE',
-        url: url,
+        url: service.url,
         async: false,
         dataType: "json",
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
         },
         success: function (response) {
-            if (response.state === true) {
-                window.location.href = response.redirect;
-                window.location.href = "/offerings";
-            }
+            successUrl = response.redirect;
+            auth = response.auth_basic;
         },
         error: function (response) {
-            alert('The deletion of this service failed');
+            alert(gettext('The deletion of this service failed in AOD'));
         },
         complete: function () {
+            //
+            // Remove service from Social network
+            // 
+            if (service.social_network_usage === "True") {
+                $.ajax({
+                    type: 'GET',
+                    url: service.social_network_delete_url,
+                    headers: {
+                        "Authorization": "Basic " + auth
+                    },
+                    success: function (response) {
+                    },
+                    error: function (response) {
+                        console.error(gettext('The deletion of this service failed in SN'));
+                    },
+                    complete: function () {
+                        loading.hide();
+                    }
+                });
+            }
+            window.location.href = successUrl;
             loading.hide();
         }
     });

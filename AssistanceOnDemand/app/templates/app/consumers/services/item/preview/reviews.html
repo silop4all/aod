@@ -1,11 +1,14 @@
-﻿<article>
+﻿{% load i18n %}
+{% load l10n %}
+
+<article>
 
     <div class="reviews_container">
 
         <div class="padding-left-percent-5 padding-right-percent-5" style="border-bottom:1px solid rgba(190, 190, 190, 0.70)">
             <div class="row">
                 <div id="reviews_overview" class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
-                    <h3 class="text-center" style="text-decoration:underline">Overview</h3>
+                    <h3 class="text-center" style="text-decoration:underline">{% trans 'Overview' %}</h3>
                     <div class="row margin-bottom-10">
                         <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
                             <center>
@@ -18,13 +21,13 @@
                         </div>
                         <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12  padding-top-20">
                             <div><span id="reviews_average"> </span> / 5</div>
-                            <div><label class="label label-success"><span id="reviews_number"></span> reviews</label></div> 
+                            <div><label class="label label-success"><span id="reviews_number"></span> {% trans 'reviews' %}</label></div> 
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
-                            <label style="margin-top:-10px">5 stars <span class="badge" id="5_star_bg"></span></label>
+                            <label style="margin-top:-10px">5 {% trans 'stars' %} <span class="badge" id="5_star_bg"></span></label>
                         </div>
                         <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
                                 <div class="progress" style="height:10px">
@@ -36,7 +39,7 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
-                            <label style="margin-top:-10px">4 stars <span class="badge" id="4_star_bg"></span></label>
+                            <label style="margin-top:-10px">4 {% trans 'stars' %} <span class="badge" id="4_star_bg"></span></label>
                         </div>
                         <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
                                 <div class="progress"  style="height:10px">
@@ -47,7 +50,7 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
-                            <label style="margin-top:-10px">3 stars <span class="badge" id="3_star_bg"></span></label>
+                            <label style="margin-top:-10px">3 {% trans 'stars' %} <span class="badge" id="3_star_bg"></span></label>
                         </div>
                         <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
                                 <div class="progress" style="height:10px">
@@ -58,7 +61,7 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
-                            <label style="margin-top:-10px">2 stars <span class="badge" id="2_star_bg"></span></label>
+                            <label style="margin-top:-10px">2 {% trans 'stars' %} <span class="badge" id="2_star_bg"></span></label>
                         </div>
                         <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
                                 <div class="progress" style="height:10px">
@@ -69,7 +72,7 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
-                            <label style="margin-top:-10px">1 star <span class="badge" id="1_star_bg"></span></label>
+                            <label style="margin-top:-10px">1 {% trans 'star' %} <span class="badge" id="1_star_bg"></span></label>
                         </div>
                         <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
                                 <div class="progress" style="height:10px">

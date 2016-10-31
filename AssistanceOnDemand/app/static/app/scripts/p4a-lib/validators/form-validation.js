@@ -35,7 +35,7 @@ ServiceRegistration.prototype.init = function () {
     // tab 1
     this.title = { control: $("#srv_title"), container: null, error: $("#srv_title_error"), status: false };
     this.description = { control: $("#srv_description"), container: $("#srv_description_node"), error: $("#srv_description_error"), status: false };
-    this.cover = { control: $("#srv_cover_image"), container: $("#srv_cover_image_node"), error: $("#srv_cover_image_error"), status: false };
+    //this.cover = { control: $("#srv_cover_image"), container: $("#srv_cover_image_node"), error: $("#srv_cover_image_error"), status: false };
     this.type = { control: $("#srv_type"), container: $("#srv_type_node"), error: $("#srv_type_error"), status: false };
     this.category = { control: $("#srv_category"), container: $("#srv_category_node"), error: $("#srv_category_error"), status: false };
     this.image = { control: $("#srv_logo"), container: $("#load_logo"), error: $("#srv_logo_error"), status: false };
@@ -59,12 +59,14 @@ ServiceRegistration.prototype.init = function () {
 ServiceRegistration.prototype.basicInformationTab = function () {
     this.validateTitle();
     this.validateDescription();
-    this.validateCoverImage();
+    //this.validateCoverImage();
     this.validateType();
     this.validateCategory();
     this.validateImage();
     this.validateKeywords();
-    return (this.title.status && this.description.status && this.cover.status && this.type.status && this.category.status && this.image.status && this.keywords.status);
+    //return (this.title.status && this.description.status && this.cover.status && this.type.status && this.category.status && this.image.status && this.keywords.status);
+    //return (this.title.status && this.description.status && this.type.status && this.category.status && this.image.status && this.keywords.status);
+    return true;
 }
 ServiceRegistration.prototype.validateTitle = function () {
     if (this.title.control.val().length == 0) {
@@ -92,20 +94,20 @@ ServiceRegistration.prototype.validateDescription = function () {
         this.description.status = true;
     }
 }
-ServiceRegistration.prototype.validateCoverImage = function () {
-    if (this.cover.control.val() < 0 || this.cover.control.val() === undefined || this.cover.control.val() === null) {
-        this.cover.control.parent().addClass('has-error');
-        this.cover.container.addClass("error");
-        //this.cover.error.tooltip('show');
-        this.cover.status = false;
-    }
-    else {
-        this.cover.control.parent().removeClass("has-error");
-        this.cover.container.removeClass("error");
-        //this.cover.error.tooltip('hide');
-        this.cover.status = true;
-    }
-}
+//ServiceRegistration.prototype.validateCoverImage = function () {
+//    if (this.cover.control.val() < 0 || this.cover.control.val() === undefined || this.cover.control.val() === null) {
+//        this.cover.control.parent().addClass('has-error');
+//        this.cover.container.addClass("error");
+//        //this.cover.error.tooltip('show');
+//        this.cover.status = false;
+//    }
+//    else {
+//        this.cover.control.parent().removeClass("has-error");
+//        this.cover.container.removeClass("error");
+//        //this.cover.error.tooltip('hide');
+//        this.cover.status = true;
+//    }
+//}
 ServiceRegistration.prototype.validateType = function () {
     if (this.type.control.val() < 0 || this.type.control.val() === undefined || this.type.control.val() === null) {
         this.type.control.parent().addClass('has-error');

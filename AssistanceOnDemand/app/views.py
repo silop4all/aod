@@ -2,40 +2,76 @@
 Definition of views.
 """
 
-from django.shortcuts import render, redirect, render_to_response, get_object_or_404
-from django.http import Http404, HttpRequest, HttpResponseServerError, JsonResponse, HttpResponse, HttpResponseRedirect
+from django.shortcuts import (
+    render, 
+    redirect, 
+    render_to_response, 
+    get_object_or_404
+)
+from django.http import (
+    Http404, 
+    HttpRequest, 
+    HttpResponseServerError, 
+    JsonResponse, 
+    HttpResponse, 
+    HttpResponseRedirect
+)
 
 from django.template import RequestContext
 from django.template.response import TemplateResponse
 from django.template.loader import render_to_string
 
-from django.views.generic import View, CreateView, UpdateView, DeleteView, ListView
+from django.views.generic import (
+    View, 
+    CreateView, 
+    UpdateView, 
+    DeleteView, 
+    ListView
+)
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods, require_GET, require_POST, require_safe
-
+from django.views.decorators.http import (
+    require_http_methods, 
+    require_GET, 
+    require_POST, 
+    require_safe
+)
 from django.core import serializers
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.core.exceptions import (
+    ObjectDoesNotExist, 
+    MultipleObjectsReturned
+)
 
 from django.conf import settings
 
 from django.contrib import messages
 
-from django.db.models import Avg, Sum, Q
+from django.db.models import (
+    Avg, 
+    Sum, 
+    Q
+)
 from django.db import IntegrityError
 
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 
+from django.utils import translation
+
 from app.models import *        # import models
 from app.decorators import *    # import custom models
 from app.utilities import *
 from app.openamAuth import *
+from app.socialNetwork import *
+from restapi.serializers import (
+    UserThemeSerializer, 
+    SimpleServiceSerializer
+)
 
 
 from functools import wraps
-from datetime import datetime   # date/time module
+from datetime import datetime, timedelta  
 import pytz
-import json                     # json lib
+import json
 
 from traceback import print_exc
 
@@ -43,8 +79,133 @@ from rest_framework import viewsets, status
 from base64 import b64decode, b64encode
 import httplib
 import urllib
+import hashlib
 
 
+#################################
+##      Translations
+#################################
+def changeLanguage(request):
+    if request.method == "POST":
+        try:
+            language = request.POST.get('language')
+            next = request.POST.get('next')
+
+            if 'HTTP_REFERER' in request.META:
+                referer = request.META['HTTP_REFERER']
+            if 'HTTP_ORIGIN' in request.META:
+                origin = request.META['HTTP_ORIGIN']
+            else:
+                origin = str(settings.AOD_HOST['PROTOCOL']) + "://" 
+                origin += str(settings.AOD_HOST['IP']) + ":" + str(settings.AOD_HOST['PORT'])
+                origin += str(settings.AOD_HOST['PATH'])
+
+            if settings.DEBUG:
+                print origin
+
+            translation.activate(language)
+            ll = [v[0] for i,v in enumerate(settings.LANGUAGES)]
+            path = referer.replace(origin, '')
+            new_path = [v if v not in ll else language for i,v in enumerate(path.split('/'))]
+            next = '/'.join(new_path)
+
+            response = redirect(next)
+            expires = datetime.strftime(datetime.utcnow() + timedelta(seconds=settings.LANGUAGE_COOKIE_AGE), "%a, %d-%b-%Y %H:%M:%S GMT")
+            response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language, settings.LANGUAGE_COOKIE_AGE, expires)
+            return response
+        except:
+            print_exc()
+            raise Http404
+
+#################################
+##          Themes
+#################################
+class PresentationThemesView(View):
+    def get(self, request):
+        """
+        Load a list of app themes
+        """
+        try:
+            template = 'app/preferences/themes/index.html'
+            if 'id' not in request.session.keys():
+                return redirect(reverse('login_page'))
+            pk = request.session['id']
+            themesList = Theme.objects.all()
+            try:
+                selectedTheme = UserTheme.objects.get(user_id=pk)
+            except ObjectDoesNotExist:
+                selectedTheme = None
+        
+            return render(request, template,
+                context_instance = RequestContext(request, 
+                {
+                    "themesList" : themesList,
+                    "selectedTheme": selectedTheme,
+                    "title": _("Select your favorite theme"),
+                }))
+        except:
+            print_exc()
+            raise Http404
+
+class PresentationTheme(View):
+    def post(self, request, theme_id):
+        """
+        Store the theme that user prefers
+        """
+        try:
+            user = Users.objects.get(pk=request.session['id'])
+            theme =Theme.objects.get(pk=theme_id)
+            payload = {"user": int(user.id),"theme": int(theme.id)}
+            serializer = UserThemeSerializer(data=payload)
+            response = redirect(reverse('preferences_themes'))
+            
+            if serializer.is_valid():
+                userTheme = UserTheme.objects.filter(user=user)
+                if userTheme.count():
+                    userTheme.update(**payload)
+                else:
+                    instance = UserTheme(user_id=user.id,theme_id=theme.id)
+                    instance.save()
+    
+                expires = datetime.strftime(datetime.utcnow() + timedelta(seconds=settings.LANGUAGE_COOKIE_AGE), "%a, %d-%b-%Y %H:%M:%S GMT")
+                response.set_cookie(settings.THEME_COOKIE_NAME, theme_id, settings.LANGUAGE_COOKIE_AGE, expires)
+            else:
+                print serializer.errors
+            return response
+        except:
+            if settings.DEBUG:
+                print_exc()
+            raise Http404
+
+#################################
+##      Social Network
+#################################
+@loginRequiredView
+class AccessSocialNetwork(View):
+    
+    def get(self, request):
+        try:        
+            pk = request.session['id']
+            username = request.session['username']
+            user = Users.objects.get(pk=pk)
+            lang = str(self.request.COOKIES.get(settings.LANGUAGE_COOKIE_NAME)) if settings.LANGUAGE_COOKIE_NAME in self.request.COOKIES else settings.LANGUAGE_CODE
+            
+            if settings.OPENAM_INTEGRATION:
+                token = Tokens.objects.get(user_id=pk)
+                query_params =  '?email=%s&info=%s&lang=%s' % (str(user.email),str(token.access_token), lang)
+            else: 
+                from md5 import md5
+                hash = md5(str(pk))
+                query_params =  '?email=%s&info=%s&lang=%s' % (str(user.email),str(hash.hexdigest()), lang)
+            return redirect(settings.SOCIAL_NETWORK_URL + query_params)
+        except ObjectDoesNotExist, e:
+            if settings.DEBUG:
+                print_exc()
+            pass
+        except:
+            if settings.DEBUG:
+                print_exc()
+            return Http404
 
 
 #################################
@@ -147,6 +308,7 @@ class RegistrationView(View):
         # Registration process
         try:
             instance = json.loads(request.body)
+            print instance
 
             # Create user instance
             dt = datetime.today()
@@ -171,7 +333,7 @@ class RegistrationView(View):
                 if i in instance['rg_role']:
                     # cases
                     if i in ["Provider", "provider", "PROVIDER"]:
-                        provider = Providers(user=Users.objects.get(pk=_pk), is_active=True, company="N/A")
+                        provider = Providers(user=Users.objects.get(pk=_pk), is_active=True, company=_("Not available"))
                         provider.save()
                     if i in ["Consumer", "consumer", "CONSUMER"]:
                         consumer = Consumers(user=Users.objects.get(pk=_pk), crowd_fund_notification=instance['crowd_notification'], crowd_fund_participation=instance['crowd_participation'], is_active=True)
@@ -182,7 +344,7 @@ class RegistrationView(View):
                 else:
                     # cases
                     if i in ["Provider", "provider", "PROVIDER"]:
-                        provider = Providers(user=Users.objects.get(pk=_pk), is_active=False, company="N/A")
+                        provider = Providers(user=Users.objects.get(pk=_pk), is_active=False, company=_("Not available"))
                         provider.save()
                     if i in ["Consumer", "consumer", "CONSUMER"]:
                         consumer = Consumers(user=Users.objects.get(pk=_pk), crowd_fund_notification=False, crowd_fund_participation=False, is_active=False)
@@ -195,7 +357,7 @@ class RegistrationView(View):
             for i, v in enumerate(instance['rg_channels']):
                 user.categories.add(v)
 
-            subject = "[P4ALL] AoD Registration"
+            subject = _("[P4ALL] AoD Registration")
             to = [user.email]
             domain = domainURL() 
 
@@ -214,9 +376,10 @@ class RegistrationView(View):
             sendEmail(to, subject, body, False)
 
             # server response in success
-            return JsonResponse({"state": True, "redirect": domain + reverse('account_success_registration')})
+            return JsonResponse({"state": True, "redirect": reverse('account_success_registration')})
             
         except:  
+            print_exc()
             # server response in failure
             return JsonResponse({"state": False})
   
@@ -228,7 +391,7 @@ def registrationSuccess(request,):
         {
             'year':datetime.now().year,
             'username': "user",
-            'title': "AoD Registration"
+            'title': _("AoD Registration")
         })) 
 
 def hashPassword(password):
@@ -322,15 +485,25 @@ class ForgotPasswordView(View):
 #################################
 def login(request):
     """Renders the login page."""
-    assert isinstance(request, HttpRequest)
-    return render(request,
-        'app/visitors/login.html',
-        context_instance = RequestContext(request,
-        {
-            'title':'About',
-            'message':None,
-            'year':datetime.now().year,
-        }))
+
+    try:
+        assert isinstance(request, HttpRequest)
+    
+        if 'id' in request.session.keys() and 'username' in request.session.keys():
+            return redirect(reverse('home_page'))
+        else:
+            return render(request,
+                'app/visitors/login.html',
+                context_instance = RequestContext(request,
+                {
+                    'title':'About',
+                    'message':None,
+                    'year':datetime.now().year,
+                }))
+    except:
+        if settings.DEBUG:
+            print_exc()
+        return Http404
 
 @require_http_methods(["POST"])
 def loginAuth(request):
@@ -795,7 +968,6 @@ def navbarLinks(request):
         links['cart_items'] = len(request.session['cart'])
 
     links['notifications']  = "#"
-    links['social_network']  = "http://160.40.51.143:40000/aodsocial/app/#/home?email=maher@email123.com&info=demo123!"
 
     # Network of assistance services
     nasExistance = Components.objects.get(name='network_of_assistance_services')
@@ -815,9 +987,6 @@ def breadcrumbLinks(request):
     links['nas_requests']   = "/assistance/requests"
     links['create_nas_request']= "/assistance/requests/create-new"
     return links
-
-def getTimeZone():
-    return settings.TIME_ZONE
 
 def getConsumerInfo(request, userID=None):
     try:
@@ -863,6 +1032,7 @@ def getCarerInfo(request, userID=None):
 #################################
 @loginRequiredView
 class ServiceSearch(View):
+
     def get(self, request):
         """ Loads the page related to the service listing and searching"""
         try :
@@ -886,7 +1056,7 @@ class ServiceSearch(View):
                 limit = sortByMap(request.GET.get('limit')) 
 
             # Filter services by charging model 
-            chModel = [1,2,3,4,5]
+            chModel = ChargingPolicies.objects.all().values_list('id', flat=True)
             if request.GET.get('model') not in [0, None] and int(request.GET.get('model')):
                 chModel = []
                 chModel.append(request.GET.get('model')) 
@@ -917,21 +1087,33 @@ class ServiceSearch(View):
 
             if request.GET.get('type') not in [None, "A"]:
                 for service in Services.objects.filter(type=request.GET.get('type')).filter(charging_policy_id__in=chModel).order_by(sortby)[:limit]:
-                    servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover.replace('/media/', ''),
-                        "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
+                    servicesInfo.append(
+                    {
+                        "id": service.id, 
+                        "title":service.title, 
+                        "description": service.description, 
+                        "price":service.price, 
+                        "unit":service.unit, 
+                        "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
                         "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], 
-                        "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), "type": service.type,
-                        "logo": Users.objects.get(pk=service.owner_id).logo.name, "alias":  urllib.quote_plus(service.title),
-                        "image": service.image
+                        "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), 
+                        "type": service.type,
+                        "logo": Users.objects.get(pk=service.owner_id).logo.name,
+                        "image": settings.MEDIA_URL + settings.SERVICES_IMAGE_PATH + str(service.image)
                     })
             else:
                 for service in Services.objects.filter(charging_policy_id__in=chModel).order_by(sortby)[:limit]:
-                    servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover.replace('/media/', ''),
-                        "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
+                    servicesInfo.append({
+                        "id": service.id, 
+                        "title":service.title, 
+                        "description": service.description, 
+                        "price":service.price, 
+                        "unit":service.unit, 
+                        "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
                         "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], 
                         "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), "type": service.type,
-                        "logo": Users.objects.get(pk=service.owner_id).logo.name, "alias":  urllib.quote_plus(service.title),
-                        "image": service.image
+                        "logo": Users.objects.get(pk=service.owner_id).logo.name, 
+                        "image": settings.MEDIA_URL + settings.SERVICES_IMAGE_PATH + str(service.image)
                     })
 
             return render(request, template,
@@ -939,27 +1121,33 @@ class ServiceSearch(View):
                 {
                     'year': datetime.now().year,
                     'userID': request.session['id'],
-                    'username': request.session['username'],
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request),
                     'providers': providers,
                     'categories': categories,
-                    'servicesTypes': {'all': Services.objects.all().count(), 'human': Services.objects.filter(type='H').count(), 'machine': Services.objects.filter(type='M').count()},
+                    'servicesTypes': {
+                        'all': Services.objects.all().count(), 
+                        'human': Services.objects.filter(type='H').count(), 
+                        'machine': Services.objects.filter(type='M').count()
+                    },
                     'chargingModels': chModels,
                     'services': servicesInfo,
                     'sortby': request.GET.get('sortby'),
-                    'view': view
-                }))
+                    'view': view,
+                    'publish_crowd_fund_project': settings.CROWD_FUNDING['base'] + settings.CROWD_FUNDING['projects']['insert'],
+                })
+            )
         except: 
-            redirect('/logout')
+            if settings.DEBUG:
+                print_exc()
+            raise Http404
 
 @loginRequiredView
 class ServiceSearchResults(View):
     def post(self, request):
         """ Return the result of search """
-        template = 'app/consumers/services/services.html'
 
         try :
+            template = 'app/consumers/services/services.html'
+
             if request.is_ajax():
                 assert isinstance(request, HttpRequest)
                 pk = request.session['id']
@@ -968,7 +1156,9 @@ class ServiceSearchResults(View):
 
                 # search options
                 payload = json.loads(request.body)
-                print payload
+                #if settings.DEBUG:
+                #    print payload
+
                 ####################################
                 ##  Searching
                 ####################################
@@ -1040,6 +1230,10 @@ class ServiceSearchResults(View):
                 ####################################
                 # services
                 servicesInfo = []
+
+                servicesList = s.values_list('id', flat=True)
+                uniqueServiceList = set(list(servicesList))
+                s = Services.objects.filter(pk__in=uniqueServiceList)
                 
                 if payload["distance"] != "" and payload["lat"] !="" and payload["lon"] != "":
                     for service in s.order_by(sortby)[:limit]:
@@ -1054,18 +1248,33 @@ class ServiceSearchResults(View):
                                 
                                 if minQoS != None and maxQoS != None: 
                                     if int(reviews) > 0 and float(minQoS) <= float(rating) <= float(maxQoS):
-                                        servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover.replace('/media/', ''),
-                                            "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
-                                            "rating": rating, "reviews": reviews, "type": service.type,
-                                            "logo": Users.objects.get(pk=service.owner_id).logo.name, "alias":  urllib.quote_plus(service.title)
+                                        servicesInfo.append({
+                                            "id": service.id, 
+                                            "title":service.title, 
+                                            "description": service.description, 
+                                            "price":service.price, 
+                                            "unit":service.unit, 
+                                            "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
+                                            "rating": rating, 
+                                            "reviews": reviews, 
+                                            "type": service.type,
+                                            "logo": Users.objects.get(pk=service.owner_id).logo.name, 
+                                            "image": settings.MEDIA_URL + settings.SERVICES_IMAGE_PATH + str(service.image)
                                         })
                                 else:
-                                    servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover.replace('/media/', ''),
-                                        "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
-                                        "rating": rating, "reviews": reviews, "type": service.type,
-                                        "logo": Users.objects.get(pk=service.owner_id).logo.name, "alias":  urllib.quote_plus(service.title)
+                                    servicesInfo.append({
+                                        "id": service.id, 
+                                        "title":service.title, 
+                                        "description": service.description, 
+                                        "price":service.price, 
+                                        "unit":service.unit, 
+                                        "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
+                                        "rating": rating, 
+                                        "reviews": reviews, 
+                                        "type": service.type,
+                                        "logo": Users.objects.get(pk=service.owner_id).logo.name, 
+                                        "image": settings.MEDIA_URL + settings.SERVICES_IMAGE_PATH + str(service.image)
                                     })
-                                    
                 else:
                     for service in s.order_by(sortby)[:limit]:
                         # check QoS
@@ -1074,16 +1283,32 @@ class ServiceSearchResults(View):
                                 
                         if minQoS != None and maxQoS != None:
                             if int(reviews) > 0 and float(minQoS) <= float(rating) <= float(maxQoS):
-                                servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover.replace('/media/', ''),
-                                    "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
-                                    "rating": rating, "reviews": reviews, "type": service.type,
-                                    "logo": Users.objects.get(pk=service.owner_id).logo.name, "alias":  urllib.quote_plus(service.title)
+                                servicesInfo.append({
+                                    "id": service.id, 
+                                    "title":service.title, 
+                                    "description": service.description, 
+                                    "price":service.price, 
+                                    "unit":service.unit, 
+                                    "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
+                                    "rating": rating,
+                                    "reviews": reviews, 
+                                    "type": service.type,
+                                    "logo": Users.objects.get(pk=service.owner_id).logo.name, 
+                                    "image": settings.MEDIA_URL + settings.SERVICES_IMAGE_PATH + str(service.image)
                                 })
                         else:
-                            servicesInfo.append({"id": service.id, "title":service.title, "description": service.description, "cover": service.cover.replace('/media/', ''),
-                                "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
-                                "rating": rating, "reviews": reviews, "type": service.type,
-                                "logo": Users.objects.get(pk=service.owner_id).logo.name, "alias":  urllib.quote_plus(service.title)
+                            servicesInfo.append({
+                                "id": service.id, 
+                                "title":service.title, 
+                                "description": service.description, 
+                                "price":service.price, 
+                                "unit":service.unit, 
+                                "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
+                                "rating": rating, 
+                                "reviews": reviews, 
+                                "type": service.type,
+                                "logo": Users.objects.get(pk=service.owner_id).logo.name, 
+                                "image": settings.MEDIA_URL + settings.SERVICES_IMAGE_PATH + str(service.image)
                             })
 
                 response_dic = {
@@ -1091,16 +1316,14 @@ class ServiceSearchResults(View):
                         'sortby': sortby,
                         'view': view
                     }
-
                 return render(request, template, response_dic)
             else:
                 return redirect(reverse('home_page'))
 
         except AttributeError as at:
-            print "400"
-        
+            raise Http404
         except:
-            print "500"
+            print_exc()
             raise Http404
 
 def sortByMap(parameter):
@@ -1129,60 +1352,66 @@ class ServicesIndex(View):
             _owner = Providers.objects.get(user_id=user.id)
             servicesInfo = []
             for service in Services.objects.filter(owner=_owner.id):
-                servicesInfo.append({"id": service.id, "alias": urllib.quote_plus(service.title), 
-                    "title":service.title, "description": service.description, 
-                    "price":service.price, "unit":service.unit, "type": service.type,
-                    "access": service.availability, "available": service.is_available,
+                servicesInfo.append({
+                    "id": service.id, 
+                    "title":service.title, 
+                    "description": service.description, 
+                    "price":service.price, 
+                    "unit":service.unit, 
+                    "type": service.type,
+                    "is_public": service.is_public, 
+                    "is_visible": service.is_visible,
                     "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
                     "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], 
                     "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), 
-                    "created_date": service.created_date, "modified_date": service.modified_date
+                    "created_date": service.created_date, 
+                    "modified_date": service.modified_date
                 })
+
+            # Check if Social network integration
+            integrationWithSocialNetwork = {
+                "state": socialNetworkIntegration(),
+                "url": settings.SOCIAL_NETWORK_WEB_SERVICES['base'] + settings.SOCIAL_NETWORK_WEB_SERVICES['services']['delete']
+            }
 
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
                     'year':datetime.now().year,
                     'username': request.session['username'],
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request),
-                    'servicesLink': '/provider/services',
-                    'servicesTypes': {'all': Services.objects.all().count(), 'human': Services.objects.filter(type='H').count(), 'machine': Services.objects.filter(type='M').count()},
+                    'servicesTypes': {
+                        'all': Services.objects.all().count(), 
+                        'human': Services.objects.filter(type='H').count(), 
+                        'machine': Services.objects.filter(type='M').count()
+                    },
                     'services': servicesInfo,
+                    "integrationWithSocialNetwork": integrationWithSocialNetwork
                 }))
 
         except:
-            pass
+            print_exc()
+            raise HttpResponseServerError
 
 @loginRequiredView
 class ServiceCreate(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ServiceCreate, self).dispatch(request, *args, **kwargs)
+
     def get(self, request):
         try:
+            import pycountry
+
             template = 'app/consumers/services/registration/index.html'
             pk=request.session['id']
             user = Users.objects.get(pk=pk)
 
-            # Available types
-            types = []
-            types.append({'id': 'H', "description": 'Human Based'})
-            types.append({'id': "M", "description": "Machine Based"})
-
-            # cover images
-            covers = getDefaultCoverList()
-
-            # languages
-            import pycountry
-     
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
                     'year':datetime.now().year,
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request),
-                    'username': request.session['username'],
-                    'types': types,
+                    'types': TYPE_CHOICES,
                     'categories': Categories.objects.all().order_by('id'),
-                    'covers': covers,
                     'charging_models': ChargingPolicies.objects.all(),
                     'currencies': pycountry.currencies,
                     'users': Users.objects.exclude(pk=pk).order_by('email'),
@@ -1192,7 +1421,7 @@ class ServiceCreate(View):
         except:
             if settings.DEBUG:
                 print_exc()
-            return redirect(reverse('aod_login_page'))
+            return redirect(reverse('provider_dashboard'))
 
     def post(self, request):
         """
@@ -1200,103 +1429,75 @@ class ServiceCreate(View):
         """
 
         try:
-            # Valid or exception
             assert isinstance(request, HttpRequest)
             pk = request.session['id']
 
-            # Parse the client payload
             payload = json.loads(request.body)
-            if not payload:
-                raise Exception("JSON payload error")
-
+            payload['owner'] = pk
+            serializer = SimpleServiceSerializer(data=payload)
+            if not serializer.is_valid():
+                raise Exception(serializer.errors)
             if settings.DEBUG:
                 print payload
 
-            # Create a new service
+            ## Create a new service
+            #service = SimpleServiceSerializer(**payload)
             dt = datetime.today()
-            
-            service = Services(title=payload['srv_title'], 
-                description=payload['srv_description'],
-                # logo
-                version=payload['srv_version'],
-                license=payload['srv_license'],
-                cover=payload["srv_cover_image"],
-                type=payload["srv_type"],
-                # "srv_keyword_list"
-                charging_policy=ChargingPolicies.objects.get(pk=payload["srv_charging_model"]),
-                owner=Providers.objects.get(user_id=pk),
-                price=payload["srv_price"],
-                unit=payload["srv_currency"],
-                requirements=payload["srv_requirements"],
-                installation_guide=payload["srv_installation"],
-                # package
-                link=payload["srv_link"],
-                usage_guidelines=payload["srv_usage"],
-                availability=payload["availability"],
-                # target group of users or none
-                constraints=payload["srv_constraints"],
-                language_constraint=payload["srv_language_constraint"],
-                location_constraint=payload["srv_geolocation"],
-                latitude=payload["srv_latitude"],
-                longitude=payload["srv_longitude"],
-                skype=payload["skype_id"],
-                coverage=payload["srv_coverage"],
-                is_available=payload["srv_terms"],
-                modified_date=datetime(1970,1,1,0,0,0, tzinfo=pytz.timezone(getTimeZone())),
+            service = Services(title=payload['title'], 
+                description=payload['description'],
+                version= payload['version'] if 'version' in payload else None,
+                license=payload['license'] if 'license' in payload else None,
+                type=payload["type"],
+                charging_policy=ChargingPolicies.objects.get(pk=payload["charging_policy"]),
+                owner=Providers.objects.get(user_id=payload['owner']),
+                price=payload["price"],
+                unit=payload["unit"],
+                requirements=payload["requirements"] if "requirements" in payload else None,
+                installation_guide=payload["installation_guide"] if "installation_guide" in payload else None,
+                usage_guidelines=payload["usage_guidelines"] if 'usage_guidelines' in payload else None,
+                is_public=payload["is_public"],
+                constraints=payload["constraints"] if "constraints" in payload else None,
+                language_constraint=payload["language_constraint"],
+                location_constraint=payload["location_constraint"],
+                latitude=payload["latitude"],
+                longitude=payload["longitude"],
+                skype=payload["skype"] if "skype" in payload else None,
+                coverage=payload["coverage"],
+                is_visible=payload["is_visible"],
+                modified_date=dt,
                 created_date=dt
             )
-             
-            # store a new service
-            try:
-                service.save()
-            except IntegrityError as i:
-                # http 409 confict: duplicate unique, invalid foreign key
-                raise Exception(i.args[0], i.args[1])
-            
+            service.save()
             _service = service.id
 
             # Associate service with desired categories
-            categories = payload['srv_category']
-            if type(categories) == list:
-                for i, v in enumerate(categories):
-                    service.categories.add(v)
-            elif type(categories) in [str, int]:
-                service.categories.add(v)
-            else:
-                raise Exception("Categories input neither list nor string/integer")
+            associateServiceCategories(payload['categories'], service)
 
             # keywords
-            keywords = payload['srv_keywords']
-            if type(keywords) == list:
-                for i in keywords:
-                    if i is not None:
-                        k = ServiceKeywords(service=Services.objects.get(pk=_service), title=i)
-                        k.save()
-            elif type(keywords) is str:
-                k = ServiceKeywords(service=Services.objects.get(pk=_service), title=i)
-                k.save()
+            insertServiceKeywords(payload["keywords"], service.id)
 
             # languages
-            languages = payload['srv_language']
-            if type(languages) == list:
-                for i in languages:
-                    if i is not None:
-                        l = ServiceLanguages(service=Services.objects.get(pk=_service), alias=i)
-                        l.save()
-            elif type(languages) is str and not None:
-                l = ServiceLanguages(service=Services.objects.get(pk=_service), alias=i)
-                l.save()
+            if payload['language_constraint'] == True:
+                insertServiceLanguages(payload["languages"], service.id)
 
-            links = breadcrumbLinks(request)
-            return JsonResponse({"state": True, "link": links["collection"], "id": _service})
+            response = {"id": _service, "success_url": reverse('provider_dashboard'), "media_url": reverse("upload_service_media", kwargs={'pk':_service}), "sn_integration": False}        
+            # check social network integration status
+            if socialNetworkIntegration():
+                response['sn_integration'] = True
+                response['sn_link'] = settings.SOCIAL_NETWORK_WEB_SERVICES['base'] + settings.SOCIAL_NETWORK_WEB_SERVICES['services']['insert'] + str(_service)
+                response['auth_basic'] = settings.SOCIAL_NETWORK_WEB_SERVICES_AUTH
+            return JsonResponse(data=response, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return JsonResponse({"state": False, "reason":e.args})            
+            print_exc()
+            return JsonResponse(data={"reason": e.args}, status=status.HTTP_400_BAD_REQUEST)            
         except:
-             return JsonResponse({"state": "False2"})
+            if settings.DEBUG:
+                print_exc()
+            return JsonResponse(data={"status": status.HTTP_500_INTERNAL_SERVER_ERROR}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @loginRequiredView
 class ServiceView(View):
-    def get(self, request, alias=None):
+    def get(self, request, pk=None):
         """ 
         Preview of the service for provider 
         """
@@ -1307,10 +1508,9 @@ class ServiceView(View):
             # service and provider info
             user = Users.objects.get(pk=request.session['id'])
             provider = Providers.objects.get(user_id=user.id)
-            title = urllib.unquote_plus(alias)
 
-            # service instance
-            service = Services.objects.get(title=str(title))
+            service = Services.objects.get(pk=pk)
+
             keywords = ServiceKeywords.objects.filter(service=service.id).all()
             languages = []
             import pycountry
@@ -1326,147 +1526,112 @@ class ServiceView(View):
                 reviews.append({"user": u.name +" " + u.lastname, "rating": i.rating, 'comment': i.rating_rationale, 
                     'purchased_date': i.purchased_date, 'price': i.cost, "unit": service.unit})
 
+            integrationWithSocialNetwork = {
+                "state": socialNetworkIntegration(),
+                "url": settings.SOCIAL_NETWORK_WEB_SERVICES['base'] + settings.SOCIAL_NETWORK_WEB_SERVICES['services']['delete'] + str(service.id)
+            }
+
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
                     'year':datetime.now().year,
-                    'username': request.session['username'],
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request),
-                    'servicesLink': '/provider/services',
                     'service': service,
-                    "alias": urllib.quote_plus(service.title),
                     'keywords': keywords,
                     'categories': service.categories.all(),
                     'languages': languages,
                     'reviews': reviews,
+                    "integrationWithSocialNetwork": integrationWithSocialNetwork,
                 }))
 
         except:
             if settings.DEBUG:
                 print_exc()
-            pass
+            return Http404
 
-    def put(self, request, alias=None):
+    def put(self, request, pk=None):
         """ 
-        Update an existing service data
+        Update an existing service
         """
-
         try:
-            # check request type
             assert isinstance(request, HttpRequest)
-            # check if alias exist
-            if alias == None:
-                raise Exception("Invalid alias")
-            _title = urllib.unquote_plus(alias)
+            user_id = request.session['id']
+
+            if pk == None:
+                raise Exception("Invalid pk")
 
             payload = json.loads(request.body)
-            if not payload:
-                raise Exception("JSON payload error")
+            payload['owner'] = user_id
+            serializer = SimpleServiceSerializer(data=payload)
+            if not serializer.is_valid():
+                raise Exception(serializer.errors)
+            if settings.DEBUG:
+                print payload
 
-            # Create a new service
-            Services.objects.filter(title=_title).update(
-                title=payload['srv_title'], 
-                description=payload['srv_description'],
-                # logo
-                version=payload['srv_version'],
-                license=payload['srv_license'],
-                # cover=payload["srv_cover_image"],
-                type=payload["srv_type"],
-                # "srv_keyword_list"
-                charging_policy=ChargingPolicies.objects.get(pk=payload["srv_charging_model"]),
-                price=payload["srv_price"],
-                unit=payload["srv_currency"],
-                requirements=payload["srv_requirements"],
-                installation_guide=payload["srv_installation"],
-                # package
-                link=payload["srv_link"],
-                usage_guidelines=payload["srv_usage"],
-                availability=payload["availability"],
-                # target group of users or none
-                constraints=payload["srv_constraints"],
-                language_constraint=payload["srv_language_constraint"],
-                location_constraint=payload["srv_geolocation"],
-                latitude=payload["srv_latitude"],
-                longitude=payload["srv_longitude"],
-                is_available=payload["srv_terms"],
+            # Update service
+            Services.objects.filter(pk=pk).update(
+                title=payload['title'], 
+                description=payload['description'],
+                version= payload['version'] if 'version' in payload else None,
+                license=payload['license'] if 'license' in payload else None,
+                type=payload["type"],
+                charging_policy=ChargingPolicies.objects.get(pk=payload["charging_policy"]),
+                price=payload["price"],
+                unit=payload["unit"],
+                requirements=payload["requirements"] if "requirements" in payload else None,
+                installation_guide=payload["installation_guide"] if "installation_guide" in payload else None,
+                usage_guidelines=payload["usage_guidelines"] if 'usage_guidelines' in payload else None,
+                is_public=payload["is_public"],
+                constraints=payload["constraints"] if "constraints" in payload else None,
+                language_constraint=payload["language_constraint"],
+                location_constraint=payload["location_constraint"],
+                latitude=payload["latitude"],
+                longitude=payload["longitude"],
+                skype=payload["skype"] if "skype" in payload else None,
+                coverage=payload["coverage"],
+                is_visible=payload["is_visible"],
                 modified_date=datetime.today()
             )
-
-            # service instance
-            service = Services.objects.get(title=payload['srv_title'])
-            _service = service.id
-
-            print "OK 1"
+            service = Services.objects.get(pk=pk)
 
             # Delete existing categories
             for i in service.categories.all():
                 service.categories.remove(i)
             # Create relationships
-            categories = payload['srv_category']
-            if type(categories) == list:
-                for i, v in enumerate(categories):
-                    service.categories.add(v)
-            elif type(categories) in [str, int]:
-                service.categories.add(v)
-            else:
-                raise Exception("Categories input neither list nor string/integer")
-
-            print "OK 2"
+            associateServiceCategories(payload['categories'], service)
 
             # Delete existing keywords
-            for k in service.servicekeywords_set.all():
-                ServiceKeywords.objects.filter(pk=k.id).delete()
-            # insert new ones
-            keywords = payload['srv_keywords']
-            if type(keywords) == list:
-                for i in keywords:
-                    if i is not None:
-                        k = ServiceKeywords(service=Services.objects.get(pk=_service), title=i)
-                        k.save()
-            elif type(keywords) is str and not None:
-                k = ServiceKeywords(service=Services.objects.get(pk=_service), title=i)
-                k.save()
+            ServiceKeywords.objects.filter(service_id=service.id).delete()
+            # Insert new keywords
+            insertServiceKeywords(payload["keywords"], service.id)
 
-            print "OK 3"
+            ## Update languages
+            ServiceLanguages.objects.filter(service_id=service.id).delete()
+            if payload['language_constraint'] == True:
+                insertServiceLanguages(payload["languages"], service.id)
 
-            # Delete existing languages
-            for k in service.servicelanguages_set.all():
-                ServiceLanguages.objects.filter(pk=k.id).delete()
-            # insert new ones
-            languages = payload['srv_language']
-            if type(languages) == list:
-                for i in languages:
-                    if i is not None:
-                        l = ServiceLanguages(service=Services.objects.get(pk=_service), alias=i)
-                        l.save()
-            elif type(languages) is str and not None:
-                l = ServiceLanguages(service=Services.objects.get(pk=_service), alias=i)
-                l.save()
-            
-            print "OK 4"
-
-            return JsonResponse({"state": True, "link": "/provider", 'id': _service})
+            response = {"id": service.id, "success_url": reverse('provider_dashboard'), "media_url": reverse("upload_service_media", kwargs={'pk': service.id}), "sn_integration": False}
+            return JsonResponse(data=response, status=status.HTTP_200_OK)
         except Exception as e:
-            return JsonResponse({"state": False})
+            print_exc()
+            return JsonResponse(data={"reason": e.args, "status": status.HTTP_400_BAD_REQUEST}, status=status.HTTP_400_BAD_REQUEST)
         except:
-             return JsonResponse({"state": False})
+            if settings.DEBUG:
+                print_exc()
+            return JsonResponse(data={"status": status.HTTP_500_INTERNAL_SERVER_ERROR}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def delete(self, request, alias=None):
+    def delete(self, request, pk=None):
         """ 
-        Delete a service based on unique alias(title) 
+        Delete a service based on service pk 
         """
-
         try:
             # check request type
             assert isinstance(request, HttpRequest)
-            # check if alias exist
-            if alias == None:
-                raise Exception("Invalid alias")
-            _title = urllib.unquote_plus(alias)
-            
+            # check if id exist
+            if pk == None:
+                raise Exception("Invalid service pk")
+
             # check owner and provider role
-            service = Services.objects.get(title=_title)
+            service = Services.objects.get(pk=pk)
             #if request.session['id'] != service.owner:
             #    raise Exception("403")
             
@@ -1486,67 +1651,52 @@ class ServiceView(View):
                 service.delete()
             except ObjectDoesNotExist as ex:
                 raise Exception(ex.args[0])
-            return JsonResponse({"state": True, "redirect": "/provider"})
+            return JsonResponse({"redirect": reverse("provider_dashboard"), "auth_basic": settings.SOCIAL_NETWORK_WEB_SERVICES_AUTH}, status=status.HTTP_200_OK)
         except Exception as e:
-            return JsonResponse({"state": False})
+            return JsonResponse({"reason": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except:
-             return JsonResponse({"state": False})
+            if settings.DEBUG:
+                print_exc()
+            return JsonResponse({"state": False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @loginRequiredView
 class ServiceUpdateView(View):
-    def get(self, request, alias=None):
+    def get(self, request, pk=None):
         """
-        Load the HTML in case of service edit-mode
+        Load the HTML template for service modification
         """
-
         try:
-            # define template
-            template = 'app/consumers/services/item/update/index.html'
-            # languages
             import pycountry
+            template = 'app/consumers/services/item/update/index.html'
 
             # service and provider info
-            _pk = request.session['id']
-            user = Users.objects.get(pk=_pk)
-            provider = Providers.objects.get(user_id=user.id)
-            title = urllib.unquote_plus(alias)
-            service = Services.objects.get(title=title)
-
-            # Available types
-            types = []
-            types.append({'id': 'H', "description": 'Human Based'})
-            types.append({'id': "M", "description": "Machine Based"})
-
-            # cover images
-            covers = getDefaultCoverList()
+            user_id = request.session['id']
+            provider = Providers.objects.get(user_id=user_id)
+            service = Services.objects.get(pk=pk)
 
             # load template
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
                     'year':datetime.now().year,
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request),
-                    'alias': alias,
-                    'username': request.session['username'],
                     'service': service,
-                    'types': types,
+                    'types': TYPE_CHOICES,
                     'categories': Categories.objects.all().order_by('id'),
-                    'covers': covers,
                     'charging_models': ChargingPolicies.objects.all(),
                     'currencies': pycountry.currencies,
-                    'users': Users.objects.exclude(pk=_pk).order_by('email'),
+                    'users': Users.objects.exclude(pk=user_id).order_by('email'),
                     'languages': pycountry.languages,
                     'keywords': ServiceKeywords.objects.filter(service=service.id),
-                    #'selected_languages': service.servicelanguages_set.all()
                 }))
         except: 
-            print_exc()
+            if settings.DEBUG:
+                print_exc()
+            raise Http404
 
 @loginRequiredView
 class UploadServiceMedia(View):
 
-    def post(self, request, pk=None):
+    def put(self, request, pk=None):
         """
         Upload files related to a service such as:
         the cover image, the logo and the software package
@@ -1554,63 +1704,79 @@ class UploadServiceMedia(View):
 
         try:  
             try:
-                if request.FILES['srv_logo']:
+                if request.FILES['image']:
                     # store image
-                    _image = request.FILES['srv_logo']
+                    _image = request.FILES['image']
                     temp = _image.name.split('.')
                     _image.name = str(pk) + "." + str(temp[-1])
                     path = settings.MEDIA_ROOT+ "/app/services/images/" + _image.name
                     # remove file if exist
                     removeFileInExistance(path)
                     # store new file
-                    storeFile(path, request.FILES['srv_logo'])
+                    storeFile(path, request.FILES['image'])
                     Services.objects.filter(pk=pk).update( image = _image)
             except:
-                pass            
+                raise Exception("Image has not uploaded")
 
-            temp, path = None, None
-            
-            try:
-                if request.FILES['srv_software']:
-                    # store cover
-                    _sw = request.FILES['srv_software']
-                    temp = _sw.name.split('.')
-                    _sw.name = str(pk) + "." + str(temp[-1])
-                    path = settings.MEDIA_ROOT+ "/app/services/packages/" + _sw.name
-                    # remove file if exist
-                    removeFileInExistance(path)
-                    # store new file
-                    storeFile(path, request.FILES['srv_software'])
-                    Services.objects.filter(pk=pk).update(software = _sw )
-            except:
-                pass
-            
-            links = breadcrumbLinks(request)
-            return JsonResponse({"state": True, "link": links["collection"]})
-            #return redirect(reverse('provider_dashboard'), permanent=True)
+            #temp, path = None, None
+            #try:
+            #    if request.FILES['software']:
+            #        # store cover
+            #        _sw = request.FILES['srv_software']
+            #        temp = _sw.name.split('.')
+            #        _sw.name = str(pk) + "." + str(temp[-1])
+            #        path = settings.MEDIA_ROOT+ "/app/services/packages/" + _sw.name
+            #        # remove file if exist
+            #        removeFileInExistance(path)
+            #        # store new file
+            #        storeFile(path, request.FILES['srv_software'])
+            #        Services.objects.filter(pk=pk).update(software = _sw )
+            #except:
+            #    raise Exception("Spftware package has not uploaded")
+
+            return JsonResponse(data={"image": path, "status": status.HTTP_200_OK}, status=status.HTTP_200_OK)
         except Exception as e:
-            return JsonResponse({"state": False, "reason":e.args})            
+            print e
+            return JsonResponse(data={"reason": str(e), "status": status.HTTP_400_BAD_REQUEST}, status=status.HTTP_400_BAD_REQUEST)            
         except:
-                return JsonResponse({"state": "False2"})
-   
-def getDefaultCoverList():
-    """ 
-    Get a list of platform default covers images
-    """
-    covers = []
-    try:
-        import os
-        path = settings.MEDIA_ROOT+ "/app/platform/"
-        url = settings.MEDIA_URL + "app/platform/"
-        for i in os.walk(path):
-            for j in i[2]:
-                extension = j.split('.')
-                if extension[1] in  ["png", "jpg", "jpeg"]:
-                    covers.append({'path': url+j, 'file': j})
-        return covers
-    except: 
-        return covers
- 
+            if settings.DEBUG:
+                print_exc()
+            return JsonResponse(data={"status": status.HTTP_500_INTERNAL_SERVER_ERROR}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@loginRequiredView
+class ServiceTechnicalSupport(View):
+
+    def get(self, request, pk):
+        try:
+            template = "app/consumers/services/technicalSupport/index.html"
+            service = Services.objects.get(pk=pk)
+            technicalSupportList = ServicesToTechnicalSupport.objects.filter(service_id=pk).order_by('id')
+
+            return render(request, template,
+                context_instance = RequestContext(request,
+                {
+                    'year':datetime.now().year,
+                    'service': service,
+                    'technicalSupportList': technicalSupportList,
+                }))
+        except:
+            print_exc()
+            raise Http404
+
+    def post(self, request):
+        pass
+
+    def put(self, request):
+        pass
+
+    def patch(self, request):
+        pass
+
+    def delete(self, request):
+        pass
+
+
 def storeFile(path, filename):
     try:
         with open(path, 'wb+') as destination:
@@ -1618,7 +1784,7 @@ def storeFile(path, filename):
                 destination.write(chunk)
     except:
         pass
-        
+
 def removeFileInExistance(filepath):
     try:
         import os
@@ -1627,36 +1793,64 @@ def removeFileInExistance(filepath):
         pass
 
 
-def getDistance(lat1, lon1, lat2, lon2):
+def associateServiceCategories(categories, service):
     """
-    A(lat1, lon1) -> user
-    B(lat2, lon2) -> service
+    Create relationships among service and categories
     """
-    
-    try: 
-        from math import sin, cos, pi, acos
-        radlat1 = pi * lat1/180
-        radlat2 = pi * lat2/180
-        radlon1 = pi * lon1/180
-        radlon2 = pi * lon2/180
-        theta = lon1-lon2
-        radtheta = pi * theta/180
-        dist = sin(radlat1) * sin(radlat2) + cos(radlat1) * cos(radlat2) * cos(radtheta);
-        dist = acos(dist)
-        dist = dist * 180/pi
-        dist = dist * 60 * 1.1515
-        dist = dist * 1.609344
-        return dist
-    except: 
-        return -1
+    try:
+        if type(categories) == list:
+            for i, v in enumerate(categories):
+                service.categories.add(v)
+        elif type(categories) in [str, int]:
+            service.categories.add(v)
+        else:
+            return JsonResponse(data={"reason": _("Categories input neither list nor string/integer"), "status": status.HTTP_400_BAD_REQUEST}, status=status.HTTP_400_BAD_REQUEST)
+    except :
+        print_exc()
 
+def insertServiceKeywords(keywords, service_id):
+    """
+    Create relationships among service and keywords
+    """
+    try:
+        import re
+        pattern = re.compile(r"[,;]")
 
+        if keywords[-1] == ',':
+           keywords = keywords[0:len(keywords)]
+        keywords = pattern.split(keywords)
+        if type(keywords) == list:
+            for i in keywords:
+                if i not in [None, "", " "]:
+                    k = ServiceKeywords(service=Services.objects.get(pk=service_id), title=i)
+                    k.save()
+        elif type(keywords) is str:
+            k = ServiceKeywords(service=Services.objects.get(pk=service_id), title=i)
+            k.save()
+    except:
+        print_exc()
+
+def insertServiceLanguages(languages, service_id):
+    """
+    Create relationships among service and supported languages
+    """
+    try:
+        if type(languages) == list:
+            for i in languages:
+                if i is not None:
+                    l = ServiceLanguages(service=Services.objects.get(pk=service_id), alias=i)
+                    l.save()
+        elif type(languages) is str and not None:
+            l = ServiceLanguages(service=Services.objects.get(pk=service_id), alias=i)
+            l.save()
+    except:
+        print_exc()
 
 #################################
 ## Services - consumers
 #################################
 class ServiceConsumerView(View):
-    def get(self, request, alias=None):
+    def get(self, request, pk=None):
         try:
             # define template
             template = 'app/consumers/search/services/preview.html'
@@ -1667,276 +1861,37 @@ class ServiceConsumerView(View):
             _pk = request.session['id']
             user = Users.objects.get(pk=_pk)
             provider = Providers.objects.get(user_id=user.id)
-            title = urllib.unquote_plus(alias)
-            service = Services.objects.get(title=title)
+            service = Services.objects.get(pk=pk)
 
             # Available types
-            types = []
-            types.append({'id': 'H', "description": 'Human Based'})
-            types.append({'id': "M", "description": "Machine Based"})
+            types = TYPE_CHOICES
 
-            # cover images
-            covers = getDefaultCoverList()
-            
             keywords = ServiceKeywords.objects.filter(service_id=service.id)
             if not keywords:
                 keywords = None
 
-            languages, langList = None, []
-            import pycountry
-            languages = ServiceLanguages.objects.filter(service_id=service.id)
-            for l in pycountry.languages:
-                for i in languages:
-                    if i.alias == l.terminology:
-                        langList.append(l.name)               
+            
+            availableLanguages = ServiceLanguages.objects.filter(service_id=service.id).values_list('alias', flat=True)
+            langList = compareLanguages(availableLanguages)
 
             # load template
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
                     'year':datetime.now().year,
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request),
-                    'alias': alias,
-                    'username': request.session['username'],
                     'service': service,
                     'provider': Users.objects.get(pk=service.owner_id),
                     'keywords': keywords,
-                    'languages': languages,
+                    'availableLanguages': langList,
                     'categories': Categories.objects.all().order_by('id'),
-                    'covers': covers,
                     'model': ChargingPolicies.objects.get(pk=service.charging_policy_id),
                     'rating': ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0],
                     'reviews': ConsumersToServices.objects.filter(service_id=service.id).count(),
                     'currencies': pycountry.currencies
                 }))
         except: 
-            pass
-
-#################################
-##  Technical support
-#################################
-class TechnicalSupport(View):
-    def get(self, request):
-        """
-        Get the home page for technical support related topics in AoD platform
-        """
-        template = "app/help/index.html"
-        try:
-            assert isinstance(request, HttpRequest)
-            
-            return render(request, template,
-                context_instance = RequestContext(request,
-                {
-                    'title':'Technical support',
-                    'year':datetime.now().year,
-                    'username': request.session["username"],
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request),
-                }))
-            
-        except:
-            return render(request, template,
-                context_instance = RequestContext(request,
-                {
-                    'title':'Technical support',
-                    'year':datetime.now().year,
-                    'username': ''
-                }))
-
-class CreateAccountSupport(View):
-    def get(self, request):
-        """
-        Load the page that describes step-by-step how a visitor can create a new account
-        """
-        template = "app/help/create_new_account.html"
-        try:
-            assert isinstance(request, HttpRequest)
-            
-            return render(request, template,
-                context_instance = RequestContext(request,
-                {
-                    'title':'Technical support',
-                    'year':datetime.now().year,
-                    'username': request.session["username"],
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request),
-                }))
-            
-        except:
-            return render(request, template,
-                context_instance = RequestContext(request,
-                {
-                    'title':'Technical support',
-                    'year':datetime.now().year,
-                    'username': ''
-                }))
-
-class LogInOutSupport(View):
-    def get(self, request):
-
-        template = "app/help/log-in-out.html"
-        try:
-            assert isinstance(request, HttpRequest)
-            
-            return render(request, template,
-                context_instance = RequestContext(request,
-                {
-                    'title':'Technical support | Log in/out',
-                    'year':datetime.now().year,
-                    'username': request.session["username"],
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request)
-                }))
-            
-        except:
-            return render(request, template,
-                context_instance = RequestContext(request,
-                {
-                    'title':'Technical support',
-                    'year':datetime.now().year,
-                    'username': ''
-                }))
-
-class ForgetPasswordSupport(View):
-    def get(self, request):
-
-        template = "app/help/forget-password.html"
-        try:
-            assert isinstance(request, HttpRequest)
-            
-            return render(request, template,
-                context_instance = RequestContext(request,
-                {
-                    'title':'Technical support | Forget password',
-                    'year':datetime.now().year,
-                    'username': request.session["username"],
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request),
-                }))
-        except:
-            return render(request, template,
-                context_instance = RequestContext(request,
-                {
-                    'title':'Technical support',
-                    'year':datetime.now().year,
-                    'username': ''
-                }))
-
-@loginRequiredView
-class UpdateProfileSupport(View):
-    def get(self, request):
-        """
-        Load the page that describes how a registered user can update his profile
-        """
-        template = "app/help/update-profile-steps.html"
-        try:
-            assert isinstance(request, HttpRequest)
-
-            if 'username' in request.session:
-                return render(request, template,
-                    context_instance = RequestContext(request,
-                    {
-                        'title':'Technical support | Update my profile',
-                        'year':datetime.now().year,
-                        'username': request.session["username"],
-                        'links': navbarLinks(request),
-                        'breadcrumb': breadcrumbLinks(request),
-                    }))
-        except:
-            pass
-
-@loginRequiredView
-class ChangePasswordSupport(View):
-    def get(self, request):
-        """
-        Load the page that describes how a registered user can change his password
-        """
-        template = "app/help/change-password.html"
-        try:
-            assert isinstance(request, HttpRequest)
-
-            if 'username' in request.session:
-                return render(request, template,
-                    context_instance = RequestContext(request,
-                    {
-                        'title':'Technical support | Change password',
-                        'year':datetime.now().year,
-                        'username': request.session["username"],
-                        'links': navbarLinks(request),
-                        'breadcrumb': breadcrumbLinks(request),
-                    }))
-        except:
-            pass
-
-@loginRequiredView
-class RegisterServiceSupport(View):
-    def get(self, request):
-        """
-        Load the page that describes how a registered user can upload a new service
-        """
-        template = "app/help/services/provider/create-service.html"
-        try:
-            assert isinstance(request, HttpRequest)
-
-            if 'username' in request.session:
-                return render(request, template,
-                    context_instance = RequestContext(request,
-                    {
-                        'title':'Technical support | Register service',
-                        'year':datetime.now().year,
-                        'username': request.session["username"],
-                        'links': navbarLinks(request),
-                        'breadcrumb': breadcrumbLinks(request),
-                    }))
-        except:
-            pass
-
-@loginRequiredView
-class UpdateServiceSupport(View):
-    def get(self, request):
-        """
-        Load the page that describes how a registered user can update an existing service
-        """
-        template = "app/help/services/provider/update-service.html"
-        try:
-            assert isinstance(request, HttpRequest)
-
-            if 'username' in request.session:
-                return render(request, template,
-                    context_instance = RequestContext(request,
-                    {
-                        'title':'Technical support | Update service',
-                        'year':datetime.now().year,
-                        'username': request.session["username"],
-                        'links': navbarLinks(request),
-                        'breadcrumb': breadcrumbLinks(request),
-                    }))
-        except:
-            pass
-
-@loginRequiredView
-class DeleteServiceSupport(View):
-    def get(self, request):
-        """
-        Load the page that describes how a registered user can delete an existing service
-        """
-        template = "app/help/services/provider/delete-service.html"
-        try:
-            assert isinstance(request, HttpRequest)
-
-            if 'username' in request.session:
-                return render(request, template,
-                    context_instance = RequestContext(request,
-                    {
-                        'title':'Technical support | Delete service',
-                        'year':datetime.now().year,
-                        'username': request.session["username"],
-                        'links': navbarLinks(request),
-                        'breadcrumb': breadcrumbLinks(request),
-                    }))
-        except:
-            pass
+            print_exc()
+            return Http404
 
 
 #################################
@@ -2533,6 +2488,8 @@ class SearchNetworkAssistanceServices(View):
                 # merge lists
                 mergeList = list(set(categories + subCategories))
                 services = Services.objects.filter(categories__id__in=mergeList)
+                uniqueServiceIDs = list(set(services.values_list('id', flat=True)))
+                services = Services.objects.filter(pk__in=uniqueServiceIDs)
 
                 # retrieve temp selected services
                 tempSelectedServices = NasTemporarySetup.objects.filter(carer_id=carer.id, consumer_id=consumer.id)
@@ -2933,7 +2890,7 @@ def not_found(request):
         'app/errors/404.html',
         context_instance = RequestContext(request,
         {
-            'title':'Page not Found',
+            'title': _('Page not Found'),
             'year':datetime.now().year,
         }))
 
@@ -2945,7 +2902,7 @@ def method_not_allowed(request):
         'app/errors/404.html',
         context_instance = RequestContext(request,
         {
-            'title':'Internal server error',
+            'title': _('HTTP method not allowed'),
             'year':datetime.now().year,
         }))
 
@@ -2957,7 +2914,7 @@ def server_error(request):
         'app/errors/500.html',
         context_instance = RequestContext(request,
         {
-            'title':'Internal server error',
+            'title': _('Internal server error'),
             'year':datetime.now().year,
         }))
 
@@ -3090,13 +3047,20 @@ class Callback(viewsets.ViewSet):
                 # INSERTS
                 if userExistence == 0: 
                     user = insertUserProfile(fullProfileJson)
-                    insertUserRoles(user.id, roles)
+                    insertUserRoles(user.id, roles, fullProfileJson)
                     insertUserAccessToken(user.id, accessTokenJsonData)
                 # UPDATES
                 elif userExistence == 1:
                     user = updateUserProfile(username, fullProfileJson)
-                    updateUserRoles(user.id, roles)
+                    updateUserRoles(user.id, roles, fullProfileJson)
                     updateUserAccessToken(user.id, accessTokenJsonData)
+
+                # check if integration with Social Network
+                if socialNetworkIntegration():
+                    sn = SocialNetwork()
+                    state, response = sn.createUser(fullProfileJson["mail"], accessToken)
+                    if settings.DEBUG:
+                        print state, response
 
                 if settings.DEBUG:
                     print "accessToken:=", accessToken
@@ -3121,12 +3085,24 @@ class Logout(View):
     
     def get(self, request):
         try:
-            request.session.flush()
-            response = redirect(reverse('landing_page'))
+            userID = request.session['id']
 
+            # Logout from Social Network
+            if socialNetworkIntegration():
+                sn = SocialNetwork()
+                state, response = sn.sessionLogout(userID)
+                if settings.DEBUG:
+                    print state, response
+
+            # Logout from AoD
+            request.session.flush()
+            response = redirect(reverse('landing_page'), permanent=True)
             return response
+            #return home(request)
         except:
-            pass
+            if settings.DEBUG:
+                print_exc()
+            return Http404
 
 def insertUserProfile(payload):
     try:
@@ -3175,7 +3151,7 @@ def updateUserProfile(username, payload):
             print_exc()
         return -1
 
-def insertUserRoles(user_id, roles):
+def insertUserRoles(user_id, roles, profile):
     try:
         rolesList = ["service_provider", "service_consumer", "carer"]
         for i in rolesList:
@@ -3185,7 +3161,7 @@ def insertUserRoles(user_id, roles):
                     provider = Providers(user=Users.objects.get(pk=user_id), is_active=True, company="Not set")
                     provider.save()
                 if i in ["service_consumer"]:
-                    consumer = Consumers(user=Users.objects.get(pk=user_id), crowd_fund_notification=False, crowd_fund_participation=False, is_active=True)
+                    consumer = Consumers(user=Users.objects.get(pk=user_id), crowd_fund_notification=profile['crowd_fund_notification'], crowd_fund_participation=profile['crowd_fund_participation'], is_active=True)
                     consumer.save()
                 if i in ["carer"]:
                     carer = Carers(user=Users.objects.get(pk=user_id), is_active=True)
@@ -3196,7 +3172,7 @@ def insertUserRoles(user_id, roles):
                     provider = Providers(user=Users.objects.get(pk=user_id), is_active=False, company="Not set")
                     provider.save()
                 if i in ["service_consumer"]:
-                    consumer = Consumers(user=Users.objects.get(pk=user_id), crowd_fund_notification=False, crowd_fund_participation=False, is_active=False)
+                    consumer = Consumers(user=Users.objects.get(pk=user_id), crowd_fund_notification=profile['crowd_fund_notification'], crowd_fund_participation=profile['crowd_fund_participation'], is_active=False)
                     consumer.save()
                 if i in ["carer"]:
                     carer = Carers(user=Users.objects.get(pk=user_id), is_active=False)
@@ -3207,7 +3183,7 @@ def insertUserRoles(user_id, roles):
             print_exc()
         pass
 
-def updateUserRoles(user_id, roles):
+def updateUserRoles(user_id, roles, profile):
     try:
         rolesList = ["service_provider", "service_consumer", "carer"]
         if type(roles) is list:
@@ -3216,7 +3192,7 @@ def updateUserRoles(user_id, roles):
                     if i in ["service_provider"]:
                         provider = Providers.objects.filter(user_id=user_id).update(is_active=True, company="Not set")
                     if i in ["service_consumer"]:
-                        consumer = Consumers.objects.filter(user_id=user_id).update(crowd_fund_notification=False, crowd_fund_participation=False, is_active=True)
+                        consumer = Consumers.objects.filter(user_id=user_id).update(crowd_fund_notification=profile['crowd_fund_notification'], crowd_fund_participation=profile['crowd_fund_participation'], is_active=True)
                     if i in ["carer"]:
                         carer = Carers.objects.filter(user_id=user_id).update(is_active=True)
                 else:
@@ -3271,3 +3247,136 @@ def setSessionValues(request, user_id, username):
         if settings.DEBUG:
             print_exc()
         pass
+
+
+
+##############################
+##  FAQ - Technical Support ##
+##############################
+class FAQTopicListView(View):
+
+    def get(self, request):
+        """
+        Retrieve a list of available FAQ topics with their related articles
+        """
+        try:
+            template = "app/faq/index.html" 
+
+            return render(request, template,
+                context_instance = RequestContext(request,
+                {
+                    'title': _('Frequently Asked Questions'),
+                    'year': str(datetime.now().year),
+                    'username': request.session["username"] if "username" in request.session else None,
+                    'topics': Topic.objects.filter(visible=True),
+                }))
+        except:
+            if settings.DEBUG:
+                print_exc()
+            raise Http404
+
+class FAQTopicView(View):
+
+    def get(self, request, pk):
+        """
+        Retrieve a specific FAQ topic with the related articles
+        """
+        try:
+            template = "app/faq/topics/index.html" 
+            topic = Topic.objects.get(pk=pk)
+
+            if topic.protected and "id" not in request.session.keys():
+                return redirect(reverse('login_page'))
+
+            if topic.visible == True: 
+                return render(request, template,
+                    context_instance = RequestContext(request,
+                    {
+                        'title': _(' FAQ - '),
+                        'year': str(datetime.now().year),
+                        'username': request.session["username"] if "username" in request.session else None,
+                        'topic': topic
+                    }))
+            else:
+                raise Http404
+        except:
+            if settings.DEBUG:
+                print_exc()
+            raise Http404
+
+class FAQArticleView(View):
+
+    def get(self, request, pk):
+        """
+        Retrieve a specific FAQ article 
+        """
+        try:
+            template = "app/faq/topics/articles/index.html" 
+            article = Article.objects.get(pk=pk)
+
+            if article.protected and "id" not in request.session.keys():
+                return redirect(reverse('login_page'))
+
+            if article.visible == True: 
+                return render(request, template,
+                    context_instance = RequestContext(request,
+                    {
+                        'title': _(' FAQ - ') + article.title,
+                        'year': str(datetime.now().year),
+                        'article': article,
+                        'logged_user': Users.objects.get(pk=request.session['id']) if 'id' in request.session.keys() else None,
+                        "contact_us": ContactUs.objects.get(active=True)
+                    })
+                )
+            else:
+                 raise Http404
+        except:
+            if settings.DEBUG:
+                print_exc()
+            raise Http404
+
+
+
+class CalendarView(View):
+
+    def get(self, request, username):
+        """
+        Retrieve the list of events
+        """
+        try:
+            template = "app/consumers/calendar/index.html" 
+
+            return render(request, template,
+                context_instance = RequestContext(request,
+                {
+                    'title': _(' My calendar'),
+                    'year': str(datetime.now().year),
+                })
+            )
+        except:
+            if settings.DEBUG:
+                print_exc()
+            raise Http404
+
+
+#==============================
+#   Cookie Policy
+#==============================
+class CookiePolicyView(View):
+    """Manage AoD cookie policy"""
+
+    def get(self, request):
+        """Load context of AoD cookie policy"""
+        try:
+            template = "app/cookiePolicy.html" 
+            return render(request, template,
+                context_instance = RequestContext(request,
+                {
+                    'title': _('Cookies Policy'),
+                    'year': str(datetime.now().year),
+                    'username': request.session["username"] if "username" in request.session else None,
+                    'policy': CookiePolicy.objects.get(active=True),
+                }))
+        except:
+            print_exc()
+            raise Http404

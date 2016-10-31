@@ -17,8 +17,6 @@ $(".reset-font-size").click(function () {
 
 
 
-
-
 function fontResize(element, diff) {
     var tempFontSize = element.css('font-size').replace(/\D/g, '');
     var updatedFontSize = parseInt(tempFontSize) + parseInt(diff);

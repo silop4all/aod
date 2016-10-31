@@ -1,4 +1,4 @@
-﻿{% extends "admin/base_site.html" %}
+{% extends "admin/base_site.html" %}
 
 <!-- LOADING -->
 {% load i18n grp_tags log %}
@@ -20,7 +20,7 @@
 {% endblock %}
 {% block content_title %}
     {% if title %}
-        <header><h1>Welcome in AoD administration panel</h1></header>
+        <header><h1>{% trans 'Welcome in AoD administration panel' %}</h1></header>
     {% endif %}
 {% endblock %}
 
@@ -74,6 +74,9 @@
                 </div>
                 <div class="grp-row" id="rosetta_plugin">
                     <a href="{% url 'rosetta-home' %}"><strong>{% trans 'Rosetta (translation)' %}</strong></a>
+                </div>
+                <div class="grp-row" id="filebrowser_plugin">
+                    <a href="{% url 'filebrowser:fb_browse' %}"><strong>{% trans 'File-Browser (file management)' %}</strong></a>
                 </div>
             </div>
 

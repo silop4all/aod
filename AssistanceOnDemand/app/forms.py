@@ -5,6 +5,10 @@ Definition of forms.
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
+from app.models import Editor
+from django.db.models import *
+from tinymce.widgets import TinyMCE
+
 
 class BootstrapAuthenticationForm(AuthenticationForm):
     """Authentication form which uses boostrap CSS."""
@@ -31,3 +35,9 @@ class RegistrationForm(forms.Form):
             'autocomplete': 'off',  'placeholder':"the name of user", 'required':True, 'autofocus': True}))
 
     
+
+class EditorForm(forms.BaseModelForm):
+    my_field = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 10}))
+    
+    class Meta:
+        model = Editor

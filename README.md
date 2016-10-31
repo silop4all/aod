@@ -1,4 +1,7 @@
 # Prosperity4All project
+
+[Prosperity4All logo](https://github.com/silop4all/aod/tree/master/P4A.png "")
+
 ## Assistance On Demand service Infrastructure (AoD)
 
 ### Hardware requirements
@@ -42,9 +45,9 @@ $ sudo service mysql status
 $ mysql –uroot -p
 ```
 ```sql
-create database `pros4all`; -- create db
+create database `aod` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_unicode_ci; 
 create user 'aod'@'localhost' identified by 'aod';       
-grant all privileges on `pros4all`.* to 'aod'@'localhost'; 
+grant all privileges on `aod`.* to 'aod'@'localhost'; 
 flush privileges;
 quit
 ```
@@ -160,7 +163,7 @@ AOD_HOST = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pros4all',
+        'NAME': 'aod',
         'USER': 'aod',
         'PASSWORD': 'aod',
         'HOST': 'localhost',
@@ -234,14 +237,15 @@ sys.path.append('/opt/prosperity/AssistanceOnDemand/AssistanceOnDemand')
 
 Populate tha database and enter the superuser credentials, if required:
 ```bash
-#$ sudo python manage.py syncdb(only if .sql is not provided)
-$ mysql -uaod -paod pros4all < pros4all.sql
+$ cd /opt/prosperity/AssistanceOnDemand/
+$ sudo python manage.py makemigrations
 $ sudo python manage.py migrate
-```
-
-Collect static files:
-```bash
+$ sudo python manage.py update_translation_fields
+$ sudo python manage.py makemigrations
+$ sudo python manage.py migrate
 $ sudo python manage.py collectstatic --noinput
+$ sudo chown aod:aod -R /opt/prosperity/AssistanceOnDemand/
+$ sudo mysql -uaod -paod aod < sql/aod_data.sql
 ```
 
 Execute the command to check the success installation of AoD project:
@@ -302,12 +306,13 @@ WSGIPythonPath /opt/prosperity/AssistanceOnDemand/AssistanceOnDemand/
 
 <Directory /opt/prosperity/AssistanceOnDemand/AssistanceOnDemand>
     <Files wsgi.py>
-        Order deny,allow
+        #Order deny,allow
         Require all granted
     </Files>
 </Directory>
 
-# Else, in production mode the media must be served from apache web server:
+# Else, in production mode the media must be served from apache web server
+# In case of path /prosperity/assistance-on-demand, see below:
 WSGIScriptAlias / /opt/prosperity/AssistanceOnDemand/AssistanceOnDemand/wsgi.py
 WSGIPythonPath /opt/prosperity/AssistanceOnDemand/AssistanceOnDemand/
 
@@ -342,7 +347,7 @@ $ sudo service apache2 restart
 
 
 
-### Install Phpmyadmin (optional)
+### Install PhpMyAdmin (optional)
 
 ```bash
 $ sudo apt-get install phpmyadmin

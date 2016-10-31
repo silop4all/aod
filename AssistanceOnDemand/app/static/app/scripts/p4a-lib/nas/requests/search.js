@@ -137,21 +137,21 @@ function submitPermissionRequest(user) {
         contentType: 'application/json',
         success: function (response) {
             swal({
-                title: "Network of assistance services ",
-                text: "You need permission from " + receiver + " to setup his/her network of assistance services on behalf of him/her.\nYour request has been submitted.",
+                title: gettext("Network of assistance services"),
+                text: gettext("You need permission from ") + receiver + gettext(" to setup his/her network of assistance services on behalf of him/her.\nYour request has been submitted."),
                 type: "success",
-                confirmButtonText: "Continue",
+                confirmButtonText: gettext("Continue"),
                 confirmButtonColor: "#228B22"
             });
 
         },
         error: function (response) {
-            console.log("error");
+            console.log(gettext("error"));
             swal({
-                title: "Network of assistance services ",
-                text: "An error occurred an your request has been abandoned.",
+                title: gettext("Network of assistance services "),
+                text: gettext("An error occurred an your request has been abandoned."),
                 type: "warning",
-                confirmButtonText: "Sorry, try again!",
+                confirmButtonText: gettext("Sorry, try again!"),
                 confirmButtonColor: "#b94a48"
             });
         },

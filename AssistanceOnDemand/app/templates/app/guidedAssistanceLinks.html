@@ -1,15 +1,15 @@
-﻿{% load i18n %}
+{% load i18n %}
 {% load l10n %}
 {% block guidedAssistanceList %}
 <li class="dropdown">
-    <a href="#" class="dropdown-toggle" title="Settings" data-toggle="dropdown" role="button" aria-expanded="true">  
+    <a href="#" class="dropdown-toggle" title="{% trans 'Services network' %} " data-toggle="dropdown" role="button" aria-expanded="true">  
         <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding"  id="guided_services">
             <span class="fa fa-sitemap"></span> {% trans 'Services network' %} <span class="fa fa-caret-down"></span>
         </span>
     </a> 
     <ul class="dropdown-menu under-construction" role="menu" aria-labelledby="guided_services">
         <li role="presentation">
-            <a href="{% url 'guided_assistance_landing_page' %}" title="Manage the requests related to network of assistance services" role="menuitem" tabindex="-1">
+            <a href="{% url 'guided_assistance_landing_page' %}" title="{% trans 'Manage the requests related to network of assistance services' %}" role="menuitem" tabindex="-1">
                 <span class="fa fa-inbox fa-fw"></span> {% trans 'Guided assistance' %}
             </a>
         </li>

@@ -14,14 +14,12 @@ $(document).ready(function () {
 
     $("#delete_service").click(function (e) {
         e.preventDefault();
-        deleteService($(this).attr('href'), $(this).data('redirect'));
+        deleteService($(this));
     });
     $("#edit_service").click(function () {
         editService(url);
     });
 
-    // Preview tab: slider
-    loadImageSlider();
     
     $.ajax({
         type: 'GET',
@@ -31,11 +29,15 @@ $(document).ready(function () {
             $.ajaxSettings.beforeSend(xhr, settings);
         },
         success: function (response) {
-            // load map
-            GoogleMap.load({ 'latitude': response.latitude, "longitude": response.longitude, "radius": response.coverage }, response.title);
+            //
+            // load map if constraint
+            //
+            if (response.location_constraint === true) {
+                GoogleMap.load({ 'latitude': response.latitude, "longitude": response.longitude, "radius": response.coverage }, response.title);
+            }
         },
         error: function (response) {
-            console.error("load service details error")
+            console.error(gettext("load service details error"));
         },
         complete: function () {
             // nth
@@ -46,6 +48,7 @@ $(document).ready(function () {
         event.preventDefault();
         window.location.href = $(this).data().link;
     });
+
 
 
 }).on('click', '#stats_tab', function () {
@@ -59,26 +62,30 @@ $(document).ready(function () {
             $.ajaxSettings.beforeSend(xhr, settings);
         },
         success: function (response) {
-            console.log("Get stats");
-            $("#stats_table").bootstrapTable({ data: [] });
+            console.log(gettext("Get stats"));
+            var data = [];
+            $("#stats_table").bootstrapTable({ data: data });
+            if (data.length === 0) {
+                $('#stats_table').parent().css("height", "80px");
+            }
         },
         error: function (response) {
-            console.error('error');
+            console.error(gettext('error'));
         },
         complete: function () {
             loading.hide();
         }
     });
 
-    $('.fixed-table-body').css('height', 'auto');
+    //$('.fixed-table-body').css('height', 'auto');
 
 }).on('click', '#support_tab', function () {
     var loading = new AjaxView($("#support_container"));
     loading.show();
 
-    var videos = 'Service owner does not provide videos';
-    var docs = 'Service owner does not provide further documents (pdf, office documents, images, etc..)';
-    var skype = "magnitakis";
+    var videos = gettext('Service owner does not provide videos');
+    var docs = gettext('Service owner does not provide further documents (pdf, office documents, images, etc..)');
+    var skype = "";
     $.ajax({
         type: 'GET',
         url: $(this).data('resource'),
@@ -95,37 +102,37 @@ $(document).ready(function () {
                     if ($.inArray(response.technical_support[i].format, ["mp4", "mp3"]) > -1) {
                         videos += [
                             '<div data-support-id="' + response.technical_support[i].id + '">',
-                                '<span class="fa fa-video-camera text-muted fa-lg" role="img" alt="Video presentation"></span> ',
+                                '<span class="fa fa-video-camera text-muted fa-lg" role="img" alt="' + gettext("Video presentation") + '"></span> ',
                                 '<a href="#vd' + response.technical_support[i].id + '" class="access-resource text-primary">' + response.technical_support[i].title + '</a><br>',
                                 '<video style="display:none; width:80%" controls  title="' + response.technical_support[i].title + '" id="vd' + response.technical_support[i].id + '">',
                                     '<source src="' + response.technical_support[i].path + '" type="video/mp4">',
                                     '<source src="movie.ogg" type="video/ogg">',
-                                    'Your browser does not support the video tag.',
+                                    gettext('Your browser does not support the video tag.'),
                                 '</video>',
                             '</div>'
                         ].join('');
                     }
                     else if ($.inArray(response.technical_support[i].format, ["doc", "docx"]) > -1) {
                         docs += "<div data-support-id='" + response.technical_support[i].id + "' style=' min-height: 80px; min-width: 45%; background: #E6E6E6; padding: 30px; float: left; margin: 10px' >";
-                        docs += "<span style='vertical-align: middle;' class='fa fa-file-word-o text-primary fa-2x' role='img' alt='Office word document'></span> <a href='#wd" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
+                        docs += "<span style='vertical-align: middle;' class='fa fa-file-word-o text-primary fa-2x' role='img' alt='" + gettext("Office word document") +"'></span> <a href='#wd" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
                         docs += "<iframe style='display:none' title='" + response.technical_support[i].title + "' width='540' id='wd" + response.technical_support[i].id + "' height='360' frameborder='0' src='" + response.technical_support[i].path + "' ebkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
                         docs += "</div>";
                     }
                     else if ($.inArray(response.technical_support[i].format, ["xls", "xlsx"]) > -1) {
                         docs += "<div data-support-id='" + response.technical_support[i].id + "' style=' min-height: 80px; min-width: 45%; background: #E6E6E6; padding: 30px; float: left; margin: 10px' >";
-                        docs += "<span style='vertical-align: middle;' class='fa fa-file-excel-o text-success fa-2x' role='img' alt='Office Excel dociument'></span> <a href='#wd" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
+                        docs += "<span style='vertical-align: middle;' class='fa fa-file-excel-o text-success fa-2x' role='img' alt='" + gettext("Office Excel document") + "'></span> <a href='#wd" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
                         docs += "<iframe style='display:none' title='" + response.technical_support[i].title + "' width='540' id='wd" + response.technical_support[i].id + "' height='360' frameborder='0' src='" + response.technical_support[i].path + "' ebkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
                         docs += "</div>";
                     }
                     else if ($.inArray(response.technical_support[i].format, ["pdf"]) > -1) {
                         docs += "<span data-support-id='" + response.technical_support[i].id + "' style=' min-height: 80px; min-width: 45%; background: #E6E6E6; padding: 30px; float: left; margin: 10px'>";
-                        docs += "<span style='vertical-align: middle;' class='fa fa-file-pdf-o text-danger fa-2x' role='img' alt='Pdf document'></span> <a href='#pdf" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
+                        docs += "<span style='vertical-align: middle;' class='fa fa-file-pdf-o text-danger fa-2x' role='img' alt='" + gettext("Pdf document") + "'></span> <a href='#pdf" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
                         docs += "<iframe style='display:none; width: 100%; min-height:100%' title='" + response.technical_support[i].title + "' width='540' id='pdf" + response.technical_support[i].id + "' height='360' frameborder='0' src='" + response.technical_support[i].path + "' ebkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
                         docs += "</span>";
                     }
                     else if ($.inArray(response.technical_support[i].format, ["png", "gif", "jpeg", "jpg"]) > -1) {
                         docs += "<div data-support-id='" + response.technical_support[i].id + "'  style=' min-height: 80px; min-width: 45%; background: #E6E6E6; padding: 30px; float: left; margin: 10px'>";
-                        docs += "<span style='vertical-align: middle;' class='fa fa-file-picture-o text-primary fa-2x' role='img' alt='Image file'></span> <a href='#img" + response.technical_support[i].id + "' class='access-resource'>" + response.technical_support[i].title + "</a><br>";
+                        docs += "<span style='vertical-align: middle;' class='fa fa-file-picture-o text-primary fa-2x' role='img' alt='" + gettext("Image file") + "'></span> <a href='#img" + response.technical_support[i].id + "' class='access-resource'>" + response.technical_support[i].title + "</a><br>";
                         docs += "<iframe style='display:none' title='" + response.technical_support[i].title + "' width='540' id='img" + response.technical_support[i].id + "' height='360' frameborder='0' src='" + response.technical_support[i].path + "' ebkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
                         docs += "</div>";
                     }
@@ -138,13 +145,13 @@ $(document).ready(function () {
             if (skype != '' && skype != null) {
                 skypeID = [
                     '<div style="clear: both" class="padding-left-20">',
-                        '<span>ID: </span>',
+                        '<span>' + gettext("ID") +': </span>',
                         skype,
                     '<div>',
 
                     '<div id="SkypeButton_Call_' + skype + '_1">',
                         '<script type="text/javascript">',
-                        'Skype.ui({"name": "chat", "element": "SkypeButton_Call_' + skype + '_1", "participants": ["' + skype + '"], "imageSize": 22});',
+                        'Skype.ui({"name": "chat", "element": "SkypeButton_Call_' + skype + '_1", "participants": ["' + skype + '"], "imageSize": 24});',
                     '</script>',
                    '</div>'
                 ].join('');
@@ -177,8 +184,8 @@ $(document).ready(function () {
             var reviewsSum = 0;
             var counters = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
             var text = [
-                    '<div class="jumbotron text-center">',
-                        'No user feedback.',
+                    '<div class="jumbotron text-center" style="background-color: white;">',
+                        gettext('No users feedback.'),
                     '</div>'
             ].join('');
 
@@ -196,7 +203,7 @@ $(document).ready(function () {
                                             '<span class="fa fa-circle fa-stack-2x" style="color: #d7d5d5 "></span>',
                                             '<span class="fa fa-user fa-stack-1x" style="color: #ebebea"></span>',
                                         '</span>',
-                                        '<h6 ><span> By <a href="#" title="User feedback for the service">' + response.results[i].consumer.user.lastname + " " + response.results[i].consumer.user.name + '</a></span></h6>',
+                                        '<h6 ><span> By <a href="#" title="' + gettext("User feedback for the service") + '">' + response.results[i].consumer.user.lastname + " " + response.results[i].consumer.user.name + '</a></span></h6>',
                                         '<h6 ><span class="fa fa-calendar text-primary"></span> ' + response.results[i].purchased_date.split('T')[0] + '</h6>',
                                     '</center>',
                                 '</div>',
@@ -274,27 +281,48 @@ function loadImageSlider() {
     var jssor_slider1 = new $JssorSlider$('slider', options);
 }
 
-function deleteService(url, successURL) {
+function deleteService(service) {
     var loading = new AjaxView($(".platform-info-box"));
+    var auth = "";
+    
     loading.show();
     $.ajax({
         type: 'DELETE',
-        url: url,
+        url: service.attr('href'),
         async: false,
         dataType: "json",
         beforeSend: function (xhr, settings) {
             $.ajaxSettings.beforeSend(xhr, settings);
         },
         success: function (response) {
-            if (response.state === true) {
-                //window.location.href = response.redirect;
-                location.href = successURL;
-            }
+            auth = response.auth_basic;
+            console.log(gettext("Success service deletion"));
         },
         error: function (response) {
-            alert('The deletion of this service failed');
+            console.error(gettext('The deletion of this service failed'));
         },
         complete: function () {
+            //
+            // Remove service from Social network
+            // 
+            if (service.data('social-network-usage') === "True") {
+                $.ajax({
+                    type: 'GET',
+                    url: service.data('social-network-delete-url'),
+                    headers: {
+                        "Authorization": "Basic " + auth
+                    },
+                    success: function (response) {
+                    },
+                    error: function (response) {
+                        console.error(gettext('The deletion of this service failed in SN'));
+                    },
+                    complete: function () {
+                        loading.hide();
+                    }
+                });
+            }
+            location.href = service.data('redirect');
             loading.hide();
         }
     });

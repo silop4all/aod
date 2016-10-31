@@ -32,7 +32,7 @@ function Swap2Buttons(btnA, btnB) {
 Swap2Buttons.prototype.setDebug = function (state) {
     // Override the predefined debug state
     this.debug = state;
-    console.log("Debug state: "+ this.debug);
+    console.log(gettext("Debug state: ")+ this.debug);
 }
 
 Swap2Buttons.prototype.setChildNodes = function (chNodeA, chNodeB) {
@@ -41,8 +41,8 @@ Swap2Buttons.prototype.setChildNodes = function (chNodeA, chNodeB) {
     this.childNodeB = chNodeB;
 
     if (this.debug) { 
-        console.log("Child node of btn A:" + this.childNodeA); 
-        console.log("Child node of btn B:" + this.childNodeB);
+        console.log(gettext("Child node of btn A:") + this.childNodeA); 
+        console.log(gettext("Child node of btn B:") + this.childNodeB);
     }
 }
 
@@ -52,8 +52,8 @@ Swap2Buttons.prototype.setIcons = function (iconClassA, iconClassB) {
     this.iconB = iconClassB;
 
     if (this.debug) {
-        console.log("Icon of btn A:" + this.iconA);
-        console.log("Icon of btn B:" + this.iconB);
+        console.log(gettext("Icon of btn A:") + this.iconA);
+        console.log(gettext("Icon of btn B:") + this.iconB);
     }
 }
 
@@ -63,8 +63,8 @@ Swap2Buttons.prototype.setColors = function (colorClassA, colorClassB) {
     this.colorB = colorClassB;
 
     if (this.debug) {
-        console.log("Color of btn A:" + this.iconA);
-        console.log("Color of btn B:" + this.iconB);
+        console.log(gettext("Color of btn A:") + this.iconA);
+        console.log(gettext("Color of btn B:") + this.iconB);
     }
 }
 
@@ -87,7 +87,7 @@ Swap2Buttons.prototype.initiate = function () {
     this.btnB.removeClass(this.colorA).addClass(this.colorB);
 
     if (this.debug) {
-        console.log("Initiate properties of buttons");
+        console.log(gettext("Initiate properties of buttons"));
         console.log(this.btnA);
         console.log(this.btnB);
     }
@@ -101,7 +101,7 @@ Swap2Buttons.prototype.swap = function () {
     this.btnA.removeClass(this.colorA).addClass(this.colorB);
 
     if (this.debug) {
-        console.log("Swap properties of buttons");
+        console.log(gettext("Swap properties of buttons"));
         console.log(this.btnA);
         console.log(this.btnB);
     }
@@ -109,6 +109,6 @@ Swap2Buttons.prototype.swap = function () {
 
 Swap2Buttons.prototype.log = function () {
     // Logs
-    console.log("First button:" + this.btnA);
-    console.log("Second button:" + this.btnB);
+    console.log(gettext("First button:") + this.btnA);
+    console.log(gettext("Second button:") + this.btnB);
 }

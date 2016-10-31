@@ -1,4 +1,4 @@
-﻿{% extends "app/base.html" %}
+{% extends "app/base.html" %}
 {% load i18n %}
 {% load l10n %}
 {% block title %} AoD | {% trans 'Register your services' %} {% endblock title %}
@@ -8,124 +8,116 @@
 {% block extraCss %}
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
 {% endblock extraCss %}
-
-{% block navbar %}
-    {% include "app/navbar-users.html" %}
-{% endblock navbar %}
-
-
 
 
 {% block content %}
     <div class="container body-content margin-top-50 padding-bottom-em-2">
         {% block breadcrumb %}
         <ol class="breadcrumb custom-inactive-breadcrumb" role="navigation" aria-label="breadcrumb">
-            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="Home page"><span class="fa fa-home"></span> {% trans 'Home' %}</a></li>
-            <li><a href="{% url 'provider_dashboard' %}" class="custom-inactive-breadcrumb" title="My services' collection">{% trans 'My collection' %}</a></li>
+            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="{% trans 'Home page' %}"><span class="fa fa-home"></span> {% trans 'Home' %}</a></li>
+            <li><a href="{% url 'provider_dashboard' %}" class="custom-inactive-breadcrumb" title="{% trans 'My offerings' %}">{% trans 'My offerings' %}</a></li>
             <li class="active">{% trans 'Registration' %}</li>
         </ol>
         {% endblock breadcrumb %}
         <main role="main">
             <div class="row">
                 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                    <form action="#" method="post" name="insert-new-service" id="insert-new-service" onsubmit="return check();" enctype="multipart/form-data">
-
-                        <div id="service-registration-wizard">
-                            <div class="tabbable">
-                                <ul id="tabs" class="nav nav-pills nav-justified" data-tabs="tabs">
-                                    <li role="presentation" class="active">
-                                        <a href="#step1" data-toggle="tab">
-                                            <h5>Basic information</h5> 
-                                        </a>
-                                    </li>
-                                    <li role="presentation" class="disabled">
-                                        <a href="#step2" data-toggle="tab">
-                                            <h5>Charging Policy</h5>
-                                        </a>
-                                    </li>
-                                    <li role="presentation" class="disabled">
-                                        <a href="#step3" data-toggle="tab" >
-                                            <h5>Usage</h5>
-                                        </a>
-                                    </li>
-                                    <li role="presentation" class="disabled">
-                                        <a href="#step4" data-toggle="tab" >
-                                            <h5>Constraints</h5>
-                                        </a>
-                                    </li>
-                                    <li role="presentation" class="disabled hidden">
-                                        <a href="#step5" data-toggle="tab" >
-                                            <h5>Technical Support</h5>
-                                        </a>
-                                    </li>
-                                    <li role="presentation" class="disabled">
-                                        <a href="#step6" data-toggle="tab" >
-                                            <h5>Register</h5>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div id="my-tab-content" class="tab-content">
+                    <div id="service-registration-wizard">
+                        <div class="tabbable">
+                            <ul id="tabs" class="nav nav-pills nav-justified" data-tabs="tabs">
+                                <li role="presentation" class="active">
+                                    <a href="#step1" data-toggle="tab">
+                                        <h5>{% trans 'Basic information' %}</h5> 
+                                    </a>
+                                </li>
+                                <li role="presentation" class="disabled">
+                                    <a href="#step2" data-toggle="tab">
+                                        <h5>{% trans 'Charging Policy' %}</h5>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="disabled">
+                                    <a href="#step3" data-toggle="tab" >
+                                        <h5>{% trans 'Usage' %}</h5>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="disabled">
+                                    <a href="#step4" data-toggle="tab" >
+                                        <h5>{% trans 'Constraints' %}</h5>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="disabled">
+                                    <a href="#step5" data-toggle="tab" >
+                                        <h5>{% trans 'Technical Support' %}</h5>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="disabled">
+                                    <a href="#step6" data-toggle="tab" >
+                                        <h5>{% trans 'Register' %}</h5>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div id="my-tab-content" class="tab-content">
 
                                 
-                                    <div class="col-lg-1 col-md-1 col-sm-1 " role="navigation" style="position:absolute">
-                                        <ul class="pager">
-                                            <li class="previous hidden" onclick="previousStep();">
-                                                <a href="#">
-                                                    <i class="fa fa-chevron-left fa-3x"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                <div class="col-lg-1 col-md-1 col-sm-1 " role="navigation" style="position:absolute">
+                                    <ul class="pager">
+                                        <li class="previous hidden" onclick="previousStep();">
+                                            <a href="#">
+                                                <i class="fa fa-chevron-left fa-3x"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                                
-                                    <div class="tab-pane active" id="step1">
-                                        <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
-                                            {% include "app/consumers/services/registration/basic.html" %}
-                                        </div>
+                                <div class="tab-pane active" id="step1">
+                                    <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
+                                        {% include "app/consumers/services/registration/basic.html" %}
                                     </div>
+                                </div>
 
-                                    <div class="tab-pane fade" id="step2" style="color:black">
-                                        <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
-                                            {% include "app/consumers/services/registration/charging.html" %}
-                                        </div>
+                                <div class="tab-pane fade" id="step2" style="color:black">
+                                    <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
+                                        {% include "app/consumers/services/registration/charging.html" %}
                                     </div>
+                                </div>
 
-                                    <div class="tab-pane" id="step3" style="color:black">
-                                        <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
-                                            {% include "app/consumers/services/registration/usage.html" %}
-                                        </div>
+                                <div class="tab-pane" id="step3" style="color:black">
+                                    <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
+                                        {% include "app/consumers/services/registration/usage.html" %}
                                     </div>
+                                </div>
 
-                                    <div class="tab-pane" id="step4" style="color:black">
-                                        <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
-                                            {% include "app/consumers/services/registration/constraints.html" %}
-                                        </div>
+                                <div class="tab-pane" id="step4" style="color:black">
+                                    <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
+                                        {% include "app/consumers/services/registration/constraints.html" %}
                                     </div>
-                                    <div class="tab-pane" id="step5" style="color:black">
-                                        <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
-                                           {% include "app/consumers/services/registration/support.html" %}
-                                        </div>
+                                </div>
+                                <div class="tab-pane" id="step5" style="color:black">
+                                    <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
+                                        {% include "app/consumers/services/registration/support.html" %}
                                     </div>
-                                    <div class="tab-pane" id="step6" style="color:black">                                 
-                                        <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
-                                            {% include "app/consumers/services/registration/confirm.html" %}
-                                        </div>
+                                </div>
+                                <div class="tab-pane" id="step6" style="color:black">                                 
+                                    <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-offset-1"  role="main">
+                                        {% include "app/consumers/services/registration/confirm.html" %}
                                     </div>
+                                </div>
 
                                 
-                                    <div class="col-lg-1 col-md-1 col-sm-1 " role="navigation" style="position:relative" title="Procced to next step">
-                                        <ul class="pager">
-                                            <li class="next" id="navigate-next-btn" onclick="nextStep();" style="background-color:#ffd800!important">
-                                                <a href="#" class="text-center"> 
-                                                    <span class="fa fa-chevron-right fa-3x"></span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                <div class="col-lg-1 col-md-1 col-sm-1 " role="navigation" style="position:relative" title="Procced to next step">
+                                    <ul class="pager">
+                                        <li class="next" id="navigate-next-btn" onclick="nextStep();" style="background-color:#ffd800!important">
+                                            <a href="#" class="text-center"> 
+                                                <span class="fa fa-chevron-right fa-3x"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </main>
@@ -133,21 +125,18 @@
 {% endblock content %}
 
  {% block scripts %}
-    
-    <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>    
-    <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
-    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
-    <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
-    <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
-    <script src="{% static 'app/scripts/p4a-lib/swap-buttons.js' %}"></script>
-    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/service-registration.js' %}"></script>
-    <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/validators/form-validation.js' %}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
-
-   
-
-    <script type="text/javascript">
-       google.maps.event.addDomListener(window, 'load', getMap);
-    </script>
+    <script type="text/javascript" src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>    
+    <script type="text/javascript" src="{% static 'app/scripts/jquery.validate.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    {% with 'https://maps.googleapis.com/maps/api/js?key='|add:google_maps_key as google_map_url %}
+    <script type="text/javascript" src="{{ google_map_url }}" ></script>
+    {% endwith %}
+    <script type="text/javascript" src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/swap-buttons.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/sweetalert/sweetalert.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/aod.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/consumers/services/register.js' %}"></script>
 {% endblock scripts %}

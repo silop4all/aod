@@ -34,20 +34,20 @@
         <li class="active"> {% trans 'My profile' %}</li>
     </ol>
     {% endblock breadcrumb %}
-    
+
     <!-- personalize cover image -->
     {% if object.experience_id %}
         {% if object.experience_id != 1  %}
         <div id="cover-image-region" style="height:40%; border-radius:7px 7px 0 0!important">
             <form action="#" method="post" name="update-cover" id="update-cover" enctype="multipart/form-data" onsubmit="return false;">
-                {% if cover != "{{MEDIA_URL}}app/users/covers/" %}
+                {% if object.cover %}
                     <div id="my-cover" style="background-image: url('{{ cover }}'); opacity:1; width: inherit; height: 100%; background-position: center;  background-repeat: no-repeat; border-radius:7px 7px 0 0"></div>
                 {% else %}
                     <div id="my-cover" style="background-color: rgb(177, 195, 177); opacity:1; width: inherit; height: 100%; background-position: center; border-radius:7px 7px 0 0"></div>
                 {% endif %}
                 <input type="file" id="cover-img" name="cover-img" data-link="{% url 'profile_media' object.id %}" accept="image/*" size="1" style="display:none" form="update-cover" onchange="return loadCover(this);"/>
                 <a href="#" id="edit-cover-img" onclick="return addCover();" class="btn btn-default btn-sm pull-right" style="margin-top:-20% !important; margin-right:1% !important; z-index:+1">
-                    <i class="fa fa-pencil fa-fw"></i> Add cover
+                    <i class="fa fa-pencil fa-fw"></i> {% trans 'Add cover' %}
                 </a>
             </form>
         </div>

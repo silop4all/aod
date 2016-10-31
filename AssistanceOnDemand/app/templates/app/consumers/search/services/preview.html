@@ -1,4 +1,4 @@
-﻿{% extends "app/base.html" %}
+{% extends "app/base.html" %}
 {% load i18n %}
 {% load l10n %}
 
@@ -13,69 +13,31 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/jsson-slider/slider.css' %}" />
 {% endblock extraCss %}
 
-{% block navbar %}
-    {% include "app/navbar-users.html" %}
-{% endblock navbar %}
-
 
 {% block scripts %}
-    {% load staticfiles %}
     <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
     <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
     <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>
     <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM"></script>
+    {% with 'https://maps.googleapis.com/maps/api/js?key='|add:google_maps_key as google_map_url %}
+    <script type="text/javascript" src="{{ google_map_url }}" ></script>
+    {% endwith %}
     <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/google_map.js' %}"></script>
     
     <script type="text/javascript">
-        // Initialize map
-        function getMap() {
-            // Initiate variables
-            var lat, lng;
-            // Initiate coordinates
-            var coordinates = new google.maps.LatLng('{{ service.latitude }}', '{{ service.longitude }}');
-            // Set options
-            var mapOptions = {
-                zoom: 7,
-                center: coordinates,
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                panControl: false,
-                scaleControl: false,
-                streetViewControl: false,
-                zoomControl: true,
-                zoomControlOptions: {
-                    style: google.maps.ZoomControlStyle.SMALL,  //enables the dimension
-                    position: google.maps.ControlPosition.RIGHT_BOTTOM  //position enables
-                },
-                mapTypeControlOptions: {
-                    style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-                }
-            };
-            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-            var marker = new google.maps.Marker({
-                position: coordinates,
-                map: map,
-                draggable: false
-            });
 
-            var infoWindow = new google.maps.InfoWindow({
-                content: "<div><b>Latitude:</b> {{ service.latitude }}<br><b>Longitude:</b> {{ service.longitude }}</div>"
-            });
-            
-            // Handle user actions
-            google.maps.event.addListener(marker, 'click', function (event) {
-                infoWindow.open(map, marker);
-            });
-            // Set marker in center
-            map.setCenter(marker.position);
-            marker.setMap(map);
-        }
-        // Load map
-        google.maps.event.addDomListener(window, 'load', getMap);
+        $(document).ready(function(){
+            //
+            // Initialize map
+            //
+            if ( "{{ service.location_constraint }}" === "True" ) {
+                var coordinates = {"latitude": "{{ service.latitude|unlocalize }}", "longitude": "{{ service.longitude|unlocalize }}", "radius": "{{ service.coverage|unlocalize }}"};
+                var loadMap = GoogleMap.load(coordinates, "{{ service.title|capfirst }}", "map" )
+                google.maps.event.addDomListener(window, 'load', loadMap);
+            }
 
-
-
-        $("#btn-add-cart").click(function(event){
+        }).on('click', "#btn-add-cart", function(event){
             event.preventDefault();
             $.ajax({
                 type: 'POST',
@@ -88,11 +50,11 @@
                         window.location.href = "{% url 'cart_preview'%}";
                     }
                     else {
-                        alert("An error occured");
+                        alert(gettext("An error occured"));
                     }
                 },
                 error: function (response) {
-                    alert("An error is occured. The service modification failed");
+                    alert(gettext("An error is occured. The service modification failed"));
                 }
             });
             return false;    
@@ -130,7 +92,7 @@
                         {% endif %}
                         <hr>
                         <div class="col-lg-4 col-xs-12 col-md-4 col-sm-4 pull-left">
-                            <abbr title="Creation date of service"><i class="fa fa-calendar fa-fw text-muted"></i> {{ service.created_date|date:"M d, Y" }}</abbr>
+                            <abbr title="{% trans 'Creation date of service' %}"><i class="fa fa-calendar fa-fw text-muted"></i> {{ service.created_date|date:"M d, Y" }}</abbr>
                         </div>
                         <div class="col-lg-5 col-xs-12 col-md-5 col-sm-5">
                             <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-1"></span>
@@ -169,44 +131,58 @@
                                     <h5>{% trans 'Charging policy'%}:</h5>
                                 </div>
                                 <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
-                                    <h5>{{ model.name }}</h5>
+                                    <h5>{{ model.name|capfirst }}</h5>
                                 </div>
                             </div>
                             {% endif %}
-                            <div class="row" title="Usage cost of service">
+                            <div class="row" title="{% trans 'Declares the type of service' %}">
                                  <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
-                                    <h5><abbr title="Declares the type of service">{% trans 'Type' %}:</abbr></h5>
+                                    <h5><abbr title="{% trans 'Declares the type of service' %}">{% trans 'Type' %}:</abbr></h5>
                                 </div>
                                 <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
                                     <h5>{% if service.type == 'H' %}  {% trans 'Human based' %} {% else %}  {% trans 'Machine based' %} {% endif %}</h5>
                                 </div>
                             </div>
-                            {% if service.type == 'M' %}
-                            <div class="row" title="Usage cost of service">
-                                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
-                                    <h5><abbr title="The provider declares the licenses for the service."> {% trans 'Licences' %}:</abbr></h5>
+                            {% if service.version %}
+                                <div class="row" title="{% trans 'The provider declares the licenses for the service.' %}">
+                                    <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
+                                        <h5><abbr title="{% trans 'The provider declares the licenses for the service.' %}"> {% trans 'Version' %}:</abbr></h5>
+                                    </div>
+                                    <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
+                                        <h5>{{ service.version|default_if_none:"Not available" }}</h5>
+                                    </div>
                                 </div>
-                                <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
-                                    <h5>{{ service.license|default_if_none:"Not available" }} (Software version: {{service.version| default_if_none:"Not available" }})</h5>
-                                </div>
-                            </div>
                             {% endif %}
-                            <div class="row" title="Service provider information">
+                            {% if service.license %}
+                                <div class="row" title="{% trans 'The provider declares the licenses for the service.' %}">
+                                    <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
+                                        <h5><abbr title="{% trans 'The provider declares the licenses for the service.' %}"> {% trans 'Licences' %}:</abbr></h5>
+                                    </div>
+                                    <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
+                                        <h5>{{ service.license|default_if_none:"Not available" }}</h5>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="row" title="{% trans 'Service provider information' %}">
                                 <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
                                     <h5>{% trans 'Provider' %}:</h5>
                                 </div>
                                 <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
-                                    <h5>by<a href="#"> {{ provider.name|title }} {{ provider.lastname | title}}</a></h5>
+                                    <h5>{% trans 'by' %}<a href="#owner"> {{ provider.name|title }} {{ provider.lastname | title}}</a></h5>
                                 </div>
                             </div>
                             <br>
-                            <div class="row" title="Service provider information">
+                            <div class="row">
                                 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 " >
-                                    <button type="button" class="btn btn-lg btn-primary disabled"> {% trans 'Get the service' %}!</button>
-                                    <!--br-->
-                                    <span style="text-align: center!important; margin-left:20px; margin-right:20px">or</span>
-                                    <!--br-->
-                                    <button type="button" id="btn-add-cart" class="btn btn-lg btn-success" data-url="{% url 'add_item_cart' service.id %}" data-id="{{service.id}}" data-name="{{service.title}}"> {% trans 'Add to cart' %} <span class="fa fa-shopping-cart" style="margin-left:5px;"></span></button>
+                                    {% if service.charging_policy_id != 1 %}
+                                        <button type="button" class="btn btn-md btn-primary disabled"  title="{% trans 'Get the service' %}"> {% trans 'Get the service' %}!</button>
+                                    {% else %}
+                                        <button type="button" class="btn btn-md btn-primary disabled"  title="{% trans 'Use the service' %}"> {% trans 'Use the service' %}!</button>
+                                    {% endif %}
+                                    {% if components.add_to_cart and service.charging_policy_id != 1 %}
+                                        <span style="text-align: center!important; margin-left:20px; margin-right:20px">{% trans 'or' %}</span>
+                                        <button type="button" id="btn-add-cart" class="btn btn-lg btn-success" title="{% trans 'Add to cart' %}" data-url="{% url 'add_item_cart' service.id %}" data-id="{{service.id}}" data-name="{{service.title}}"> {% trans 'Add to cart' %} <span class="fa fa-shopping-cart" style="margin-left:5px;"></span></button>
+                                    {% endif %}
                                 </div>
                             </div>
 
@@ -215,7 +191,7 @@
                             <div class="row" title="Service provider information">
                                 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 " >
                                     <h4> 
-                                        <span style="margin-right:20px"">{% trans 'Not satisfied'%}?</span>
+                                        <span style="margin-right:20px">{% trans 'Not satisfied'%}?</span>
                                         <button type="button" class="btn btn-lg btn-warning" >{% trans 'Try different'%} <span style="margin-left:5px;" class="fa fa-hand-o-up"></span> </button>
                                     </h4>
                                 </div>
@@ -240,7 +216,7 @@
                     </div>
                     <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 ">
                         <blockquote style="text-align:justify; font-size: 14pt;">
-                            <small style="color:black"><i class="fa fa-quote-left text-muted"></i> {{ service.description|safe }} <i class="fa fa-quote-right text-muted"></i></small>
+                            <small style="color:black"><i class="fa fa-quote-left text-muted"></i> {{ service.description|capfirst }} <i class="fa fa-quote-right text-muted"></i></small>
                         </blockquote>  
                     </div>
                 </div>
@@ -256,7 +232,7 @@
                     </h4>
                     <hr class="service-hr">
                     <article style="text-align:justify">
-                        <label> {% trans 'Requirements'%}.</label> 
+                        <h4> {% trans 'Requirements'%}.</h4> 
                             {{ service.requirements|default:"None" }}
                     </article>
                 </div>
@@ -270,12 +246,12 @@
                     </h4>
                     <hr class="service-hr">
                     <article style="text-align:justify;margin-bottom:1%">
-                        <label> {% trans 'How to install it' %}.</label> 
+                        <h4> {% trans 'How to install it' %}.</h4> 
                         {{ service.installation_guide|default:"No instructions" }}
                     </article>
             
                     <article style="text-align:justify">
-                        <label> {% trans 'How to use it' %}.</label> 
+                        <h4> {% trans 'How to use it' %}.</h4> 
                         {{ service.usage_guidelines|default:"No instructions" }}
                     </article>
                 </div>
@@ -290,6 +266,7 @@
                     <hr class="service-hr">
                     <!--map-->  
                     {% if service.location_constraint %}
+                        <h4>{% trans 'Locational constraints' %}</h4>
                         <div id="map" style="height:40%; min-height:250px; border:1px solid gray"></div>
                     {% else %}  
                         <i class="fa fa-map-marker text-danger fa-lg fa-fw"></i>  {% trans 'No location constraints' %} 
@@ -298,18 +275,20 @@
                     <!--lang-->
                     
                     {% if service.language_constraint %}
-                        {% if languages %}
-                            {% for l in languages %} 
-                              <i class="fa fa-language text-success fa-fw fa-lg"></i>  {{ l.alias }}
-                            {% endfor %}
-                        {% endif %}
-                    {% else %} 
-                         {% trans 'No language constraints' %}
+                        <h4>{% trans 'Supported languages' %}</h4>
+                        {% for l in availableLanguages %}
+                            <i class="fa fa-language text-success fa-fw fa-lg"></i>  {{ l }}<br />
+                        {% empty %}
+                            {% trans 'No language constraints' %}
+                        {% endfor %}
                     {% endif %}
-                    
                     <br>
                     <!--other-->
-                    {% if service.constraints %}{{ service.constraints  }}{% endif %}
+                    {% if service.constraints %}
+                    <h4>{% trans 'Other constraints' %}</h4>
+                    {{ service.constraints  }}
+
+                    {% endif %}
                 </div>
             </div>
 
@@ -324,7 +303,7 @@
                             <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-3"></span>
                             <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-4"></span>
                             <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-5"></span>
-                            <span>from {{ reviews|default:'0' }}  {% trans 'reviews' %}</span>
+                            <span>{% trans 'from' %} {{ reviews|default:'0' }}  {% trans 'reviews' %}</span>
                         </small>
                     </h5>
 
@@ -395,12 +374,12 @@
                 {% endif %}
             </div>
         
-            <div class="row col-lg-6 col-xs-12 col-md-6 col-sm-6 pull-right service-consumer-view-box">
+            <div class="row col-lg-6 col-xs-12 col-md-6 col-sm-6 pull-right service-consumer-view-box" style="height:142px">
                 <h4>{% trans 'Tips for first timers' %}</h4>
                 <hr class="service-hr" />
             </div>
-            <div class="row col-lg-6 col-xs-12 col-md-6 col-sm-6 pull-right service-consumer-view-box">
-                <h4>{% trans 'Technical support ' %}</h4>
+            <div class="row col-lg-6 col-xs-12 col-md-6 col-sm-6 pull-right service-consumer-view-box" style="height:142px">
+                <h4>{% trans 'Technical support' %}</h4>
                 <hr class="service-hr" />
             </div>
         </div>

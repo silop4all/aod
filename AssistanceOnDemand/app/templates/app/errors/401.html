@@ -1,7 +1,12 @@
-﻿{% extends "app/base.html" %}
+{% extends "app/errors/errors_base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} 
+    AoD | {% trans 'Assistance network preview' %}
+{% endblock title %}
 
-{% block content %}
 
-<h2>{{ title }}</h2>
-
-{% endblock content %}
+{% block message %}
+    <h1 style="font-size:100px;" class="brand-warning padding-bottom-10">{% trans 'Error' %} 401</h1>
+    <h2 style="color:gray"> {% trans 'Unauthenticated user' %}</h2>
+{% endblock %}

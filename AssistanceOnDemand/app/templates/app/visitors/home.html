@@ -98,7 +98,6 @@
 
     <!-- Main content -->
     <div class="container body-content" style="margin-top: 50px">
-
         <div class="jumbotron">
             <h1>{% trans 'Welcome on the Assistance On Demand platform' %}</h1>
             <p class="lead">{% trans 'Fill in with content or load a static image' %}</p>
@@ -229,7 +228,7 @@
 
             <div class="col-sm-4 col-md-4 col-xs-12">
                 <div class="thumbnail">
-                    <img src="{% static 'app/images/home/about.png' %}" alt="AoD description">
+                    <img src="{% static 'app/images/home/about.png' %}" alt="{% trans 'AoD description' %}">
                     <div class="caption">
                         <p style="text-align: justify">
                             {% blocktrans %}P4A AoD will adopt leading edge cloud computing technologies to efficiently 

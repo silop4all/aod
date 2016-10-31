@@ -1,64 +1,108 @@
-﻿{% load analytical %}
+{% load analytical %}
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="{{LANGUAGE_CODE}}">
     <head>
+        {#{% load compress %}#}
         {% analytical_head_top %}
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="P4A AoD will adopt leading edge cloud computing technologies to efficiently 
-                            support scalable access to services from/across different hardware/software platforms. Flexibility with 
-                            respect both to the type of assistance services that will be offered through the AoD and to the way the 
-                            user is interfaced/supported in his service search, reliability, robustness and affordability are of 
-                            prime importance for the penetration of the Assistance Services that will be offered and for creating major 
-                            impact in the marketplace.">
-        <meta name="keywords" content="AoD, AssistanceOnDemand, assistance, Assistance On Demand, Prosperity4All, p4all, Singular Logic SA, Marketplace">
-        <meta name="author" content="Singular Logic SA, Athanasoulis Panagiotis">
+        <meta name="description" content="{{ metadata.description }}">
+        <meta name="keywords" content="{{ metadata.keywords }}">
+        <meta name="author" content="{{ metadata.author }}">
         {% load i18n %}
         {% load l10n %}
         {% load staticfiles %}
         {% get_current_language as LANGUAGE_CODE %}
 
-        <!--<link rel="shortcut icon" type="image/png" href="{#% static 'app/logos/favicon/favicon.png' %#}" />-->
-        <link rel="shortcut icon" type="image/png" href="{{ MEDIA_URL }}app/aod/favicon/favicon.png" />
-        <title>{% block title%} Welcome on AoD app {% endblock title %}</title>
+        <link rel="shortcut icon" type="image/png" href="{{ favicon.favicon.url  }}" />
+        <title>{% block title%} {% trans 'Welcome on AoD app' %} {% endblock title %}</title>
    
-        <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
+        {% with 'app/content/'|add:theme.url as bootstrap_static %}
+            <link rel="stylesheet" type="text/css" href="{% static bootstrap_static %}" />
+        {% endwith %}
         <link rel="stylesheet" type="text/css" href="{% static 'app/content/footer.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'app/content/multiselect-bootstrap/bootstrap-select.min.css' %}" />
-        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" />
+
+        {% if components.ui_options_banner == False %}
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/preloader.css' %}" />
+        {% endif %}
+
+        <!--ui options-->
+        {% if components.ui_options_banner %}
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/lib/normalize/css/normalize.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/framework/core/css/fluid.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/framework/preferences/css/Enactors.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/framework/preferences/css/PrefsEditor.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/framework/preferences/css/SeparatedPanelPrefsEditor.css' %}" />
+        {% endif %}
+        <!--cookies agreement-->
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.2/cookieconsent.min.css" />
+
 
         {% block extraCss %}
         {% endblock extraCss %}
         {% analytical_head_bottom %}
     </head>
 
-    <body style="background-color:rgba(223, 225, 225, 0.72); min-height: 100% !important">
+    <body class="base-body" style=" min-height: 100% !important">
         {% analytical_body_top %}
         {% load i18n %}
         {% load l10n %}
+        
+        {% block preloader %}
+            {% if components.ui_options_banner == False %}
+            <div id="preloader">
+                <div id="status">&nbsp;</div>
+            </div>
+            {% endif %}
+        {% endblock %}
+         
+        {% block UIoptions %}
+        {% if components.ui_options_banner %}
+        <div class="">
+            <div class="flc-prefsEditor-separatedPanel fl-prefsEditor-separatedPanel margin-top-38">
+                <!-- This is the div that will contain the Preference Editor component -->
+                <div class="flc-slidingPanel-panel flc-prefsEditor-iframe"></div>
+                <!-- This div is for the sliding panel that shows and hides the Preference Editor controls -->
+                <div class="fl-panelBar">
+                    <span class="fl-prefsEditor-buttons">
+                        <button id="reset" class="flc-prefsEditor-reset fl-prefsEditor-reset"><span class="fl-icon-undo"></span> {% trans 'Reset' %}</button>
+                        <button id="show-hide" class="flc-slidingPanel-toggleButton fl-prefsEditor-showHide"> {% trans 'Show' %}/{% trans 'Hide' %}</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endblock %}
 
         <!--Navigation bar-->
         {% block navbar %}
-            {% include 'app/navbar-visitors.html' %}
+            {% if username %}
+                {% include "app/navbar-users.html" %}
+            {% else %}
+                {% include "app/navbar-visitors.html" %}
+            {% endif %}
         {% endblock navbar %}
 
         <!-- content -->
+        {% if components.ui_options_banner %}
+            <div class="container">
+                <div class="flc-toc-tocContainer"> </div>
+            </div>
+        {% endif %}
+
         {% block content %}
         {% endblock content %}
 
+        <!-- Top btn -->
         {% block goTop %}
-        <!--
-        <span class="fa-stack fa-lg scrollToTop pull-right">
-            <i class="fa fa-square fa-stack-2x" style="color: rgba(164, 165, 163, 0.81)"></i>
-            <i class="fa fa-chevron-up fa-stack-1x" style="color: white"></i>
-        </span>
-        -->
         <div class="pull-right clearfix container relative" style="clear:both">
             <span id="top-link-block" class="hidden">
-                <a href="javascript:void(0)" style="font-size:18pt;" title="Go on top" onclick="javascript: return goTop();">
+                <a href="javascript:void(0)" style="font-size:18pt;" title="{% trans 'Go on top' %}" onclick="javascript: return goTop();">
                     <span class="fa-stack fa-lg">
-                        <span class="fa fa-circle fa-stack-2x text-muted" style="color: rgba(164, 165, 163, 0.81); opacity: 0.8"></span>
+                        <span id="go-top-cicle" class="fa fa-circle fa-stack-2x"></span>
                         <span class="fa fa-arrow-up fa-stack-1x" style="color: white"></span>
                     </span>
                 </a>        
@@ -66,136 +110,211 @@
         </div>
         {% endblock goTop %}
 
-        {% block subscribeBanner %}
         <!-- Subscribe banner -->
-        <div class="" style="margin-top:20px; clear:both; padding-top:15px;padding-bottom:15px; background-color: #006400">
+        {% block subscribeBanner %}
+        <div id="newsletter-div" style="margin-top:20px; clear:both; padding-top:15px;padding-bottom:15px;">
             <div class="container">
                 <div class="row">
+                    {% if components.newsletter_banner %}
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left" style="color:white">
-                        <label style="font-size:18px" for="subscription-form" role="banner">SUBSCRIBE TO OUR NEWSLETTER</label>
+                        <label style="font-size:18px" for="subscription-form" role="banner">{%  trans 'SUBSCRIBE TO OUR NEWSLETTER' %}</label>
                     </div>
                     <form class="form-inline" role="form" action="." method="post">
                         <div class="col-xs-12 col-md-6 col-sm-6 col-lg-6 text-right">
                             <div class="input-append"> 
-                                <input type="email" id="subscription-form" class="form-control" placeholder="enter your email" style="background-color:rgba(46, 65, 57, 0.86) ;color:white; border-radius: 0px; border-color:transparent">
-                                <button type="submit" class="btn btn-default form-control-feedback">{% trans 'Send' %}</button>
+                                <input type="email" id="subscription-form" class="form-control" placeholder="{% trans 'enter your email' %}" style="background-color:rgba(46, 65, 57, 0.86) ;color:white; border-radius: 0px; border-color:transparent">
+                                <button type="submit" class="btn btn-default ">{% trans 'Send' %}</button>
                             </div>
                         </div>
                     </form>
+                    {% else %}
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-bottom-20"></div>
+                    {% endif %}
                 </div>
             </div>
         </div>
         {% endblock subscribeBanner %}
 
-
-
-
         <!-- Footer base -->
         {% block footer %}
-        <!--<div style=" background-color:rgba(25, 29, 25, 0.96)  ;color:white; padding-top:2em;padding-bottom:10em" role="contentinfo">-->
-        <div style=" background-color:#110  ;color:#fff; padding-top:2em;padding-bottom:10em" role="contentinfo">
+        <footer role="contentinfo">
             <div class="container">
                 <div class="row ">
                     <div class="col-sm-3 col-md-3 col-xs-12 pull-left">
-                        <span>Terms of use</span> 
+                        <span>{% trans 'Terms of use' %}</span> 
                         <hr style="margin-top:2px">
                     </div>
                     <div class="col-sm-3 col-md-3 col-xs-12">
-                        <span>Privacy policy</span> 
+                        <span>{% trans 'Privacy policy' %}</span> 
                         <hr style="margin-top:2px">
                     </div>
                     <div class="col-sm-3 col-md-3 col-xs-12">
-                        <span>Help center</span> 
+                        <span>{% trans 'Help center' %}</span> 
                         <hr style="margin-top:1px">
-                        <a href="/support/forget-password" class="text-muted clearfix">{% trans 'Forget my password' %}</a>
-                        <a href="/support/update-profile-steps" class="text-muted clearfix">Update my profile</a>
-                        <a href="/support/change-my-password" class="text-muted clearfix">Change my password</a>  
+                        {% for t in topics %}
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                    <a href="{% url 'faq_topic' t.id %}" target="_parent" style="color: white" title="{{ t.title }}">{{ t.title }}</a>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="row">   
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                {% trans 'Topics are not available' %}
+                                </div>
+                            </div>
+                        {% endfor%}
                     </div>
                     <div class="col-sm-3 col-md-3 col-xs-12">
                         <!-- Social media -->
-                        <span>Follow us on social networks</span>
+                        <span>{% trans 'Follow us on social networks' %}</span>
                         <hr style="margin-top:1px">
-                        <a href="#" target="_blank" title="Twitter">
-                            <span class="fa-stack fa-lg fa-li" style="position: initial">
-                                <span class="fa fa-circle fa-stack-2x"></span>
-                                <span class="fa fa-twitter fa-stack-1x fa-inverse"></span> 
-                            </span>
-                        </a>
-                        <a href="#" target="_blank" class="clearfix" title="Facebook">
-                            <span class="fa-stack fa-lg fa-li" style="position: initial">
-                              <span class="fa fa-circle fa-stack-2x"></span>
-                              <span class="fa fa-facebook fa-stack-1x fa-inverse"></span>
-                            </span>
-                        </a>
-                        <a href="#" target="_blank" class="clearfix" title="Linkedin">
-                            <span class="fa-stack fa-lg fa-li" style="position: initial">
-                              <span class="fa fa-circle fa-stack-2x"></span>
-                              <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
-                            </span>
-                        </a> 
-                        <a href="#" target="_blank" class="clearfix" title="YouTube">
-                            <span class="fa-stack fa-lg fa-li" style="position: initial">
-                              <span class="fa fa-circle fa-stack-2x"></span>
-                              <span class="fa fa-youtube-play fa-stack-1x fa-inverse"></span>
-                            </span>
-                        </a>                  
+                        {% for sn in social_networks %}
+                            <div class="row">
+                                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+                                    <a href="{{ sn.url|safe }}" target="_blank" title="{{ sn.title }}">
+                                        <span class="fa-stack fa-lg fa-li" style="position: initial">
+                                            <span class="fa fa-circle fa-stack-2x text-success"></span>
+                                            {% if sn.title == "Twitter" %}
+                                                <span class="fa fa-twitter fa-stack-1x fa-inverse"></span> 
+                                            {% elif sn.title == "LinkedIn" %}
+                                                <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+                                            {% elif sn.title == "Facebook" %}
+                                                <span class="fa fa-facebook fa-stack-1x fa-inverse"></span>
+                                            {% elif sn.title == "Youtube" %}
+                                                <span class="fa fa-youtube-play fa-stack-1x fa-inverse"></span>
+                                            {% endif %}
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="col-sm-9 col-md-9 col-lg-9 col-xs-9"> {{ sn.title }}</div>
+                            </div>
+                        {% empty %}
+                            <div class="row">   
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                {% trans 'Links are not available' %}
+                                </div>
+                            </div>
+                        {% endfor%}
                     </div>
                 </div>
             </div>
-        </div>
+        </footer>
         {% endblock footer %}
 
-
+        <!-- Copyrights banner -->
         {% block CopyrightBanner %}
-        <!--<div style=" background-color:rgba(12, 14, 12, 0.86) ;color:white; padding-top:1.2em;padding-bottom:1.2em" role="contentinfo">-->
-        <div style=" background-color:#131306 ;color:white; padding-top:1.2em;padding-bottom:1.2em" role="contentinfo">
+        <div id="copyrights" role="contentinfo">
             <div class="container">
                 <div style="margin-top:10px">
                     <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" >
-                        <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1 " >
-                            <!--img class="pull-right" alt="European commission logo" src="/media/app/aod/eu/eu.png"/>-->
-                            <img class="pull-right" alt="European commission logo" src="{{ MEDIA_URL }}app/aod/eu/eu.png"/>
+                        <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1 hidden-xs" >
+                            <img class="pull-right" alt="{% trans 'European commission logo' %}" src="{{ MEDIA_URL }}app/aod/eu/eu.png" style="border: 3px solid whitesmoke; border-radius: 4px 4px"/>
                         </div>
                         <div class="col-lg-11 col-sm-11 col-md-11 col-xs-11 pull-left" >
                             <span class="pull-left">
+                            {% blocktrans %}
                             Prosperity4All - Ecosystem infrastructure for smart and personalised inclusion and PROSPERITY for ALL stakeholders<br> 
                             This project has received funding from the European Union’s Seventh Programme for research, technological development and demonstration under grant agreement, No 610510
+                            {% endblocktrans %}
                             </span>
                             <span><span class="fa fa-copyright"></span> 2015 - {{ year }}  <a href="http://www.prosperity4all.eu/" target="_blank" style="color: white">Prosperity4All</a></span>
                         </div>
                     </div>
-                    <!--
-                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12" >
-                        <span><span class="fa fa-cc-paypal fa-2x"></span></span>
-                    </div>
-                    -->
                 </div>
             </div>    
         </div>
         {% endblock CopyrightBanner %}
 
-
         <!-- Scripts -->
-        <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
-        <script src="{% static 'app/scripts/bootstrap.min.js' %}"></script>
-        <script src="{% static 'app/scripts/respond.js' %}"></script>
-        <script src="{% static 'app/scripts/p4a-lib/font.resize-1.0.js' %}"></script>
-        <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+        {#{% compress js %}#}
+        {% load statici18n %}
 
+        <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.2/cookieconsent.min.js"></script>
+        <script>
+            window.addEventListener("load", function(){
+            window.cookieconsent.initialise({
+                "palette": {
+                    "popup": {
+                        "background": "#000",
+                        "text": "#fff"
+                    },
+                    "button": {
+                        "background": "red",
+                        "text": "#fff"
+                    }
+                },
+                //"type": "opt-out",
+                "position": "bottom",
+                "content": {
+                    "message": gettext("This site uses cookies to offer you a better browsing experience."),
+                    "dismiss": gettext("Accept cookies"),
+                    "deny": gettext("Refuse cookies"),
+                    "link": gettext("Read more!"),
+                    "href": "{% url 'cookie_policy' %}"
+                },
+                "revokable": true
+            })});
+        </script>
+        <!--{#<script src="{{ STATIC_URL }}jsi18n/{{ LANGUAGE_CODE }}/djangojs.js"></script>#}-->
+        <script src="{{ STATIC_URL }}app/scripts/jsi18n/{{ LANGUAGE_CODE }}/djangojs.js"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/bootstrap.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/jquery.validate.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/font.resize-1.0.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+        {% if components.ui_options_banner %}
+        <script type="text/javascript" src="{% static 'app/scripts/ui_options/infusion-all.js' %}"></script>
+        {% endif %}
+        <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
         <script type="text/javascript">
+            {% if components.ui_options_banner == False %}
+            $(window).load(function () { // makes sure the whole site is loaded
+                $('#status').fadeOut(); // will first fade out the loading animation
+                $('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
+                $('body').delay(350).css({ 'overflow': 'visible' });
+            })
+            {% endif %}
+
             $(document).ready(function () {
+                //
+                // init UI options
+                //
+                {% if components.ui_options_banner %}
+                fluid.uiOptions.prefsEditor(".flc-prefsEditor-separatedPanel", {
+                    tocTemplate: "{% static 'app/content/ui_options/components/tableOfContents/html/TableOfContents.html' %}",
+                    terms: {
+                        templatePrefix: "{% static 'app/content/ui_options/framework/preferences/html' %}",
+                        messagePrefix: "{% static 'app/content/ui_options/framework/preferences/messages' %}"
+                    }
+                });
+                {% endif %}
+
                 $(".nav.navbar-nav li.dropdown").mouseover(function () {
                     $(this).addClass('open');
                 }).mouseleave(function () {
                     $(this).removeClass('open');
                 });
+
+                $("#subscription-form").mouseover(function () {
+                    $(this).css('background-color', 'whitesmoke').css('color', '#000');
+                }).click(function () {
+                    $(this).css('background-color', 'whitesmoke').css('color', '#000');
+                }).mouseleave(function () {
+                    $(this).css('background-color', '#333').css('color', 'white');
+                });
+
+                $(".select_language").click(function (event) {
+                    event.preventDefault();
+                    $("#current_language_code").attr('value', $(this).attr('id'));
+                    $('#submit_language_code').submit();
+                });
             })
         </script>
 
-
         {% block scripts %}
-
         {% endblock scripts %}
+        {#{% endcompress %}#}
         
         {% analytical_body_bottom %}
     </body>

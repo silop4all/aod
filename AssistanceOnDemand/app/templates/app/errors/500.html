@@ -1,7 +1,12 @@
-﻿{% extends "app/base.html" %}
+{% extends "app/errors/errors_base.html" %}
+    {% load i18n %}
+    {% load l10n %}
+    {% block title %} 
+        AoD | {% trans 'Assistance network preview' %}
+    {% endblock title %}
 
-{% block content %}
 
-<h2>{{ title }}</h2>
-
+{% block message %}
+    <h1 class="brand-danger padding-bottom-10" style="font-size:100px;">{% trans 'Error' %} 500</h1>
+    <h2 style="color:gray"> {% trans 'Internal server error. Contact with the administrator' %}</h2>
 {% endblock %}

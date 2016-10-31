@@ -1,19 +1,33 @@
+{% load i18n %}
+{% load l10n %}
 {% block languageList %}
 <li class="dropdown under-construction" aria-label="Language preference">
-<a href="#" class="dropdown-toggle" title="Set your language" data-toggle="dropdown" role="button" aria-expanded="false">
+<a href="#" class="dropdown-toggle" title="{% trans 'Set your language'%}" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="btn navbar-btn disable-btn-box-shadow" role="button">
-        <span class="fa fa-flag" aria-label="Set your language"></span>
+        <span class="fa fa-flag" aria-label="{% trans 'Set your language' %}"></span>
         <span class="fa fa-caret-down fa-xs"></span>
     </span>
 </a>  
 <ul class="dropdown-menu" role="menu" >
-    <li role="presentation" style="padding-left:20px"><label>Select a language:</label></li>
+    <li role="presentation" style="padding-left:20px"><label>{% trans 'LANGUAGES' %}</label></li>
     <li role="separator" class="divider"></li>
     <li role="presentation" style="margin-left:2px">
-        {% for i in LANGUAGES %}
-        <a href="/{{i.0}}/"><img src="{{MEDIA_URL}}app/aod/flags/{{i.0}}.png" alt="" width="20"/> {{i.1}}</a>
+        {% for i in flags %}
+            <a href="#" class="select_language" id="{{ i.code }}">
+                <img src="{{ i.flag.url }}" alt="{% trans 'Logo'%}" width="20"/> {{ i.name|title }}
+            </a>
         {% endfor %}
     </li>
+        {#<form action="{% url 'set_language' %}" name="SetLanguageForm" id="submit_language_code" method="post" hidden>#}
+        <form action="{% url 'change_lang_custom' %}" name="SetLanguageForm" id="submit_language_code" method="post" hidden>
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+            <select name="language">
+                <option id="current_language_code" value="{{LANGUAGE_CODE}}"></option>
+            </select>
+            <input type="submit" value="Go" />
+        </form>
+
 </ul>
 </li>
 {% endblock languageList %}

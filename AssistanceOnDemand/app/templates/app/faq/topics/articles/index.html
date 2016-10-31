@@ -1,0 +1,180 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} AoD | {{ title }} {% endblock title %}
+
+{% load staticfiles %}
+    {% block extraCss %}
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
+    {% endblock extraCss %}
+
+{% block content %}
+    <section class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            {% if username %}
+                <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+                <li><a href="{% url 'faq_topics' %}" class="custom-inactive-breadcrumb"> {% trans 'Help Center' %}</a></li>
+            {% else %}
+                <li><a href="{% url 'faq_topics' %}" class="custom-inactive-breadcrumb"><i class="fa fa-support"></i> {% trans 'Help Center' %}</a></li>
+            {% endif %}
+            <li><a href="{% url 'faq_topic' article.topic.id %}" class="custom-inactive-breadcrumb">{{article.topic.title|capfirst}}</a></li>
+            <li class="active">{{article.title|capfirst}}</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <section id="article_support" style="padding-top:1%; padding-bottom:1%; border-radius:5px 5px; min-height:250px" class="col-lg-12 col-md-12 col-sm-12 margin-bottom-25 highlight-service-banner platform-info-box">
+            <div class="row col-sm-12 col-md-12 col-xs-12 col-lg-12" id="article">
+                <h2>{% trans 'Q'%}: {{article.title|capfirst}}</h2>
+                <div >
+                    <span class="fa fa-tags text-success"></span> {{article.topic.title}}
+                    <span class="fa fa-calendar padding-left-20"></span> {{article.published_date}}
+                </div>
+                <hr />
+                <div id="article-text">
+                    {{article.content|safe}}
+                </div>
+            </div>
+
+            {% if article.docs.all|length %}
+             <h4>{% trans 'Access the documents' %}</h4>
+            <div class="row col-sm-12 col-md-12 col-xs-12 col-lg-12 margin-bottom-25">
+                {% for d in article.docs.all %}
+                <div id="documents" class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                    {% if d.element.extension == '.pdf' %}
+                    <div style='width: 100%; padding: 30px; float: left; margin: 4px ' class="thumbnail" >
+                        <span style='vertical-align: middle;' class='fa fa-file-pdf-o text-danger fa-2x' role='img' alt='{{d.title}}'></span> 
+                        <span title="{{ d.description }}"><a id="#doc{{d.id}}" href="#doc{{d.id}}">{{d.title}}</a></span>
+                        <iframe  title='{{ d.title }}' width='95%' id='1' height='380' frameborder='0' src='{{d.element.url}}' ebkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if article.videos.all|length  %}
+            <h4>{% trans 'Watch our videos' %}</h4>
+            <div class="row col-sm-12 col-md-12 col-xs-12 col-lg-12  margin-bottom-25">
+                {% for v in article.videos.all %}
+                <div id="videos" class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                    <div class="embed-responsive embed-responsive-16by9 thumbnail videoUiWrapper">
+                        <span class="fa fa-video-camera text-muted fa-lg" role="img" alt=""></span> 
+                        <span class="padding-bottom-10"><a id="#video{{v.id}}" href="#video{{v.id}}">{{v.title}}</a></span>
+                        {% if v.element.extension == ".mp4" %}
+                        <video style="width:100%" controls  title="" class="embed-responsive-item">
+                            <source src="{{v.element.url}}" type="video/mp4">
+                            {% trans 'Your browser does not support the video tag.' %}
+                        </video>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </section>
+
+        <section id="human_support" style="padding-top:1%; padding-bottom:1%; border-radius:5px 5px; min-height:250px" class="col-lg-12 col-md-12 col-sm-12 highlight-service-banner contact-info-box margin-bottom-25">
+            <div class="row col-sm-12 col-md-12 col-xs-12 col-lg-12 ">
+                <div id="contact-us" class=" row col-lg-12 col-sm-12 col-md-12 col-xs-12 margin-bottom-25">
+                    <div class="col-sm-6 col-lg-6 col-md-6 col-xs-12">
+                        <h4>{% trans 'Contact with Volunteers' %}</h4>
+                        <div id="volunteers-list" >
+                            {% for v in volunteers %}
+                            {#<a class="list-group-item">
+                                <h5 class="list-group-item-heading"><span class="fa fa-circle text-success"></span> Nick Kalathes <span class="fa fa-chevron-down pull-right"></span></h5>
+                                <p class="list-group-item-text">
+                                    {% trans 'Contact me in' %} <div id="SkypeButton_Call_user_name_1"></div>
+                                </p>
+                            </a>#}
+                            {% empty %}
+                            <div>{% trans 'Sorry, there are not available volunteers at the moment.' %}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-6 col-md-6 col-xs-12">
+                        <h4>{% trans 'Contact with Professionals' %}</h4>
+                        <div id="professionals-list" >
+                            {% for p in professionals %}
+                            {#<a class="list-group-item">
+                                <h5 class="list-group-item-heading"><span class="fa fa-circle text-danger"></span> Vasili Erden - 50 &#8364; per usage <span class="fa fa-chevron-right pull-right"></span></h5>
+                            </a>#}
+                            {% empty %}
+                            <div>{% trans 'Sorry, there are not available professional users at the moment.' %}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="admin_support" style="padding-top:1%; padding-bottom:1%; border-radius:5px 5px; min-height:250px" class="col-lg-12 col-md-12 col-sm-12 highlight-service-banner platform-info-box">
+            <div id="contact-us" class="row col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <div class="col-sm-6 col-lg-6 col-md-6 col-xs-12">
+                    <h4>{% trans 'Need our assistance' %}?</h4>
+                    <form id="ContactUsForm" name="ContactUsForm" action="{% url 'private_api:support_questions' %}" method="POST" autocomplete="off">
+                        <div class="form-group {% if username %}hidden {% endif %}">
+                            {% trans 'Name' %} <span  class="highlight-error-message">*</span>
+                            <input type="text" id="user" maxlength="128" name="user" class="form-control" value="{%if logged_user%}{{logged_user.name|capfirst}} {{logged_user.lastname|capfirst}}{%else%}Anonymous user{%endif%}"  required/> 
+                        </div>
+                        <div class="form-group {% if username %}hidden {% endif %}">
+                            {% trans 'Email' %} <span class="highlight-error-message">*</span>
+                            <input type="email" id="email" name="email" maxlength="128" class="form-control" value="{{ logged_user.email }}" required/> 
+                        </div>
+                        <div class="form-group">
+                            {% trans 'Subject' %} <span class="highlight-error-message">*</span>
+                            <input type="text" id="topic" name="topic" maxlength="64" class="form-control"  value="{{ article.title| capfirst}}" required/> 
+                        </div>
+                        <div class="form-group">
+                            {% trans 'Message' %} <span class="highlight-error-message">*</span>
+                            <textarea class="form-control" id="message" name="message" maxlength="250" rows="4" placeholder="{% trans 'enter up to 250 characters' %}" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <strong><span class="highlight-error-message">* {% trans 'Required fields' %} </span></strong>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block btn-md" style="max-width:280px"><span class="fa fa-envelope"></span> {% trans 'Submit' %}</button>
+                    </form>
+                </div>
+                <div class="col-sm-6 col-lg-6 col-md-6 col-xs-12">
+                    <h4> {% trans 'Contact us in Skype' %}</h4> 
+                    {% if username %}
+                        {% if contact_us.skype_button_id %}
+                        <div id="{{ contact_us.skype_button_id }}"></div>
+                        {% endif %}
+                    {% else %}
+                        {% trans 'Not available for anonymous users' %}
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock content %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery.validate.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/sweetalert/sweetalert.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/aod.js' %}"></script>
+    <script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
+    
+    <script type="text/javascript">
+        {% if contact_us and username %}
+        Skype.ui({
+            "name": "chat",
+            "element": "{{ contact_us.skype_button_id }}",
+            "participants": ["{{ contact_us.skype_id }}"],
+            "imageSize": 24
+        });
+        {% endif %}
+
+        $(document).ready(function () {
+            AoD.contactUsForm("{% url 'faq_topics' %}");
+        }).on('submit', "#ContactUsForm", function (event) {
+            event.preventDefault();
+        });
+    </script>
+    
+{% endblock %}
+

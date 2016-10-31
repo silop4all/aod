@@ -13,7 +13,7 @@
 
 function editFormatter(value, row, index) {
     return [
-        '<a class="btn btn-toolbar edit-service" href="javascript:void(0)" title="Edit the service">',
+        '<a class="btn btn-toolbar edit-service" href="javascript:void(0)" title="' + gettext("Edit the service") + '">',
             '<span class="fa fa-pencil-square-o fa-lg text-success"></span>',
         '</a>'
     ].join('');
@@ -21,7 +21,7 @@ function editFormatter(value, row, index) {
 
 function removeFormatter(value, row, index) {
     return [
-        '<a class="btn btn-toolbar delete-service" href="javascript:void(0)" title="Remove the service">',
+        '<a class="btn btn-toolbar delete-service" href="javascript:void(0)" title="' + gettext("Remove the service") + '">',
             '<span class="fa fa-trash-o fa-lg text-danger"></span>',
         '</a>'
     ].join('');
@@ -29,7 +29,7 @@ function removeFormatter(value, row, index) {
 
 function statsFormatter(value, row, index) {
     return [
-        '<a class="btn btn-toolbar stats-service" href="javascript:void(0)" title="Show statistics">',
+        '<a class="btn btn-toolbar stats-service" href="javascript:void(0)" title="' + gettext("Show statistics") + '">',
             '<span class="fa fa-bar-chart fa-lg text-primary"></span>',
         '</a>'
     ].join('');
@@ -50,7 +50,7 @@ window.editActionEvent = {
 
 window.removeActionEvent = {
     'click .delete-service': function (e, value, row, index) {
-        deleteService(row.url);
+        deleteService(row);
     }
 };
 

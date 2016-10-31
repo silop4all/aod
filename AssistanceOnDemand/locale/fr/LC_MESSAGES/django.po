@@ -1,0 +1,3120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-14 09:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: AssistanceOnDemand/development_settings.py:73
+#: AssistanceOnDemand/production_settings.py:73
+msgid "Greek"
+msgstr ""
+
+#: AssistanceOnDemand/development_settings.py:74
+#: AssistanceOnDemand/production_settings.py:74
+msgid "English"
+msgstr ""
+
+#: AssistanceOnDemand/development_settings.py:75
+#: AssistanceOnDemand/production_settings.py:75
+msgid "Italian"
+msgstr ""
+
+#: AssistanceOnDemand/development_settings.py:76
+#: AssistanceOnDemand/production_settings.py:76
+msgid "Spanish"
+msgstr ""
+
+#: AssistanceOnDemand/development_settings.py:77
+#: AssistanceOnDemand/production_settings.py:77
+msgid "French"
+msgstr ""
+
+#: AssistanceOnDemand/development_settings.py:78
+#: AssistanceOnDemand/production_settings.py:78
+msgid "German"
+msgstr ""
+
+#: app/forms.py:20 app/templates/app/visitors/login.html:68
+#: app/templates/app/visitors/registration.html:86
+msgid "Password"
+msgstr ""
+
+#: app/templates/admin/base.html:92
+#: app/templates/app/help/change-password.html:17
+msgid "Change password"
+msgstr ""
+
+#: app/templates/admin/base.html:95 app/templates/app/navbar-users.html:102
+#: app/templates/app/navbar-users.html:104
+msgid "Log out"
+msgstr ""
+
+#: app/templates/admin/base.html:102
+msgid "View site"
+msgstr ""
+
+#: app/templates/admin/base.html:107
+msgid "Documentation"
+msgstr ""
+
+#: app/templates/admin/base.html:125 app/templates/admin/index.html:18
+#: app/templates/app/consumers/cart/index.html:71
+#: app/templates/app/consumers/dashboard.html:26
+#: app/templates/app/consumers/profile.html:33
+#: app/templates/app/consumers/search/services/preview.html:119
+#: app/templates/app/consumers/services/item/preview/index.html:28
+#: app/templates/app/consumers/services/item/update/index.html:71
+#: app/templates/app/consumers/services/list/index.html:25
+#: app/templates/app/consumers/services/registration/index.html:24
+#: app/templates/app/consumers/statistics/index.html:27
+#: app/templates/app/help/base-help.html:44
+#: app/templates/app/help/change-password.html:12
+#: app/templates/app/help/forget-password.html:12
+#: app/templates/app/help/index.html:55
+#: app/templates/app/help/log-in-out.html:12
+#: app/templates/app/help/services/provider/create-service.html:11
+#: app/templates/app/help/services/provider/delete-service.html:11
+#: app/templates/app/help/services/provider/update-service.html:11
+#: app/templates/app/help/update-profile-steps.html:12
+#: app/templates/app/nas/configuration/index.html:31
+#: app/templates/app/nas/invitations/index.html:30
+#: app/templates/app/nas/preview/index.html:31
+#: app/templates/app/nas/requests/create-new.html:29
+#: app/templates/app/nas/requests/index.html:32
+msgid "Home"
+msgstr ""
+
+#: app/templates/admin/index.html:45
+msgid "Add"
+msgstr ""
+
+#: app/templates/admin/index.html:54
+msgid "You don´t have permission to edit anything."
+msgstr ""
+
+#: app/templates/admin/index.html:59
+msgid "Custom Views"
+msgstr ""
+
+#: app/templates/admin/index.html:71
+msgid "Plugins"
+msgstr ""
+
+#: app/templates/admin/index.html:73
+msgid "Dowser (memory profiling)"
+msgstr ""
+
+#: app/templates/admin/index.html:76
+msgid "Rosetta (translation)"
+msgstr ""
+
+#: app/templates/admin/index.html:83
+msgid "Recent Actions"
+msgstr ""
+
+#: app/templates/admin/index.html:85
+msgid "My Actions"
+msgstr ""
+
+#: app/templates/admin/index.html:88
+msgid "None available"
+msgstr ""
+
+#: app/templates/app/base.html:23
+msgid "Welcome on AoD app"
+msgstr ""
+
+#: app/templates/app/base.html:60
+msgid "Go on top"
+msgstr ""
+
+#: app/templates/app/base.html:76
+msgid "SUBSCRIBE TO OUR NEWSLETTER"
+msgstr ""
+
+#: app/templates/app/base.html:82
+msgid "Send"
+msgstr ""
+
+#: app/templates/app/base.html:101
+#: app/templates/app/consumers/services/registration/confirm.html:25
+#: app/templates/app/consumers/services/registration/confirm.html:30
+msgid "Terms of use"
+msgstr ""
+
+#: app/templates/app/base.html:105 app/templates/app/help/base-help.html:71
+#: app/templates/app/help/create_new_account.html:18
+#: app/templates/app/visitors/registration.html:295
+msgid "Privacy policy"
+msgstr ""
+
+#: app/templates/app/base.html:109
+msgid "Help center"
+msgstr ""
+
+#: app/templates/app/base.html:111
+msgid "Forgot my password"
+msgstr ""
+
+#: app/templates/app/base.html:112 app/templates/app/help/index.html:89
+#: app/templates/app/help/update-profile-steps.html:17
+msgid "Update my profile"
+msgstr ""
+
+#: app/templates/app/base.html:113 app/templates/app/help/index.html:90
+msgid "Change my password"
+msgstr ""
+
+#: app/templates/app/base.html:117
+msgid "Follow us on social networks"
+msgstr ""
+
+#: app/templates/app/base.html:177
+msgid "European commission logo"
+msgstr ""
+
+#: app/templates/app/base.html:181
+msgid ""
+"\n"
+"                            Prosperity4All - Ecosystem infrastructure for "
+"smart and personalised inclusion and PROSPERITY for ALL stakeholders<br> \n"
+"                            This project has received funding from the "
+"European Union’s Seventh Programme for research, technological development "
+"and demonstration under grant agreement, No 610510\n"
+"                            "
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:72
+msgid "My cart"
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:82
+msgid "Your AoD shopping cart"
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:83
+msgid "After you log out, the list is removed"
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:97
+#: app/templates/app/consumers/search/services/preview.html:196
+#: app/templates/app/visitors/registration.html:182
+msgid "Provider"
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:100
+msgid "Quantity 1"
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:103
+#: app/templates/app/consumers/dashboard.html:184
+#: app/templates/app/consumers/dashboard.html:186
+#: app/templates/app/consumers/search/services/preview.html:156
+#: app/templates/app/consumers/services/item/preview/preview.html:70
+#: app/templates/app/consumers/services/list/index.html:61
+#: app/templates/app/consumers/services/registration/charging.html:39
+#: app/templates/app/consumers/statistics/index.html:85
+#: app/templates/app/nas/configuration/index.html:211
+#: app/templates/app/nas/configuration/index.html:299
+#: app/templates/app/nas/preview/index.html:117
+#: app/templates/app/nas/preview/index.html:243
+msgid "Price"
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:107
+#: app/templates/app/consumers/services/item/preview/index.html:56
+#: app/templates/app/consumers/services/list/index.html:69
+msgid "Remove"
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:113
+msgid "Your cart is empty"
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:117
+msgid "Continue shopping"
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:123
+msgid "Cart summary"
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:123
+msgid "services"
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:123
+msgid "service"
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:126
+msgid "Total"
+msgstr ""
+
+#: app/templates/app/consumers/cart/index.html:129
+msgid "Proceed to checkout"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:6
+msgid "AoD | Welcome"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:37
+msgid "Find your services"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:48
+#: app/templates/app/consumers/dashboard.html:50
+#: app/templates/app/consumers/services/item/preview/preview.html:86
+#: app/templates/app/consumers/statistics/index.html:76
+#: app/templates/app/nas/preview/index.html:108
+msgid "Categories"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:72
+#: app/templates/app/consumers/dashboard.html:74
+msgid "Service providers"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:102
+msgid "Type of services"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:104
+#: app/templates/app/consumers/search/services/preview.html:178
+#: app/templates/app/consumers/services/item/preview/preview.html:53
+#: app/templates/app/consumers/services/list/index.html:63
+#: app/templates/app/consumers/services/registration/basic.html:44
+#: app/templates/app/consumers/statistics/index.html:101
+#: app/templates/app/nas/configuration/index.html:210
+#: app/templates/app/nas/configuration/index.html:298
+#: app/templates/app/nas/preview/index.html:133
+#: app/templates/app/nas/preview/index.html:242
+msgid "Type"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:113
+#: app/templates/app/consumers/services/list/index.html:105
+msgid "Human"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:118
+#: app/templates/app/consumers/services/list/index.html:103
+msgid "Machine"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:132
+#: app/templates/app/consumers/dashboard.html:134
+#: app/templates/app/help/index.html:110
+msgid "Payment policies"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:164
+#: app/templates/app/consumers/search/services/preview.html:162
+#: app/templates/app/consumers/services/item/preview/preview.html:76
+#: app/templates/app/visitors/home.html:138
+#: app/templates/app/visitors/home.html:199
+msgid "Free"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:168
+msgid "Paid"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:195
+msgid "From"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:196
+msgid "min value"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:201
+msgid "Up to"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:202
+msgid "max value"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:216
+msgid ""
+"Searches based on Quality of Services measured by serviced users from zero "
+"(worst) to five (best)"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:218
+msgid "Quality of Service"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:228
+msgid "Minimum value of quality of service (rating)"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:230
+msgid "minimum rating"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:234
+msgid "Maximum value of quality of service (rating)"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:236
+msgid "maximum rating"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:241
+msgid "Set the QoS range of your interest"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:254
+msgid "Searches for services offered around your current location"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:256
+msgid "Your current location"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:264
+msgid "max distance"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:265
+msgid "km"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:269
+msgid ""
+"Scan for services within the distance of your interest from your location"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:279
+msgid "Reset"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:282
+#: app/templates/app/consumers/search/services/preview.html:120
+msgid "Search"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:296
+msgid "Services per page"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:297
+msgid "Number of services per page"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:309
+msgid "Sort by"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:310
+msgid "Sort the list of registered services"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:312
+msgid "Price: Low to High"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:313
+msgid "Price: High to Low"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:314
+msgid "Title: A to Z"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:315
+msgid "Title: Z to A"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:316
+msgid "Rating: High to Low"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:317
+msgid "Most popular"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:323
+msgid "Service results presentation"
+msgstr ""
+
+#: app/templates/app/consumers/dashboard.html:327
+msgid "View"
+msgstr ""
+
+#: app/templates/app/consumers/profile.html:4
+#: app/templates/app/consumers/profile.html:34
+msgid "My profile"
+msgstr ""
+
+#: app/templates/app/consumers/profile.html:50
+msgid "Add cover"
+msgstr ""
+
+#: app/templates/app/consumers/profile/contact-info.html:8
+msgid "Contact information"
+msgstr ""
+
+#: app/templates/app/consumers/profile/contact-info.html:23
+#: app/templates/app/consumers/profile/contact-info.html:43
+#: app/templates/app/nas/invitations/index.html:75
+#: app/templates/app/nas/requests/create-new.html:73
+#: app/templates/app/visitors/registration.html:71
+msgid "Email account"
+msgstr ""
+
+#: app/templates/app/consumers/profile/contact-info.html:25
+msgid "Your registered email account"
+msgstr ""
+
+#: app/templates/app/consumers/profile/contact-info.html:32
+#: app/templates/app/consumers/profile/contact-info.html:58
+#: app/templates/app/visitors/registration.html:116
+msgid "Mobile phone"
+msgstr ""
+
+#: app/templates/app/consumers/profile/contact-info.html:34
+msgid "Your registered mobile phone"
+msgstr ""
+
+#: app/templates/app/consumers/profile/contact-info.html:45
+msgid "Update your email account"
+msgstr ""
+
+#: app/templates/app/consumers/profile/contact-info.html:49
+msgid "your email account"
+msgstr ""
+
+#: app/templates/app/consumers/profile/contact-info.html:52
+msgid "No valid email account"
+msgstr ""
+
+#: app/templates/app/consumers/profile/contact-info.html:64
+msgid "your mobile phone number"
+msgstr ""
+
+#: app/templates/app/consumers/profile/contact-info.html:67
+#: app/templates/app/visitors/registration.html:125
+msgid "Type at least 10 digits"
+msgstr ""
+
+#: app/templates/app/consumers/profile/contact-info.html:79
+#: app/templates/app/consumers/profile/personal-info.html:220
+#: app/templates/app/consumers/profile/platform-info.html:222
+#: app/templates/app/consumers/services/item/preview/index.html:57
+#: app/templates/app/consumers/services/item/update/index.html:77
+#: app/templates/app/consumers/services/list/index.html:68
+#: app/templates/app/help/update-profile-steps.html:40
+#: app/templates/app/help/update-profile-steps.html:45
+#: app/templates/app/help/update-profile-steps.html:50
+msgid "Edit"
+msgstr ""
+
+#: app/templates/app/consumers/profile/contact-info.html:84
+#: app/templates/app/consumers/profile/personal-info.html:225
+#: app/templates/app/consumers/profile/platform-info.html:227
+msgid "Cancel"
+msgstr ""
+
+#: app/templates/app/consumers/profile/contact-info.html:87
+#: app/templates/app/consumers/profile/personal-info.html:228
+#: app/templates/app/consumers/profile/platform-info.html:230
+#: app/templates/app/help/update-profile-steps.html:41
+#: app/templates/app/help/update-profile-steps.html:46
+#: app/templates/app/help/update-profile-steps.html:55
+msgid "Save"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:7
+msgid "Update logo"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:11
+msgid "Upload logo"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:27
+#: app/templates/app/consumers/profile/personal-info.html:28
+msgid "Personal information"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:34
+msgid "The username that characterize any AoD user"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:39
+msgid "Registration date and time"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:56
+#: app/templates/app/consumers/profile/personal-info.html:112
+#: app/templates/app/help/base-help.html:94
+#: app/templates/app/help/change-password.html:56
+#: app/templates/app/help/forget-password.html:55
+#: app/templates/app/help/log-in-out.html:64
+#: app/templates/app/help/services/provider/create-service.html:49
+#: app/templates/app/help/services/provider/delete-service.html:49
+#: app/templates/app/help/services/provider/update-service.html:49
+#: app/templates/app/help/update-profile-steps.html:84
+#: app/templates/app/visitors/registration.html:26
+msgid "First name"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:65
+#: app/templates/app/consumers/profile/personal-info.html:127
+#: app/templates/app/visitors/registration.html:41
+msgid "Last name"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:74
+#: app/templates/app/consumers/profile/personal-info.html:143
+#: app/templates/app/visitors/registration.html:131
+msgid "Country"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:82
+#: app/templates/app/consumers/profile/personal-info.html:168
+msgid "City"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:84
+msgid "Your city"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:88
+#: app/templates/app/consumers/profile/personal-info.html:99
+#: app/templates/app/consumers/profile/personal-info.html:100
+#: app/templates/app/consumers/profile/personal-info.html:103
+#: app/templates/app/consumers/profile/platform-info.html:45
+#: app/templates/app/consumers/profile/platform-info.html:72
+msgid "Not set"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:94
+#: app/templates/app/consumers/profile/personal-info.html:183
+msgid "Address"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:94
+msgid "zip code"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:114
+msgid "Update your name"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:118
+#: app/templates/app/visitors/registration.html:32
+msgid "the name of user"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:121
+#: app/templates/app/consumers/profile/personal-info.html:137
+#: app/templates/app/consumers/profile/personal-info.html:177
+#: app/templates/app/consumers/profile/personal-info.html:192
+#: app/templates/app/consumers/profile/personal-info.html:207
+#: app/templates/app/visitors/registration.html:35
+#: app/templates/app/visitors/registration.html:50
+msgid "Type at least 2 characters"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:133
+#: app/templates/app/visitors/registration.html:47
+msgid "the lastname of user"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:149
+#: app/templates/app/consumers/profile/personal-info.html:162
+#: app/templates/app/visitors/registration.html:148
+msgid "Select a country"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:149
+#: app/templates/app/visitors/registration.html:137
+msgid "List"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:174
+msgid "the city of residence"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:189
+msgid "the residence address"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:198
+msgid "Postal code"
+msgstr ""
+
+#: app/templates/app/consumers/profile/personal-info.html:204
+msgid "the residence postal code"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:8
+msgid "Platform settings"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:16
+msgid "IT experience"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:18
+msgid "Experience level with IT services"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:34
+msgid "Roles"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:36
+msgid "Your roles in the platform"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:42
+msgid "Do you participate in crowd funding process"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:42
+#: app/templates/app/consumers/profile/platform-info.html:43
+#: app/templates/app/consumers/profile/platform-info.html:142
+#: app/templates/app/consumers/profile/platform-info.html:149
+#: app/templates/app/consumers/profile/platform-info.html:166
+#: app/templates/app/consumers/profile/platform-info.html:173
+#: app/templates/app/consumers/services/list/index.html:115
+#: app/templates/app/consumers/services/registration/constraints.html:16
+#: app/templates/app/consumers/services/registration/constraints.html:17
+#: app/templates/app/consumers/services/registration/constraints.html:80
+#: app/templates/app/consumers/services/registration/constraints.html:81
+#: app/templates/app/visitors/registration.html:199
+#: app/templates/app/visitors/registration.html:216
+msgid "Yes"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:42
+#: app/templates/app/consumers/profile/platform-info.html:43
+#: app/templates/app/consumers/profile/platform-info.html:145
+#: app/templates/app/consumers/profile/platform-info.html:152
+#: app/templates/app/consumers/profile/platform-info.html:169
+#: app/templates/app/consumers/profile/platform-info.html:176
+#: app/templates/app/consumers/services/list/index.html:117
+#: app/templates/app/consumers/services/registration/constraints.html:19
+#: app/templates/app/consumers/services/registration/constraints.html:20
+#: app/templates/app/consumers/services/registration/constraints.html:83
+#: app/templates/app/consumers/services/registration/constraints.html:84
+#: app/templates/app/visitors/registration.html:202
+#: app/templates/app/visitors/registration.html:219
+msgid "No"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:43
+msgid "Do you receive notifications for any crowd funding process"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:45
+msgid "Brand name"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:56
+msgid "Categories of services"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:58
+msgid "Categories of services you are interested for"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:83
+msgid "Technology skills (IT)"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:89
+#: app/templates/app/visitors/registration.html:160
+msgid "Level"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:102
+msgid "Rank your skills"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:108
+msgid "User roles"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:114
+#: app/templates/app/visitors/registration.html:181
+msgid "Role"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:127
+#: app/templates/app/visitors/registration.html:188
+msgid "Select one or more roles"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:136
+#: app/templates/app/visitors/registration.html:194
+msgid "Crowd-funding participation"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:160
+#: app/templates/app/visitors/registration.html:211
+msgid "Crowd-funding notification"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:189
+msgid "Channels of interest"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:195
+#: app/templates/app/visitors/registration.html:233
+msgid "Channels"
+msgstr ""
+
+#: app/templates/app/consumers/profile/platform-info.html:210
+msgid "Select at least a channel"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:133
+msgid "Creation date of service"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:141
+msgid "The count of comments for this service and its average score"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:141
+#: app/templates/app/consumers/search/services/preview.html:327
+#: app/templates/app/consumers/services/item/preview/reviews.html:24
+#: app/templates/app/consumers/services/services.html:54
+#: app/templates/app/consumers/services/services.html:122
+#: app/templates/app/visitors/home.html:151
+#: app/templates/app/visitors/home.html:212
+msgid "reviews"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:144
+msgid "comments"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:169
+#: app/templates/app/consumers/services/list/index.html:62
+msgid "Charging policy"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:181
+msgid "Human based"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:181
+msgid "Machine based"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:187
+#: app/templates/app/consumers/statistics/index.html:109
+#: app/templates/app/nas/preview/index.html:141
+msgid "Licences"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:205
+msgid "Get the service"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:207
+msgid "or"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:209
+msgid "Add to cart"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:218
+msgid "Not satisfied"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:219
+msgid "Try different"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:228
+msgid "Related keywords"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:239
+msgid "Brief description"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:259
+#: app/templates/app/consumers/services/item/preview/preview.html:103
+#: app/templates/app/consumers/statistics/index.html:130
+#: app/templates/app/nas/preview/index.html:162
+msgid "Requirements"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:273
+#: app/templates/app/consumers/statistics/index.html:135
+#: app/templates/app/nas/preview/index.html:167
+msgid "How to install it"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:278
+msgid "How to use it"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:295
+msgid "No location constraints"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:307
+msgid "No language constraints"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:319
+msgid "Reviews for service"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:327
+msgid "from"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:335
+#: app/templates/app/consumers/search/services/preview.html:346
+#: app/templates/app/consumers/search/services/preview.html:357
+#: app/templates/app/consumers/search/services/preview.html:368
+#: app/templates/app/consumers/services/item/preview/reviews.html:30
+#: app/templates/app/consumers/services/item/preview/reviews.html:42
+#: app/templates/app/consumers/services/item/preview/reviews.html:53
+#: app/templates/app/consumers/services/item/preview/reviews.html:64
+msgid "stars"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:379
+#: app/templates/app/consumers/services/item/preview/reviews.html:75
+msgid "star"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:392
+msgid "No reviews found"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:399
+msgid "Tips for first timers"
+msgstr ""
+
+#: app/templates/app/consumers/search/services/preview.html:403
+#: app/templates/app/consumers/services/item/preview/index.html:78
+#: app/templates/app/consumers/services/registration/support.html:5
+msgid "Technical support"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:27
+#: app/templates/app/consumers/services/item/update/index.html:70
+#: app/templates/app/nas/configuration/index.html:30
+#: app/templates/app/nas/invitations/index.html:30
+#: app/templates/app/nas/preview/index.html:30
+#: app/templates/app/nas/requests/index.html:31
+#: app/templates/app/navbar-users.html:12
+msgid "Home page"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:32
+#: app/templates/app/consumers/services/item/update/index.html:74
+#: app/templates/app/consumers/services/list/index.html:4
+#: app/templates/app/consumers/services/list/index.html:26
+#: app/templates/app/consumers/services/registration/index.html:25
+#: app/templates/app/navbar-users.html:39
+msgid "My offerings"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:46
+msgid "Service title is"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:52
+msgid "Created at"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:58
+msgid "Print"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:59
+msgid "Share"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:68
+msgid "Service details"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:73
+#: app/templates/app/consumers/services/list/index.html:67
+msgid "Statistics"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:77
+msgid "Technical support of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:83
+msgid "Reviews"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:110
+msgid "A set of keywords that characterize the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:116
+msgid "No keywords"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:121
+msgid "Last date that the service was modified"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/index.html:124
+msgid "Last edit at"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:22
+#: app/templates/app/consumers/services/list/index.html:66
+#: app/templates/app/consumers/services/registration/basic.html:28
+#: app/templates/app/nas/preview/index.html:241
+msgid "Description"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:24
+msgid "The description of this service"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:31
+#: app/templates/app/consumers/services/registration/basic.html:182
+msgid "Version"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:33
+msgid "The version of this service"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:42
+#: app/templates/app/consumers/services/registration/basic.html:181
+msgid "Licenses"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:44
+msgid "The license of this service"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:55
+msgid "The type of this service"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:59
+msgid "The operation of this service is machine-based"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:61
+msgid "The operation of this service is human-based"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:72
+msgid "The price and the charging policy of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:88
+msgid "Related categories"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:94
+msgid "No related categories"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:105
+msgid "The services requirements, if exist"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:111
+msgid "No requirements required"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:120
+#: app/templates/app/consumers/services/registration/usage.html:26
+#: app/templates/app/consumers/services/registration/usage.html:28
+msgid "Installation guidelines"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:122
+msgid "A set of installation instructions of the service for the users"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:128
+msgid "No instructions provided"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:137
+#: app/templates/app/consumers/services/registration/usage.html:83
+#: app/templates/app/consumers/services/registration/usage.html:85
+msgid "Usage guidelines"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:139
+msgid "A brief set of usage instructions"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:145
+msgid "No guidelines provided"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:156
+msgid "Downloads"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:158
+msgid "Download the data that the service provides"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:169
+msgid "Useful links"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:171
+msgid "Follow this link in order to use the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:182
+msgid "Access"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:184
+msgid "The accessibility rule for the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:188
+msgid "Public - any registered user can purchase or use it"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:190
+msgid "Private - only a group of users can purchase or use it"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:199
+msgid "Language availability"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:201
+msgid "Any language constraints, if exist"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:208
+msgid "All languages supported"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:216
+#: app/templates/app/consumers/statistics/index.html:154
+#: app/templates/app/nas/preview/index.html:190
+msgid "Spatial coverage"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:218
+msgid "Any location constraints, if exist"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:224
+msgid "There is no spatial constraints"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:235
+msgid "Other constraints/comments"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:237
+msgid "Any other constraints"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:250
+#: app/templates/app/consumers/services/list/index.html:59
+msgid "Availability"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:252
+msgid "The status of the service. Is it available for users search?"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:256
+msgid "The service is available for usage"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/preview.html:258
+msgid "Not available"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/reviews.html:11
+msgid "Overview"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/statistics.html:25
+msgid "User details"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/statistics.html:26
+msgid "Purchased date"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/statistics.html:27
+#: app/templates/app/consumers/statistics/index.html:93
+#: app/templates/app/nas/preview/index.html:125
+msgid "Charging"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/statistics.html:28
+msgid "Payment status"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/statistics.html:29
+msgid "Payment date"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/technical-support.html:8
+msgid "Assistance On demand Infrastructure"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/technical-support.html:8
+msgid ""
+" gives you the capability to provide multi-modal technical support for any "
+"service you register. \n"
+"                It allows to upload or share any kind of documents (i.e. "
+"pdf, office excel or word documents), videos and photos. Furthermore, you "
+"can register your "
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/technical-support.html:10
+#: app/templates/app/consumers/services/registration/support.html:12
+msgid "Skype ID"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/technical-support.html:10
+msgid "to chat with the users and help them to solve their problems"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/technical-support.html:15
+msgid "Videos preview"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/technical-support.html:20
+msgid "Documents preview"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/preview/technical-support.html:25
+msgid "Your skype account"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/update/index.html:4
+msgid "Edit your service"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/update/index.html:91
+#: app/templates/app/consumers/services/registration/basic.html:5
+#: app/templates/app/consumers/services/registration/index.html:39
+msgid "Basic information"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/update/index.html:96
+#: app/templates/app/consumers/services/registration/charging.html:5
+#: app/templates/app/consumers/services/registration/index.html:44
+msgid "Charging Policy"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/update/index.html:101
+#: app/templates/app/consumers/services/registration/index.html:49
+#: app/templates/app/consumers/services/registration/usage.html:5
+msgid "Usage"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/update/index.html:106
+#: app/templates/app/consumers/services/registration/constraints.html:5
+#: app/templates/app/consumers/services/registration/index.html:54
+msgid "Constraints"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/update/index.html:111
+#: app/templates/app/consumers/services/registration/index.html:59
+msgid "Technical Support"
+msgstr ""
+
+#: app/templates/app/consumers/services/item/update/index.html:116
+#: app/templates/app/consumers/services/registration/confirm.html:45
+#: app/templates/app/consumers/services/registration/index.html:64
+msgid "Register"
+msgstr ""
+
+#: app/templates/app/consumers/services/list/index.html:34
+msgid "Services management panel"
+msgstr ""
+
+#: app/templates/app/consumers/services/list/index.html:38
+msgid "Add a new service"
+msgstr ""
+
+#: app/templates/app/consumers/services/list/index.html:39
+#: app/templates/app/help/services/provider/create-service.html:13
+#: app/templates/app/help/services/provider/delete-service.html:13
+msgid "Register service"
+msgstr ""
+
+#: app/templates/app/consumers/services/list/index.html:57
+#: app/templates/app/consumers/services/registration/basic.html:12
+#: app/templates/app/consumers/statistics/index.html:53
+msgid "Title"
+msgstr ""
+
+#: app/templates/app/consumers/services/list/index.html:58
+#: app/templates/app/consumers/services/registration/usage.html:99
+msgid "Accessibility"
+msgstr ""
+
+#: app/templates/app/consumers/services/list/index.html:60
+#: app/templates/app/consumers/services/registration/charging.html:55
+msgid "Currency"
+msgstr ""
+
+#: app/templates/app/consumers/services/list/index.html:64
+msgid "Creation date"
+msgstr ""
+
+#: app/templates/app/consumers/services/list/index.html:65
+msgid "Last edit"
+msgstr ""
+
+#: app/templates/app/consumers/services/list/index.html:109
+#: app/templates/app/consumers/services/registration/usage.html:105
+msgid "Public"
+msgstr ""
+
+#: app/templates/app/consumers/services/list/index.html:111
+#: app/templates/app/consumers/services/registration/usage.html:108
+msgid "Private"
+msgstr ""
+
+#: app/templates/app/consumers/services/list/index.html:121
+msgid "Navigate on the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:12
+#: app/templates/app/consumers/services/registration/basic.html:14
+#: app/templates/app/consumers/services/registration/support.html:14
+msgid "Enter the title of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:18
+msgid "The title of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:21
+#: app/templates/app/consumers/services/registration/basic.html:37
+#: app/templates/app/consumers/services/registration/basic.html:64
+#: app/templates/app/consumers/services/registration/basic.html:82
+#: app/templates/app/consumers/services/registration/basic.html:267
+msgid "Title required"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:28
+#: app/templates/app/consumers/services/registration/basic.html:30
+msgid "Description of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:34
+msgid "Provide a brief description of the service (500 characters)"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:44
+#: app/templates/app/consumers/services/registration/basic.html:46
+msgid "Type of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:50
+#: app/templates/app/consumers/services/registration/basic.html:51
+msgid "Select the type"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:71
+msgid "Category"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:73
+msgid "Clarify the service in categories"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:77
+msgid "Clarify your service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:89
+msgid "The image of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:89
+msgid "Image"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:91
+msgid "The logo of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:102
+msgid "Upload at least an image or logo"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:109
+msgid "Add the image of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:110
+msgid "Load image"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:114
+msgid "Remove the image of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:115
+msgid "Clear image"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:124
+#: app/templates/app/consumers/services/registration/basic.html:126
+msgid "Select a image for background"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:124
+msgid "Background image"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:131
+#: app/templates/app/consumers/services/registration/basic.html:143
+msgid "Select the cover image for the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:131
+#: app/templates/app/consumers/services/registration/basic.html:143
+#: app/templates/app/consumers/services/registration/basic.html:144
+msgid "Cover image"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:154
+msgid "Select a background cover for the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:161
+msgid "Picker"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:180
+msgid "The version and licenses of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:184
+msgid "The version of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:188
+msgid "Current version"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:190
+msgid "The license of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:194
+msgid "License"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:198
+msgid "Enter a valid version"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:207
+#: app/templates/app/consumers/services/registration/basic.html:209
+msgid "Keyword related to the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:207
+msgid "Related Keywords"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:213
+msgid "Enter a keyword"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:213
+#: app/templates/app/consumers/services/registration/basic.html:230
+msgid "Enter your keyword and press ENTER"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:223
+msgid "Keyword(s) is(are) required"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:248
+msgid "List of entered keywords"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:253
+msgid "Keywords list"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:262
+msgid "Remove keyword from list"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:263
+msgid "Remove keyword(s) from list"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/basic.html:274
+#: app/templates/app/consumers/services/registration/basic.html:275
+#: app/templates/app/consumers/services/registration/charging.html:90
+#: app/templates/app/consumers/services/registration/constraints.html:150
+#: app/templates/app/consumers/services/registration/constraints.html:151
+#: app/templates/app/consumers/services/registration/support.html:25
+#: app/templates/app/consumers/services/registration/support.html:26
+#: app/templates/app/consumers/services/registration/usage.html:152
+msgid "Mandatory fields"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/charging.html:12
+#: app/templates/app/consumers/services/registration/charging.html:14
+msgid "Charging model of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/charging.html:12
+msgid "Charging model"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/charging.html:18
+msgid "Choose a charging model"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/charging.html:19
+msgid "Choose the charging model"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/charging.html:32
+msgid "Charging model is required"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/charging.html:41
+msgid "Cost of the service usage"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/charging.html:45
+msgid "The price of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/charging.html:48
+msgid "Cost value is required"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/charging.html:55
+#: app/templates/app/consumers/services/registration/charging.html:57
+msgid "Currency related to the service usage cost"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/charging.html:61
+msgid "Select the type of the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/charging.html:61
+#: app/templates/app/consumers/services/registration/charging.html:62
+msgid "Select the currency"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/charging.html:83
+msgid "Currency is required"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/charging.html:89
+#: app/templates/app/consumers/services/registration/usage.html:151
+msgid "Mandotory fields"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/confirm.html:5
+msgid "Service Registration"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/confirm.html:12
+#: app/templates/app/consumers/services/registration/confirm.html:18
+msgid "Compliance to norms"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/confirm.html:15
+msgid "Enter any information"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/confirm.html:25
+msgid "Check the Terms of use"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/confirm.html:27
+msgid "I have already read the terms of use issues"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/confirm.html:29
+msgid "I agree to the"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/confirm.html:34
+msgid "Check the box, if you agree with the terms"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/confirm.html:43
+#: app/templates/app/visitors/forgot-password.html:26
+#: app/templates/app/visitors/registration.html:287
+msgid "Submit"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:12
+msgid "Language constraint"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:28
+msgid "Select languages"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:30
+msgid "Declare the language associated with the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:34
+msgid "Declare the available language"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:69
+msgid "At least a language is required"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:76
+msgid "Geographical constraint"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:92
+msgid "Set the coordinates"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:92
+msgid "Map"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:101
+msgid "Latitude"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:107
+msgid "latitude"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:113
+msgid "Longitude"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:119
+msgid "longitude"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:125
+msgid "Coverage (km)"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:131
+msgid "distance in kilometers"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:138
+msgid "Other constraints"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:140
+msgid "Refer any other constraint"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/constraints.html:144
+msgid ""
+"Enter any other constraint, e.g. time availability, Operational System etc"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/index.html:4
+msgid "Register your services"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/index.html:26
+msgid "Registration"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/support.html:5
+msgid "documentation & tools"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/support.html:12
+msgid "Enter the skype id"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/support.html:16
+msgid "skype logo"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/support.html:18
+msgid "skype account"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:11
+msgid "Technical requirements"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:13
+msgid "Basic requirements to use the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:17
+msgid "Specify any requirements if needed (ie use headset inluded microphone)"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:20
+msgid "Requirements are required"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:32
+msgid "Explain step-by-step how a user could install the service, if needed"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:41
+msgid "Link"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:43
+msgid "URL/Link/API"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:47
+msgid "Enter any link, if needed"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:50
+#: app/templates/app/consumers/services/registration/usage.html:77
+msgid "Invalid link"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:56
+msgid "Software/Package"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:58
+msgid "Upload the software packages, if needed"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:61
+msgid "Filename of the software package"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:65
+msgid "Add the provided package for the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:66
+msgid "Add package"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:70
+msgid "Remove the provided package for the service"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:71
+msgid "Remove package"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:89
+msgid ""
+"Provide instructions related to the usage of the service (ie follow a link, "
+"book a meeting etc)"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:92
+msgid "Usage instructions are required"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:104
+msgid "Offer the service to anyone interested"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:107
+msgid "Offer the service to a group of users"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:116
+msgid "Email list"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:118
+msgid "List of all registered users"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:123
+msgid "List of all users"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:132
+msgid "Add email to target list"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:136
+msgid "Remove email from target list"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:140
+msgid "List of target users"
+msgstr ""
+
+#: app/templates/app/consumers/services/registration/usage.html:145
+msgid "Target users"
+msgstr ""
+
+#: app/templates/app/consumers/services/services.html:25
+#: app/templates/app/consumers/services/services.html:93
+msgid "Get it!"
+msgstr ""
+
+#: app/templates/app/consumers/services/services.html:41
+#: app/templates/app/consumers/services/services.html:109
+msgid "FREE"
+msgstr ""
+
+#: app/templates/app/consumers/services/services.html:52
+#: app/templates/app/consumers/services/services.html:120
+#: app/templates/app/visitors/home.html:149
+#: app/templates/app/visitors/home.html:210
+msgid "review"
+msgstr ""
+
+#: app/templates/app/consumers/services/services.html:60
+msgid "Machine-based service"
+msgstr ""
+
+#: app/templates/app/consumers/services/services.html:62
+msgid "Human-based service"
+msgstr ""
+
+#: app/templates/app/consumers/services/services.html:143
+msgid "No results found!! Please refine your search."
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:28
+#: app/templates/app/navbar-users.html:44
+msgid "My collection"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:35
+msgid "collection of services"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:54
+msgid "Assist?"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:112
+#: app/templates/app/consumers/statistics/index.html:131
+#: app/templates/app/nas/preview/index.html:144
+#: app/templates/app/nas/preview/index.html:163
+msgid "None"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:122
+#: app/templates/app/nas/preview/index.html:154
+msgid "What the service offers"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:128
+#: app/templates/app/help/change-password.html:29
+#: app/templates/app/help/services/provider/create-service.html:25
+#: app/templates/app/help/services/provider/delete-service.html:25
+#: app/templates/app/help/services/provider/update-service.html:25
+#: app/templates/app/help/update-profile-steps.html:29
+#: app/templates/app/nas/preview/index.html:160
+msgid "Instructions"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:140
+#: app/templates/app/nas/preview/index.html:172
+msgid "How to exploit it"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:145
+#: app/templates/app/nas/preview/index.html:176
+msgid "Useful link"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:152
+#: app/templates/app/nas/preview/index.html:183
+msgid "Restrictions"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:159
+#: app/templates/app/nas/preview/index.html:185
+msgid "Languages availability"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:160
+#: app/templates/app/nas/preview/index.html:186
+msgid "All languages are supported"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:165
+#: app/templates/app/nas/preview/index.html:195
+msgid "Other comment"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:172
+#: app/templates/app/nas/preview/index.html:202
+msgid "Service configuration"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:178
+#: app/templates/app/nas/preview/index.html:208
+msgid "Troubleshooting"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:180
+#: app/templates/app/nas/preview/index.html:210
+msgid "Videos"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:182
+#: app/templates/app/nas/preview/index.html:212
+msgid "Documents"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:184
+#: app/templates/app/nas/preview/index.html:214
+msgid "Ask a volunteer"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:185
+#: app/templates/app/consumers/statistics/index.html:187
+#: app/templates/app/nas/preview/index.html:215
+#: app/templates/app/nas/preview/index.html:217
+msgid "No available"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:186
+#: app/templates/app/nas/preview/index.html:216
+msgid "Ask a professional"
+msgstr ""
+
+#: app/templates/app/consumers/statistics/index.html:188
+#: app/templates/app/nas/preview/index.html:218
+msgid "Chat with service provider"
+msgstr ""
+
+#: app/templates/app/errors/401.html:5 app/templates/app/errors/404.html:5
+#: app/templates/app/errors/500.html:5
+#: app/templates/app/nas/preview/index.html:5
+msgid "Assistance network preview"
+msgstr ""
+
+#: app/templates/app/errors/401.html:28
+msgid "Unauthenticated user"
+msgstr ""
+
+#: app/templates/app/errors/404.html:26
+msgid "Page NOT FOUND"
+msgstr ""
+
+#: app/templates/app/errors/500.html:28
+msgid "Internal server error. Contact with the administrator"
+msgstr ""
+
+#: app/templates/app/guidedAssistanceLinks.html:5
+#: app/templates/app/guidedAssistanceLinks.html:7
+msgid "Services network"
+msgstr ""
+
+#: app/templates/app/guidedAssistanceLinks.html:12
+msgid "Manage the requests related to network of assistance services"
+msgstr ""
+
+#: app/templates/app/guidedAssistanceLinks.html:13
+#: app/templates/app/nas/configuration/index.html:5
+#: app/templates/app/nas/invitations/index.html:33
+msgid "Guided assistance"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:45
+#: app/templates/app/help/base-help.html:47
+#: app/templates/app/help/change-password.html:13
+#: app/templates/app/help/change-password.html:15
+#: app/templates/app/help/forget-password.html:13
+#: app/templates/app/help/forget-password.html:15
+#: app/templates/app/help/index.html:56 app/templates/app/help/index.html:58
+#: app/templates/app/help/log-in-out.html:13
+#: app/templates/app/help/log-in-out.html:15
+#: app/templates/app/help/services/provider/create-service.html:12
+#: app/templates/app/help/services/provider/delete-service.html:12
+#: app/templates/app/help/services/provider/update-service.html:12
+#: app/templates/app/help/update-profile-steps.html:13
+#: app/templates/app/help/update-profile-steps.html:15
+msgid "Help Center"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:49
+msgid "Create new account"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:55
+msgid "How to create a new account"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:61
+#: app/templates/app/help/create_new_account.html:8
+msgid "Step-by-step registration instructions"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:63
+#: app/templates/app/help/create_new_account.html:10
+msgid "Go to the"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:63
+#: app/templates/app/help/create_new_account.html:10
+msgid "Registration page"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:64
+#: app/templates/app/help/create_new_account.html:11
+msgid ""
+"Enter your first and last name, a unique username and a valid email account"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:65
+#: app/templates/app/help/create_new_account.html:12
+msgid "Enter your personal password and then re-enter it"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:66
+#: app/templates/app/help/create_new_account.html:13
+msgid "Optionally, enter your mobile number for notification purposes"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:67
+#: app/templates/app/help/create_new_account.html:14
+msgid "Define the geolocation information (e.g. country)"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:68
+#: app/templates/app/help/create_new_account.html:15
+msgid "Advertise your roles (buyer, seller or/and carer)"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:69
+#: app/templates/app/help/create_new_account.html:16
+msgid "Select the channels of your interest"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:70
+#: app/templates/app/help/create_new_account.html:17
+msgid "Answer to the simple question"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:71
+#: app/templates/app/help/create_new_account.html:18
+msgid "Since you have read the"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:71
+#: app/templates/app/help/create_new_account.html:18
+#: app/templates/app/visitors/registration.html:295
+msgid "AoD Marketplace User Agreement"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:71
+#: app/templates/app/help/create_new_account.html:18
+#: app/templates/app/nas/configuration/index.html:163
+#: app/templates/app/nas/invitations/index.html:55
+#: app/templates/app/nas/requests/create-new.html:53
+#: app/templates/app/visitors/registration.html:295
+msgid "and"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:71
+#: app/templates/app/help/create_new_account.html:18
+msgid "submit your registration request"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:72
+#: app/templates/app/help/create_new_account.html:19
+msgid ""
+"Check your email account and follow the instructions step-by-step to "
+"activate it"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:80
+#: app/templates/app/help/change-password.html:42
+#: app/templates/app/help/create_new_account.html:27
+#: app/templates/app/help/forget-password.html:41
+#: app/templates/app/help/log-in-out.html:50
+#: app/templates/app/help/services/provider/create-service.html:35
+#: app/templates/app/help/services/provider/delete-service.html:35
+#: app/templates/app/help/services/provider/update-service.html:35
+#: app/templates/app/help/update-profile-steps.html:70
+msgid "Watch the following video"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:84
+#: app/templates/app/help/change-password.html:46
+#: app/templates/app/help/create_new_account.html:31
+#: app/templates/app/help/forget-password.html:45
+#: app/templates/app/help/log-in-out.html:54
+#: app/templates/app/help/services/provider/create-service.html:39
+#: app/templates/app/help/services/provider/delete-service.html:39
+#: app/templates/app/help/services/provider/update-service.html:39
+#: app/templates/app/help/update-profile-steps.html:74
+msgid "Your browser does not support HTML5 video"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:92
+#: app/templates/app/help/change-password.html:54
+#: app/templates/app/help/forget-password.html:53
+#: app/templates/app/help/log-in-out.html:62
+#: app/templates/app/help/services/provider/create-service.html:47
+#: app/templates/app/help/services/provider/delete-service.html:47
+#: app/templates/app/help/services/provider/update-service.html:47
+#: app/templates/app/help/update-profile-steps.html:82
+msgid "Need our assistance"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:95
+#: app/templates/app/help/change-password.html:57
+#: app/templates/app/help/forget-password.html:56
+#: app/templates/app/help/log-in-out.html:65
+#: app/templates/app/help/services/provider/create-service.html:50
+#: app/templates/app/help/services/provider/delete-service.html:50
+#: app/templates/app/help/services/provider/update-service.html:50
+#: app/templates/app/help/update-profile-steps.html:85
+msgid "Surname"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:96
+#: app/templates/app/help/change-password.html:58
+#: app/templates/app/help/forget-password.html:57
+#: app/templates/app/help/log-in-out.html:66
+#: app/templates/app/help/services/provider/create-service.html:51
+#: app/templates/app/help/services/provider/delete-service.html:51
+#: app/templates/app/help/services/provider/update-service.html:51
+#: app/templates/app/help/update-profile-steps.html:86
+msgid "Contact us"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:98
+msgid "or  contact with the administrator in"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:109
+msgid "Volunteers"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:114
+msgid "Contact me in"
+msgstr ""
+
+#: app/templates/app/help/base-help.html:127
+msgid "Professionals"
+msgstr ""
+
+#: app/templates/app/help/change-password.html:23
+msgid "How can you change the password"
+msgstr ""
+
+#: app/templates/app/help/change-password.html:31
+msgid "Click on the"
+msgstr ""
+
+#: app/templates/app/help/change-password.html:32
+msgid " Enter your previous password"
+msgstr ""
+
+#: app/templates/app/help/change-password.html:33
+msgid "Enter the new password twice (for confirmation issues)"
+msgstr ""
+
+#: app/templates/app/help/change-password.html:34
+msgid ""
+"Then, click on the Submit button (Remind to enter the new credentials in the "
+"next login attemp)"
+msgstr ""
+
+#: app/templates/app/help/forget-password.html:17
+msgid "Forget password"
+msgstr ""
+
+#: app/templates/app/help/forget-password.html:23
+msgid "How to reset your password if you have forgot it"
+msgstr ""
+
+#: app/templates/app/help/forget-password.html:29
+msgid "Reset password"
+msgstr ""
+
+#: app/templates/app/help/forget-password.html:31
+msgid "Click on"
+msgstr ""
+
+#: app/templates/app/help/forget-password.html:31
+msgid "Forgot password"
+msgstr ""
+
+#: app/templates/app/help/forget-password.html:32
+msgid "Enter your registered email and submit it"
+msgstr ""
+
+#: app/templates/app/help/forget-password.html:33
+msgid "Check your inbox and follow the instructions"
+msgstr ""
+
+#: app/templates/app/help/index.html:65
+msgid "How can we help"
+msgstr ""
+
+#: app/templates/app/help/index.html:69
+msgid "Hi"
+msgstr ""
+
+#: app/templates/app/help/index.html:69
+msgid "Please"
+msgstr ""
+
+#: app/templates/app/help/index.html:69
+#: app/templates/app/navbar-visitors-iam.html:47
+#: app/templates/app/navbar-visitors.html:45
+#: app/templates/app/navbar-visitors.html:47
+#: app/templates/app/visitors/login.html:20
+#: app/templates/app/visitors/login.html:111
+msgid "Log in"
+msgstr ""
+
+#: app/templates/app/help/index.html:69
+msgid "for help with your account activities or visit the"
+msgstr ""
+
+#: app/templates/app/help/index.html:69
+msgid "for more information"
+msgstr ""
+
+#: app/templates/app/help/index.html:78 app/templates/app/navbar-users.html:59
+msgid "Account settings"
+msgstr ""
+
+#: app/templates/app/help/index.html:86
+msgid "Create a new account"
+msgstr ""
+
+#: app/templates/app/help/index.html:87
+msgid "Login and logout actions"
+msgstr ""
+
+#: app/templates/app/help/index.html:88
+msgid "Forget my password"
+msgstr ""
+
+#: app/templates/app/help/index.html:100
+msgid "Service Consumer (Buyer)"
+msgstr ""
+
+#: app/templates/app/help/index.html:108
+msgid "Simple search for a service"
+msgstr ""
+
+#: app/templates/app/help/index.html:109
+msgid "Enhanced search for a service"
+msgstr ""
+
+#: app/templates/app/help/index.html:120
+msgid "Service Provider (Seller)"
+msgstr ""
+
+#: app/templates/app/help/index.html:128
+msgid "Register a new service"
+msgstr ""
+
+#: app/templates/app/help/index.html:129
+msgid "Update an existing service"
+msgstr ""
+
+#: app/templates/app/help/index.html:130
+msgid "Remove an existing service"
+msgstr ""
+
+#: app/templates/app/help/log-in-out.html:17
+msgid "Access AoD"
+msgstr ""
+
+#: app/templates/app/help/log-in-out.html:23
+msgid "How to login/logout"
+msgstr ""
+
+#: app/templates/app/help/log-in-out.html:29
+msgid "Login process"
+msgstr ""
+
+#: app/templates/app/help/log-in-out.html:31
+msgid ""
+"Click on the Log in button located in the top navigation menu to go on the"
+msgstr ""
+
+#: app/templates/app/help/log-in-out.html:31
+msgid "Login page"
+msgstr ""
+
+#: app/templates/app/help/log-in-out.html:32
+msgid ""
+"Enter your credentials: the username and the password. Their combination is "
+"unique"
+msgstr ""
+
+#: app/templates/app/help/log-in-out.html:33
+msgid "Press the Log in button"
+msgstr ""
+
+#: app/templates/app/help/log-in-out.html:34
+msgid "The platform will be redirect you on the Home page for registered users"
+msgstr ""
+
+#: app/templates/app/help/log-in-out.html:39
+msgid "Logout process"
+msgstr ""
+
+#: app/templates/app/help/log-in-out.html:41
+msgid ""
+"Click on the Log out button located in the navigation top menu (visible only "
+"whether you are already logged in the AoD)"
+msgstr ""
+
+#: app/templates/app/help/log-in-out.html:42
+msgid "The platform will be redirect you on the Home page for visitors"
+msgstr ""
+
+#: app/templates/app/help/services/provider/create-service.html:19
+#: app/templates/app/help/update-profile-steps.html:23
+msgid "Do you want to update your profile"
+msgstr ""
+
+#: app/templates/app/help/services/provider/create-service.html:27
+#: app/templates/app/help/services/provider/delete-service.html:27
+#: app/templates/app/help/services/provider/update-service.html:27
+msgid "Navigate on the top menu"
+msgstr ""
+
+#: app/templates/app/help/services/provider/delete-service.html:19
+msgid "Do you want to delete a service"
+msgstr ""
+
+#: app/templates/app/help/services/provider/update-service.html:13
+msgid "Update service"
+msgstr ""
+
+#: app/templates/app/help/services/provider/update-service.html:19
+msgid "Do you want to update your service"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:31
+msgid "Navigate on the top menu, click on your username and select the"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:31
+msgid "Profile"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:31
+msgid "link"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:32
+msgid "The AoD platform provides the following capabilities"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:35
+msgid "Update your cover image"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:36
+msgid ""
+"Optionally, you can update your cover image since you click on Add cover "
+"button and select an image of your interest"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:39
+msgid "Modify your Personal information"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:40
+msgid "Go to <b>Personal information</b> box and click on"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:41
+msgid ""
+"button to alter the view in edit mode. You can fill or correct any field "
+"related to your first/last name and your geolocation options. Optionally, "
+"you could upload or change your profile logo. To store the changes, just "
+"click on"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:41
+#: app/templates/app/help/update-profile-steps.html:46
+#: app/templates/app/help/update-profile-steps.html:55
+msgid "button. To cancel your changes, click on Cancel button"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:44
+msgid "Modify your Contact information"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:45
+msgid "Go to <b>Contact information</b> box and click on"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:46
+msgid ""
+"button to alter the view in edit mode. You can fill or correct your email "
+"account and your mobile phone number. To store the changes, just click on"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:49
+msgid "Modify your Platform settings"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:50
+msgid "Go to <b>Platform settings</b> box and click on"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:51
+msgid ""
+"button to alter the view in edit mode. You can fill or correct your IT "
+"experience, your desired roles in platform (e.g. service consumer, service "
+"provider or carer)"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:52
+msgid ""
+"\n"
+"                                By default, any provider receives "
+"notification for crowd-funding procedures while any consumer has to specify "
+"if he/she want to receive and participate in these procedures. \n"
+"                                Moreover, you can update the channels of "
+"your interest (service categories) from the drop down list."
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:55
+msgid "To store the changes, just click on"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:58
+msgid "Modify your Bank settings"
+msgstr ""
+
+#: app/templates/app/help/update-profile-steps.html:59
+msgid "Under development"
+msgstr ""
+
+#: app/templates/app/languages.html:5 app/templates/app/languages.html.py:7
+msgid "Set your language"
+msgstr ""
+
+#: app/templates/app/languages.html:12
+msgid "LANGUAGES"
+msgstr ""
+
+#: app/templates/app/languages.html:16
+msgid "Logo"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:35
+#: app/templates/app/nas/configuration/index.html:36
+#: app/templates/app/nas/invitations/index.html:33
+#: app/templates/app/nas/preview/index.html:35
+#: app/templates/app/nas/preview/index.html:36
+#: app/templates/app/nas/requests/create-new.html:30
+#: app/templates/app/nas/requests/index.html:5
+#: app/templates/app/nas/requests/index.html:35
+msgid "Network of Assistance Services"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:39
+msgid "Setup"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:53
+msgid "Progress"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:53
+msgid "Completion percentage of the guided assistance process"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:59
+msgid "Complete"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:68
+msgid "Search services"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:72
+msgid "enter keywords"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:72
+msgid "Enter keywords"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:90
+#: app/templates/app/nas/configuration/index.html:105
+msgid "Step"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:92
+#: app/templates/app/nas/configuration/index.html:107
+msgid "Number of services in selected categories"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:116
+msgid "Check/uncheck all"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:133
+msgid "Final step: Overview"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:138
+msgid ""
+"The selected services are ordered by category. You have the capability to "
+"purchase them and optionally modify their configuration"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:152
+msgid "Setup the network of assistance services"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:156
+#: app/templates/app/nas/configuration/index.html:256
+msgid "You set up a network of assistance services on behalf of"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:162
+msgid "Hint"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:163
+msgid "Please use the buttons"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:163
+msgid "Proceed to previous step"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:163
+#: app/templates/app/nas/configuration/index.html:177
+msgid "Previous step"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:163
+#: app/templates/app/nas/configuration/index.html:178
+msgid "Next step"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:163
+msgid "to navigate in the wizard step-by-step"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:164
+msgid ""
+"In every step, you can filter the list of services (see the table below) by "
+"selecting the (sub)categories of your interest in the left column of page.\n"
+"                            Then, please check the services you want to use "
+"and proceed to the next step"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:168
+msgid ""
+"In this step, platform provides you a summary of the selected services that "
+"are grouped by category"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:169
+msgid "Find marked with icon"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:169
+msgid "Mark categories in which none service has selected"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:169
+msgid "the categories in which you did not select any service"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:170
+msgid "On the other hand, find marked with icon"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:170
+msgid "Categories in which the selected services belong to"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:170
+msgid "the categories in which you have selected at least a service"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:209
+#: app/templates/app/nas/configuration/index.html:224
+#: app/templates/app/nas/configuration/index.html:297
+#: app/templates/app/nas/preview/index.html:86
+#: app/templates/app/nas/preview/index.html:240
+msgid "Service title"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:212
+#: app/templates/app/nas/configuration/index.html:300
+msgid "Location constraints"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:213
+msgid "Wishlist"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:214
+#: app/templates/app/nas/configuration/index.html:302
+msgid "Action"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:223
+msgid "Category title"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:225
+#: app/templates/app/nas/configuration/index.html:301
+msgid "More details"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:226
+msgid "Action buttons"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:243
+#: app/templates/app/nas/requests/create-new.html:83
+msgid "Back to guided assistance page"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:252
+msgid "Network of assistance services: installation steps"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:279
+msgid "Search results"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:280
+msgid "service(s) found"
+msgstr ""
+
+#: app/templates/app/nas/configuration/index.html:318
+msgid "Back to structured search"
+msgstr ""
+
+#: app/templates/app/nas/invitations/index.html:42
+msgid "Setup your network of carers"
+msgstr ""
+
+#: app/templates/app/nas/invitations/index.html:42
+#: app/templates/app/nas/requests/index.html:87
+msgid "Professionals and family members"
+msgstr ""
+
+#: app/templates/app/nas/invitations/index.html:47
+msgid "Enter the user's email account"
+msgstr ""
+
+#: app/templates/app/nas/invitations/index.html:50
+msgid "enter email account"
+msgstr ""
+
+#: app/templates/app/nas/invitations/index.html:55
+#: app/templates/app/nas/requests/create-new.html:53
+msgid "No valid email"
+msgstr ""
+
+#: app/templates/app/nas/invitations/index.html:55
+#: app/templates/app/nas/requests/create-new.html:53
+msgid "The characters"
+msgstr ""
+
+#: app/templates/app/nas/invitations/index.html:55
+#: app/templates/app/nas/requests/create-new.html:53
+msgid "are required"
+msgstr ""
+
+#: app/templates/app/nas/invitations/index.html:73
+#: app/templates/app/nas/requests/create-new.html:71
+msgid "Name"
+msgstr ""
+
+#: app/templates/app/nas/invitations/index.html:74
+#: app/templates/app/nas/requests/create-new.html:72
+msgid "Lastname"
+msgstr ""
+
+#: app/templates/app/nas/invitations/index.html:76
+msgid "Send invitation"
+msgstr ""
+
+#: app/templates/app/nas/invitations/index.html:85
+#: app/templates/app/nas/preview/index.html:256
+#: app/templates/app/nas/requests/create-new.html:83
+msgid "Back to carer dashboard"
+msgstr ""
+
+#: app/templates/app/nas/invitations/index.html:85
+msgid "Back to guided assistance"
+msgstr ""
+
+#: app/templates/app/nas/preview/index.html:39
+msgid "Preview"
+msgstr ""
+
+#: app/templates/app/nas/preview/index.html:56
+msgid "Purchased services"
+msgstr ""
+
+#: app/templates/app/nas/preview/index.html:61
+msgid "WishList"
+msgstr ""
+
+#: app/templates/app/nas/preview/index.html:61
+msgid "(Interesting services)"
+msgstr ""
+
+#: app/templates/app/nas/preview/index.html:244
+msgid "Delete"
+msgstr ""
+
+#: app/templates/app/nas/requests/create-new.html:5
+msgid "Network of Assistance services"
+msgstr ""
+
+#: app/templates/app/nas/requests/create-new.html:31
+msgid "Send a permission request"
+msgstr ""
+
+#: app/templates/app/nas/requests/create-new.html:39
+msgid ""
+"Find the user you want to assist and require permission to setup his/her "
+"network of services"
+msgstr ""
+
+#: app/templates/app/nas/requests/create-new.html:44
+msgid "Enter the user\\'s email account"
+msgstr ""
+
+#: app/templates/app/nas/requests/create-new.html:74
+#: app/templates/app/nas/requests/index.html:50
+msgid "Send assistance request"
+msgstr ""
+
+#: app/templates/app/nas/requests/create-new.html:111
+msgid "Declare you interest"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:45
+msgid "Care giver overview"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:48
+msgid ""
+"The toolbar provides to users of set of actions such as add,remove or search "
+"a service"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:49
+msgid "Search users to provide assistance"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:67
+msgid "User"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:68
+#: app/templates/app/nas/requests/index.html:110
+msgid "Reply"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:69
+msgid "Grant permission"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:70
+#: app/templates/app/nas/requests/index.html:112
+msgid "Request timestamp"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:71
+#: app/templates/app/nas/requests/index.html:113
+msgid "Request feedback timestamp"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:72
+msgid "Set up network"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:73
+msgid "View network"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:74
+msgid "Cancel assistance request"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:87
+msgid "Network of carers"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:91
+msgid "Invite new carer"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:92
+msgid "Invite carer"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:109
+#: app/templates/app/visitors/registration.html:184
+msgid "Carer"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:111
+msgid "Assistance request"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:114
+msgid "Update"
+msgstr ""
+
+#: app/templates/app/nas/requests/index.html:115
+msgid "Cancel assistance"
+msgstr ""
+
+#: app/templates/app/navbar-users.html:12
+msgid "Assistance On Demand"
+msgstr ""
+
+#: app/templates/app/navbar-users.html:13
+msgid "Prosperity 4 All logo"
+msgstr ""
+
+#: app/templates/app/navbar-users.html:31
+msgid "Settings"
+msgstr ""
+
+#: app/templates/app/navbar-users.html:33
+msgid "My account"
+msgstr ""
+
+#: app/templates/app/navbar-users.html:38
+msgid "Show the services you provide on AoD"
+msgstr ""
+
+#: app/templates/app/navbar-users.html:43
+msgid "Show the services you have purchased"
+msgstr ""
+
+#: app/templates/app/navbar-users.html:49
+msgid "Shopping card"
+msgstr ""
+
+#: app/templates/app/navbar-users.html:50
+msgid "My Cart"
+msgstr ""
+
+#: app/templates/app/navbar-users.html:58
+msgid "Manage your account"
+msgstr ""
+
+#: app/templates/app/navbar-users.html:64
+#: app/templates/app/navbar-users.html:65
+msgid "My Notifications"
+msgstr ""
+
+#: app/templates/app/navbar-users.html:80
+#: app/templates/app/navbar-users.html:82
+msgid "Social Network"
+msgstr ""
+
+#: app/templates/app/navbar-users.html:88
+#: app/templates/app/navbar-users.html:90
+#: app/templates/app/navbar-visitors-iam.html:38
+#: app/templates/app/navbar-visitors.html:36
+#: app/templates/app/navbar-visitors.html:38
+msgid "Help"
+msgstr ""
+
+#: app/templates/app/navbar-visitors-iam.html:56
+#: app/templates/app/navbar-visitors.html:54
+#: app/templates/app/navbar-visitors.html:55
+msgid "Sign up"
+msgstr ""
+
+#: app/templates/app/navbar-visitors.html:11
+msgid "Welcome to Assistance On Demand platform"
+msgstr ""
+
+#: app/templates/app/navbar-visitors.html:12
+msgid "Logo of Prosperity4All project"
+msgstr ""
+
+#: app/templates/app/preferences.html:7
+msgid "Setup your preferences"
+msgstr ""
+
+#: app/templates/app/preferences.html:9
+msgid "Preferences"
+msgstr ""
+
+#: app/templates/app/preferences.html:16
+msgid "FONT SIZE"
+msgstr ""
+
+#: app/templates/app/preferences.html:18
+msgid "Decrease font-size"
+msgstr ""
+
+#: app/templates/app/preferences.html:21
+msgid "Increase font-size"
+msgstr ""
+
+#: app/templates/app/preferences.html:30
+msgid "FONT STYLE"
+msgstr ""
+
+#: app/templates/app/preferences.html:38
+msgid "LINE SPACING"
+msgstr ""
+
+#: app/templates/app/preferences.html:46
+msgid "TEMPLATE"
+msgstr ""
+
+#: app/templates/app/visitors/forgot-password.html:12
+msgid "Enter your registered email account"
+msgstr ""
+
+#: app/templates/app/visitors/forgot-password.html:21
+msgid "enter your valid email"
+msgstr ""
+
+#: app/templates/app/visitors/forgot-password.html:30
+#: app/templates/app/visitors/registration_success.html:18
+msgid "Go to Home page"
+msgstr ""
+
+#: app/templates/app/visitors/home.html:103
+msgid "Welcome on the Assistance On Demand platform"
+msgstr ""
+
+#: app/templates/app/visitors/home.html:104
+msgid "Fill in with content or load a static image"
+msgstr ""
+
+#: app/templates/app/visitors/home.html:111
+msgid "Most popular service"
+msgstr ""
+
+#: app/templates/app/visitors/home.html:122
+#: app/templates/app/visitors/home.html:183
+msgid "Buy it"
+msgstr ""
+
+#: app/templates/app/visitors/home.html:172
+msgid "Most recently service"
+msgstr ""
+
+#: app/templates/app/visitors/home.html:232
+msgid "AoD description"
+msgstr ""
+
+#: app/templates/app/visitors/home.html:235
+msgid ""
+"P4A AoD will adopt leading edge cloud computing technologies to "
+"efficiently \n"
+"                            support scalable access to services from/across "
+"different hardware/software platforms. Flexibility with \n"
+"                            respect both to the type of assistance services "
+"that will be offered through the aoD and to the way the \n"
+"                            user is interfaced/supported in his service "
+"search, reliability, robustness and affordability are of \n"
+"                            prime importance for the penetration of the "
+"Assistance Services that will be offered and for creating major \n"
+"                            impact in the marketplace."
+msgstr ""
+
+#: app/templates/app/visitors/home.html:243
+msgid "Read More"
+msgstr ""
+
+#: app/templates/app/visitors/login.html:40
+msgid "Enter your username"
+msgstr ""
+
+#: app/templates/app/visitors/login.html:50
+msgid "Username or Email"
+msgstr ""
+
+#: app/templates/app/visitors/login.html:58
+msgid "Enter your password"
+msgstr ""
+
+#: app/templates/app/visitors/login.html:101
+msgid "Remember me"
+msgstr ""
+
+#: app/templates/app/visitors/login.html:122
+msgid "Forgot your password?"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:16
+msgid "Create a new Account"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:17
+msgid "Do you want to access our platform? Create a new account now!"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:28
+msgid "Insert your name"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:56
+msgid "Username"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:62
+msgid "the username on platform"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:77
+msgid "a valid email account"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:92
+msgid "a private password"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:95
+msgid "Use at least 1 digit, 6 characters and at<br>least 1 special character"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:101
+msgid "Password confirmation"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:107
+msgid "confirm the password"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:110
+msgid "The password does not match"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:122
+msgid "the mobile phone"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:122
+msgid "optional"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:154
+msgid "Familiarity with IT services"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:160
+msgid "Clarify your level"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:169
+msgid "Select a level"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:175
+msgid "User role(s)"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:183
+msgid "Consumer"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:227
+msgid "Preferred communication channels"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:248
+msgid "Acknowledgment"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:255
+msgid "How did you hear for P4A platform"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:256
+msgid "Friend"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:257
+msgid "Internet"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:258
+msgid "TV/Radio"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:259
+msgid "Other"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:266
+msgid "What is the sum of the"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:272
+msgid "Answer to the question right"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:280
+msgid "These field are mandatory in order to be completed your registration"
+msgstr ""
+
+#: app/templates/app/visitors/registration.html:295
+msgid "By creating an account, you agree to our"
+msgstr ""
+
+#: app/templates/app/visitors/registration_success.html:13
+msgid "Dear user, thank you for your registration with P4A platform"
+msgstr ""
+
+#: app/templates/app/visitors/registration_success.html:15
+msgid "Please check your email account to verify your registration"
+msgstr ""

@@ -43,7 +43,7 @@ function AjaxView(element) {
     }
 
     // message that is displayed
-    this.message = "<i class='fa fa-spinner fa-pulse fa-5x' style='color:forestgreen!important;'></i>";
+    this.message = "<i class='fa fa-spinner fa-pulse fa-5x test-success'></i>";
 
     // fade in/out
     this.fadeIn = 0;

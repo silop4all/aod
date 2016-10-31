@@ -161,11 +161,11 @@ $("#cover-img").on(function (event) {
             console.log(response);
         },
         error: function (response) {
-            console.log("error");
+            console.log(gettext("error"));
         },
         complete: function () {
             //loading.hide();
-            console.log("error 2");
+            console.log(gettext("error 2"));
         }
     });
     return false;
@@ -212,7 +212,7 @@ function updatePersonalInfo() {
             $('#account-info').html(response);
         },
         error: function (response) {
-            console.log("error");
+            console.log(gettext("error"));
         },
         complete: function () {
             loading.hide();
@@ -248,11 +248,11 @@ function updateContactlInfo() {
         data: JSON.stringify(data),
         cache: false,
         success: function (response) {
-            console.info("Contact information was updated!");
+            console.info(gettext("Contact information was updated!"));
             $('#contact-info').html(response);
         },
         error: function (response) {
-            console.log("error");
+            console.log(gettext("error"));
         },
         complete: function () {
             loading.hide();
@@ -296,11 +296,11 @@ function updatePlatformInfo() {
         data: JSON.stringify(data),
         cache: false,
         success: function (response) {
-            console.info("Platform settings were updated!");
+            console.info(gettext("Platform settings were updated!"));
             $('#platform-info').html(response);
         },
         error: function (response) {
-            console.log("error");
+            console.log(gettext("error"));
         },
         complete: function () {
             loading.hide();
@@ -363,11 +363,11 @@ function loadCover(input) {
                 location.reload();
             }
             else {
-                alert("The replace of the cover image fialed. Try again");
+                alert(gettext("The replace of the cover image failed. Try again"));
             }
         },
         error: function (response) {
-            alert("The replace of the cover image fialed. Try again");
+            alert(gettext("The replace of the cover image failed. Try again"));
         }
     });
     return false;
@@ -406,11 +406,11 @@ function loadLogo(input) {
                 location.reload();
             }
             else {
-                alert("The replace of the logo failed. Try again");
+                alert(gettext("The replace of the logo failed. Try again"));
             }
         },
         error: function (response) {
-            alert("The replace of the logo failed. Try again");
+            alert(gettext("The replace of the logo failed. Try again"));
         }
     });
     return false;
@@ -460,11 +460,11 @@ function validateUsername(username, label) {
         
     if (!regex.test(username.val())) {
         valid = false;
-        message = "Type at least 4 characters<br>without spaces";
+        message = gettext("Type at least 4 characters<br>without spaces");
     }
 
     if (unique == false){
-        message += (message.length > 0) ? " and select unique username" : "Type a non registered username";
+        message += (message.length > 0) ? gettext(" and select unique username") : gettext("Type a non registered username");
     }
 
     if (!(valid && unique)) {
@@ -544,11 +544,11 @@ function validateEmail(email, label) {
 
     if (!regex.test(email.val())) {
         valid = false;
-        message = "Invalid email";
+        message = gettext("Invalid email");
     }
 
     if (unique == false){
-        message += (message.length > 0) ? " - select <br/> a non registered email" : "Type a non registered email";
+        message += (message.length > 0) ? gettext(" - select <br/> a non registered email") : gettext("Type a non registered email");
     }
 
     if (!(valid && unique)) {

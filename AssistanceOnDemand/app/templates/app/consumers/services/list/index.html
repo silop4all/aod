@@ -1,4 +1,4 @@
-﻿{% extends "app/base.html" %}
+{% extends "app/base.html" %}
 {% load i18n %}
 {% load l10n %}
 {% block title %} AoD | {% trans 'My offerings'%} {% endblock title %}
@@ -12,17 +12,12 @@
 {% endblock extraCss %}
 
 
-{% block navbar %}
-    {% include "app/navbar-users.html" %}
-{% endblock navbar %}
-
-
 {% block content %}
 <div class="container body-content" style="margin-top: 50px; padding-bottom:2em;">
 
     {% block breadcrumb %}
     <ol class="breadcrumb">
-        <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="Home page"><span class="fa fa-home"></span> {% trans 'Home' %}</a></li>
+        <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="{% trans 'Home page' %}"><span class="fa fa-home"></span> {% trans 'Home' %}</a></li>
         <li class="active">{% trans 'My offerings'%}</li>
     </ol>
     {% endblock breadcrumb %}
@@ -34,7 +29,7 @@
                 <h3>{% trans 'Services management panel'%}</h3>
                 <hr class="service-hr">
 
-                <div id="custom-toolbar" class="btn-group" title="The toolbar provides to users of set of actions such as add,remove or search a service">
+                <div id="custom-toolbar" class="btn-group" title="{% trans 'The toolbar provides to users of set of actions such as add,remove or search a service' %}">
                     <button type="button" id="new-service" class="btn btn-default" title="{% trans 'Add a new service'%}" data-href="{% url 'insert_service' %}">
                         <span class="fa fa-plus-square text-success"></span> {% trans 'Register service'%}
                     </button>
@@ -54,17 +49,18 @@
                     <thead>
                     <tr>
                         <th data-field="state" data-checkbox="true"></th>
-                        <th data-field="title" data-sortable="true" data-switchable="false">{% trans 'Title' %}</th>
-                        <th data-field="access" data-sortable="true">{% trans 'Accessibility' %}</th>
-                        <th data-field="available" data-sortable="true" data-visible="false">{% trans 'Availability' %}</th>
-                        <th data-field="currency" data-sortable="true">{% trans 'Currency' %}</th>
-                        <th data-field="price" data-sortable="true">{% trans 'Price' %}</th>
-                        <th data-field="charging_policy" data-sortable="true">{% trans 'Charging policy' %}</th>
-                        <th data-field="type" data-sortable="true" data-align="left">{% trans 'Type' %}</th>
-                        <th data-field="created_date" data-sortable="true" data-align="left">{% trans 'Creation date' %}</th>
+                        <th data-field="title" data-sortable="true" data-switchable="false">{% trans 'Service preview' %}</th>
+                        <th data-field="is_public" data-sortable="true" data-visible="false">{% trans 'Accessibility' %}</th>
+                        <th data-field="is_visible" data-sortable="true" data-visible="false">{% trans 'Availability' %}</th>
+                        <th data-field="currency" data-sortable="true" data-visible="false">{% trans 'Currency' %}</th>
+                        <th data-field="price" data-sortable="true" data-visible="false">{% trans 'Price' %}</th>
+                        <th data-field="charging_policy" data-sortable="true" data-visible="false">{% trans 'Charging policy' %}</th>
+                        <th data-field="type" data-sortable="true" data-align="left" class="hidden-xs" data-visible="false">{% trans 'Service type' %}</th>
+                        <th data-field="created_date" data-sortable="true" data-align="left" data-visible="false">{% trans 'Creation date' %}</th>
                         <th data-field="modified_date" data-sortable="true" data-align="left"  data-visible="false">{% trans 'Last edit' %}</th>
                         <th data-field="description" data-sortable="false" data-visible="false">{% trans 'Description' %}</th>
-                        <th data-field="stats" data-sortable="false" data-formatter="statsFormatter" data-align="center" data-events="statsActionEvent">{% trans 'Statistics' %}</th>
+                        <th data-field="manage_support" data-sortable="false" class="hidden-xs">{% trans 'Technical support' %}</th>
+                        <th data-field="stats" data-sortable="false" data-formatter="statsFormatter" class="hidden-xs" data-align="center" data-events="statsActionEvent" data-visible="false">{% trans 'Statistics' %}</th>
                         <th data-field="edit" data-sortable="false" data-formatter="editFormatter" data-align="center" data-events="editActionEvent">{% trans 'Edit' %}</th>
                         <th data-field="remove" data-sortable="false" data-formatter="removeFormatter" data-align="center" data-events="removeActionEvent">{% trans 'Remove' %}</th>
                         
@@ -80,24 +76,27 @@
 
 
 {% block scripts %}
-    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
-    <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
-    <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
-    <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>
-    <script src="{% static 'app/scripts/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
-    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
-    <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
-    <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
-    <script src="{% static 'app/scripts/p4a-lib/consumers/services/list/provider-services.js' %}"></script>
-    <script src="{% static 'app/scripts/p4a-lib/consumers/services/item/actions.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+    {% with 'app/scripts/bootstrap-table/dist/locale/'|add:bootstrap_table_locale_url as bootstrap_table_locale %}
+        <script type="text/javascript" src="{% static bootstrap_table_locale %}"></script>
+    {% endwith %}
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/consumers/services/list/provider-services.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/consumers/services/item/actions.js' %}"></script>
     
     <script type="text/javascript">
-    
+        
         var data = [];
 
         {% if services %}
             {% for i in services %}
-                var type = null, access, available, title, url, modified_date='-';
+                var type = null, is_public, is_visible, title, url, modified_date='-';
 
                 {% if i.type == "M" %}
                     type = '<i class="fa fa-laptop text-default" ></i> {% trans 'Machine' %}';
@@ -105,20 +104,20 @@
                 type = '<span class="fa fa-users text-default"></span> {% trans 'Human' %}';
                 {% endif %}
 
-                {% if i.access %}
-                    access = '{% trans 'Public' %}';
+                {% if i.is_public %}
+                    is_public = '{% trans 'Public' %}';
                 {% else %}
-                    access = '{% trans 'Private' %}';
+                    is_public = '{% trans 'Private' %}';
                 {% endif %}
 
-                {% if i.available %}
-                    available = '{% trans 'Yes' %}';
+                {% if i.is_visible %}
+                    is_visible = '{% trans 'Yes' %}';
                 {% else %}
-                    available = '{% trans 'No' %}';
+                    is_visible = '{% trans 'No' %}';
                 {% endif %}
 
-                url = "{% url 'public_service_view' i.alias %}";
-                title = '{{ i.title|title }} <a href="'+url+'" title="{% trans 'Navigate on the service' %}"><small><span class="fa fa-external-link"></span><small></a>';
+                url = "{% url 'public_service_view' i.id %}";
+                title = '<a href="'+url+'" title="{% trans 'Navigate on the service' %}">{{ i.title|title }}  <small><span class="fa fa-external-link"></span><small></a>';
 
                 {% if i.modified_date|date:"Y-m-d H:i" == "1970-01-01 00:25" %}
                    modified_date = '-';
@@ -127,9 +126,10 @@
                 {% endif %}
                 
                 data.push({'id': '{{ i.id }}', 'title': title, 'charging_policy': '{{ i.charge_model }}', 
-                    'type': type, 'currency': '{{ i.unit|safe }}', 'price': '{{ i.price }}', 'description': '{{ i.description|slice:":110" }}', 
-                    'access': access, 'available': available, 'url': url, 'created_date': '{{ i.created_date| date:"Y-m-d H:i" }}',
-                    'modified_date': modified_date
+                    'type': type, 'currency': '{{ i.unit|safe }}', 'price': '{{ i.price|floatformat }}', 'description': '{{ i.description|slice:":110" }}', 
+                    'is_public': is_public, 'is_visible': is_visible, 'url': url, 'created_date': '{{ i.created_date| date:"Y-m-d H:i" }}',
+                    'modified_date': modified_date, 
+                    'social_network_usage': "{{ integrationWithSocialNetwork.state }}", 'social_network_delete_url': "{{ integrationWithSocialNetwork.url }}{{ i.id }}"
                     });
             {% endfor %}
         {% endif %}

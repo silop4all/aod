@@ -1,0 +1,35 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} AoD | {{ title }} {% endblock title %}
+
+{% load staticfiles %}
+
+
+{% block scripts %}
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            {% if username %}
+                <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+            {% endif %}
+            <li class="active">{{ title }}</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <section style="padding-top:1%; padding-bottom:1%; border-radius:5px 5px;" class="col-lg-12 col-md-12 col-sm-12 highlight-service-banner platform-info-box">
+            <h2>{{title}}</h2>
+            <hr />
+            {% if policy %}
+            <div>{{policy.content|safe }}</div>
+            {% endif %}
+        </section>
+    </div>
+{% endblock content %}

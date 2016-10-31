@@ -12,29 +12,10 @@ $(document).ready(function () {
     // get categories as a tree
     getCategories();
 
-    $("#companies-id").click(function () {
+    $(".panel-toggle-arrows").click(function () {
         toggleArrows($(this));
     });
 
-    $("#categories-id").click(function () {
-        toggleArrows($(this));
-    });
-
-    $("#service-types-id").click(function () {
-        toggleArrows($(this));
-    });
-
-    $("#service-price-id").click(function () {
-        toggleArrows($(this));
-    });
-
-    $("#location-id").click(function () {
-        toggleArrows($(this));
-    });
-
-    $("#quality-of-service-id").click(function () {
-        toggleArrows($(this));
-    });
 
     $(".rating-stars").click(function () {
         swapRatingStarColor($(this).attr("id").match(/\d+/));
@@ -194,10 +175,10 @@ $(document).ready(function () {
     if (search.minPrice < 0 || search.maxPrice < 0) {
         swal({
             html: false,
-            title: "Invalid input",
-            text: 'The price values must be non negative numbers!',
+            title: gettext("Invalid input"),
+            text: gettext('The price values must be non negative numbers!'),
             type: "warning",
-            confirmButtonText: "Continue",
+            confirmButtonText: gettext("Continue"),
             confirmButtonColor: "#d9534f"
         });
         return;
@@ -205,10 +186,10 @@ $(document).ready(function () {
     if (search.minPrice > search.maxPrice) {
         swal({
             html: false,
-            title: "Invalid input",
-            text: 'The maximum price value must be greater than (or equal with) the minimum one!',
+            title: gettext("Invalid input"),
+            text: gettext('The maximum price value must be greater than (or equal with) the minimum one!'),
             type: "warning",
-            confirmButtonText: "Continue",
+            confirmButtonText: gettext("Continue"),
             confirmButtonColor: "#d9534f"
         });
         return;
@@ -224,10 +205,10 @@ $(document).ready(function () {
     if (search.minQoS < 0 || search.minQoS > 5) {
         swal({
             html: false,
-            title: "Invalid input",
-            text: 'The minimum value of Quality of Service field is out of range. Please enter a value in range [0,5]!',
+            title: gettext("Invalid input"),
+            text: gettext('The minimum value of Quality of Service field is out of range. Please enter a value in range [0,5]!'),
             type: "warning",
-            confirmButtonText: "Continue",
+            confirmButtonText: gettext("Continue"),
             confirmButtonColor: "#d9534f"
         });
         return;
@@ -235,10 +216,10 @@ $(document).ready(function () {
     if (search.maxQoS < 0 || search.maxQoS > 5) {
         swal({
             html: false,
-            title: "Invalid input",
-            text: "The maximum value of Quality of Service field is out of range. Please enter a value in range [0,5]!",
+            title: gettext("Invalid input"),
+            text: gettext("The maximum value of Quality of Service field is out of range. Please enter a value in range [0,5]!"),
             type: "warning",
-            confirmButtonText: "Continue",
+            confirmButtonText: gettext("Continue"),
             confirmButtonColor: "#d9534f"
         });
         return;
@@ -246,10 +227,10 @@ $(document).ready(function () {
     if (search.minQoS > search.maxQoS) {
         swal({
             html: false,
-            title: "Invalid input",
-            text: "The maximum value of Quality of Service field must be greater than (or equal with) the corresponding minimum one!",
+            title: gettext("Invalid input"),
+            text: gettext("The maximum value of Quality of Service field must be greater than (or equal with) the corresponding minimum one!"),
             type: "warning",
-            confirmButtonText: "Continue",
+            confirmButtonText: gettext("Continue"),
             confirmButtonColor: "#d9534f"
         });
         return;
@@ -261,10 +242,10 @@ $(document).ready(function () {
     if (search.distance < 0) {
         swal({
             html: false,
-            title: "Invalid input",
-            text: "The distance value must be a non negative number. Keep in mind that this value maps to kilometers.",
+            title: gettext("Invalid input"),
+            text: gettext("The distance value must be a non negative number. Keep in mind that this value maps to kilometers."),
             type: "warning",
-            confirmButtonText: "Continue",
+            confirmButtonText: gettext("Continue"),
             confirmButtonColor: "#d9534f"
         });
         return;
@@ -273,13 +254,13 @@ $(document).ready(function () {
     if (search.distance !== "") {
         swal({
             html: false,
-            title: "AoD message",
-            text: "The AoD platform wants your permission to track your location. Do you agree with this action?",
+            title: gettext("AoD message"),
+                text: gettext("The AoD platform wants your permission to track your location. Do you agree with this action?"),
             type: "info",
             showCancelButton: true,
             confirmButtonClass: "btn-primary",
-            confirmButtonText: "Yes, I agree!",
-            cancelButtonText: "No, I do not agree!",
+            confirmButtonText: gettext("Yes, I agree!"),
+            cancelButtonText: gettext("No, I do not agree!"),
             cancelButtonClass: "btn-danger",
             closeOnConfirm: false,
             closeOnCancel: false
@@ -288,19 +269,19 @@ $(document).ready(function () {
             if (isConfirm) {
                 swal({
                     html: false,
-                    title: "Search progress",
-                    text: "AoD scans the services that meet your requirements",
+                    title: gettext("Search progress"),
+                    text: gettext("AoD scans the services that meet your requirements"),
                     type: "success",
-                    confirmButtonText: "Continue",
+                    confirmButtonText: gettext("Continue"),
                     confirmButtonColor: "btn-primary",
                 });
             } else {
                 swal({
                     html: false,
-                    title: "Search progress",
-                    text: "The service searching was aborted.",
+                    title: gettext("Search progress"),
+                    text: gettext("The service searching was aborted."),
                     type: "warning",
-                    confirmButtonText: "Continue",
+                    confirmButtonText: gettext("Continue"),
                     confirmButtonColor: "#d9534f"
                 });
             }

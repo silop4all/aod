@@ -25,14 +25,17 @@ var GoogleMap = GoogleMap || (function () {
     var details = function details(coordinates, title) {
         return [
             '<div>',
-                '<strong>Service:</strong> ',
+                '<strong>' + gettext("Service") + ':</strong> ',
                 title,
                 '<br>',
-                '<strong>Latitude:</strong> ',
+                '<strong>' + gettext("Latitude") + ':</strong> ',
                 coordinates.latitude,
                 '<br>',
-                '<strong>Longitude:</strong> ',
+                '<strong>' + gettext("Longitude") + ':</strong> ',
                 coordinates.longitude,
+                '<br>',
+                '<strong>' + gettext("Coverage") + "(" + gettext("km") + ")" + ':</strong> ',
+                coordinates.radius,
             '</div>'
         ].join('');
     }

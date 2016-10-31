@@ -1,66 +1,57 @@
 ﻿{% load i18n %}
 {% load l10n %}
 <div class="service-basic-info-box">
-    <div class="row form-group">
-        <h4 class="col-lg-offset-1 col-md-offset-1 col-sm-offset-10"> Charging Policy</h4>
-    </div>
-    <hr class="service-hr">
-
-    <!--charging-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_charging_model" title="Charging model of the service">Charging model<small>*</small></label>
+    <form  id="PaymentServiceForm" name="BasicServiceForm" action="#basic">
+        <div class="row form-group">
+            <h3 class="col-lg-offset-1 col-md-offset-1 col-sm-offset-10"> {% trans 'Charging Policy' %}</h3>
         </div>
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Charging model of the service" role="presentation" id="srv_charging_model_node">
-            <span class="input-group-addon">
-                <span class="fa fa-money fa-fw" role="img"></span>
-            </span>
-            <select class="selectpicker form-control"  name="srv_charging_model" id="srv_charging_model" data-max-options="1" data-size="6"  data-header="Choose a charging model" data-live-search="false" role="list" autofocus>
-                <option value="-1" disabled selected>-- Choose the charging model --</option> 
-                {% if charging_models %}
-                    {% for i in charging_models %}
-                        {% if service.charging_policy_id == i.id %}
-                            <option value="{{ i.id }}" title="{{ i.name }}" selected>{{ i.description }}</option> 
-                        {% else %}
+        <hr class="service-hr">
+
+        <!--charging-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="charging_policy" title="{% trans 'Charging model of the service' %}">{% trans 'Charging model' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="charging_policy" title="{% trans 'Charging model of the service' %}">{% trans 'Charging model' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12 input-group controls" title="{% trans 'Charging model of the service' %}" role="presentation" id="charging_policy_node">
+                <select class="selectpicker form-control"  name="charging_policy" id="charging_policy" data-max-options="1" data-size="6"  data-header="{% trans 'Choose a charging model' %}" data-live-search="false" role="list" autofocus required>
+                    <option value="-1" disabled selected>-- {% trans 'Choose the charging model' %} --</option> 
+                        {% for i in charging_models %}
+                            {% if service %}
+                            <option value="{{ i.id }}" title="{{ i.name }}" {% if service.charging_policy_id == i.id %} selected  {% endif %}>{{ i.description }}</option> 
+                            {% else %}
                             <option value="{{ i.id }}" title="{{ i.name }}">{{ i.description }}</option> 
-                        {% endif %}
-                    {% endfor %}
+                             {% endif %}
+                        {% empty%}
+                        {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <!--cost-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="price" title="Cost of the service usage">{% trans 'Price' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="price" title="Cost of the service usage">{% trans 'Price' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Cost of the service usage' %}">
+                {% if service %}
+                <input type="number" step="0.01" min="0.00" class="form-control"  value="{% if service.price %}{{ service.price|unlocalize }}{% else %}0.00{% endif %}" name="price" id="price" autocomplete="off" placeholder="{% trans 'The price of the service' %}" required />    
+                {% else %}
+                <input type="number" step="0.01" min="0.00" class="form-control"  name="price" id="price" autocomplete="off" placeholder="{% trans 'The price of the service' %}" required />
                 {% endif %}
-            </select>
+            </div>
         </div>
-        <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_charging_model_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Charging model is required"></label>
-        </div>
-    </div>
 
-    <!--cost-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_price" title="Cost of the service usage">Price<small>*</small></label>
-        </div>
-        <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group controls" title="Cost of the service usage">
-            <span class="input-group-addon">
-                <span class="fa fa-money fa-fw" role="img"></span>
-            </span>
-            <input type="number" step="0.01" min="0.00" class="form-control"  value="{{ service.price }}" name="srv_price" id="srv_price" autocomplete="off" placeholder="The price of the service" />    
-        </div>
-        <div class="col-xs-6 col-sm-3 col-md-3 col-xs-4">
-            <label id="srv_price_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Cost value is required"></label>
-        </div>
-    </div>
-
-    <!--currency-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_currency" title="Currency related to the service usage cost">Currency<small>*</small></label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Currency related to the service usage cost" id="srv_currency_node">
-            <span class="input-group-addon">
-                <span class="fa fa-money fa-fw" role="img"></span>
-            </span>
-            <select class="selectpicker form-control show-tick"  name="srv_currency" id="srv_currency" data-max-options="1" data-size="5"  data-header="Select the type of the service" data-live-search="true" role="list" title="-- Select the currency --">
-                <option value="-1" disabled selected>-- Select the currency --</option> 
-                {% if currencies %}
+        <!--currency-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="unit" title="{% trans 'Currency related to the service usage cost'%}">{% trans 'Currency' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="unit" title="{% trans 'Currency related to the service usage cost'%}">{% trans 'Currency' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12 input-group controls" title="{% trans 'Currency related to the service usage cost' %}'" id="unit_node">
+                <select class="selectpicker form-control show-tick"  name="unit" id="unit" data-max-options="1" data-size="5"  data-header="{% trans 'Select the type of the service' %}" data-live-search="true" role="list" title="-- {% trans 'Select the currency' %} --">
+                    <option value="-1" disabled selected>-- {% trans 'Select the currency' %} --</option> 
                     {% for i in currencies %}
                         {% if service %}
                             {% if service.unit == i.letter  %}
@@ -75,19 +66,20 @@
                                 <option value="{{ i.letter }}">{{ i.name }}</option> 
                             {% endif %}
                         {% endif %}
+                    {% empty %}
                     {% endfor %}
-                {% endif %}
-            </select>
+                </select>
+            </div>
+            <div class="col-lg-5 col-sm-5 col-md-5">
+            </div>
         </div>
-        <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_currency_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Currency is required"></label>
+        <hr class="service-hr" />
+        <!--info-->
+        <div class="row form-group">
+            <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Mandatory fields' %}">
+                <h5><strong class="text-center highlight-error-message">* {% trans 'Mandatory fields' %}</strong></h5>
+            </div>
         </div>
-    </div>
-
-    <!--info-->
-    <div class="row form-group">
-        <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="Mandotory fields">
-            <small class="text-center">* Mandatory fields</small>
-        </div>
-    </div>
+        <!--end of fields-->
+    </form>
 </div>

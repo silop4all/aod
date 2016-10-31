@@ -1,0 +1,86 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} AoD | {{ title }} {% endblock title %}
+
+{% load staticfiles %}
+
+{% block extraCss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
+{% endblock extraCss %}
+
+{% block scripts %}
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/preferences/themes/themes.js' %}"></script>
+{% endblock %}
+
+{% block navbar %}
+    {% include "app/navbar-users.html" %}
+{% endblock navbar %}
+
+{% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+            <li class="active">{% trans 'Themes' %}</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <section  class="col-lg-12 col-md-12 col-sm-12 highlight-service-banner platform-info-box">
+            <h2>{{ title }}</h2>
+            <hr />
+    
+            <div class="row col-sm-12 col-xs-12 col-md-12 col-lg-12">
+            {% for t in themesList%}
+                {% if t.is_visible %}
+                <div class="col-lg-4 col-xs-12 col-md-4 col-sm-4">
+                    <div class="panel theme-panel {% if t.is_default %}panel-warning{% else %}panel-success{% endif %}" id="theme_{{ t.id}}" style="height: 580px; min-height: 580px">
+                        <div class="panel-heading">
+                            {{ t.title|title }}
+                            {% if t.is_default %}
+                            <span class="fa fa-star"></span>  {% trans 'Default' %}
+                            {% endif %}
+                        </div>
+                        <div class="panel-body">
+                            <label> {% trans 'Basic color' %}
+                                <input style="background-color: {{ t.success_base }}; border-color: {{ t.success_base }} !important; border-radius: {{ t.radius }}px  !important" class="form-control"  readonly>
+                            </label>
+                             <label> {% trans 'Color' %} #2
+                                <input style="background-color: {{ t.primary_base }}; border-color: {{ t.primary_base }}  !important ; border-radius: {{ t.radius }}px  !important ; border-radius: {{ t.radius }}px  !important" class="form-control"  readonly>
+                            </label>
+                             <label> {% trans 'Color' %} #3
+                                <input style="background-color: {{ t.info_base }}; border-color: {{ t.info_base }}  !important; border-radius: {{ t.radius }}px  !important" class="form-control"  readonly>
+                            </label>
+                             <label> {% trans 'Color' %} #4
+                                <input style="background-color: {{ t.warning_base }}; border-color: {{ t.warning_base }}  !important ; border-radius: {{ t.radius }}px  !important" class="form-control" readonly>
+                            </label>
+                             <label> {% trans 'Color' %} #5
+                                <input style="background-color: {{ t.danger_base }}; border-color: {{ t.danger_base }}  !important ; border-radius: {{ t.radius }}px  !important" class="form-control"  readonly>
+                            </label>
+                            <label> {% trans 'Element radius' %}
+                                <input style="border-radius: {{ t.radius }}px  !important; border-color: {{ t.success_base }}  !important" class="form-control" value="{{ t.radius }} {% trans 'pixels' %}" readonly/>
+                            </label>
+                        </div>
+                        <div class="panel-footer">
+                            {% if selectedTheme.theme_id == t.id %}
+                                <button class="btn btn-default btn-block" disabled>{% trans 'Selected' %}</button>
+                            {% else %}
+                                <form class="form-inline" name="selectTheme" id="selectTheme" method="post" action="{% url 'preferences_theme' t.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-success btn-block submit"><span class="fa fa-hand-o-up"></span> {% trans 'Select' %}</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+            </div>
+
+        </section>
+    </div>
+{% endblock content %}

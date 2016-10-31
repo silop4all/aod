@@ -1,14 +1,10 @@
-﻿{% extends "app/base.html" %}
+{% extends "app/base.html" %}
     {% load i18n %}
     {% load l10n %}
 
     {% block title %} 
     {% trans 'AoD | Welcome' %} {% if username %} {{ username }} {% else %} user {% endif %} 
     {% endblock title %}
-
-    {% block navbar %}
-        {% include "app/navbar-users.html" %}
-    {% endblock navbar %}
 
     {% load staticfiles %}
 
@@ -28,13 +24,14 @@
         {% endblock breadcrumb %}
 
         <section class="row">
-            
-            {% block searchModule %}
+
+            {% block leftcolumn %}
                 <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    {% block searchModule %}
                     <section id="search_services_module" class="panel" style="padding-left: 5px; padding-right: 5px">
                             <form action="{% url 'search_services' %}" method="post" id="service-search-form" name="service-search-form">
                                 <h4 class="text-center bg-primary"  role="heading">
-                                    <span class="fa fa-search fa-lg text-muted"></span> {% trans 'Find your services' %}
+                                    <span class="fa fa-search fa-lg text-success"></span> {% trans 'Find your services' %}
                                 </h4>
                                 <hr>
                                 <!--form inputs -->
@@ -42,13 +39,13 @@
                                 <fieldset>
                                     <!--categories list-->
                                     <div class="form-group" id="categories-panel">
-                                        <div class="panel-group" id="categories-id" role="tablist" aria-multiselectable="true" >
+                                        <div class="panel-group panel-toggle-arrows" id="categories-id" role="tablist" aria-multiselectable="true" >
                                             <div class="panel  panel-custom-success">
                                                 <div class="panel-heading" role="tab" id="categories-title">
-                                                      <h4 class="panel-title" title="Categories">
+                                                      <h4 class="panel-title" title="{% trans 'Categories' %}">
                                                             <a data-toggle="collapse" data-parent="#categories-id" href="#categories-list" aria-expanded="true" aria-controls="categories-list">
                                                                 {% trans 'Categories' %}
-                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
                                                             </a>
                                                       </h4>
                                                 </div>
@@ -66,13 +63,13 @@
 
                                     <!--Companies-->
                                     <div class="form-group" id="companies-panel">
-                                        <div class="panel-group" id="companies-id" role="tablist" aria-multiselectable="true" >
+                                        <div class="panel-group panel-toggle-arrows" id="companies-id" role="tablist" aria-multiselectable="true" >
                                             <div class="panel panel-custom-success" >
                                                 <div class="panel-heading" role="tab" id="companies-title">
-                                                      <h4 class="panel-title" title="Companies/Providers">
+                                                      <h4 class="panel-title" title="{% trans 'Service providers' %}">
                                                             <a data-toggle="collapse" data-parent="#companies-id" href="#companies-list" aria-expanded="true" aria-controls="companies-list">
                                                                 {% trans 'Service providers' %}
-                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
                                                             </a>
                                                       </h4>
                                                 </div>
@@ -96,13 +93,13 @@
 
                                     <!--types-of-services-->
                                     <div class="form-group" id="service-types-panel">
-                                        <div class="panel-group" id="service-types-id" role="tablist" aria-multiselectable="true" style="border-radius:0px!important">
+                                        <div class="panel-group panel-toggle-arrows" id="service-types-id" role="tablist" aria-multiselectable="true" style="border-radius:0px!important">
                                             <div class="panel panel-custom-success">
                                                 <div class="panel-heading" role="tab" id="service-types-title">
-                                                      <h4 class="panel-title" title="Types of services">
+                                                      <h4 class="panel-title" title="{% trans 'Type of services' %}">
                                                             <a data-toggle="collapse" data-parent="#service-types-id" href="#service-types-list" aria-expanded="true" aria-controls="service-types-list">
                                                                 {% trans 'Type' %}
-                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
                                                             </a>
                                                       </h4>
                                                 </div>
@@ -126,13 +123,13 @@
 
                                     <!--payment policy-->
                                     <div class="form-group" id="charging-model-panel">
-                                        <div class="panel-group" id="charging-model-id" role="tablist" aria-multiselectable="true">
+                                        <div class="panel-group panel-toggle-arrows" id="charging-model-id" role="tablist" aria-multiselectable="true">
                                             <div class="panel panel-custom-success">
                                                 <div class="panel-heading" role="tab" id="charging-model-title">
-                                                      <h4 class="panel-title" title="Payment policies">
+                                                      <h4 class="panel-title" title="{% trans 'Payment policies' %}">
                                                             <a data-toggle="collapse" data-parent="#charging-model-id" href="#charging-model-list" aria-expanded="true" aria-controls="charging-model-list">
                                                                 {% trans 'Payment policies' %}
-                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
                                                             </a>
                                                       </h4>
                                                 </div>
@@ -160,11 +157,12 @@
                                                             {% if model.name == "Free" %}
                                                             <div class="checkbox">
                                                                 <input type="checkbox" id="charging-model-{{ model.id }}" name="charging-model-{{ model.id }}" data-id="{{ model.id }}" data-name="charging-model-{{ model.id }}"/> 
-                                                                <label for="charging-model-{{ model.id }}" style="line-height:initial">{{ model.name }}</label>
+                                                                <!--<label for="charging-model-{{ model.id }}" style="line-height:initial">{{ model.name }}</label>-->
+                                                                <label for="charging-model-{{ model.id }}" style="line-height:initial">{% trans 'Free' %}</label>
                                                             </div>
                                                             <div class="checkbox">
                                                                 <input type="checkbox" id="charging-model-0" name="charging-model-paid" data-id="0" data-name="charging-model-paid"/> 
-                                                                <label for="charging-model-0" style="line-height:initial">Paid</label>
+                                                                <label for="charging-model-0" style="line-height:initial">{% trans 'Paid' %}</label>
                                                             </div>
                                                             {% endif %}
                                                         {% endfor %}
@@ -177,13 +175,13 @@
 
                                     <!--price-->
                                     <div class="form-group" id="price-panel">
-                                        <div class="panel-group" id="price-id" role="tablist">
+                                        <div class="panel-group panel-toggle-arrows" id="price-id" role="tablist">
                                             <div class="panel panel-custom-success">
                                                 <div class="panel-heading" role="tab" id="price-title">
-                                                      <h4 class="panel-title" title="Price">
+                                                      <h4 class="panel-title" title="{% trans 'Price' %}">
                                                             <a data-toggle="collapse" data-parent="#price-id" href="#price-list" aria-expanded="true" aria-controls="price-list">
                                                                 {% trans 'Price' %}
-                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
                                                             </a>
                                                       </h4>
                                                 </div>
@@ -191,14 +189,14 @@
                                                     <div class="panel-body" style="background-color:whitesmoke">
                                                         
                                                         <div class="price input-group margin-bottom-5">
-                                                            <span for="low_price" class="input-group-addon">From</span>
-                                                            <input type="number" step="0.01" placeholder="min value" min="0" id="low_price" data-parent=".price" data-min="0.00" data-max="9999999.00" max="9999999.00" class="form-control" style="background: whitesmoke;">
+                                                            <span for="low_price" class="input-group-addon">{% trans 'From' %}</span>
+                                                            <input type="number" step="0.01" placeholder="{% trans 'min value' %}" min="0" id="low_price" data-parent=".price" data-min="0.00" data-max="9999999.00" max="9999999.00" class="form-control" style="background: whitesmoke;">
                                                             <span class="input-group-addon">&#8364;</span>                                   
                                                         </div>
 
                                                         <div class="price input-group">
-                                                            <span for="high_price" class="input-group-addon">Up to</span>
-                                                            <input type="number" step="0.01" placeholder="max value" min="0" id="high_price" max="9999999.00" data-parent=".price" data-min="0.00" data-max="9999999.00" class="form-control" style="background: whitesmoke">
+                                                            <span for="high_price" class="input-group-addon">{% trans 'Up to' %}</span>
+                                                            <input type="number" step="0.01" placeholder="{% trans 'max value' %}" min="0" id="high_price" max="9999999.00" data-parent=".price" data-min="0.00" data-max="9999999.00" class="form-control" style="background: whitesmoke">
                                                             <span class="input-group-addon">&#8364;</span>                                   
                                                         </div> 
                                                      </div>
@@ -209,13 +207,13 @@
 
                                     <!--QoS-->
                                     <div class="form-group" id="quality-of-service-panel">
-                                        <div class="panel-group" id="quality-of-service-id" role="tablist" aria-multiselectable="true">
+                                        <div class="panel-group panel-toggle-arrows" id="quality-of-service-id" role="tablist" aria-multiselectable="true">
                                             <div class="panel panel-custom-success">
                                                 <div class="panel-heading" role="tab" id="quality-of-service-title">
-                                                      <h4 class="panel-title" title="Searches based on Quality of Services measured by serviced users from zero (worst) to five (best).">
+                                                      <h4 class="panel-title" title="{% trans 'Searches based on Quality of Services measured by serviced users from zero (worst) to five (best)' %}.">
                                                             <a data-toggle="collapse" data-parent="#quality-of-service-id" href="#quality-of-service-list" aria-expanded="true" aria-controls="quality-of-service-list">
                                                                 {% trans 'Quality of Service' %}
-                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
                                                             </a>
                                                       </h4>
                                                 </div>
@@ -224,15 +222,15 @@
                                                         <div id="qos">
                                                             <div class="input-group margin-bottom-5" style="max-width: 90%">
                                                                 <span class="input-group-addon">
-                                                                    <span class="fa fa-star-o star-colorize-yellow" role="img" alt="Minimum value of quality of service (rating)"></span>
+                                                                    <span class="fa fa-star-o star-colorize-yellow" role="img" alt="{% trans 'Minimum value of quality of service (rating)' %}"></span>
                                                                 </span>
-                                                                <input type="number" step="0.1" placeholder="minimum rating" min="0" max="5" id="low_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control" style="background: whitesmoke">
+                                                                <input type="number" step="0.1" placeholder="{% trans 'minimum rating' %}" min="0" max="5" id="low_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control" style="background: whitesmoke">
                                                             </div>
                                                             <div class="input-group" style="max-width: 90%">
                                                                 <span class="input-group-addon">
-                                                                    <span class="fa fa-star star-colorize-yellow" role="img" alt="Maximum value of quality of service (rating)"></span>
+                                                                    <span class="fa fa-star star-colorize-yellow" role="img" alt="{% trans 'Maximum value of quality of service (rating)' %}"></span>
                                                                 </span>
-                                                                <input type="number" step="0.1" placeholder="maximum rating" min="0" max="5" id="high_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control" style="background: whitesmoke">
+                                                                <input type="number" step="0.1" placeholder="{% trans 'maximum rating' %}" min="0" max="5" id="high_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control" style="background: whitesmoke">
                                                             </div>
                                                         </div> 
                                                           <div>
@@ -247,21 +245,21 @@
 
                                     <!--distance-->
                                     <div class="form-group" id="location-panel">
-                                        <div class="panel-group" id="location-id" role="tablist">
+                                        <div class="panel-group panel-toggle-arrows" id="location-id" role="tablist">
                                             <div class="panel panel-custom-success">
                                                 <div class="panel-heading" role="tab" id="location-title">
-                                                      <h4 class="panel-title" title="Searches for services offered around your current location">
+                                                      <h4 class="panel-title" title="{% trans 'Searches for services offered around your current location' %}">
                                                             <a data-toggle="collapse" data-parent="#location-id" href="#location-list" aria-expanded="true" aria-controls="location-list">
                                                                 {% trans 'Your current location' %}
-                                                                <i class="fa fa-angle-double-down pull-right"></i>
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
                                                             </a>
                                                       </h4>
                                                 </div>
                                                 <div id="location-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="location-title">
                                                     <div class="panel-body" style="background-color:whitesmoke">
                                                         <div class="location input-group" >
-                                                            <input type="number" step="0.01" min="0.00" maxlength="20" class="form-control" placeholder="max distance"> 
-                                                            <span class="input-group-addon">km</span>
+                                                            <input type="number" step="0.01" min="0.00" maxlength="20" class="form-control" placeholder="{% trans 'max distance' %}"> 
+                                                            <span class="input-group-addon">{% trans 'km' %}</span>
                                                         </div>
                                                         <div>
                                                             <span class="fa fa-info-circle text-primary"></span> 
@@ -283,8 +281,28 @@
                                 </fieldset>
                             </form>
                         </section>
-                    </div>
-            {% endblock searchModule %}
+                    {% endblock searchModule %}
+
+                    {% block crowdFunding %}
+                        {% if components.crowd_source_banner %}
+                        <div id="crowd-funding-banner">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title text-center"><span class="fa fa-share-alt fa-lg text-success"></span>  {% trans 'Service is not here?' %}</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-sm-12 col-lg-12 col-xs-12 col-md-2 input-group ">
+                                        <span class="fa fa-info-circle text-info fa-lg cursor-pointer" id="publish-crowd-service-info"> </span>
+                                        <a href="{{ publish_crowd_fund_project }}"> {% trans 'Publish it as a crowd funding service' %}</a>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endblock crowdFunding %}
+                </div>
+            {% endblock leftcolumn %}
             
             {% block contentTopBanner %}
                 <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9" style="background-color:whitesmoke; padding-top:15px; border-radius: 4px">
@@ -293,7 +311,7 @@
                         <div class=" col-xs-5 col-sm-4 form-group">
                             <div id="content-top-banner" style="margin-bottom: 1em;">
                                 <label for="items-per-page-id" class="pull-left" style="padding-right:3px">{% trans 'Services per page'%} </label>
-                                <div role="menu" title="Number of services per page">
+                                <div role="menu" title="{% trans 'Number of services per page' %}">
                                     <select id="items-per-page-id" name="items-per-page-id" class="form-control" style="max-width:80px!important">
                                         <option value="15" >15</option>
                                         <option value="30" selected="selected">30</option>
@@ -306,7 +324,7 @@
                         <!-- Sort by dropdown -->
                         <div class=" col-xs-4 col-sm-4 form-group">
                             <label for="sortby" class="pull-left" style="padding-right:3px">{% trans 'Sort by' %} </label>
-                            <div role="menu" class="my-sort-choice" title="Sort the list of registered services" aria-label="{% trans 'Sort the list of registered services' %}">
+                            <div role="menu" class="my-sort-choice" title="{% trans 'Sort the list of registered services' %}" aria-label="{% trans 'Sort the list of registered services' %}">
                                 <select name="sortby" id="sortby" data-sort="asc_title" class="form-control" style="max-width:200px!important">
                                     <option value="asc_price" > {% trans 'Price: Low to High' %}</option>
                                     <option value="desc_price"> {% trans 'Price: High to Low' %}</option>
@@ -318,8 +336,8 @@
                             </div>
                         </div>
                         <!-- view choices -->
-                        <div class=" col-xs-3 col-sm-4">
-                            <div class="btn-group pull-right services-view" role="group" data-view="m" aria-label="Service results presentation" style="margin-left:15px">
+                        <div class=" col-xs-3 col-sm-4 hidden-xs">
+                            <div class="btn-group pull-right services-view" role="group" data-view="m" aria-label="{% trans 'Service results presentation' %}" style="margin-left:15px">
                                 <a id="multidata_view" class="btn btn-md btn-default" data-view="m" href="#"><i class="fa fa-th-large"></i></a>
                                 <a id="list_view" class="btn btn-md btn-default" data-view="l" href="#"><i class="fa fa-th-list"></i></a>
                             </div>

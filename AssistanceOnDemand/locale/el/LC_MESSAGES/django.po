@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-03 15:09+0300\n"
-"PO-Revision-Date: 2016-06-03 17:33+0135\n"
-"Last-Translator: Panagiotis Athanasoulis <pathanasoulis@ep.singularlogic.eu>\n"
+"POT-Creation-Date: 2016-09-13 14:29+0300\n"
+"PO-Revision-Date: 2016-10-10 09:40+0135\n"
+"Last-Translator:   <takis@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,1762 +19,3176 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.7.11\n"
 
-#: DjangoWebProject1/settings.py:54
+#: AssistanceOnDemand/development_settings.py:73
+#: AssistanceOnDemand/production_settings.py:73
 msgid "Greek"
 msgstr "Ελληνικά"
 
-#: DjangoWebProject1/settings.py:55
+#: AssistanceOnDemand/development_settings.py:74
+#: AssistanceOnDemand/production_settings.py:74
 msgid "English"
 msgstr "Αγγλικά"
 
-#: DjangoWebProject1/settings.py:56
+#: AssistanceOnDemand/development_settings.py:75
+#: AssistanceOnDemand/production_settings.py:75
 msgid "Italian"
 msgstr "Ιταλικά"
 
-#: DjangoWebProject1/settings.py:57
+#: AssistanceOnDemand/development_settings.py:76
+#: AssistanceOnDemand/production_settings.py:76
 msgid "Spanish"
 msgstr "Ισπανικά"
 
-#: DjangoWebProject1/settings.py:58
+#: AssistanceOnDemand/development_settings.py:77
+#: AssistanceOnDemand/production_settings.py:77
 msgid "French"
 msgstr "Γαλλικά"
 
-#: DjangoWebProject1/settings.py:59
+#: AssistanceOnDemand/development_settings.py:78
+#: AssistanceOnDemand/production_settings.py:78
 msgid "German"
 msgstr "Γερμανικά"
 
-#: app/forms.py:16
+#: app/forms.py:20 app/templates/app/visitors/login.html:68
+#: app/templates/app/visitors/registration.html:86
 msgid "Password"
 msgstr "Συνθηματικό"
 
+#: app/templates/admin/base.html:92
+#: app/templates/app/help/change-password.html:17
+msgid "Change password"
+msgstr "Αλλαγή συνθηματικού"
+
+#: app/templates/admin/base.html:95 app/templates/app/navbar-users.html:102
+#: app/templates/app/navbar-users.html:104
+msgid "Log out"
+msgstr "Αποσύνδεση"
+
+#: app/templates/admin/base.html:102
+msgid "View site"
+msgstr "Δες την εφαρμογή"
+
+#: app/templates/admin/base.html:107
+msgid "Documentation"
+msgstr "Τεκμηρίωση"
+
+#: app/templates/admin/base.html:125 app/templates/admin/index.html:18
+#: app/templates/app/consumers/cart/index.html:71
 #: app/templates/app/consumers/dashboard.html:26
+#: app/templates/app/consumers/profile.html:33
+#: app/templates/app/consumers/search/services/preview.html:119
+#: app/templates/app/consumers/services/item/preview/index.html:28
+#: app/templates/app/consumers/services/item/update/index.html:71
+#: app/templates/app/consumers/services/list/index.html:25
+#: app/templates/app/consumers/services/registration/index.html:24
+#: app/templates/app/consumers/statistics/index.html:27
+#: app/templates/app/help/base-help.html:44
+#: app/templates/app/help/change-password.html:12
+#: app/templates/app/help/forget-password.html:12
+#: app/templates/app/help/index.html:55
+#: app/templates/app/help/log-in-out.html:12
+#: app/templates/app/help/services/provider/create-service.html:11
+#: app/templates/app/help/services/provider/delete-service.html:11
+#: app/templates/app/help/services/provider/update-service.html:11
+#: app/templates/app/help/update-profile-steps.html:12
+#: app/templates/app/nas/configuration/index.html:31
+#: app/templates/app/nas/invitations/index.html:30
+#: app/templates/app/nas/preview/index.html:31
+#: app/templates/app/nas/requests/create-new.html:29
+#: app/templates/app/nas/requests/index.html:32
 msgid "Home"
 msgstr "Αρχική"
+
+#: app/templates/admin/index.html:45
+msgid "Add"
+msgstr "Προσθήκη"
+
+#: app/templates/admin/index.html:54
+msgid "You don´t have permission to edit anything."
+msgstr "Δεν έχετε δικαίωμα τροποποίησης."
+
+#: app/templates/admin/index.html:59
+msgid "Custom Views"
+msgstr "Προσαρμοσμένες προβολές"
+
+#: app/templates/admin/index.html:71
+msgid "Plugins"
+msgstr "Πρόσθετα"
+
+#: app/templates/admin/index.html:73
+msgid "Dowser (memory profiling)"
+msgstr "Dowser (παρακολούθηση μνήμης)"
+
+#: app/templates/admin/index.html:76
+msgid "Rosetta (translation)"
+msgstr "Rosetta (διαχείριση μεταφράσεων)"
+
+#: app/templates/admin/index.html:83
+msgid "Recent Actions"
+msgstr "Πρόσφατες ενέργειες"
+
+#: app/templates/admin/index.html:85
+msgid "My Actions"
+msgstr "Οι ενέργειες μου"
+
+#: app/templates/admin/index.html:88
+msgid "None available"
+msgstr "Μη διαθέσιμο"
+
+#: app/templates/app/base.html:23
+msgid "Welcome on AoD app"
+msgstr "Καλως ήρθατε στο AoD "
+
+#: app/templates/app/base.html:60
+msgid "Go on top"
+msgstr "Στην κορυφή"
+
+#: app/templates/app/base.html:76
+msgid "SUBSCRIBE TO OUR NEWSLETTER"
+msgstr "Εγγραφτείτε στο NEWSLETTER"
+
+#: app/templates/app/base.html:82
+msgid "Send"
+msgstr "Αποστολή"
+
+#: app/templates/app/base.html:101
+#: app/templates/app/consumers/services/registration/confirm.html:25
+#: app/templates/app/consumers/services/registration/confirm.html:30
+msgid "Terms of use"
+msgstr "Όροι χρήσης"
+
+#: app/templates/app/base.html:105 app/templates/app/help/base-help.html:71
+#: app/templates/app/help/create_new_account.html:18
+#: app/templates/app/visitors/registration.html:295
+msgid "Privacy policy"
+msgstr "Πολιτική προστασίας προσωπικών δεδομένων"
+
+#: app/templates/app/base.html:109
+msgid "Help center"
+msgstr "Κέντρο βοήθειας"
+
+#: app/templates/app/base.html:111
+msgid "Forgot my password"
+msgstr "Ξέχασα το συνθηματικό μου"
+
+#: app/templates/app/base.html:112 app/templates/app/help/index.html:89
+#: app/templates/app/help/update-profile-steps.html:17
+msgid "Update my profile"
+msgstr "Επεξεργασία του προφίλ μου"
+
+#: app/templates/app/base.html:113 app/templates/app/help/index.html:90
+msgid "Change my password"
+msgstr "Αλλαγή του συνθηματικού μου"
+
+#: app/templates/app/base.html:117
+msgid "Follow us on social networks"
+msgstr "Βρείτε μας στα κοινωνικά δίκτυα"
+
+#: app/templates/app/base.html:177
+msgid "European commission logo"
+msgstr "Λογότυπο Ευρωπαϊκής Ένωσης"
+
+#: app/templates/app/base.html:181
+msgid ""
+"\n"
+"                            Prosperity4All - Ecosystem infrastructure for smart and personalised inclusion and PROSPERITY for ALL stakeholders<br> \n"
+"                            This project has received funding from the European Union’s Seventh Programme for research, technological development and demonstration under grant agreement, No 610510\n"
+"                            "
+msgstr ""
+"\n"
+"Prosperity4All - Ecosystem infrastructure for smart and personalised inclusion and PROSPERITY for ALL stakeholders<br> \n"
+"Το εργο χρηματοδοτείτε από την Ευρωπαική Ένωση (FP7) για έρευνα, τεχνολογική αναπτυξη και εγκατάστηση/επίδειξη στο πλαίσιο συμφωνίας επιχορήγησης, Νο 610510"
+
+#: app/templates/app/consumers/cart/index.html:72
+msgid "My cart"
+msgstr "Το καλάθι μου"
+
+#: app/templates/app/consumers/cart/index.html:82
+msgid "Your AoD shopping cart"
+msgstr "Το AOD καλάθι σας"
+
+#: app/templates/app/consumers/cart/index.html:83
+msgid "After you log out, the list is removed"
+msgstr "Η λίστα διαγράφεται μετά την αποσύνδεσή σας"
+
+#: app/templates/app/consumers/cart/index.html:97
+#: app/templates/app/consumers/search/services/preview.html:196
+#: app/templates/app/visitors/registration.html:182
+msgid "Provider"
+msgstr "Πάροχος"
+
+#: app/templates/app/consumers/cart/index.html:100
+msgid "Quantity 1"
+msgstr "Ποσότητα 1"
+
+#: app/templates/app/consumers/cart/index.html:103
+#: app/templates/app/consumers/dashboard.html:184
+#: app/templates/app/consumers/dashboard.html:186
+#: app/templates/app/consumers/search/services/preview.html:156
+#: app/templates/app/consumers/services/item/preview/preview.html:70
+#: app/templates/app/consumers/services/list/index.html:61
+#: app/templates/app/consumers/services/registration/charging.html:39
+#: app/templates/app/consumers/statistics/index.html:85
+#: app/templates/app/nas/configuration/index.html:211
+#: app/templates/app/nas/configuration/index.html:299
+#: app/templates/app/nas/preview/index.html:117
+#: app/templates/app/nas/preview/index.html:243
+msgid "Price"
+msgstr "Κόστος"
+
+#: app/templates/app/consumers/cart/index.html:107
+#: app/templates/app/consumers/services/item/preview/index.html:56
+#: app/templates/app/consumers/services/list/index.html:69
+msgid "Remove"
+msgstr "Διαγραφή"
+
+#: app/templates/app/consumers/cart/index.html:113
+msgid "Your cart is empty"
+msgstr "Το καλάθι σας είναι άδειο"
+
+#: app/templates/app/consumers/cart/index.html:117
+msgid "Continue shopping"
+msgstr "Συνεχίστε την πλοήγηση"
+
+#: app/templates/app/consumers/cart/index.html:123
+msgid "Cart summary"
+msgstr "Σύνοψη καλαθιού"
+
+#: app/templates/app/consumers/cart/index.html:123
+msgid "services"
+msgstr "Υπηρεσίες"
+
+#: app/templates/app/consumers/cart/index.html:123
+msgid "service"
+msgstr "Υπηρεσία"
+
+#: app/templates/app/consumers/cart/index.html:126
+msgid "Total"
+msgstr "Σύνολο"
+
+#: app/templates/app/consumers/cart/index.html:129
+msgid "Proceed to checkout"
+msgstr "Ολοκληρώστε την πληρωμή"
+
+#: app/templates/app/consumers/dashboard.html:6
+msgid "AoD | Welcome"
+msgstr "AoD | Καλώς ήρθατε"
 
 #: app/templates/app/consumers/dashboard.html:37
 msgid "Find your services"
 msgstr "Αναζήτηση υπηρεσιών"
 
-#: env/Lib/site-packages/django/contrib/sitemaps/apps.py:8
-msgid "Site Maps"
-msgstr "Χάρτης ιστότοπου"
+#: app/templates/app/consumers/dashboard.html:48
+#: app/templates/app/consumers/dashboard.html:50
+#: app/templates/app/consumers/services/item/preview/preview.html:86
+#: app/templates/app/consumers/statistics/index.html:76
+#: app/templates/app/nas/preview/index.html:108
+msgid "Categories"
+msgstr "Κατηγορίες"
 
-#: env/Lib/site-packages/django/contrib/staticfiles/apps.py:8
-msgid "Static Files"
-msgstr "Στατικά αρχεία"
+#: app/templates/app/consumers/dashboard.html:72
+#: app/templates/app/consumers/dashboard.html:74
+msgid "Service providers"
+msgstr "Πάροχοι υπηρεσιών"
 
-#: env/Lib/site-packages/django/contrib/syndication/apps.py:8
-msgid "Syndication"
-msgstr ""
+#: app/templates/app/consumers/dashboard.html:102
+msgid "Type of services"
+msgstr "Είδη υπηρεσιών"
 
-#: env/Lib/site-packages/django/contrib/webdesign/apps.py:8
-msgid "Web Design"
-msgstr ""
+#: app/templates/app/consumers/dashboard.html:104
+#: app/templates/app/consumers/search/services/preview.html:178
+#: app/templates/app/consumers/services/item/preview/preview.html:53
+#: app/templates/app/consumers/services/list/index.html:63
+#: app/templates/app/consumers/services/registration/basic.html:44
+#: app/templates/app/consumers/statistics/index.html:101
+#: app/templates/app/nas/configuration/index.html:210
+#: app/templates/app/nas/configuration/index.html:298
+#: app/templates/app/nas/preview/index.html:133
+#: app/templates/app/nas/preview/index.html:242
+msgid "Type"
+msgstr "Είδος"
 
-#: env/Lib/site-packages/django/core/validators.py:21
-msgid "Enter a valid value."
-msgstr ""
+#: app/templates/app/consumers/dashboard.html:113
+#: app/templates/app/consumers/services/list/index.html:105
+msgid "Human"
+msgstr "Φυσικό πρόσωπο"
 
-#: env/Lib/site-packages/django/core/validators.py:77
-#: env/Lib/site-packages/django/forms/fields.py:664
-msgid "Enter a valid URL."
-msgstr ""
+#: app/templates/app/consumers/dashboard.html:118
+#: app/templates/app/consumers/services/list/index.html:103
+msgid "Machine"
+msgstr "Ψηφιακές υπηρεσίες"
 
-#: env/Lib/site-packages/django/core/validators.py:115
-msgid "Enter a valid integer."
-msgstr ""
+#: app/templates/app/consumers/dashboard.html:132
+#: app/templates/app/consumers/dashboard.html:134
+#: app/templates/app/help/index.html:110
+msgid "Payment policies"
+msgstr "Πολιτικές χρέωσης"
 
-#: env/Lib/site-packages/django/core/validators.py:120
-msgid "Enter a valid email address."
-msgstr ""
+#: app/templates/app/consumers/dashboard.html:164
+#: app/templates/app/consumers/search/services/preview.html:162
+#: app/templates/app/consumers/services/item/preview/preview.html:76
+#: app/templates/app/visitors/home.html:138
+#: app/templates/app/visitors/home.html:199
+msgid "Free"
+msgstr "Δωρεάν"
 
-#: env/Lib/site-packages/django/core/validators.py:185
+#: app/templates/app/consumers/dashboard.html:168
+msgid "Paid"
+msgstr "Επί πληρωμή"
+
+#: app/templates/app/consumers/dashboard.html:195
+msgid "From"
+msgstr "Από "
+
+#: app/templates/app/consumers/dashboard.html:196
+msgid "min value"
+msgstr "ελάχιστη τιμή"
+
+#: app/templates/app/consumers/dashboard.html:201
+msgid "Up to"
+msgstr "Έως"
+
+#: app/templates/app/consumers/dashboard.html:202
+msgid "max value"
+msgstr "μέγιστη τιμή"
+
+#: app/templates/app/consumers/dashboard.html:216
 msgid ""
-"Enter a valid 'slug' consisting of letters, numbers, underscores or hyphens."
+"Searches based on Quality of Services measured by serviced users from zero "
+"(worst) to five (best)"
 msgstr ""
+"Αναζήτηση με βάση τις αξιολογήσεις των υπηρεσιων που παρέχουν οι χρήστες - "
+"από 0 (χειρότερη) έως 5 (καλύτερη)"
 
-#: env/Lib/site-packages/django/core/validators.py:188
-#: env/Lib/site-packages/django/core/validators.py:207
-msgid "Enter a valid IPv4 address."
-msgstr ""
+#: app/templates/app/consumers/dashboard.html:218
+msgid "Quality of Service"
+msgstr "Αξιολόγηση"
 
-#: env/Lib/site-packages/django/core/validators.py:193
-#: env/Lib/site-packages/django/core/validators.py:208
-msgid "Enter a valid IPv6 address."
-msgstr ""
+#: app/templates/app/consumers/dashboard.html:228
+msgid "Minimum value of quality of service (rating)"
+msgstr "Ελάχιστη τιμή αξιολόγησης"
 
-#: env/Lib/site-packages/django/core/validators.py:203
-#: env/Lib/site-packages/django/core/validators.py:206
-msgid "Enter a valid IPv4 or IPv6 address."
-msgstr ""
+#: app/templates/app/consumers/dashboard.html:230
+msgid "minimum rating"
+msgstr "ελάχιστη αξιολόγηση"
 
-#: env/Lib/site-packages/django/core/validators.py:229
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1075
-msgid "Enter only digits separated by commas."
-msgstr ""
+#: app/templates/app/consumers/dashboard.html:234
+msgid "Maximum value of quality of service (rating)"
+msgstr "Μέγιστη τιμή αξιολόγησης"
 
-#: env/Lib/site-packages/django/core/validators.py:236
-#, python-format
-msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
-msgstr ""
+#: app/templates/app/consumers/dashboard.html:236
+msgid "maximum rating"
+msgstr "μέγιστη αξιολόγηση"
 
-#: env/Lib/site-packages/django/core/validators.py:255
-#, python-format
-msgid "Ensure this value is less than or equal to %(limit_value)s."
-msgstr ""
+#: app/templates/app/consumers/dashboard.html:241
+msgid "Set the QoS range of your interest"
+msgstr "Εισάγετε το επιθυμητο εύρος αξιολόγησης"
 
-#: env/Lib/site-packages/django/core/validators.py:262
-#, python-format
-msgid "Ensure this value is greater than or equal to %(limit_value)s."
-msgstr ""
+#: app/templates/app/consumers/dashboard.html:254
+msgid "Searches for services offered around your current location"
+msgstr "Αναζητήστε υπηρεσίες που προσφέρονται κοντά στην τρέχουσα θέση σας"
 
-#: env/Lib/site-packages/django/core/validators.py:271
-#, python-format
+#: app/templates/app/consumers/dashboard.html:256
+msgid "Your current location"
+msgstr "Γεωγραφική αναζήτηση"
+
+#: app/templates/app/consumers/dashboard.html:264
+msgid "max distance"
+msgstr "μέγιστη απόσταση"
+
+#: app/templates/app/consumers/dashboard.html:265
+msgid "km"
+msgstr "χλμ"
+
+#: app/templates/app/consumers/dashboard.html:269
 msgid ""
-"Ensure this value has at least %(limit_value)d character (it has "
-"%(show_value)d)."
-msgid_plural ""
-"Ensure this value has at least %(limit_value)d characters (it has "
-"%(show_value)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: env/Lib/site-packages/django/core/validators.py:282
-#, python-format
-msgid ""
-"Ensure this value has at most %(limit_value)d character (it has "
-"%(show_value)d)."
-msgid_plural ""
-"Ensure this value has at most %(limit_value)d characters (it has "
-"%(show_value)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: env/Lib/site-packages/django/db/models/base.py:971
-#: env/Lib/site-packages/django/forms/models.py:716
-msgid "and"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/base.py:973
-#, python-format
-msgid "%(model_name)s with this %(field_labels)s already exists."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:104
-#, python-format
-msgid "Value %(value)r is not a valid choice."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:105
-msgid "This field cannot be null."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:106
-msgid "This field cannot be blank."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:107
-#, python-format
-msgid "%(model_name)s with this %(field_label)s already exists."
-msgstr ""
-
-#. Translators: The 'lookup_type' is one of 'date', 'year' or 'month'.
-#. Eg: "Title must be unique for pub_date year"
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:111
-#, python-format
-msgid ""
-"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:118
-#, python-format
-msgid "Field of type: %(field_type)s"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:852
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1582
-msgid "Integer"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:856
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1580
-#, python-format
-msgid "'%(value)s' value must be an integer."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:931
-#, python-format
-msgid "'%(value)s' value must be either True or False."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:933
-msgid "Boolean (Either True or False)"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1009
-#, python-format
-msgid "String (up to %(max_length)s)"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1070
-msgid "Comma-separated integers"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1085
-#, python-format
-msgid ""
-"'%(value)s' value has an invalid date format. It must be in YYYY-MM-DD "
-"format."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1087
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1194
-#, python-format
-msgid ""
-"'%(value)s' value has the correct format (YYYY-MM-DD) but it is an invalid "
-"date."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1090
-msgid "Date (without time)"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1192
-#, python-format
-msgid ""
-"'%(value)s' value has an invalid format. It must be in YYYY-MM-DD "
-"HH:MM[:ss[.uuuuuu]][TZ] format."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1196
-#, python-format
-msgid ""
-"'%(value)s' value has the correct format (YYYY-MM-DD "
-"HH:MM[:ss[.uuuuuu]][TZ]) but it is an invalid date/time."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1200
-msgid "Date (with time)"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1306
-#, python-format
-msgid "'%(value)s' value must be a decimal number."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1308
-msgid "Decimal number"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1453
-msgid "Email address"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1479
-msgid "File path"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1546
-#, python-format
-msgid "'%(value)s' value must be a float."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1548
-msgid "Floating point number"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1632
-msgid "Big (8 byte) integer"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1647
-msgid "IPv4 address"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1677
-msgid "IP address"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1756
-#, python-format
-msgid "'%(value)s' value must be either None, True or False."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1758
-msgid "Boolean (Either True, False or None)"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1818
-msgid "Positive integer"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1830
-msgid "Positive small integer"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1843
-#, python-format
-msgid "Slug (up to %(max_length)s)"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1872
-msgid "Small integer"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1879
-msgid "Text"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1902
-#, python-format
-msgid ""
-"'%(value)s' value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
-"format."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1904
-#, python-format
-msgid ""
-"'%(value)s' value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
-"invalid time."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1907
-msgid "Time"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:1989
-msgid "URL"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/__init__.py:2012
-msgid "Raw binary data"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/files.py:225
-msgid "File"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/files.py:375
-msgid "Image"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/related.py:1603
-#, python-format
-msgid "%(model)s instance with pk %(pk)r does not exist."
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/related.py:1605
-msgid "Foreign Key (type determined by related field)"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/related.py:1795
-msgid "One-to-one relationship"
-msgstr ""
-
-#: env/Lib/site-packages/django/db/models/fields/related.py:1865
-msgid "Many-to-many relationship"
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:55
-msgid "This field is required."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:225
-msgid "Enter a whole number."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:268
-#: env/Lib/site-packages/django/forms/fields.py:305
-msgid "Enter a number."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:307
-#, python-format
-msgid "Ensure that there are no more than %(max)s digit in total."
-msgid_plural "Ensure that there are no more than %(max)s digits in total."
-msgstr[0] ""
-msgstr[1] ""
-
-#: env/Lib/site-packages/django/forms/fields.py:311
-#, python-format
-msgid "Ensure that there are no more than %(max)s decimal place."
-msgid_plural "Ensure that there are no more than %(max)s decimal places."
-msgstr[0] ""
-msgstr[1] ""
-
-#: env/Lib/site-packages/django/forms/fields.py:315
-#, python-format
-msgid ""
-"Ensure that there are no more than %(max)s digit before the decimal point."
-msgid_plural ""
-"Ensure that there are no more than %(max)s digits before the decimal point."
-msgstr[0] ""
-msgstr[1] ""
-
-#: env/Lib/site-packages/django/forms/fields.py:426
-#: env/Lib/site-packages/django/forms/fields.py:1132
-msgid "Enter a valid date."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:450
-#: env/Lib/site-packages/django/forms/fields.py:1133
-msgid "Enter a valid time."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:472
-msgid "Enter a valid date/time."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:553
-msgid "No file was submitted. Check the encoding type on the form."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:554
-msgid "No file was submitted."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:555
-msgid "The submitted file is empty."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:557
-#, python-format
-msgid ""
-"Ensure this filename has at most %(max)d character (it has %(length)d)."
-msgid_plural ""
-"Ensure this filename has at most %(max)d characters (it has %(length)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: env/Lib/site-packages/django/forms/fields.py:560
-msgid "Please either submit a file or check the clear checkbox, not both."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:621
-msgid ""
-"Upload a valid image. The file you uploaded was either not an image or a "
-"corrupted image."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:771
-#: env/Lib/site-packages/django/forms/fields.py:860
-#: env/Lib/site-packages/django/forms/models.py:1205
-#, python-format
-msgid "Select a valid choice. %(value)s is not one of the available choices."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:861
-#: env/Lib/site-packages/django/forms/fields.py:976
-#: env/Lib/site-packages/django/forms/models.py:1204
-msgid "Enter a list of values."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/fields.py:977
-msgid "Enter a complete value."
-msgstr ""
-
-#. Translators: This is the default suffix added to form field labels
-#: env/Lib/site-packages/django/forms/forms.py:122
-msgid ":"
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/forms.py:192
-#, python-format
-msgid "(Hidden field %(name)s) %(error)s"
-msgstr ""
-
-#. Translators: If found as last label character, these punctuation
-#. characters will prevent the default label_suffix to be appended to the
-#. label
-#: env/Lib/site-packages/django/forms/forms.py:620
-msgid ":?.!"
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/formsets.py:95
-msgid "ManagementForm data is missing or has been tampered with"
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/formsets.py:332
-#, python-format
-msgid "Please submit %d or fewer forms."
-msgid_plural "Please submit %d or fewer forms."
-msgstr[0] ""
-msgstr[1] ""
-
-#: env/Lib/site-packages/django/forms/formsets.py:339
-#, python-format
-msgid "Please submit %d or more forms."
-msgid_plural "Please submit %d or more forms."
-msgstr[0] ""
-msgstr[1] ""
-
-#: env/Lib/site-packages/django/forms/formsets.py:367
-#: env/Lib/site-packages/django/forms/formsets.py:369
-msgid "Order"
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/formsets.py:371
-msgid "Delete"
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/models.py:710
-#, python-format
-msgid "Please correct the duplicate data for %(field)s."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/models.py:714
-#, python-format
-msgid "Please correct the duplicate data for %(field)s, which must be unique."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/models.py:720
-#, python-format
-msgid ""
-"Please correct the duplicate data for %(field_name)s which must be unique "
-"for the %(lookup)s in %(date_field)s."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/models.py:728
-msgid "Please correct the duplicate values below."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/models.py:1030
-msgid "The inline foreign key did not match the parent instance primary key."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/models.py:1096
-msgid ""
-"Select a valid choice. That choice is not one of the available choices."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/models.py:1207
-#, python-format
-msgid "\"%(pk)s\" is not a valid value for a primary key."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/models.py:1218
-msgid "Hold down \"Control\", or \"Command\" on a Mac, to select more than one."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/utils.py:157
-#, python-format
-msgid ""
-"%(datetime)s couldn't be interpreted in time zone %(current_timezone)s; it "
-"may be ambiguous or it may not exist."
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/widgets.py:350
-msgid "Currently"
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/widgets.py:351
-msgid "Change"
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/widgets.py:352
-msgid "Clear"
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/widgets.py:546
-msgid "Unknown"
-msgstr ""
-
-#: env/Lib/site-packages/django/forms/widgets.py:547
+"Scan for services within the distance of your interest from your location"
+msgstr ""
+"Αναζήτηση υπηρεσιών σε ακτίνα ίση με την απόσταση που επιθυμείτε από την "
+"τρέχουσα θέση σας"
+
+#: app/templates/app/consumers/dashboard.html:279
+msgid "Reset"
+msgstr "Επαναφορά"
+
+#: app/templates/app/consumers/dashboard.html:282
+#: app/templates/app/consumers/search/services/preview.html:120
+msgid "Search"
+msgstr "Αναζήτηση"
+
+#: app/templates/app/consumers/dashboard.html:296
+msgid "Services per page"
+msgstr "Υπηρεσίες ανά σελίδα"
+
+#: app/templates/app/consumers/dashboard.html:297
+msgid "Number of services per page"
+msgstr "Υπηρεσίες ανά σελίδα"
+
+#: app/templates/app/consumers/dashboard.html:309
+msgid "Sort by"
+msgstr "Ταξινόμηση"
+
+#: app/templates/app/consumers/dashboard.html:310
+msgid "Sort the list of registered services"
+msgstr "Ταξινομήστε την λίστα των εγγεγραμμένων υπηρεσιών"
+
+#: app/templates/app/consumers/dashboard.html:312
+msgid "Price: Low to High"
+msgstr "Αύξουσα τιμή"
+
+#: app/templates/app/consumers/dashboard.html:313
+msgid "Price: High to Low"
+msgstr "Φθίνουσα τιμή"
+
+#: app/templates/app/consumers/dashboard.html:314
+msgid "Title: A to Z"
+msgstr "Τίτλος: Α σε Ω"
+
+#: app/templates/app/consumers/dashboard.html:315
+msgid "Title: Z to A"
+msgstr "Τίτλος: Ω σε Α"
+
+#: app/templates/app/consumers/dashboard.html:316
+msgid "Rating: High to Low"
+msgstr "Φθίνουσα αξιολόγηση"
+
+#: app/templates/app/consumers/dashboard.html:317
+msgid "Most popular"
+msgstr "Δημοφιλέστερο"
+
+#: app/templates/app/consumers/dashboard.html:323
+msgid "Service results presentation"
+msgstr "Προβολή αποτελεσμάτων υπηρεσιών"
+
+#: app/templates/app/consumers/dashboard.html:327
+msgid "View"
+msgstr "Απεικόνιση"
+
+#: app/templates/app/consumers/profile.html:4
+#: app/templates/app/consumers/profile.html:34
+msgid "My profile"
+msgstr "Το προφίλ μου"
+
+#: app/templates/app/consumers/profile.html:50
+msgid "Add cover"
+msgstr "Προσθήκη εξώφυλου"
+
+#: app/templates/app/consumers/profile/contact-info.html:8
+msgid "Contact information"
+msgstr "Πληροφορίες επικοινωνίας"
+
+#: app/templates/app/consumers/profile/contact-info.html:23
+#: app/templates/app/consumers/profile/contact-info.html:43
+#: app/templates/app/nas/invitations/index.html:75
+#: app/templates/app/nas/requests/create-new.html:73
+#: app/templates/app/visitors/registration.html:71
+msgid "Email account"
+msgstr "Λογαριασμός ηλεκτρονικού ταχυδρομείου"
+
+#: app/templates/app/consumers/profile/contact-info.html:25
+msgid "Your registered email account"
+msgstr "Το καταχωρημένο ηλεκτρονικό ταχυδρομείο σας"
+
+#: app/templates/app/consumers/profile/contact-info.html:32
+#: app/templates/app/consumers/profile/contact-info.html:58
+#: app/templates/app/visitors/registration.html:116
+msgid "Mobile phone"
+msgstr "Αριθμός κινητού"
+
+#: app/templates/app/consumers/profile/contact-info.html:34
+msgid "Your registered mobile phone"
+msgstr "Ο εγγεγραμμένος αριθμός κινητού σας"
+
+#: app/templates/app/consumers/profile/contact-info.html:45
+msgid "Update your email account"
+msgstr "Τροποποίσε τον email λογαριασμό σας"
+
+#: app/templates/app/consumers/profile/contact-info.html:49
+msgid "your email account"
+msgstr "Το ηλεκτρονικό ταχυδρομείο σας"
+
+#: app/templates/app/consumers/profile/contact-info.html:52
+msgid "No valid email account"
+msgstr "Μη εγκυρος λογαριασμός ηλεκτρονικού ταχυδρομείου"
+
+#: app/templates/app/consumers/profile/contact-info.html:64
+msgid "your mobile phone number"
+msgstr "Ο εγγεγραμμένος αριθμός κινητού σας"
+
+#: app/templates/app/consumers/profile/contact-info.html:67
+#: app/templates/app/visitors/registration.html:125
+msgid "Type at least 10 digits"
+msgstr "Τουλάχιστον 10 ψηφία"
+
+#: app/templates/app/consumers/profile/contact-info.html:79
+#: app/templates/app/consumers/profile/personal-info.html:220
+#: app/templates/app/consumers/profile/platform-info.html:222
+#: app/templates/app/consumers/services/item/preview/index.html:57
+#: app/templates/app/consumers/services/item/update/index.html:77
+#: app/templates/app/consumers/services/list/index.html:68
+#: app/templates/app/help/update-profile-steps.html:40
+#: app/templates/app/help/update-profile-steps.html:45
+#: app/templates/app/help/update-profile-steps.html:50
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#: app/templates/app/consumers/profile/contact-info.html:84
+#: app/templates/app/consumers/profile/personal-info.html:225
+#: app/templates/app/consumers/profile/platform-info.html:227
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#: app/templates/app/consumers/profile/contact-info.html:87
+#: app/templates/app/consumers/profile/personal-info.html:228
+#: app/templates/app/consumers/profile/platform-info.html:230
+#: app/templates/app/help/update-profile-steps.html:41
+#: app/templates/app/help/update-profile-steps.html:46
+#: app/templates/app/help/update-profile-steps.html:55
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: app/templates/app/consumers/profile/personal-info.html:7
+msgid "Update logo"
+msgstr "Αλλαγή λογότυπου"
+
+#: app/templates/app/consumers/profile/personal-info.html:11
+msgid "Upload logo"
+msgstr "Μεταφόρτωση λογότυπου"
+
+#: app/templates/app/consumers/profile/personal-info.html:27
+#: app/templates/app/consumers/profile/personal-info.html:28
+msgid "Personal information"
+msgstr "Προσωπικές πληροφορίες"
+
+#: app/templates/app/consumers/profile/personal-info.html:34
+msgid "The username that characterize any AoD user"
+msgstr "Το όνομα χρήστη που χαρακτηρίζει κάθε χρήστη στο AoD"
+
+#: app/templates/app/consumers/profile/personal-info.html:39
+msgid "Registration date and time"
+msgstr "Ημερομηνία εγγραφής"
+
+#: app/templates/app/consumers/profile/personal-info.html:56
+#: app/templates/app/consumers/profile/personal-info.html:112
+#: app/templates/app/help/base-help.html:94
+#: app/templates/app/help/change-password.html:56
+#: app/templates/app/help/forget-password.html:55
+#: app/templates/app/help/log-in-out.html:64
+#: app/templates/app/help/services/provider/create-service.html:49
+#: app/templates/app/help/services/provider/delete-service.html:49
+#: app/templates/app/help/services/provider/update-service.html:49
+#: app/templates/app/help/update-profile-steps.html:84
+#: app/templates/app/visitors/registration.html:26
+msgid "First name"
+msgstr "Όνομα"
+
+#: app/templates/app/consumers/profile/personal-info.html:65
+#: app/templates/app/consumers/profile/personal-info.html:127
+#: app/templates/app/visitors/registration.html:41
+msgid "Last name"
+msgstr "Επίθετο"
+
+#: app/templates/app/consumers/profile/personal-info.html:74
+#: app/templates/app/consumers/profile/personal-info.html:143
+#: app/templates/app/visitors/registration.html:131
+msgid "Country"
+msgstr "Χώρα"
+
+#: app/templates/app/consumers/profile/personal-info.html:82
+#: app/templates/app/consumers/profile/personal-info.html:168
+msgid "City"
+msgstr "Πόλη"
+
+#: app/templates/app/consumers/profile/personal-info.html:84
+msgid "Your city"
+msgstr "Η πόλη σας"
+
+#: app/templates/app/consumers/profile/personal-info.html:88
+#: app/templates/app/consumers/profile/personal-info.html:99
+#: app/templates/app/consumers/profile/personal-info.html:100
+#: app/templates/app/consumers/profile/personal-info.html:103
+#: app/templates/app/consumers/profile/platform-info.html:45
+#: app/templates/app/consumers/profile/platform-info.html:72
+msgid "Not set"
+msgstr "Μη διαθέσιμο"
+
+#: app/templates/app/consumers/profile/personal-info.html:94
+#: app/templates/app/consumers/profile/personal-info.html:183
+msgid "Address"
+msgstr "Διεύθυνση κατοικίας"
+
+#: app/templates/app/consumers/profile/personal-info.html:94
+msgid "zip code"
+msgstr "Ταχυδρομικός κώδικας "
+
+#: app/templates/app/consumers/profile/personal-info.html:114
+msgid "Update your name"
+msgstr "Αλλάξτε το όνομα σας"
+
+#: app/templates/app/consumers/profile/personal-info.html:118
+#: app/templates/app/visitors/registration.html:32
+msgid "the name of user"
+msgstr "όνομα χρήστη"
+
+#: app/templates/app/consumers/profile/personal-info.html:121
+#: app/templates/app/consumers/profile/personal-info.html:137
+#: app/templates/app/consumers/profile/personal-info.html:177
+#: app/templates/app/consumers/profile/personal-info.html:192
+#: app/templates/app/consumers/profile/personal-info.html:207
+#: app/templates/app/visitors/registration.html:35
+#: app/templates/app/visitors/registration.html:50
+msgid "Type at least 2 characters"
+msgstr "Εισάγετε τουλάχιστον 2 χαρακτήρες"
+
+#: app/templates/app/consumers/profile/personal-info.html:133
+#: app/templates/app/visitors/registration.html:47
+msgid "the lastname of user"
+msgstr "το επίθετο του χρήστη"
+
+#: app/templates/app/consumers/profile/personal-info.html:149
+#: app/templates/app/consumers/profile/personal-info.html:162
+#: app/templates/app/visitors/registration.html:148
+msgid "Select a country"
+msgstr "Επιλέξτε μία χώρα"
+
+#: app/templates/app/consumers/profile/personal-info.html:149
+#: app/templates/app/visitors/registration.html:137
+msgid "List"
+msgstr "Λίστα"
+
+#: app/templates/app/consumers/profile/personal-info.html:174
+msgid "the city of residence"
+msgstr "η πόλη κατοικίας"
+
+#: app/templates/app/consumers/profile/personal-info.html:189
+msgid "the residence address"
+msgstr "η διεύθυνση κατοικίας"
+
+#: app/templates/app/consumers/profile/personal-info.html:198
+msgid "Postal code"
+msgstr "Ταχυδρομικός αριθμός"
+
+#: app/templates/app/consumers/profile/personal-info.html:204
+msgid "the residence postal code"
+msgstr "ο ταχυδρομικός αριθμός"
+
+#: app/templates/app/consumers/profile/platform-info.html:8
+msgid "Platform settings"
+msgstr "Ρυθμίσεις εφαρμογής"
+
+#: app/templates/app/consumers/profile/platform-info.html:16
+msgid "IT experience"
+msgstr "Εμπειρία αλληλεπίδρασης με υπολογιστές"
+
+#: app/templates/app/consumers/profile/platform-info.html:18
+msgid "Experience level with IT services"
+msgstr "Οικειότητα με εργαλεία πληροφορικής"
+
+#: app/templates/app/consumers/profile/platform-info.html:34
+msgid "Roles"
+msgstr "Ρόλοι"
+
+#: app/templates/app/consumers/profile/platform-info.html:36
+msgid "Your roles in the platform"
+msgstr "Οι ρόλοι σας στο AoD"
+
+#: app/templates/app/consumers/profile/platform-info.html:42
+msgid "Do you participate in crowd funding process"
+msgstr ""
+"Επιθυμείτε να συμμετάσχετε σε crowd-funding διαδικασίες (χρηματοδοτούμενες "
+"από χρήστες)"
+
+#: app/templates/app/consumers/profile/platform-info.html:42
+#: app/templates/app/consumers/profile/platform-info.html:43
+#: app/templates/app/consumers/profile/platform-info.html:142
+#: app/templates/app/consumers/profile/platform-info.html:149
+#: app/templates/app/consumers/profile/platform-info.html:166
+#: app/templates/app/consumers/profile/platform-info.html:173
+#: app/templates/app/consumers/services/list/index.html:115
+#: app/templates/app/consumers/services/registration/constraints.html:16
+#: app/templates/app/consumers/services/registration/constraints.html:17
+#: app/templates/app/consumers/services/registration/constraints.html:80
+#: app/templates/app/consumers/services/registration/constraints.html:81
+#: app/templates/app/visitors/registration.html:199
+#: app/templates/app/visitors/registration.html:216
 msgid "Yes"
-msgstr ""
+msgstr "Ναι"
 
-#: env/Lib/site-packages/django/forms/widgets.py:548
+#: app/templates/app/consumers/profile/platform-info.html:42
+#: app/templates/app/consumers/profile/platform-info.html:43
+#: app/templates/app/consumers/profile/platform-info.html:145
+#: app/templates/app/consumers/profile/platform-info.html:152
+#: app/templates/app/consumers/profile/platform-info.html:169
+#: app/templates/app/consumers/profile/platform-info.html:176
+#: app/templates/app/consumers/services/list/index.html:117
+#: app/templates/app/consumers/services/registration/constraints.html:19
+#: app/templates/app/consumers/services/registration/constraints.html:20
+#: app/templates/app/consumers/services/registration/constraints.html:83
+#: app/templates/app/consumers/services/registration/constraints.html:84
+#: app/templates/app/visitors/registration.html:202
+#: app/templates/app/visitors/registration.html:219
 msgid "No"
-msgstr ""
-
-#: env/Lib/site-packages/django/template/defaultfilters.py:855
-msgid "yes,no,maybe"
-msgstr ""
-
-#: env/Lib/site-packages/django/template/defaultfilters.py:884
-#: env/Lib/site-packages/django/template/defaultfilters.py:896
-#, python-format
-msgid "%(size)d byte"
-msgid_plural "%(size)d bytes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: env/Lib/site-packages/django/template/defaultfilters.py:898
-#, python-format
-msgid "%s KB"
-msgstr ""
-
-#: env/Lib/site-packages/django/template/defaultfilters.py:900
-#, python-format
-msgid "%s MB"
-msgstr ""
-
-#: env/Lib/site-packages/django/template/defaultfilters.py:902
-#, python-format
-msgid "%s GB"
-msgstr ""
-
-#: env/Lib/site-packages/django/template/defaultfilters.py:904
-#, python-format
-msgid "%s TB"
-msgstr ""
-
-#: env/Lib/site-packages/django/template/defaultfilters.py:906
-#, python-format
-msgid "%s PB"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dateformat.py:59
-msgid "p.m."
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dateformat.py:60
-msgid "a.m."
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dateformat.py:65
-msgid "PM"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dateformat.py:66
-msgid "AM"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dateformat.py:149
-msgid "midnight"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dateformat.py:151
-msgid "noon"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:6
-msgid "Monday"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:6
-msgid "Tuesday"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:6
-msgid "Wednesday"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:6
-msgid "Thursday"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:6
-msgid "Friday"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:7
-msgid "Saturday"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:7
-msgid "Sunday"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:10
-msgid "Mon"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:10
-msgid "Tue"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:10
-msgid "Wed"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:10
-msgid "Thu"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:10
-msgid "Fri"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:11
-msgid "Sat"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:11
-msgid "Sun"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:18
-msgid "January"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:18
-msgid "February"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:18
-msgid "March"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:18
-msgid "April"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:18
-msgid "May"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:18
-msgid "June"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:19
-msgid "July"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:19
-msgid "August"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:19
-msgid "September"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:19
-msgid "October"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:19
-msgid "November"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:20
-msgid "December"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:23
-msgid "jan"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:23
-msgid "feb"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:23
-msgid "mar"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:23
-msgid "apr"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:23
-msgid "may"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:23
-msgid "jun"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:24
-msgid "jul"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:24
-msgid "aug"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:24
-msgid "sep"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:24
-msgid "oct"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:24
-msgid "nov"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:24
-msgid "dec"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:31
-msgctxt "abbrev. month"
-msgid "Jan."
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:32
-msgctxt "abbrev. month"
-msgid "Feb."
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:33
-msgctxt "abbrev. month"
-msgid "March"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:34
-msgctxt "abbrev. month"
-msgid "April"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:35
-msgctxt "abbrev. month"
-msgid "May"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:36
-msgctxt "abbrev. month"
-msgid "June"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:37
-msgctxt "abbrev. month"
-msgid "July"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:38
-msgctxt "abbrev. month"
-msgid "Aug."
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:39
-msgctxt "abbrev. month"
-msgid "Sept."
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:40
-msgctxt "abbrev. month"
-msgid "Oct."
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:41
-msgctxt "abbrev. month"
-msgid "Nov."
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:42
-msgctxt "abbrev. month"
-msgid "Dec."
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:45
-msgctxt "alt. month"
-msgid "January"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:46
-msgctxt "alt. month"
-msgid "February"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:47
-msgctxt "alt. month"
-msgid "March"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:48
-msgctxt "alt. month"
-msgid "April"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:49
-msgctxt "alt. month"
-msgid "May"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:50
-msgctxt "alt. month"
-msgid "June"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:51
-msgctxt "alt. month"
-msgid "July"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:52
-msgctxt "alt. month"
-msgid "August"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:53
-msgctxt "alt. month"
-msgid "September"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:54
-msgctxt "alt. month"
-msgid "October"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:55
-msgctxt "alt. month"
-msgid "November"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/dates.py:56
-msgctxt "alt. month"
-msgid "December"
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/ipv6.py:10
-msgid "This is not a valid IPv6 address."
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/text.py:76
-#, python-format
-msgctxt "String to return when truncating text"
-msgid "%(truncated_text)s..."
-msgstr ""
-
-#: env/Lib/site-packages/django/utils/text.py:245
+msgstr "Όχι"
+
+#: app/templates/app/consumers/profile/platform-info.html:43
+msgid "Do you receive notifications for any crowd funding process"
+msgstr ""
+"Επιθυμείτε να λαμβάνετε ειδοποιήσεις για crowd-funding διαδικασίες/υπηρεσίες"
+
+#: app/templates/app/consumers/profile/platform-info.html:45
+msgid "Brand name"
+msgstr "Επωνυμία"
+
+#: app/templates/app/consumers/profile/platform-info.html:56
+msgid "Categories of services"
+msgstr "Κατηγορίες υπηρεσιών"
+
+#: app/templates/app/consumers/profile/platform-info.html:58
+msgid "Categories of services you are interested for"
+msgstr "Κατηγορίες υπηρεσιών που σας ενδιαφέρει για"
+
+#: app/templates/app/consumers/profile/platform-info.html:83
+msgid "Technology skills (IT)"
+msgstr "Τεχνολογικές δεξιότητες (IT)"
+
+#: app/templates/app/consumers/profile/platform-info.html:89
+#: app/templates/app/visitors/registration.html:160
+msgid "Level"
+msgstr "Επίπεδο"
+
+#: app/templates/app/consumers/profile/platform-info.html:102
+msgid "Rank your skills"
+msgstr "Επιλέξτε τις δεξιότητές σας"
+
+#: app/templates/app/consumers/profile/platform-info.html:108
+msgid "User roles"
+msgstr "Ρόλοι χρήστη"
+
+#: app/templates/app/consumers/profile/platform-info.html:114
+#: app/templates/app/visitors/registration.html:181
+msgid "Role"
+msgstr "Ρόλος"
+
+#: app/templates/app/consumers/profile/platform-info.html:127
+#: app/templates/app/visitors/registration.html:188
+msgid "Select one or more roles"
+msgstr "Επιλέξτε τουλάχιστον έναν εκ των ρόλων"
+
+#: app/templates/app/consumers/profile/platform-info.html:136
+#: app/templates/app/visitors/registration.html:194
+msgid "Crowd-funding participation"
+msgstr "Συμμετοχή σε crowd-funding διαδικασίες"
+
+#: app/templates/app/consumers/profile/platform-info.html:160
+#: app/templates/app/visitors/registration.html:211
+msgid "Crowd-funding notification"
+msgstr "Ειδοποιήσεις σχετικές με crowd-funding διαδικασίες"
+
+#: app/templates/app/consumers/profile/platform-info.html:189
+msgid "Channels of interest"
+msgstr "Κατηγορίες ενδιαφέροντος"
+
+#: app/templates/app/consumers/profile/platform-info.html:195
+#: app/templates/app/visitors/registration.html:233
+msgid "Channels"
+msgstr "Κατηγορίες"
+
+#: app/templates/app/consumers/profile/platform-info.html:210
+msgid "Select at least a channel"
+msgstr "Επιλέξτε μία τουλάχιστον κατηγορία"
+
+#: app/templates/app/consumers/search/services/preview.html:133
+msgid "Creation date of service"
+msgstr "Ημεομηνία δημιουργίας υπηρεσίας"
+
+#: app/templates/app/consumers/search/services/preview.html:141
+msgid "The count of comments for this service and its average score"
+msgstr "Το πλήθος των κριτικών της υπηρεσίας και ο μέσος όρος αξιολόγησης"
+
+#: app/templates/app/consumers/search/services/preview.html:141
+#: app/templates/app/consumers/search/services/preview.html:327
+#: app/templates/app/consumers/services/item/preview/reviews.html:24
+#: app/templates/app/consumers/services/services.html:54
+#: app/templates/app/consumers/services/services.html:122
+#: app/templates/app/visitors/home.html:151
+#: app/templates/app/visitors/home.html:212
+msgid "reviews"
+msgstr "κριτικές"
+
+#: app/templates/app/consumers/search/services/preview.html:144
+msgid "comments"
+msgstr "σχόλια"
+
+#: app/templates/app/consumers/search/services/preview.html:169
+#: app/templates/app/consumers/services/list/index.html:62
+msgid "Charging policy"
+msgstr "Πολιτική χρέωσης"
+
+#: app/templates/app/consumers/search/services/preview.html:181
+msgid "Human based"
+msgstr "υπηρεσία που παρέχεται από φυσικό πρόσωπο"
+
+#: app/templates/app/consumers/search/services/preview.html:181
+msgid "Machine based"
+msgstr "Ψηφιακές υπηρεσίες"
+
+#: app/templates/app/consumers/search/services/preview.html:187
+#: app/templates/app/consumers/statistics/index.html:109
+#: app/templates/app/nas/preview/index.html:141
+msgid "Licences"
+msgstr "Άδειες"
+
+#: app/templates/app/consumers/search/services/preview.html:205
+msgid "Get the service"
+msgstr "Απόκτησε την υπηρεσία "
+
+#: app/templates/app/consumers/search/services/preview.html:207
 msgid "or"
+msgstr "ή"
+
+#: app/templates/app/consumers/search/services/preview.html:209
+msgid "Add to cart"
+msgstr "Προσθήκη στο καλάθι"
+
+#: app/templates/app/consumers/search/services/preview.html:218
+msgid "Not satisfied"
+msgstr "Δεν είστε ικανοποιημένος"
+
+#: app/templates/app/consumers/search/services/preview.html:219
+#, fuzzy
+msgid "Try different"
+msgstr "Try different"
+
+#: app/templates/app/consumers/search/services/preview.html:228
+msgid "Related keywords"
+msgstr "Σχετικές λέξεις-κλειδιά"
+
+#: app/templates/app/consumers/search/services/preview.html:239
+msgid "Brief description"
+msgstr "Σύντομη περιγραφή"
+
+#: app/templates/app/consumers/search/services/preview.html:259
+#: app/templates/app/consumers/services/item/preview/preview.html:103
+#: app/templates/app/consumers/statistics/index.html:130
+#: app/templates/app/nas/preview/index.html:162
+msgid "Requirements"
+msgstr "Προαπαιτούμενα"
+
+#: app/templates/app/consumers/search/services/preview.html:273
+#: app/templates/app/consumers/statistics/index.html:135
+#: app/templates/app/nas/preview/index.html:167
+msgid "How to install it"
+msgstr "Οδηγίες εγκατάστασης"
+
+#: app/templates/app/consumers/search/services/preview.html:278
+msgid "How to use it"
+msgstr "Οδηγίες χρήσης"
+
+#: app/templates/app/consumers/search/services/preview.html:295
+msgid "No location constraints"
+msgstr "Δεν υπάρχουν γεωγραφικοί περιορισμοί"
+
+#: app/templates/app/consumers/search/services/preview.html:307
+msgid "No language constraints"
+msgstr "Διαθέσιμο σε όλες τις γλώσσες"
+
+#: app/templates/app/consumers/search/services/preview.html:319
+msgid "Reviews for service"
+msgstr "Κριτικές υπηρεσίας"
+
+#: app/templates/app/consumers/search/services/preview.html:327
+msgid "from"
+msgstr "από"
+
+#: app/templates/app/consumers/search/services/preview.html:335
+#: app/templates/app/consumers/search/services/preview.html:346
+#: app/templates/app/consumers/search/services/preview.html:357
+#: app/templates/app/consumers/search/services/preview.html:368
+#: app/templates/app/consumers/services/item/preview/reviews.html:30
+#: app/templates/app/consumers/services/item/preview/reviews.html:42
+#: app/templates/app/consumers/services/item/preview/reviews.html:53
+#: app/templates/app/consumers/services/item/preview/reviews.html:64
+msgid "stars"
+msgstr "αστέρια"
+
+#: app/templates/app/consumers/search/services/preview.html:379
+#: app/templates/app/consumers/services/item/preview/reviews.html:75
+msgid "star"
+msgstr "αστέρι"
+
+#: app/templates/app/consumers/search/services/preview.html:392
+msgid "No reviews found"
+msgstr "Δεν βρέθηκαν κριτικές"
+
+#: app/templates/app/consumers/search/services/preview.html:399
+msgid "Tips for first timers"
+msgstr "Συμβουλές για νέους χρήστες"
+
+#: app/templates/app/consumers/search/services/preview.html:403
+#: app/templates/app/consumers/services/item/preview/index.html:78
+#: app/templates/app/consumers/services/registration/support.html:5
+msgid "Technical support"
+msgstr "Τεχνική υποστήριξη"
+
+#: app/templates/app/consumers/services/item/preview/index.html:27
+#: app/templates/app/consumers/services/item/update/index.html:70
+#: app/templates/app/nas/configuration/index.html:30
+#: app/templates/app/nas/invitations/index.html:30
+#: app/templates/app/nas/preview/index.html:30
+#: app/templates/app/nas/requests/index.html:31
+#: app/templates/app/navbar-users.html:12
+msgid "Home page"
+msgstr "Αρχική σελίδα"
+
+#: app/templates/app/consumers/services/item/preview/index.html:32
+#: app/templates/app/consumers/services/item/update/index.html:74
+#: app/templates/app/consumers/services/list/index.html:4
+#: app/templates/app/consumers/services/list/index.html:26
+#: app/templates/app/consumers/services/registration/index.html:25
+#: app/templates/app/navbar-users.html:39
+msgid "My offerings"
+msgstr "Οι υπηρεσίες μου"
+
+#: app/templates/app/consumers/services/item/preview/index.html:46
+msgid "Service title is"
+msgstr "Ο τίτλος της υπηρεσίας είναι "
+
+#: app/templates/app/consumers/services/item/preview/index.html:52
+msgid "Created at"
+msgstr "Δημιουργήθηκε στις"
+
+#: app/templates/app/consumers/services/item/preview/index.html:58
+msgid "Print"
+msgstr "Εκτύπωση"
+
+#: app/templates/app/consumers/services/item/preview/index.html:59
+msgid "Share"
+msgstr "Μοίρασε το"
+
+#: app/templates/app/consumers/services/item/preview/index.html:68
+msgid "Service details"
+msgstr "Πληροφορίες υπηρεσίας"
+
+#: app/templates/app/consumers/services/item/preview/index.html:73
+#: app/templates/app/consumers/services/list/index.html:67
+msgid "Statistics"
+msgstr "Στατιστικά"
+
+#: app/templates/app/consumers/services/item/preview/index.html:77
+msgid "Technical support of the service"
+msgstr "Τεχνική υποστήριξη υπηρεσίας"
+
+#: app/templates/app/consumers/services/item/preview/index.html:83
+msgid "Reviews"
+msgstr "Κριτικές"
+
+#: app/templates/app/consumers/services/item/preview/index.html:110
+msgid "A set of keywords that characterize the service"
+msgstr "Μία ομάδα από λέξεις-κλειδιά που χαρακτηρίζουν την υπηρεσία"
+
+#: app/templates/app/consumers/services/item/preview/index.html:116
+msgid "No keywords"
+msgstr "Δεν υπάρχουν λέξεις-κλειδιά"
+
+#: app/templates/app/consumers/services/item/preview/index.html:121
+msgid "Last date that the service was modified"
+msgstr "Τελευταία ημερομηνία που η υπηρεσία τροποποιήθηκε"
+
+#: app/templates/app/consumers/services/item/preview/index.html:124
+msgid "Last edit at"
+msgstr "Τελευταία τροποποίηση στις"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:22
+#: app/templates/app/consumers/services/list/index.html:66
+#: app/templates/app/consumers/services/registration/basic.html:28
+#: app/templates/app/nas/preview/index.html:241
+msgid "Description"
+msgstr "Περιγραφή"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:24
+msgid "The description of this service"
+msgstr "Η περιγραφή της υπηρεσίας"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:31
+#: app/templates/app/consumers/services/registration/basic.html:182
+msgid "Version"
+msgstr "Έκδοση"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:33
+msgid "The version of this service"
+msgstr "Η έκδοση της υπηρεσίας"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:42
+#: app/templates/app/consumers/services/registration/basic.html:181
+msgid "Licenses"
+msgstr "Άδειες"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:44
+msgid "The license of this service"
+msgstr "Η άδεια της υπηρεσίας"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:55
+msgid "The type of this service"
+msgstr "Το είδος της υπηρεσίας"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:59
+msgid "The operation of this service is machine-based"
+msgstr "Πρόκειται για ψηφιακή υπηρεσία"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:61
+msgid "The operation of this service is human-based"
+msgstr "Πρόκειται για υπηρεσία που παρέχεται από φυσικό πρόσωπο"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:72
+msgid "The price and the charging policy of the service"
+msgstr "Η τιμή και η πολιτική χρέωσης μίας υπηρεσίας"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:88
+msgid "Related categories"
+msgstr "Σχετικές κατηγορίες"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:94
+msgid "No related categories"
+msgstr "Δεν υπάρχουν σχετικές κατηγορίες"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:105
+msgid "The services requirements, if exist"
+msgstr "Τα προαπαιτούμενα των υπηρεσιών (αν υπάρχουν)"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:111
+msgid "No requirements required"
+msgstr "Δεν υπάρχουν προαπαιτούμενα"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:120
+#: app/templates/app/consumers/services/registration/usage.html:26
+#: app/templates/app/consumers/services/registration/usage.html:28
+msgid "Installation guidelines"
+msgstr "Οδηγίες εγκατάστασης"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:122
+msgid "A set of installation instructions of the service for the users"
+msgstr "Οδηγίες εγκατάστασης της υπηρεσίας για τους χρήστες"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:128
+msgid "No instructions provided"
+msgstr "Δεν παρέχονται οδηγίες"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:137
+#: app/templates/app/consumers/services/registration/usage.html:83
+#: app/templates/app/consumers/services/registration/usage.html:85
+msgid "Usage guidelines"
+msgstr "Οδηγίες χρήσης"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:139
+msgid "A brief set of usage instructions"
+msgstr "Σύντομη περιγραφή οδηγιών χρήσης"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:145
+msgid "No guidelines provided"
+msgstr "Δεν παρέχονται οδηγίες"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:156
+msgid "Downloads"
+msgstr "Λήψεις"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:158
+msgid "Download the data that the service provides"
+msgstr "Κατεβάστε τα δεδομένα ότι η υπηρεσία παρέχει"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:169
+msgid "Useful links"
+msgstr "Χρήσιμοι σύνδεσμοι"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:171
+msgid "Follow this link in order to use the service"
+msgstr "Ακολουθήστε τον σύνδεσμο για να χρησιμοποιήσετε την υπηρεσία"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:182
+msgid "Access"
+msgstr "Πρόσβαση"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:184
+msgid "The accessibility rule for the service"
+msgstr "Ο κανόνας της προσβασιμότητας για την υπηρεσία"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:188
+msgid "Public - any registered user can purchase or use it"
+msgstr "Δημόσια - κάθε χρήστης μπορεί να την χρησιμοποιήσει ή να την αγοράσει"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:190
+msgid "Private - only a group of users can purchase or use it"
 msgstr ""
+"Ιδιωτική - μόνο μία ομάδα χρηστών μπορεί να την χρησιμοποιήσει ή να την "
+"αγοράσει"
 
-#. Translators: This string is used as a separator between list elements
-#: env/Lib/site-packages/django/utils/text.py:264
-#: env/Lib/site-packages/django/utils/timesince.py:57
-msgid ", "
-msgstr ""
+#: app/templates/app/consumers/services/item/preview/preview.html:199
+msgid "Language availability"
+msgstr "Υποστηριζόμενες γλώσσες"
 
-#: env/Lib/site-packages/django/utils/timesince.py:25
-#, python-format
-msgid "%d year"
-msgid_plural "%d years"
-msgstr[0] ""
-msgstr[1] ""
+#: app/templates/app/consumers/services/item/preview/preview.html:201
+msgid "Any language constraints, if exist"
+msgstr "Τυχόν περιορισμοί γλώσσας (αν υπάρχουν)"
 
-#: env/Lib/site-packages/django/utils/timesince.py:26
-#, python-format
-msgid "%d month"
-msgid_plural "%d months"
-msgstr[0] ""
-msgstr[1] ""
+#: app/templates/app/consumers/services/item/preview/preview.html:208
+msgid "All languages supported"
+msgstr "Διαθέσιμο σε όλες τις γλώσσες"
 
-#: env/Lib/site-packages/django/utils/timesince.py:27
-#, python-format
-msgid "%d week"
-msgid_plural "%d weeks"
-msgstr[0] ""
-msgstr[1] ""
+#: app/templates/app/consumers/services/item/preview/preview.html:216
+#: app/templates/app/consumers/statistics/index.html:154
+#: app/templates/app/nas/preview/index.html:190
+msgid "Spatial coverage"
+msgstr "Γεωγραφική κάλυψη"
 
-#: env/Lib/site-packages/django/utils/timesince.py:28
-#, python-format
-msgid "%d day"
-msgid_plural "%d days"
-msgstr[0] ""
-msgstr[1] ""
+#: app/templates/app/consumers/services/item/preview/preview.html:218
+msgid "Any location constraints, if exist"
+msgstr "Γεωγραφικοί περιορισμοί (αν υπάρχουν)"
 
-#: env/Lib/site-packages/django/utils/timesince.py:29
-#, python-format
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] ""
-msgstr[1] ""
+#: app/templates/app/consumers/services/item/preview/preview.html:224
+msgid "There is no spatial constraints"
+msgstr "Δεν υπάρχουν γεωγραφικοί περιορισμοί"
 
-#: env/Lib/site-packages/django/utils/timesince.py:30
-#, python-format
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] ""
-msgstr[1] ""
+#: app/templates/app/consumers/services/item/preview/preview.html:235
+msgid "Other constraints/comments"
+msgstr "Άλλοι τυχόν περιορισμοί/σχόλια"
 
-#: env/Lib/site-packages/django/utils/timesince.py:46
-msgid "0 minutes"
-msgstr ""
+#: app/templates/app/consumers/services/item/preview/preview.html:237
+msgid "Any other constraints"
+msgstr "Τυχόν άλλοι περιορισμοί"
 
-#: env/Lib/site-packages/django/views/csrf.py:105
-msgid "Forbidden"
-msgstr ""
+#: app/templates/app/consumers/services/item/preview/preview.html:250
+#: app/templates/app/consumers/services/list/index.html:59
+msgid "Availability"
+msgstr "Διαθεσιμότητα"
 
-#: env/Lib/site-packages/django/views/csrf.py:106
-msgid "CSRF verification failed. Request aborted."
-msgstr ""
+#: app/templates/app/consumers/services/item/preview/preview.html:252
+msgid "The status of the service. Is it available for users search?"
+msgstr "Είναι διαθέσιμο προς αναζήτηση;"
 
-#: env/Lib/site-packages/django/views/csrf.py:110
+#: app/templates/app/consumers/services/item/preview/preview.html:256
+msgid "The service is available for usage"
+msgstr "Η υπηρεσία είναι διαθέσιμη προς χρήση"
+
+#: app/templates/app/consumers/services/item/preview/preview.html:258
+msgid "Not available"
+msgstr "Μη διαθέσιμο"
+
+#: app/templates/app/consumers/services/item/preview/reviews.html:11
+msgid "Overview"
+msgstr "Σύνοψη"
+
+#: app/templates/app/consumers/services/item/preview/statistics.html:25
+msgid "User details"
+msgstr "Στοιχεία χρήστη"
+
+#: app/templates/app/consumers/services/item/preview/statistics.html:26
+msgid "Purchased date"
+msgstr "Ημερομηνία πληρωμής"
+
+#: app/templates/app/consumers/services/item/preview/statistics.html:27
+#: app/templates/app/consumers/statistics/index.html:93
+#: app/templates/app/nas/preview/index.html:125
+msgid "Charging"
+msgstr "Χρέωση"
+
+#: app/templates/app/consumers/services/item/preview/statistics.html:28
+msgid "Payment status"
+msgstr "Κατάσταση πληρωμής"
+
+#: app/templates/app/consumers/services/item/preview/statistics.html:29
+msgid "Payment date"
+msgstr "Ημερομηνία πληρωμής"
+
+#: app/templates/app/consumers/services/item/preview/technical-support.html:8
+msgid "Assistance On demand Infrastructure"
+msgstr "Το Assistance on Demand "
+
+#: app/templates/app/consumers/services/item/preview/technical-support.html:8
 msgid ""
-"You are seeing this message because this HTTPS site requires a 'Referer "
-"header' to be sent by your Web browser, but none was sent. This header is "
-"required for security reasons, to ensure that your browser is not being "
-"hijacked by third parties."
+" gives you the capability to provide multi-modal technical support for any service you register. \n"
+"                It allows to upload or share any kind of documents (i.e. pdf, office excel or word documents), videos and photos. Furthermore, you can register your "
 msgstr ""
+"σας δίνει τη δυνατότητα να παρέχετε πολλαπλούς τρόπους τεχνικής υποστήριξης "
+"για οποιαδήποτε υπηρεσία κατά την εγγραφή σας. Σας επιτρέπει να ανεβάσετε ή "
+"να μοιραστείτε κάθε είδους έγγραφα (π.χ. pdf, Office Excel ή έγγραφα του "
+"Word), βίντεο και φωτογραφίες. Επιπλέον, μπορείτε να καταχωρήσετε"
 
-#: env/Lib/site-packages/django/views/csrf.py:115
+#: app/templates/app/consumers/services/item/preview/technical-support.html:10
+#: app/templates/app/consumers/services/registration/support.html:12
+msgid "Skype ID"
+msgstr "Αναγνωριστικό skype"
+
+#: app/templates/app/consumers/services/item/preview/technical-support.html:10
+msgid "to chat with the users and help them to solve their problems"
+msgstr "να επικοινωνήσουν με τους χρήστες και να επιλύσουν τα προβλήματά τους"
+
+#: app/templates/app/consumers/services/item/preview/technical-support.html:15
+msgid "Videos preview"
+msgstr "Προεσκόπιση βίντεο"
+
+#: app/templates/app/consumers/services/item/preview/technical-support.html:20
+msgid "Documents preview"
+msgstr "Προεσκόπιση εγγράφων"
+
+#: app/templates/app/consumers/services/item/preview/technical-support.html:25
+msgid "Your skype account"
+msgstr "Ο λογαριασμός σας στο skype"
+
+#: app/templates/app/consumers/services/item/update/index.html:4
+msgid "Edit your service"
+msgstr "Επεξεργασία υπηρεσίας"
+
+#: app/templates/app/consumers/services/item/update/index.html:91
+#: app/templates/app/consumers/services/registration/basic.html:5
+#: app/templates/app/consumers/services/registration/index.html:39
+msgid "Basic information"
+msgstr "Βασικές πληροφορίες"
+
+#: app/templates/app/consumers/services/item/update/index.html:96
+#: app/templates/app/consumers/services/registration/charging.html:5
+#: app/templates/app/consumers/services/registration/index.html:44
+msgid "Charging Policy"
+msgstr "Πολιτική χρέωσης"
+
+#: app/templates/app/consumers/services/item/update/index.html:101
+#: app/templates/app/consumers/services/registration/index.html:49
+#: app/templates/app/consumers/services/registration/usage.html:5
+msgid "Usage"
+msgstr "Χρήση"
+
+#: app/templates/app/consumers/services/item/update/index.html:106
+#: app/templates/app/consumers/services/registration/constraints.html:5
+#: app/templates/app/consumers/services/registration/index.html:54
+msgid "Constraints"
+msgstr "Περιορισμοί"
+
+#: app/templates/app/consumers/services/item/update/index.html:111
+#: app/templates/app/consumers/services/registration/index.html:59
+msgid "Technical Support"
+msgstr "Τεχνική υποστήριξη"
+
+#: app/templates/app/consumers/services/item/update/index.html:116
+#: app/templates/app/consumers/services/registration/confirm.html:45
+#: app/templates/app/consumers/services/registration/index.html:64
+msgid "Register"
+msgstr "Εγγραφή"
+
+#: app/templates/app/consumers/services/list/index.html:34
+msgid "Services management panel"
+msgstr "Πάνελ διαχείρισης υπηρεσιών"
+
+#: app/templates/app/consumers/services/list/index.html:38
+msgid "Add a new service"
+msgstr "Εγγραφή μίας νέας υπηρεσίας"
+
+#: app/templates/app/consumers/services/list/index.html:39
+#: app/templates/app/help/services/provider/create-service.html:13
+#: app/templates/app/help/services/provider/delete-service.html:13
+msgid "Register service"
+msgstr "Εγγραφή υπηρεσίας"
+
+#: app/templates/app/consumers/services/list/index.html:57
+#: app/templates/app/consumers/services/registration/basic.html:12
+#: app/templates/app/consumers/statistics/index.html:53
+msgid "Title"
+msgstr "Τίτλος"
+
+#: app/templates/app/consumers/services/list/index.html:58
+#: app/templates/app/consumers/services/registration/usage.html:99
+msgid "Accessibility"
+msgstr "Προσβασιμότητα"
+
+#: app/templates/app/consumers/services/list/index.html:60
+#: app/templates/app/consumers/services/registration/charging.html:55
+msgid "Currency"
+msgstr "Νόμισμα"
+
+#: app/templates/app/consumers/services/list/index.html:64
+msgid "Creation date"
+msgstr "Ημερομηνία εγγραφής"
+
+#: app/templates/app/consumers/services/list/index.html:65
+msgid "Last edit"
+msgstr "Τελευταία τροποποίηση"
+
+#: app/templates/app/consumers/services/list/index.html:109
+#: app/templates/app/consumers/services/registration/usage.html:105
+msgid "Public"
+msgstr "Δημόσια"
+
+#: app/templates/app/consumers/services/list/index.html:111
+#: app/templates/app/consumers/services/registration/usage.html:108
+msgid "Private"
+msgstr "Ιδιωτική"
+
+#: app/templates/app/consumers/services/list/index.html:121
+msgid "Navigate on the service"
+msgstr "Πλοήγηση στην υπηρεσία"
+
+#: app/templates/app/consumers/services/registration/basic.html:12
+#: app/templates/app/consumers/services/registration/basic.html:14
+#: app/templates/app/consumers/services/registration/support.html:14
+msgid "Enter the title of the service"
+msgstr "Εισαγωγή του τίτλου της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/basic.html:18
+msgid "The title of the service"
+msgstr "Ο τίτλος της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/basic.html:21
+#: app/templates/app/consumers/services/registration/basic.html:37
+#: app/templates/app/consumers/services/registration/basic.html:64
+#: app/templates/app/consumers/services/registration/basic.html:82
+#: app/templates/app/consumers/services/registration/basic.html:267
+msgid "Title required"
+msgstr "Απαιτούμενος τίτλος"
+
+#: app/templates/app/consumers/services/registration/basic.html:28
+#: app/templates/app/consumers/services/registration/basic.html:30
+msgid "Description of the service"
+msgstr "Περιγραφή της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/basic.html:34
+msgid "Provide a brief description of the service (500 characters)"
+msgstr "Εισάγετε μία σύντομη περιγραφη της υπηρεσίας (500 χαρακτήρες)"
+
+#: app/templates/app/consumers/services/registration/basic.html:44
+#: app/templates/app/consumers/services/registration/basic.html:46
+msgid "Type of the service"
+msgstr "Είδος υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/basic.html:50
+#: app/templates/app/consumers/services/registration/basic.html:51
+msgid "Select the type"
+msgstr "Επιλογή είδους υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/basic.html:71
+msgid "Category"
+msgstr "Κατηγορία"
+
+#: app/templates/app/consumers/services/registration/basic.html:73
+msgid "Clarify the service in categories"
+msgstr "Κατηγοριοποιήστε την υπηρεσία"
+
+#: app/templates/app/consumers/services/registration/basic.html:77
+msgid "Clarify your service"
+msgstr "Κατηγοριοποίηση υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/basic.html:89
+msgid "The image of the service"
+msgstr "Η εικόινα της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/basic.html:89
+msgid "Image"
+msgstr "Εικόνα"
+
+#: app/templates/app/consumers/services/registration/basic.html:91
+msgid "The logo of the service"
+msgstr "Λογότυπο της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/basic.html:102
+msgid "Upload at least an image or logo"
+msgstr "Μεταφορτώστε μία εικόνα για την υπηρεσία"
+
+#: app/templates/app/consumers/services/registration/basic.html:109
+msgid "Add the image of the service"
+msgstr "Προσθέστε μία εικόνα για την υπηρεσία"
+
+#: app/templates/app/consumers/services/registration/basic.html:110
+msgid "Load image"
+msgstr "Μεταφόρτωση εικόνας"
+
+#: app/templates/app/consumers/services/registration/basic.html:114
+msgid "Remove the image of the service"
+msgstr "Διαγράψτε την εικόνα της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/basic.html:115
+msgid "Clear image"
+msgstr "Εκκαθάριση εικόνας"
+
+#: app/templates/app/consumers/services/registration/basic.html:124
+#: app/templates/app/consumers/services/registration/basic.html:126
+msgid "Select a image for background"
+msgstr "Επιλέξτε το εξώφυλλο της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/basic.html:124
+msgid "Background image"
+msgstr "Εικόνα εξώφυλλου"
+
+#: app/templates/app/consumers/services/registration/basic.html:131
+#: app/templates/app/consumers/services/registration/basic.html:143
+msgid "Select the cover image for the service"
+msgstr "Επιλέξτε την εικόινα εξώφυλλου για την υπηρεσία"
+
+#: app/templates/app/consumers/services/registration/basic.html:131
+#: app/templates/app/consumers/services/registration/basic.html:143
+#: app/templates/app/consumers/services/registration/basic.html:144
+msgid "Cover image"
+msgstr "Εικόνα εξώφυλλου"
+
+#: app/templates/app/consumers/services/registration/basic.html:154
+msgid "Select a background cover for the service"
+msgstr "Επιλέξτε μία εικόνα εξώφυλλου για την υπηρεσία"
+
+#: app/templates/app/consumers/services/registration/basic.html:161
+msgid "Picker"
+msgstr "Συλλογή"
+
+#: app/templates/app/consumers/services/registration/basic.html:180
+msgid "The version and licenses of the service"
+msgstr "Έκδοση και άδειες της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/basic.html:184
+msgid "The version of the service"
+msgstr "Η έκδοση της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/basic.html:188
+msgid "Current version"
+msgstr "Τρέχουσα έκδοση"
+
+#: app/templates/app/consumers/services/registration/basic.html:190
+msgid "The license of the service"
+msgstr "Η άδεια της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/basic.html:194
+msgid "License"
+msgstr "Άδεια"
+
+#: app/templates/app/consumers/services/registration/basic.html:198
+msgid "Enter a valid version"
+msgstr "Εισάγετε μία έγκυρη άδεια"
+
+#: app/templates/app/consumers/services/registration/basic.html:207
+#: app/templates/app/consumers/services/registration/basic.html:209
+msgid "Keyword related to the service"
+msgstr "Λέξεις-κλειδιά σχετικά με την υπηρεσία"
+
+#: app/templates/app/consumers/services/registration/basic.html:207
+msgid "Related Keywords"
+msgstr "Σχετικές λέξεις-κλειδιά"
+
+#: app/templates/app/consumers/services/registration/basic.html:213
+msgid "Enter a keyword"
+msgstr "Εισάγετε μία λέξη-κλειδί"
+
+#: app/templates/app/consumers/services/registration/basic.html:213
+#: app/templates/app/consumers/services/registration/basic.html:230
+msgid "Enter your keyword and press ENTER"
+msgstr "Εισάγετε την λέξη-κλειδί σας και πατήστε ENTER"
+
+#: app/templates/app/consumers/services/registration/basic.html:223
+msgid "Keyword(s) is(are) required"
+msgstr "Λέξεις-κλειδιά απαιτούνται"
+
+#: app/templates/app/consumers/services/registration/basic.html:248
+msgid "List of entered keywords"
+msgstr "Λίστα λέξεων-κλειδιών"
+
+#: app/templates/app/consumers/services/registration/basic.html:253
+msgid "Keywords list"
+msgstr "Λίστα λέξεων-κλειδιών"
+
+#: app/templates/app/consumers/services/registration/basic.html:262
+msgid "Remove keyword from list"
+msgstr "Διαγράψτε λέξη-κλειδί από την λίστα"
+
+#: app/templates/app/consumers/services/registration/basic.html:263
+msgid "Remove keyword(s) from list"
+msgstr "Διαγράψτε λέξεις-κλειδιά από την λίστα"
+
+#: app/templates/app/consumers/services/registration/basic.html:274
+#: app/templates/app/consumers/services/registration/basic.html:275
+#: app/templates/app/consumers/services/registration/charging.html:90
+#: app/templates/app/consumers/services/registration/constraints.html:150
+#: app/templates/app/consumers/services/registration/constraints.html:151
+#: app/templates/app/consumers/services/registration/support.html:25
+#: app/templates/app/consumers/services/registration/support.html:26
+#: app/templates/app/consumers/services/registration/usage.html:152
+msgid "Mandatory fields"
+msgstr "Υποχρεωτικά πεδία"
+
+#: app/templates/app/consumers/services/registration/charging.html:12
+#: app/templates/app/consumers/services/registration/charging.html:14
+msgid "Charging model of the service"
+msgstr "Πολιτική χρέωσης της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/charging.html:12
+msgid "Charging model"
+msgstr "Πολιτική χρέωσης"
+
+#: app/templates/app/consumers/services/registration/charging.html:18
+msgid "Choose a charging model"
+msgstr "Επιλέξτε μια πολιτική χρέωσης"
+
+#: app/templates/app/consumers/services/registration/charging.html:19
+msgid "Choose the charging model"
+msgstr "Επιλέξτε την πολιτική χρέωσης"
+
+#: app/templates/app/consumers/services/registration/charging.html:32
+msgid "Charging model is required"
+msgstr "Η πολιτική χρέωσης απαιτείται"
+
+#: app/templates/app/consumers/services/registration/charging.html:41
+msgid "Cost of the service usage"
+msgstr "Κόστος χρήσης της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/charging.html:45
+msgid "The price of the service"
+msgstr "Το κόστος της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/charging.html:48
+msgid "Cost value is required"
+msgstr "Το κόστος απαιτείται"
+
+#: app/templates/app/consumers/services/registration/charging.html:55
+#: app/templates/app/consumers/services/registration/charging.html:57
+msgid "Currency related to the service usage cost"
+msgstr "Νόμισμα που σχετίζεται με το κόστος χρήσης της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/charging.html:61
+msgid "Select the type of the service"
+msgstr "Επιλέξτε το είδος υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/charging.html:61
+#: app/templates/app/consumers/services/registration/charging.html:62
+msgid "Select the currency"
+msgstr "Επιλέξτε το νόσμισμα"
+
+#: app/templates/app/consumers/services/registration/charging.html:83
+msgid "Currency is required"
+msgstr "Το νόμισμα απαιτείται"
+
+#: app/templates/app/consumers/services/registration/charging.html:89
+#: app/templates/app/consumers/services/registration/usage.html:151
+msgid "Mandotory fields"
+msgstr "Υποχρεωτικά πεδία"
+
+#: app/templates/app/consumers/services/registration/confirm.html:5
+msgid "Service Registration"
+msgstr "Εγγραφή Υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/confirm.html:15
+msgid "Enter any information"
+msgstr "Εισάγετε καθε πληροφορία"
+
+#: app/templates/app/consumers/services/registration/confirm.html:18
+msgid "Compliance to norms"
+msgstr "Συμμόρφωση με τους κανόνες"
+
+#: app/templates/app/consumers/services/registration/confirm.html:25
+msgid "Check the Terms of use"
+msgstr "Ελέγξτε τους Όρους χρήσης"
+
+#: app/templates/app/consumers/services/registration/confirm.html:27
+msgid "I have already read the terms of use issues"
+msgstr "Έχω ήδη διαβάσει τους Όρους χρήσης"
+
+#: app/templates/app/consumers/services/registration/confirm.html:29
+msgid "I agree to the"
+msgstr "Συμφωνώ με τους"
+
+#: app/templates/app/consumers/services/registration/confirm.html:34
+msgid "Check the box, if you agree with the terms"
+msgstr "Κάντε κλικ τους Όρους χρήσης  εάν συμφωνείτε με αυτούς"
+
+#: app/templates/app/consumers/services/registration/confirm.html:43
+#: app/templates/app/visitors/forgot-password.html:26
+#: app/templates/app/visitors/registration.html:287
+msgid "Submit"
+msgstr "Υποβολή"
+
+#: app/templates/app/consumers/services/registration/constraints.html:12
+msgid "Language constraint"
+msgstr "Υποστηριζόμενες γλώσσες"
+
+#: app/templates/app/consumers/services/registration/constraints.html:28
+msgid "Select languages"
+msgstr "Επιλέξτε γλώσσες"
+
+#: app/templates/app/consumers/services/registration/constraints.html:30
+msgid "Declare the language associated with the service"
+msgstr "Προσδιορίστε τη γλώσσα που σχετίζεται με την υπηρεσία"
+
+#: app/templates/app/consumers/services/registration/constraints.html:34
+msgid "Declare the available language"
+msgstr "Προσδιορίστε την υποστηριζόμενη γλώσσα"
+
+#: app/templates/app/consumers/services/registration/constraints.html:69
+msgid "At least a language is required"
+msgstr "Απαιτείται τουλάχιστον μία γλώσσα"
+
+#: app/templates/app/consumers/services/registration/constraints.html:76
+msgid "Geographical constraint"
+msgstr "Γεωγραφικί περιορισμοί"
+
+#: app/templates/app/consumers/services/registration/constraints.html:92
+msgid "Set the coordinates"
+msgstr "Εισάγετε τις συντεταγμένες"
+
+#: app/templates/app/consumers/services/registration/constraints.html:92
+msgid "Map"
+msgstr "Χάρτης"
+
+#: app/templates/app/consumers/services/registration/constraints.html:101
+msgid "Latitude"
+msgstr "Γεωγραφικό πλάτος"
+
+#: app/templates/app/consumers/services/registration/constraints.html:107
+msgid "latitude"
+msgstr "γεωγραφικό πλάτος"
+
+#: app/templates/app/consumers/services/registration/constraints.html:113
+msgid "Longitude"
+msgstr "Γεωγραφικό μήκος"
+
+#: app/templates/app/consumers/services/registration/constraints.html:119
+msgid "longitude"
+msgstr "γεωγραφικό μήκος"
+
+#: app/templates/app/consumers/services/registration/constraints.html:125
+msgid "Coverage (km)"
+msgstr "Γεωγραφική κάλυψη (χλμ)"
+
+#: app/templates/app/consumers/services/registration/constraints.html:131
+msgid "distance in kilometers"
+msgstr "απόσταση σε χιλιόμετρα"
+
+#: app/templates/app/consumers/services/registration/constraints.html:138
+msgid "Other constraints"
+msgstr "Άλλοι περιορισμοί"
+
+#: app/templates/app/consumers/services/registration/constraints.html:140
+msgid "Refer any other constraint"
+msgstr "Αναφέρετε άλλον περιορισμό"
+
+#: app/templates/app/consumers/services/registration/constraints.html:144
 msgid ""
-"If you have configured your browser to disable 'Referer' headers, please re-"
-"enable them, at least for this site, or for HTTPS connections, or for 'same-"
-"origin' requests."
+"Enter any other constraint, e.g. time availability, Operational System etc"
 msgstr ""
+"Εισάγετε οποιοδήποτε άλλο περιορισμό, π.χ. χρονική διαθεσιμότητα, συμβατό "
+"λειτουργικό σύστημα κ.λπ."
 
-#: env/Lib/site-packages/django/views/csrf.py:120
+#: app/templates/app/consumers/services/registration/index.html:4
+msgid "Register your services"
+msgstr "Εγγραφή υπηρεσιών"
+
+#: app/templates/app/consumers/services/registration/index.html:26
+msgid "Registration"
+msgstr "Εγγραφή"
+
+#: app/templates/app/consumers/services/registration/support.html:5
+msgid "documentation & tools"
+msgstr "Τεκμηρίωση και εργαλεία"
+
+#: app/templates/app/consumers/services/registration/support.html:12
+msgid "Enter the skype id"
+msgstr "Εισάγετε το skype αναγνωριστικό σας"
+
+#: app/templates/app/consumers/services/registration/support.html:16
+msgid "skype logo"
+msgstr "Λογότυπο του skype"
+
+#: app/templates/app/consumers/services/registration/support.html:18
+msgid "skype account"
+msgstr "Λογαρισμός skype"
+
+#: app/templates/app/consumers/services/registration/usage.html:11
+msgid "Technical requirements"
+msgstr "Τεχνικές (τεχνολογικές) απαιτήσεις"
+
+#: app/templates/app/consumers/services/registration/usage.html:13
+msgid "Basic requirements to use the service"
+msgstr "Βασικές προϋποθέσεις για να χρησιμοποιήσετε την υπηρεσία"
+
+#: app/templates/app/consumers/services/registration/usage.html:17
+msgid "Specify any requirements if needed (ie use headset inluded microphone)"
+msgstr ""
+"Καθορίστε οποιεσδήποτε προαπιτούμενα, αν χρεάζετε (π.χ. χρήση ακουστικών "
+"μαζί με μικρόφωνο)"
+
+#: app/templates/app/consumers/services/registration/usage.html:20
+#, fuzzy
+msgid "Requirements are required"
+msgstr "Τα προαπαιτούμενα απαιτούνται"
+
+#: app/templates/app/consumers/services/registration/usage.html:32
+msgid "Explain step-by-step how a user could install the service, if needed"
+msgstr ""
+"Εξηγήστε βήμα-βήμα πώς ένας χρήστης μπορεί να εγκαταστήσει την υπηρεσία, αν "
+"χρειαστεί"
+
+#: app/templates/app/consumers/services/registration/usage.html:41
+msgid "Link"
+msgstr "Σύνδεσμος"
+
+#: app/templates/app/consumers/services/registration/usage.html:43
+msgid "URL/Link/API"
+msgstr "Σύνδεσμος"
+
+#: app/templates/app/consumers/services/registration/usage.html:47
+msgid "Enter any link, if needed"
+msgstr "Εισάγετε έναν σύνδεσμο (αν χρειάζετε)"
+
+#: app/templates/app/consumers/services/registration/usage.html:50
+#: app/templates/app/consumers/services/registration/usage.html:77
+msgid "Invalid link"
+msgstr "Μη έγκυρος σύνδεσμος"
+
+#: app/templates/app/consumers/services/registration/usage.html:56
+msgid "Software/Package"
+msgstr "Λογισμικό/Πακέτο"
+
+#: app/templates/app/consumers/services/registration/usage.html:58
+msgid "Upload the software packages, if needed"
+msgstr "Μεταφορτώστε έκάποιο πακέτο λογισμικό (αν χρειάζετε)"
+
+#: app/templates/app/consumers/services/registration/usage.html:61
+msgid "Filename of the software package"
+msgstr "Ονομασία λογισμικού/αρχείου"
+
+#: app/templates/app/consumers/services/registration/usage.html:65
+msgid "Add the provided package for the service"
+msgstr "Προσθέστε το αρχείο/λογισμικό της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/usage.html:66
+msgid "Add package"
+msgstr "Προσθήκη πακέτου"
+
+#: app/templates/app/consumers/services/registration/usage.html:70
+msgid "Remove the provided package for the service"
+msgstr "Διαγραφή του πακέτου της υπηρεσίας"
+
+#: app/templates/app/consumers/services/registration/usage.html:71
+msgid "Remove package"
+msgstr "Διαγραφή πακέτου"
+
+#: app/templates/app/consumers/services/registration/usage.html:89
 msgid ""
-"You are seeing this message because this site requires a CSRF cookie when "
-"submitting forms. This cookie is required for security reasons, to ensure "
-"that your browser is not being hijacked by third parties."
+"Provide instructions related to the usage of the service (ie follow a link, "
+"book a meeting etc)"
 msgstr ""
+"Παρέχει οδηγίες σχετικά με τη χρήση της υπηρεσίας (π.χ. ακολουθήστε ένα "
+"σύνδεσμο, κανονιστε μια συνάντηση κλπ)"
 
-#: env/Lib/site-packages/django/views/csrf.py:125
+#: app/templates/app/consumers/services/registration/usage.html:92
+msgid "Usage instructions are required"
+msgstr "Οι οδηγίες χρήσεις απαιτούνται"
+
+#: app/templates/app/consumers/services/registration/usage.html:104
+msgid "Offer the service to anyone interested"
+msgstr "Πρόσβαση κάθε χρήστη στην υπηρεσία"
+
+#: app/templates/app/consumers/services/registration/usage.html:107
+msgid "Offer the service to a group of users"
+msgstr "Πρόσβαση μίας ομάδας χρηστών στην υπηρεσία"
+
+#: app/templates/app/consumers/services/registration/usage.html:116
+msgid "Email list"
+msgstr "Λίστα με emails"
+
+#: app/templates/app/consumers/services/registration/usage.html:118
+msgid "List of all registered users"
+msgstr "Λίστα εγγεγραμένων χρηστών"
+
+#: app/templates/app/consumers/services/registration/usage.html:123
+msgid "List of all users"
+msgstr "Λίστα όλων των χρηστών"
+
+#: app/templates/app/consumers/services/registration/usage.html:132
+msgid "Add email to target list"
+msgstr "Προσθήκη email στην λίστα ενδιαφέροντος"
+
+#: app/templates/app/consumers/services/registration/usage.html:136
+msgid "Remove email from target list"
+msgstr "Διαγραφή email από την λίστα ενδιαφέροντος"
+
+#: app/templates/app/consumers/services/registration/usage.html:140
+msgid "List of target users"
+msgstr "Λίστα με χρήστες ενδιαφέροντος"
+
+#: app/templates/app/consumers/services/registration/usage.html:145
+msgid "Target users"
+msgstr "Συγκεκριμένοι χρήστες"
+
+#: app/templates/app/consumers/services/services.html:25
+#: app/templates/app/consumers/services/services.html:93
+msgid "Get it!"
+msgstr "Αποκτήσε το!"
+
+#: app/templates/app/consumers/services/services.html:41
+#: app/templates/app/consumers/services/services.html:109
+msgid "FREE"
+msgstr "Δωρεάν"
+
+#: app/templates/app/consumers/services/services.html:52
+#: app/templates/app/consumers/services/services.html:120
+#: app/templates/app/visitors/home.html:149
+#: app/templates/app/visitors/home.html:210
+msgid "review"
+msgstr "κριτική"
+
+#: app/templates/app/consumers/services/services.html:60
+msgid "Machine-based service"
+msgstr "Ψηφιακή υπηρεσία"
+
+#: app/templates/app/consumers/services/services.html:62
+msgid "Human-based service"
+msgstr "υπηρεσία που παρέχεται από φυσικό πρόσωπο"
+
+#: app/templates/app/consumers/services/services.html:143
+msgid "No results found!! Please refine your search."
+msgstr "Δεν βρέθηκαν αποτελέσματα!! Παρακαλούμε βελτιώστε την αναζήτησή σας."
+
+#: app/templates/app/consumers/statistics/index.html:28
+#: app/templates/app/navbar-users.html:44
+msgid "My collection"
+msgstr "Η συλλογή μου"
+
+#: app/templates/app/consumers/statistics/index.html:35
+#, fuzzy
+#| msgid "Description of the service"
+msgid "collection of services"
+msgstr "Περιγραφή της υπηρεσίας"
+
+#: app/templates/app/consumers/statistics/index.html:54
+msgid "Assist?"
+msgstr "Μέσω φροντιστή?"
+
+#: app/templates/app/consumers/statistics/index.html:112
+#: app/templates/app/consumers/statistics/index.html:131
+#: app/templates/app/nas/preview/index.html:144
+#: app/templates/app/nas/preview/index.html:163
+msgid "None"
+msgstr "Καμία"
+
+#: app/templates/app/consumers/statistics/index.html:122
+#: app/templates/app/nas/preview/index.html:154
+msgid "What the service offers"
+msgstr "Τι προσφέρει η υπηρεσία"
+
+#: app/templates/app/consumers/statistics/index.html:128
+#: app/templates/app/help/change-password.html:29
+#: app/templates/app/help/services/provider/create-service.html:25
+#: app/templates/app/help/services/provider/delete-service.html:25
+#: app/templates/app/help/services/provider/update-service.html:25
+#: app/templates/app/help/update-profile-steps.html:29
+#: app/templates/app/nas/preview/index.html:160
+msgid "Instructions"
+msgstr "Οδηγίες"
+
+#: app/templates/app/consumers/statistics/index.html:140
+#: app/templates/app/nas/preview/index.html:172
+msgid "How to exploit it"
+msgstr "Πώς να το εκμεταλλευτείτε"
+
+#: app/templates/app/consumers/statistics/index.html:145
+#: app/templates/app/nas/preview/index.html:176
+msgid "Useful link"
+msgstr "Χρήσιμος σύνδεσμος"
+
+#: app/templates/app/consumers/statistics/index.html:152
+#: app/templates/app/nas/preview/index.html:183
+msgid "Restrictions"
+msgstr "Περιορισμοί"
+
+#: app/templates/app/consumers/statistics/index.html:159
+#: app/templates/app/nas/preview/index.html:185
+msgid "Languages availability"
+msgstr "Υποστηριζόμενες γλώσσες"
+
+#: app/templates/app/consumers/statistics/index.html:160
+#: app/templates/app/nas/preview/index.html:186
+msgid "All languages are supported"
+msgstr "Όλες οι γλώσσες υποστηρίζονται"
+
+#: app/templates/app/consumers/statistics/index.html:165
+#: app/templates/app/nas/preview/index.html:195
+msgid "Other comment"
+msgstr "Άλλο σχόλιο"
+
+#: app/templates/app/consumers/statistics/index.html:172
+#: app/templates/app/nas/preview/index.html:202
+msgid "Service configuration"
+msgstr "Επιλογές υπηρεσίας"
+
+#: app/templates/app/consumers/statistics/index.html:178
+#: app/templates/app/nas/preview/index.html:208
+msgid "Troubleshooting"
+msgstr "Αντιμετώπιση προβλημάτων"
+
+#: app/templates/app/consumers/statistics/index.html:180
+#: app/templates/app/nas/preview/index.html:210
+msgid "Videos"
+msgstr "Βίντεο"
+
+#: app/templates/app/consumers/statistics/index.html:182
+#: app/templates/app/nas/preview/index.html:212
+msgid "Documents"
+msgstr "Έγγραφα"
+
+#: app/templates/app/consumers/statistics/index.html:184
+#: app/templates/app/nas/preview/index.html:214
+msgid "Ask a volunteer"
+msgstr "Ρωτήστε έναν εθελοντή"
+
+#: app/templates/app/consumers/statistics/index.html:185
+#: app/templates/app/consumers/statistics/index.html:187
+#: app/templates/app/nas/preview/index.html:215
+#: app/templates/app/nas/preview/index.html:217
+msgid "No available"
+msgstr "Μη διαθέσιμο"
+
+#: app/templates/app/consumers/statistics/index.html:186
+#: app/templates/app/nas/preview/index.html:216
+msgid "Ask a professional"
+msgstr "Ρωτήστε έναν επαγγελματία"
+
+#: app/templates/app/consumers/statistics/index.html:188
+#: app/templates/app/nas/preview/index.html:218
+msgid "Chat with service provider"
+msgstr "επικοινωνληστε με τον πάροχο υπηρεσίας"
+
+#: app/templates/app/errors/401.html:5 app/templates/app/errors/404.html:5
+#: app/templates/app/errors/500.html:5
+#: app/templates/app/nas/preview/index.html:5
+msgid "Assistance network preview"
+msgstr "Προεσκόπιση δικτύου βοήθειας"
+
+#: app/templates/app/errors/401.html:28
+msgid "Unauthenticated user"
+msgstr "Μη πιστοποιημένος χρήστης"
+
+#: app/templates/app/errors/404.html:26
+msgid "Page NOT FOUND"
+msgstr "Η σελίδα που αναζητείτε δεν βρέθηκε"
+
+#: app/templates/app/errors/500.html:28
+msgid "Internal server error. Contact with the administrator"
+msgstr "Σφάλμα διακομιστή. Επικοινωνήστε με το διαχειριστή"
+
+#: app/templates/app/guidedAssistanceLinks.html:5
+#: app/templates/app/guidedAssistanceLinks.html:7
+msgid "Services network"
+msgstr "Δίκτυο υπηρεσιών"
+
+#: app/templates/app/guidedAssistanceLinks.html:12
+#, fuzzy
+#| msgid "Setup the network of assistance services"
+msgid "Manage the requests related to network of assistance services"
+msgstr "Διαχείριση του δικτύου υπηρεσιών βοήθειας"
+
+#: app/templates/app/guidedAssistanceLinks.html:13
+#: app/templates/app/nas/configuration/index.html:5
+#: app/templates/app/nas/invitations/index.html:33
+msgid "Guided assistance"
+msgstr "Καθοδηγούμενη βοήθεια"
+
+#: app/templates/app/help/base-help.html:45
+#: app/templates/app/help/base-help.html:47
+#: app/templates/app/help/change-password.html:13
+#: app/templates/app/help/change-password.html:15
+#: app/templates/app/help/forget-password.html:13
+#: app/templates/app/help/forget-password.html:15
+#: app/templates/app/help/index.html:56 app/templates/app/help/index.html:58
+#: app/templates/app/help/log-in-out.html:13
+#: app/templates/app/help/log-in-out.html:15
+#: app/templates/app/help/services/provider/create-service.html:12
+#: app/templates/app/help/services/provider/delete-service.html:12
+#: app/templates/app/help/services/provider/update-service.html:12
+#: app/templates/app/help/update-profile-steps.html:13
+#: app/templates/app/help/update-profile-steps.html:15
+msgid "Help Center"
+msgstr "Κέντρο βοήθειας"
+
+#: app/templates/app/help/base-help.html:49
+msgid "Create new account"
+msgstr "Δημιουργία νέου λογαριασμού"
+
+#: app/templates/app/help/base-help.html:55
+msgid "How to create a new account"
+msgstr "Πώς να δημιουργήσετε νέο λογαριασμό"
+
+#: app/templates/app/help/base-help.html:61
+#: app/templates/app/help/create_new_account.html:8
+msgid "Step-by-step registration instructions"
+msgstr "Οδηγίες εγγραφής βήμα-βημα"
+
+#: app/templates/app/help/base-help.html:63
+#: app/templates/app/help/create_new_account.html:10
+msgid "Go to the"
+msgstr "Μεταβείτε στο"
+
+#: app/templates/app/help/base-help.html:63
+#: app/templates/app/help/create_new_account.html:10
+msgid "Registration page"
+msgstr "Σελίδα δημιουργίας λογαριασμού"
+
+#: app/templates/app/help/base-help.html:64
+#: app/templates/app/help/create_new_account.html:11
 msgid ""
-"If you have configured your browser to disable cookies, please re-enable "
-"them, at least for this site, or for 'same-origin' requests."
+"Enter your first and last name, a unique username and a valid email account"
 msgstr ""
+"Εισάγετε το όνομα και το επίθετο σας, ένα μοναδικό όνομα χρήστη και έναν "
+"έγκυρο λογαριασμού ηλεκτρονικού ταχυδρομίου"
 
-#: env/Lib/site-packages/django/views/csrf.py:129
-msgid "More information is available with DEBUG=True."
+#: app/templates/app/help/base-help.html:65
+#: app/templates/app/help/create_new_account.html:12
+msgid "Enter your personal password and then re-enter it"
+msgstr "Εισάγετε το συνθηματικό σας δύο φορές"
+
+#: app/templates/app/help/base-help.html:66
+#: app/templates/app/help/create_new_account.html:13
+msgid "Optionally, enter your mobile number for notification purposes"
 msgstr ""
+"Εισάγετε τον αριθμό του κινητού σας για αποστολή ειδοποιήσεων (προεραιτικά)"
 
-#: env/Lib/site-packages/django/views/generic/dates.py:43
-msgid "No year specified"
-msgstr ""
+#: app/templates/app/help/base-help.html:67
+#: app/templates/app/help/create_new_account.html:14
+msgid "Define the geolocation information (e.g. country)"
+msgstr "Καθορίστε τις γεωγραφικές πληροφορίες (π.χ. χώρα)"
 
-#: env/Lib/site-packages/django/views/generic/dates.py:99
-msgid "No month specified"
-msgstr ""
+#: app/templates/app/help/base-help.html:68
+#: app/templates/app/help/create_new_account.html:15
+msgid "Advertise your roles (buyer, seller or/and carer)"
+msgstr "Επιλέξτε τους ρόλους σας (καταναλωτής, πάροχος, ή/και φροντιστής)"
 
-#: env/Lib/site-packages/django/views/generic/dates.py:158
-msgid "No day specified"
-msgstr ""
+#: app/templates/app/help/base-help.html:69
+#: app/templates/app/help/create_new_account.html:16
+msgid "Select the channels of your interest"
+msgstr "Επιλέξτε τις κατηγορίες που επιθυμείτε"
 
-#: env/Lib/site-packages/django/views/generic/dates.py:214
-msgid "No week specified"
-msgstr ""
+#: app/templates/app/help/base-help.html:70
+#: app/templates/app/help/create_new_account.html:17
+msgid "Answer to the simple question"
+msgstr "Απαντήστε σε μία απλή ερώτηση"
 
-#: env/Lib/site-packages/django/views/generic/dates.py:369
-#: env/Lib/site-packages/django/views/generic/dates.py:397
-#, python-format
-msgid "No %(verbose_name_plural)s available"
-msgstr ""
+#: app/templates/app/help/base-help.html:71
+#: app/templates/app/help/create_new_account.html:18
+msgid "Since you have read the"
+msgstr "Δεδομένου ότι έχετε διαβάσει τους"
 
-#: env/Lib/site-packages/django/views/generic/dates.py:650
-#, python-format
+#: app/templates/app/help/base-help.html:71
+#: app/templates/app/help/create_new_account.html:18
+#: app/templates/app/visitors/registration.html:295
+msgid "AoD Marketplace User Agreement"
+msgstr "Συμφωνία χρήστη για το AoD Marketplace"
+
+#: app/templates/app/help/base-help.html:71
+#: app/templates/app/help/create_new_account.html:18
+#: app/templates/app/nas/configuration/index.html:163
+#: app/templates/app/nas/invitations/index.html:55
+#: app/templates/app/nas/requests/create-new.html:53
+#: app/templates/app/visitors/registration.html:295
+msgid "and"
+msgstr "και"
+
+#: app/templates/app/help/base-help.html:71
+#: app/templates/app/help/create_new_account.html:18
+msgid "submit your registration request"
+msgstr "υποβαλλεται το αίτημα εγγραφής"
+
+#: app/templates/app/help/base-help.html:72
+#: app/templates/app/help/create_new_account.html:19
 msgid ""
-"Future %(verbose_name_plural)s not available because "
-"%(class_name)s.allow_future is False."
+"Check your email account and follow the instructions step-by-step to "
+"activate it"
 msgstr ""
+"Ελέγξτε το ηλεκτρονικό σας ταχυδρομείο και ακολουθήστε τις οδηγίες βήμα-βήμα"
+" για να το ενεργοποιήσετε"
 
-#: env/Lib/site-packages/django/views/generic/dates.py:682
-#, python-format
-msgid "Invalid date string '%(datestr)s' given format '%(format)s'"
-msgstr ""
+#: app/templates/app/help/base-help.html:80
+#: app/templates/app/help/change-password.html:42
+#: app/templates/app/help/create_new_account.html:27
+#: app/templates/app/help/forget-password.html:41
+#: app/templates/app/help/log-in-out.html:50
+#: app/templates/app/help/services/provider/create-service.html:35
+#: app/templates/app/help/services/provider/delete-service.html:35
+#: app/templates/app/help/services/provider/update-service.html:35
+#: app/templates/app/help/update-profile-steps.html:70
+msgid "Watch the following video"
+msgstr "Παρακολουθήστε το επόμενο βίντεο"
 
-#: env/Lib/site-packages/django/views/generic/detail.py:54
-#, python-format
-msgid "No %(verbose_name)s found matching the query"
-msgstr ""
+#: app/templates/app/help/base-help.html:84
+#: app/templates/app/help/change-password.html:46
+#: app/templates/app/help/create_new_account.html:31
+#: app/templates/app/help/forget-password.html:45
+#: app/templates/app/help/log-in-out.html:54
+#: app/templates/app/help/services/provider/create-service.html:39
+#: app/templates/app/help/services/provider/delete-service.html:39
+#: app/templates/app/help/services/provider/update-service.html:39
+#: app/templates/app/help/update-profile-steps.html:74
+msgid "Your browser does not support HTML5 video"
+msgstr "Ο φυλλομετρητης σας δεν υποστηρίζει HTML5 βίντεο"
 
-#: env/Lib/site-packages/django/views/generic/list.py:62
-msgid "Page is not 'last', nor can it be converted to an int."
-msgstr ""
+#: app/templates/app/help/base-help.html:92
+#: app/templates/app/help/change-password.html:54
+#: app/templates/app/help/forget-password.html:53
+#: app/templates/app/help/log-in-out.html:62
+#: app/templates/app/help/services/provider/create-service.html:47
+#: app/templates/app/help/services/provider/delete-service.html:47
+#: app/templates/app/help/services/provider/update-service.html:47
+#: app/templates/app/help/update-profile-steps.html:82
+msgid "Need our assistance"
+msgstr "Χρειάζεστε την βοήθεια μας"
 
-#: env/Lib/site-packages/django/views/generic/list.py:67
-#, python-format
-msgid "Invalid page (%(page_number)s): %(message)s"
-msgstr ""
+#: app/templates/app/help/base-help.html:95
+#: app/templates/app/help/change-password.html:57
+#: app/templates/app/help/forget-password.html:56
+#: app/templates/app/help/log-in-out.html:65
+#: app/templates/app/help/services/provider/create-service.html:50
+#: app/templates/app/help/services/provider/delete-service.html:50
+#: app/templates/app/help/services/provider/update-service.html:50
+#: app/templates/app/help/update-profile-steps.html:85
+msgid "Surname"
+msgstr "Επίθετο"
 
-#: env/Lib/site-packages/django/views/generic/list.py:158
-#, python-format
-msgid "Empty list and '%(class_name)s.allow_empty' is False."
-msgstr ""
+#: app/templates/app/help/base-help.html:96
+#: app/templates/app/help/change-password.html:58
+#: app/templates/app/help/forget-password.html:57
+#: app/templates/app/help/log-in-out.html:66
+#: app/templates/app/help/services/provider/create-service.html:51
+#: app/templates/app/help/services/provider/delete-service.html:51
+#: app/templates/app/help/services/provider/update-service.html:51
+#: app/templates/app/help/update-profile-steps.html:86
+msgid "Contact us"
+msgstr "Επικοινωνήστε μαζί μας"
 
-#: env/Lib/site-packages/django/views/static.py:56
-msgid "Directory indexes are not allowed here."
-msgstr ""
+#: app/templates/app/help/base-help.html:98
+msgid "or  contact with the administrator in"
+msgstr "ή επικοινωνήστε με τον διαχειριστή"
 
-#: env/Lib/site-packages/django/views/static.py:58
-#, python-format
-msgid "\"%(path)s\" does not exist"
-msgstr ""
+#: app/templates/app/help/base-help.html:109
+msgid "Volunteers"
+msgstr "Εθελοντές"
 
-#: env/Lib/site-packages/django/views/static.py:100
-#, python-format
-msgid "Index of %(directory)s"
-msgstr ""
+#: app/templates/app/help/base-help.html:114
+msgid "Contact me in"
+msgstr "Επικοινωνήστε μαζί μου στο"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:11
-msgid "Null character in input stream, replaced with U+FFFD."
-msgstr ""
+#: app/templates/app/help/base-help.html:127
+msgid "Professionals"
+msgstr "Επαγγελματίες"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:13
-msgid "Invalid codepoint in stream."
-msgstr ""
+#: app/templates/app/help/change-password.html:23
+msgid "How can you change the password"
+msgstr "Πώς μπορείτε να αλλάξετε το συνθηματικό σας"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:15
-msgid "Solidus (/) incorrectly placed in tag."
-msgstr ""
+#: app/templates/app/help/change-password.html:31
+msgid "Click on the"
+msgstr "Κάντε κλικ στο"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:17
-msgid "Incorrect CR newline entity, replaced with LF."
-msgstr ""
+#: app/templates/app/help/change-password.html:32
+msgid " Enter your previous password"
+msgstr "Εισάγετε το παλιό σας συνθηματικό"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:19
-msgid "Entity used with illegal number (windows-1252 reference)."
-msgstr ""
+#: app/templates/app/help/change-password.html:33
+msgid "Enter the new password twice (for confirmation issues)"
+msgstr "Εισάγετε το νέο σας συνθηματικό (δύο φορές για επιβεβαίωση)"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:21
-#, python-format
+#: app/templates/app/help/change-password.html:34
 msgid ""
-"Numeric entity couldn't be converted to character (codepoint "
-"U+%(charAsInt)08x)."
+"Then, click on the Submit button (Remind to enter the new credentials in the"
+" next login attemp)"
 msgstr ""
+"Στη συνέχεια, κάντε κλικ στο κουμπί Υποβολή (Πρέπει να εισαγάγετε τα νέα "
+"διαπιστευτήρια στην επόμενη σύνδεση)"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:24
-#, python-format
-msgid "Numeric entity represents an illegal codepoint: U+%(charAsInt)08x."
+#: app/templates/app/help/forget-password.html:17
+msgid "Forget password"
+msgstr "Ξέχασες το συνθηματικό"
+
+#: app/templates/app/help/forget-password.html:23
+msgid "How to reset your password if you have forgot it"
+msgstr "Πώς μπορείτε να επαναφέρετε το συνθηματικό σας αν το έχετε ξεχάσει"
+
+#: app/templates/app/help/forget-password.html:29
+msgid "Reset password"
+msgstr "Επαναφορά συνθηματικού"
+
+#: app/templates/app/help/forget-password.html:31
+msgid "Click on"
+msgstr "Κάντε κλικ "
+
+#: app/templates/app/help/forget-password.html:31
+msgid "Forgot password"
+msgstr "Ξέχασες το συνθηματικό"
+
+#: app/templates/app/help/forget-password.html:32
+msgid "Enter your registered email and submit it"
+msgstr "Εισάγετε το καταχωρημένο email σας και υποβάλλετε το"
+
+#: app/templates/app/help/forget-password.html:33
+msgid "Check your inbox and follow the instructions"
+msgstr "Ελέγξτε τα εισερχόμενά σας και ακολουθήστε τις οδηγίες"
+
+#: app/templates/app/help/index.html:65
+msgid "How can we help"
+msgstr "Πώς μπορούμε να σας βοηθήσουμε"
+
+#: app/templates/app/help/index.html:69
+msgid "Hi"
+msgstr "Γεια σας"
+
+#: app/templates/app/help/index.html:69
+msgid "Please"
+msgstr "Παρακαλώ"
+
+#: app/templates/app/help/index.html:69
+#: app/templates/app/navbar-visitors-iam.html:47
+#: app/templates/app/navbar-visitors.html:45
+#: app/templates/app/navbar-visitors.html:47
+#: app/templates/app/visitors/login.html:20
+#: app/templates/app/visitors/login.html:111
+msgid "Log in"
+msgstr "Σύνδεση"
+
+#: app/templates/app/help/index.html:69
+msgid "for help with your account activities or visit the"
 msgstr ""
+"για βοήθεια σχετικά με τις ενέργεες του λογαριασμού σας ή επισκεφθείτε το"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:27
-msgid "Numeric entity didn't end with ';'."
-msgstr ""
+#: app/templates/app/help/index.html:69
+msgid "for more information"
+msgstr "για περισσότερες πληροφορίες"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:29
-msgid "Numeric entity expected. Got end of file instead."
-msgstr ""
+#: app/templates/app/help/index.html:78 app/templates/app/navbar-users.html:59
+msgid "Account settings"
+msgstr "Ρυθμίσεις λογαριασμού"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:31
-msgid "Numeric entity expected but none found."
-msgstr ""
+#: app/templates/app/help/index.html:86
+msgid "Create a new account"
+msgstr "Δημιουργία νέου λογαριασμού"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:33
-msgid "Named entity didn't end with ';'."
-msgstr ""
+#: app/templates/app/help/index.html:87
+msgid "Login and logout actions"
+msgstr "Σύνδεση και αποσύνδεση στο AoD"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:35
-msgid "Named entity expected. Got none."
-msgstr ""
+#: app/templates/app/help/index.html:88
+msgid "Forget my password"
+msgstr "Ξέχασα το συνθηματικό μου"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:37
-msgid "End tag contains unexpected attributes."
-msgstr ""
+#: app/templates/app/help/index.html:100
+msgid "Service Consumer (Buyer)"
+msgstr "Καταναλωτής υπηρεσίας (Αγοραστής)"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:39
-msgid "End tag contains unexpected self-closing flag."
-msgstr ""
+#: app/templates/app/help/index.html:108
+msgid "Simple search for a service"
+msgstr "Απλή αναζήτηση υπηρεσίας"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:41
-msgid "Expected tag name. Got '>' instead."
-msgstr ""
+#: app/templates/app/help/index.html:109
+msgid "Enhanced search for a service"
+msgstr "Προχωρημένη αναζήτηση υπηρεσίας"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:43
+#: app/templates/app/help/index.html:120
+msgid "Service Provider (Seller)"
+msgstr "Πάροχος υπηρεσίας (Πωλητής)"
+
+#: app/templates/app/help/index.html:128
+msgid "Register a new service"
+msgstr "Εγγραφή νέας υπηρεσίας"
+
+#: app/templates/app/help/index.html:129
+msgid "Update an existing service"
+msgstr "Επεξεργασία καταχωρημένης υπηρεσίας"
+
+#: app/templates/app/help/index.html:130
+msgid "Remove an existing service"
+msgstr "Διαγραφή καταχωρημένης υπηρεσίας"
+
+#: app/templates/app/help/log-in-out.html:17
+msgid "Access AoD"
+msgstr "Πρόσβαση στο AoD"
+
+#: app/templates/app/help/log-in-out.html:23
+msgid "How to login/logout"
+msgstr "Πώς να συνδεθείτε/αποσυνδεθείτε"
+
+#: app/templates/app/help/log-in-out.html:29
+msgid "Login process"
+msgstr "Διαδικασία σύνδεσης"
+
+#: app/templates/app/help/log-in-out.html:31
 msgid ""
-"Expected tag name. Got '?' instead. (HTML doesn't support processing "
-"instructions.)"
+"Click on the Log in button located in the top navigation menu to go on the"
 msgstr ""
+"Κάντε κλικ στο κουμπί Σύνδεση που βρίσκεται στο πάνω μενού πλοήγησης για να "
+"οδηγηθείτε στο"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:46
-msgid "Expected tag name. Got something else instead"
-msgstr ""
+#: app/templates/app/help/log-in-out.html:31
+msgid "Login page"
+msgstr "Σελίδα εισόδου"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:48
-msgid "Expected closing tag. Got '>' instead. Ignoring '</>'."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:50
-msgid "Expected closing tag. Unexpected end of file."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:52
-#, python-format
-msgid "Expected closing tag. Unexpected character '%(data)s' found."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:54
-msgid "Unexpected end of file in the tag name."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:56
-msgid "Unexpected end of file. Expected attribute name instead."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:58
-msgid "Unexpected end of file in attribute name."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:60
-msgid "Invalid character in attribute name"
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:62
-msgid "Dropped duplicate attribute on tag."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:64
-msgid "Unexpected end of file. Expected = or end of tag."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:66
-msgid "Unexpected end of file. Expected attribute value."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:68
-msgid "Expected attribute value. Got '>' instead."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:70
-msgid "Unexpected = in unquoted attribute"
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:72
-msgid "Unexpected character in unquoted attribute"
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:74
-msgid "Unexpected character after attribute name."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:76
-msgid "Unexpected character after attribute value."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:78
-msgid "Unexpected end of file in attribute value (\")."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:80
-msgid "Unexpected end of file in attribute value (')."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:82
-msgid "Unexpected end of file in attribute value."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:84
-msgid "Unexpected end of file in tag. Expected >"
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:86
-msgid "Unexpected character after / in tag. Expected >"
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:88
-msgid "Expected '--' or 'DOCTYPE'. Not found."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:90
-msgid "Unexpected ! after -- in comment"
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:92
-msgid "Unexpected space after -- in comment"
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:94
-msgid "Incorrect comment."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:96
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:104
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:106
-msgid "Unexpected end of file in comment."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:98
-msgid "Unexpected end of file in comment (-)"
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:100
-msgid "Unexpected '-' after '--' found in comment."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:102
-msgid "Unexpected end of file in comment (--)."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:108
-msgid "Unexpected character in comment found."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:110
-msgid "No space after literal string 'DOCTYPE'."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:112
-msgid "Unexpected > character. Expected DOCTYPE name."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:114
-msgid "Unexpected end of file. Expected DOCTYPE name."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:116
-msgid "Unexpected end of file in DOCTYPE name."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:118
-msgid "Unexpected end of file in DOCTYPE."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:120
-#, python-format
-msgid "Expected space or '>'. Got '%(data)s'"
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:122
-msgid "Unexpected end of DOCTYPE."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:124
-msgid "Unexpected character in DOCTYPE."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:126
-msgid "XXX innerHTML EOF"
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:128
-msgid "Unexpected DOCTYPE. Ignored."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:130
-msgid "html needs to be the first start tag."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:132
-msgid "Unexpected End of file. Expected DOCTYPE."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:134
-msgid "Erroneous DOCTYPE."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:136
-msgid "Unexpected non-space characters. Expected DOCTYPE."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:138
-#, python-format
-msgid "Unexpected start tag (%(name)s). Expected DOCTYPE."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:140
-#, python-format
-msgid "Unexpected end tag (%(name)s). Expected DOCTYPE."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:142
-#, python-format
-msgid "Unexpected end tag (%(name)s) after the (implied) root element."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:144
-#, python-format
-msgid "Unexpected end of file. Expected end tag (%(name)s)."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:146
-msgid "Unexpected start tag head in existing head. Ignored."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:148
-#, python-format
-msgid "Unexpected end tag (%(name)s). Ignored."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:150
-#, python-format
-msgid "Unexpected start tag (%(name)s) that can be in head. Moved."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:152
-#, python-format
-msgid "Unexpected start tag (%(name)s)."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:154
-#, python-format
-msgid "Missing end tag (%(name)s)."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:156
-#, python-format
-msgid "Missing end tags (%(name)s)."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:158
-#, python-format
-msgid "Unexpected start tag (%(startName)s) implies end tag (%(endName)s)."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:161
-#, python-format
-msgid "Unexpected start tag (%(originalName)s). Treated as %(newName)s."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:163
-#, python-format
-msgid "Unexpected start tag %(name)s. Don't use it!"
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:165
-#, python-format
-msgid "Unexpected start tag %(name)s. Ignored."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:167
-#, python-format
-msgid "Unexpected end tag (%(gotName)s). Missing end tag (%(expectedName)s)."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:170
-#, python-format
-msgid "End tag (%(name)s) seen too early. Expected other end tag."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:172
-#, python-format
-msgid "Unexpected end tag (%(gotName)s). Expected end tag (%(expectedName)s)."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:174
-#, python-format
-msgid "End tag (%(name)s) seen too early. Ignored."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:176
-#, python-format
+#: app/templates/app/help/log-in-out.html:32
 msgid ""
-"End tag (%(name)s) violates step 1, paragraph 1 of the adoption agency "
-"algorithm."
+"Enter your credentials: the username and the password. Their combination is "
+"unique"
 msgstr ""
+"Εισάγετε τα διαπιστευτήριά σας: το όνομα χρήστη και το συνθηματικό. Ο "
+"συνδυασμός τους είναι μοναδικός"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:179
-#, python-format
+#: app/templates/app/help/log-in-out.html:33
+msgid "Press the Log in button"
+msgstr "Πατήστε το κουμπί Σύνδεση"
+
+#: app/templates/app/help/log-in-out.html:34
 msgid ""
-"End tag (%(name)s) violates step 1, paragraph 2 of the adoption agency "
-"algorithm."
+"The platform will be redirect you on the Home page for registered users"
 msgstr ""
+"Ο φυλλομετρητής  θα σας μεταφέρει στην αρχική σελίδα των εγγεγραμμένων "
+"χρηστών"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:182
-#, python-format
+#: app/templates/app/help/log-in-out.html:39
+msgid "Logout process"
+msgstr "Διαδικασί αποσύνδεσης"
+
+#: app/templates/app/help/log-in-out.html:41
 msgid ""
-"End tag (%(name)s) violates step 1, paragraph 3 of the adoption agency "
-"algorithm."
+"Click on the Log out button located in the navigation top menu (visible only"
+" whether you are already logged in the AoD)"
 msgstr ""
+"Κάντε κλικ στο κουμπί Αποσύνδεση που βρίσκεται στο πάνω μενού πλοήγησης "
+"(ορατό μόνο αν είστε ήδη συνδεδεμένοι στο AoD)"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:185
-#, python-format
+#: app/templates/app/help/log-in-out.html:42
+msgid "The platform will be redirect you on the Home page for visitors"
+msgstr "Ο φυλλομετρητής  θα σας μεταφέρει στην αρχική σελίδα του AoD"
+
+#: app/templates/app/help/services/provider/create-service.html:19
+#: app/templates/app/help/update-profile-steps.html:23
+msgid "Do you want to update your profile"
+msgstr "Επιθυεμείτε να ενημερώσετε το προφίλ σας"
+
+#: app/templates/app/help/services/provider/create-service.html:27
+#: app/templates/app/help/services/provider/delete-service.html:27
+#: app/templates/app/help/services/provider/update-service.html:27
+msgid "Navigate on the top menu"
+msgstr "Πλοηγηθείτε στο μενού πλοήγησης στην κορυφή"
+
+#: app/templates/app/help/services/provider/delete-service.html:19
+msgid "Do you want to delete a service"
+msgstr "Επιθυεμείτε να διαγράψετε μια υπηρεσία"
+
+#: app/templates/app/help/services/provider/update-service.html:13
+msgid "Update service"
+msgstr "Επεξεργασία υπηρεσίας"
+
+#: app/templates/app/help/services/provider/update-service.html:19
+msgid "Do you want to update your service"
+msgstr "Επιθυμείτε να τροποποιήσετε την υπηρεσία σας"
+
+#: app/templates/app/help/update-profile-steps.html:31
+msgid "Navigate on the top menu, click on your username and select the"
+msgstr ""
+"Πλοηγηθείτε στο μενού στην κορυφή, κάντε κλικ στο όνομα χρήστη σας και "
+"επιλέξτε το"
+
+#: app/templates/app/help/update-profile-steps.html:31
+msgid "Profile"
+msgstr "Προφίλ"
+
+#: app/templates/app/help/update-profile-steps.html:31
+msgid "link"
+msgstr "σύνδεσμο"
+
+#: app/templates/app/help/update-profile-steps.html:32
+msgid "The AoD platform provides the following capabilities"
+msgstr "Το AoD παρέχει τις ακόλουθες δυνατότητες"
+
+#: app/templates/app/help/update-profile-steps.html:35
+msgid "Update your cover image"
+msgstr "Αλλάξτε την εικόνα εξώφυλλου σας"
+
+#: app/templates/app/help/update-profile-steps.html:36
 msgid ""
-"End tag (%(name)s) violates step 4, paragraph 4 of the adoption agency "
-"algorithm."
+"Optionally, you can update your cover image since you click on Add cover "
+"button and select an image of your interest"
 msgstr ""
+"Προαιρετικά, μπορείτε να ενημερώσετε την εικόνα εξώφυλλου σας από τη στιγμή "
+"που κάνετε κλικ στο κουμπί Προσθήκη εξώφυλλου και επιλέξτε μια εικόνα που "
+"σας ενδιαφέρει"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:188
-#, python-format
-msgid "Unexpected end tag (%(originalName)s). Treated as %(newName)s."
-msgstr ""
+#: app/templates/app/help/update-profile-steps.html:39
+msgid "Modify your Personal information"
+msgstr "Τροποποιήστε τις προσωπικές σας πληροφορίες"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:190
-#, python-format
-msgid "This element (%(name)s) has no end tag."
-msgstr ""
+#: app/templates/app/help/update-profile-steps.html:40
+msgid "Go to <b>Personal information</b> box and click on"
+msgstr "Μεταβείτε στο <b> Προσωπικές πληροφορίες </ b> και κάντε κλικ στο"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:192
-#, python-format
-msgid "Unexpected implied end tag (%(name)s) in the table phase."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:194
-#, python-format
-msgid "Unexpected implied end tag (%(name)s) in the table body phase."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:196
-msgid "Unexpected non-space characters in table context caused voodoo mode."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:199
-msgid "Unexpected input with type hidden in table context."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:201
-msgid "Unexpected form in table context."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:203
-#, python-format
-msgid "Unexpected start tag (%(name)s) in table context caused voodoo mode."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:206
-#, python-format
-msgid "Unexpected end tag (%(name)s) in table context caused voodoo mode."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:209
-#, python-format
-msgid "Unexpected table cell start tag (%(name)s) in the table body phase."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:212
-#, python-format
-msgid "Got table cell end tag (%(name)s) while required end tags are missing."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:215
-#, python-format
-msgid "Unexpected end tag (%(name)s) in the table body phase. Ignored."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:217
-#, python-format
-msgid "Unexpected implied end tag (%(name)s) in the table row phase."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:219
-#, python-format
-msgid "Unexpected end tag (%(name)s) in the table row phase. Ignored."
-msgstr ""
-
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:221
+#: app/templates/app/help/update-profile-steps.html:41
 msgid ""
-"Unexpected select start tag in the select phase treated as select end tag."
+"button to alter the view in edit mode. You can fill or correct any field "
+"related to your first/last name and your geolocation options. Optionally, "
+"you could upload or change your profile logo. To store the changes, just "
+"click on"
 msgstr ""
+"κουμπί για να επεξεργαστείτε τις προσωπικές σας πληροφορίες. Μπορείτε να "
+"συμπληρώσετε ή να διορθώσετε οποιοδήποτε πεδίο που σχετίζονται με τον "
+"ονοματεπώνυμό σας καθώς και τις πεεδία σχετικά  με την κατοικία σας. "
+"Προαιρετικά, μπορείτε να ανεβάσετε ή να αλλάξετε το λογότυπο του προφίλ σας."
+" Για να αποθηκεύσετε τις αλλαγές, απλά κάντε κλικ στο"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:224
-msgid "Unexpected input start tag in the select phase."
-msgstr ""
+#: app/templates/app/help/update-profile-steps.html:41
+#: app/templates/app/help/update-profile-steps.html:46
+#: app/templates/app/help/update-profile-steps.html:55
+msgid "button. To cancel your changes, click on Cancel button"
+msgstr "κουμπί. Για να ακυρώσετε τις αλλαγές, πατήστε στο κουμπί Ακύρωση"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:226
-#, python-format
-msgid "Unexpected start tag token (%(name)s in the select phase. Ignored."
-msgstr ""
+#: app/templates/app/help/update-profile-steps.html:44
+msgid "Modify your Contact information"
+msgstr "Τροποποιήστε τις πληροφορίες επικοινωνίας σας"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:229
-#, python-format
-msgid "Unexpected end tag (%(name)s) in the select phase. Ignored."
-msgstr ""
+#: app/templates/app/help/update-profile-steps.html:45
+msgid "Go to <b>Contact information</b> box and click on"
+msgstr "Μεταβείτε στο <b>Προσωπικές επικολινωνίας</ b> και κάντε κλικ στο"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:231
-#, python-format
+#: app/templates/app/help/update-profile-steps.html:46
 msgid ""
-"Unexpected table element start tag (%(name)s) in the select in table phase."
+"button to alter the view in edit mode. You can fill or correct your email "
+"account and your mobile phone number. To store the changes, just click on"
 msgstr ""
+"κουμπί για να επεξεργαστείτε τις πληροφορίες επικοινωνίας σας. Μπορείτε να "
+"συμπληρώσετε ή να διορθώσετε το λογαριασμό email σας και τον αριθμό του "
+"κινητού σας τηλεφώνου. Για να αποθηκεύσετε τις αλλαγές, απλά κάντε κλικ στο"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:233
-#, python-format
+#: app/templates/app/help/update-profile-steps.html:49
+msgid "Modify your Platform settings"
+msgstr "Τροποποιήστε τις ρυθμίσεις της εφαρμογής"
+
+#: app/templates/app/help/update-profile-steps.html:50
+msgid "Go to <b>Platform settings</b> box and click on"
+msgstr "Μεταβείτε στις <b> Ρυθμίσεις εφαρμογής </b> και κάντε κλικ στο"
+
+#: app/templates/app/help/update-profile-steps.html:51
 msgid ""
-"Unexpected table element end tag (%(name)s) in the select in table phase."
+"button to alter the view in edit mode. You can fill or correct your IT "
+"experience, your desired roles in platform (e.g. service consumer, service "
+"provider or carer)"
 msgstr ""
+"κουμπί για να επεξεργαστείτε τις ρυθμίσεις σας στην εφαρμογη. Μπορείτε να "
+"συμπληρώσετε ή να διορθώσετε την εμπειρία σας στους υπολογιστές, τους ρόλους"
+" που επιθυμείτε στην πλατφόρμα (π.χ. κατναλωτής, πάροχος ή φροντιστής)"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:235
-msgid "Unexpected non-space characters in the after body phase."
+#: app/templates/app/help/update-profile-steps.html:52
+msgid ""
+"\n"
+"                                By default, any provider receives notification for crowd-funding procedures while any consumer has to specify if he/she want to receive and participate in these procedures. \n"
+"                                Moreover, you can update the channels of your interest (service categories) from the drop down list."
 msgstr ""
+"\n"
+"Από προεπιλογή, κάθε πάροχος λαμβάνει ειδοποίηση για τις crowd-funding διαδικασίες ενώ κάθε καταναλωτής πρέπει να προσδιορίσει αν επιθυμεί να λαμβάνει και να συμμετέχει σε αυτές τις διαδικασίες.\n"
+"Επιπλέον, μπορείτε να ενημερώσετε τις κατηγορίες που σας ενδιαφέρουν (κατηγορίες υπηρεσιών) από την λίστα."
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:237
-#, python-format
-msgid "Unexpected start tag token (%(name)s) in the after body phase."
-msgstr ""
+#: app/templates/app/help/update-profile-steps.html:55
+msgid "To store the changes, just click on"
+msgstr "Για να αποθηκεύσετε τις αλλαγές, απλά κάντε κλικ στο"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:240
-#, python-format
-msgid "Unexpected end tag token (%(name)s) in the after body phase."
-msgstr ""
+#: app/templates/app/help/update-profile-steps.html:58
+msgid "Modify your Bank settings"
+msgstr "Τροποποιήστε τις τραπεζικές ρυθμίσεις"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:243
-msgid "Unexpected characters in the frameset phase. Characters ignored."
-msgstr ""
+#: app/templates/app/help/update-profile-steps.html:59
+msgid "Under development"
+msgstr "Υπο κατασκευή"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:245
-#, python-format
-msgid "Unexpected start tag token (%(name)s) in the frameset phase. Ignored."
-msgstr ""
+#: app/templates/app/languages.html:5 app/templates/app/languages.html.py:7
+msgid "Set your language"
+msgstr "Επιλέξτε την γλώσσα σας"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:248
-msgid "Unexpected end tag token (frameset) in the frameset phase (innerHTML)."
-msgstr ""
+#: app/templates/app/languages.html:12
+msgid "LANGUAGES"
+msgstr "Γλώσσες"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:251
-#, python-format
-msgid "Unexpected end tag token (%(name)s) in the frameset phase. Ignored."
-msgstr ""
+#: app/templates/app/languages.html:16
+msgid "Logo"
+msgstr "Λογότυπο"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:254
-msgid "Unexpected non-space characters in the after frameset phase. Ignored."
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:35
+#: app/templates/app/nas/configuration/index.html:36
+#: app/templates/app/nas/invitations/index.html:33
+#: app/templates/app/nas/preview/index.html:35
+#: app/templates/app/nas/preview/index.html:36
+#: app/templates/app/nas/requests/create-new.html:30
+#: app/templates/app/nas/requests/index.html:5
+#: app/templates/app/nas/requests/index.html:35
+msgid "Network of Assistance Services"
+msgstr "Δίκτυο Καθοδηγούμενων Υπηρεσιών"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:257
-#, python-format
-msgid "Unexpected start tag (%(name)s) in the after frameset phase. Ignored."
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:39
+msgid "Setup"
+msgstr "Διαχείριση"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:260
-#, python-format
-msgid "Unexpected end tag (%(name)s) in the after frameset phase. Ignored."
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:53
+msgid "Progress"
+msgstr "Προόδος"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:263
-msgid "Unexpected end tag after body(innerHtml)"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:53
+msgid "Completion percentage of the guided assistance process"
+msgstr "Ποσοστιαία ολοκλήρωση  της Καθοδηγούμενης βοήθειας"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:265
-msgid "Unexpected non-space characters. Expected end of file."
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:59
+msgid "Complete"
+msgstr "Ολοκλήρωση"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:267
-#, python-format
-msgid "Unexpected start tag (%(name)s). Expected end of file."
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:68
+msgid "Search services"
+msgstr "Αναζήτηση υπηρεσιών"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:270
-#, python-format
-msgid "Unexpected end tag (%(name)s). Expected end of file."
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:72
+msgid "enter keywords"
+msgstr "εισάγετε λέξεις-κλειδιά"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:273
-msgid "Unexpected end of file. Expected table content."
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:72
+msgid "Enter keywords"
+msgstr "Εισάγετε λέξεις-κλειδιά"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:275
-msgid "Unexpected end of file. Expected select content."
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:90
+#: app/templates/app/nas/configuration/index.html:105
+msgid "Step"
+msgstr "Βήμα"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:277
-msgid "Unexpected end of file. Expected frameset content."
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:92
+#: app/templates/app/nas/configuration/index.html:107
+msgid "Number of services in selected categories"
+msgstr "Πλήθος υπηρεσιών ανα κατηγορία"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:279
-msgid "Unexpected end of file. Expected script content."
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:116
+msgid "Check/uncheck all"
+msgstr "Επιλογή ή μη όλων"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:281
-msgid "Unexpected end of file. Expected foreign content"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:133
+msgid "Final step: Overview"
+msgstr "Τελικό βήμα: Σύνοψη"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:283
-#, python-format
-msgid "Trailing solidus not allowed on element %(name)s"
+#: app/templates/app/nas/configuration/index.html:138
+msgid ""
+"The selected services are ordered by category. You have the capability to "
+"purchase them and optionally modify their configuration"
 msgstr ""
+"Οι επιλεγμένες υπηρεσίες έχουν ταξινομηθεί ανά κατηγορία. Έχετε τη "
+"δυνατότητα να τις αγοράσετε και προαιρετικά να διαφοροποιήσετε τις επιλογές "
+"της (configuration)"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:285
-#, python-format
-msgid "Element %(name)s not allowed in a non-html context"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:152
+msgid "Setup the network of assistance services"
+msgstr "Διαχείριση του δικτύου υπηρεσιών βοήθειας"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:287
-#, python-format
-msgid "Unexpected end tag (%(name)s) before html."
+#: app/templates/app/nas/configuration/index.html:156
+#: app/templates/app/nas/configuration/index.html:256
+msgid "You set up a network of assistance services on behalf of"
 msgstr ""
+"Μπορείτε να ορίσετε ένα δίκτυο υπηρεσιών βοήθειας εκ μέρους του χρήστη"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/constants.py:289
-msgid "Undefined error (this sucks and should be fixed)"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:162
+msgid "Hint"
+msgstr "Πληροφορία"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:26
-#, python-format
-msgid "StartTag not in PCDATA content model flag: %(tag)s"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:163
+msgid "Please use the buttons"
+msgstr "Παρακαλώ χρησιμοποιήστε τα κουμπιά"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:28
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:54
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:84
-#, python-format
-msgid "Tag name is not a string: %(tag)r"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:163
+msgid "Proceed to previous step"
+msgstr "Προχωρήστε στο προηγούμενο βήμα"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:30
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:56
-msgid "Empty tag name"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:163
+#: app/templates/app/nas/configuration/index.html:177
+msgid "Previous step"
+msgstr "Προηγούμενο βήμα"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:32
-#, python-format
-msgid "Void element reported as StartTag token: %(tag)s"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:163
+#: app/templates/app/nas/configuration/index.html:178
+msgid "Next step"
+msgstr "Επόμενο βήμα"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:34
-#, python-format
-msgid "Non-void element reported as EmptyTag token: %(tag)s"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:163
+msgid "to navigate in the wizard step-by-step"
+msgstr "για να περιηγηθείτε στον οδηγό βήμα-βήμα"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:39
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:71
-#, python-format
-msgid "Attribute name is not a string: %(name)r"
+#: app/templates/app/nas/configuration/index.html:164
+msgid ""
+"In every step, you can filter the list of services (see the table below) by selecting the (sub)categories of your interest in the left column of page.\n"
+"                            Then, please check the services you want to use and proceed to the next step"
 msgstr ""
+"Σε κάθε βήμα, μπορείτε να φιλτράρετε τις υπηρεσίες (βλέπε τον παρακάτω πίνακα), επιλέγοντας τις (υπο)κατηγορίες του ενδιαφέροντός σας στο αριστερό μέρος της σελίδας.\n"
+"Στη συνέχεια, παρακαλούμε να ελέγξετε τις υπηρεσίες που θέλετε να χρησιμοποιήσετε και συνεχίστε στο επόμενο βήμα"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:41
-msgid "Empty attribute name"
+#: app/templates/app/nas/configuration/index.html:168
+msgid ""
+"In this step, platform provides you a summary of the selected services that "
+"are grouped by category"
 msgstr ""
+"Σε αυτό το βήμα, η πλατφόρμα  παρέχει μια σύνοψη των επιλεγμένων υπηρεσιών "
+"που ομαδοποιημένες ανά κατηγορία"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:43
-#, python-format
-msgid "Attribute value is not a string: %(value)r"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:169
+msgid "Find marked with icon"
+msgstr "Επισημαίνονται με το εικονίδιο"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:58
-#, python-format
-msgid "Void element reported as EndTag token: %(tag)s"
+#: app/templates/app/nas/configuration/index.html:169
+msgid "Mark categories in which none service has selected"
 msgstr ""
+"Επισήμανση των κατηγοριών στις οποίες δεν έχει επιλεχθεί καμιά υπηρεσία"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:61
-#, python-format
-msgid "EndTag (%(end)s) does not match StartTag (%(start)s)"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:169
+msgid "the categories in which you did not select any service"
+msgstr "οι κατηγορίες στις οποίες δεν έχετε επιλέξει καμιά υπηρεσία"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:66
-msgid "Comment not in PCDATA content model flag"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:170
+msgid "On the other hand, find marked with icon"
+msgstr "Από την άλλη πλευρά, βρείτε μαρκαρισμένες με το εικονίδιο"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:73
-#, python-format
-msgid "%(type)s token with empty data"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:170
+msgid "Categories in which the selected services belong to"
+msgstr "Κατηγορίες στις οποίες οι επιλεγμένες υπηρεσίες ανήκουν σε"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:77
-#, python-format
-msgid "Non-space character(s) found in SpaceCharacters token: %(token)r"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:170
+msgid "the categories in which you have selected at least a service"
+msgstr "τις κατηγορίες στις οποίες έχετε επιλέξει τουλάχιστον μια υπηρεσία"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:82
-#, python-format
-msgid "Doctype not in PCDATA content model flag: %(name)s"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:209
+#: app/templates/app/nas/configuration/index.html:224
+#: app/templates/app/nas/configuration/index.html:297
+#: app/templates/app/nas/preview/index.html:86
+#: app/templates/app/nas/preview/index.html:240
+msgid "Service title"
+msgstr "Τίτλος υπηρεσίας"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py:91
-#, python-format
-msgid "Unknown token type: %(type)s"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:212
+#: app/templates/app/nas/configuration/index.html:300
+msgid "Location constraints"
+msgstr "Γεωγραφικοί περιορισμοί"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/serializer/htmlserializer.py:211
-msgid "System identifer contains both single and double quote characters"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:213
+msgid "Wishlist"
+msgstr "Αγαπημένα"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/serializer/htmlserializer.py:223
-msgid "Unexpected </ in CDATA"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:214
+#: app/templates/app/nas/configuration/index.html:302
+msgid "Action"
+msgstr "Ενέργεια"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/serializer/htmlserializer.py:234
-#: env/Lib/site-packages/pip/_vendor/html5lib/serializer/htmlserializer.py:282
-msgid "Unexpected child element of a CDATA element"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:223
+msgid "Category title"
+msgstr "Τίτλος κατηγορίας"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/serializer/htmlserializer.py:288
-msgid "Comment contains --"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:225
+#: app/templates/app/nas/configuration/index.html:301
+msgid "More details"
+msgstr "Περισσότερες λεπτομέρειες"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/serializer/htmlserializer.py:295
-#, python-format
-msgid "Entity %s not recognized"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:226
+msgid "Action buttons"
+msgstr "Ενέργειες"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/treewalkers/_base.py:61
-msgid "Void element has children"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:243
+#: app/templates/app/nas/requests/create-new.html:83
+msgid "Back to guided assistance page"
+msgstr "Επιστροφή στην σελίδα καθοδηγούμενης βοήθειας"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/treewalkers/_base.py:125
-msgid "Unknown node type: "
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:252
+msgid "Network of assistance services: installation steps"
+msgstr "Δίκτυο υπηρεσιών βοήθειας: βήματα ορισμού του"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/treewalkers/lxmletree.py:133
-#: env/Lib/site-packages/pip/_vendor/html5lib/treewalkers/lxmletree.py:183
-#: env/Lib/site-packages/pip/_vendor/html5lib/treewalkers/lxmletree.py:199
-#, python-format
-msgid "Text nodes are text or tail, found %s"
-msgstr ""
+#: app/templates/app/nas/configuration/index.html:279
+msgid "Search results"
+msgstr "Αποτελέσματα αναζήτησης"
 
-#: env/Lib/site-packages/pip/_vendor/html5lib/treewalkers/lxmletree.py:172
-msgid "Text nodes have no children"
+#: app/templates/app/nas/configuration/index.html:280
+msgid "service(s) found"
+msgstr "υπηρεσία(ες) βρέθηκαν"
+
+#: app/templates/app/nas/configuration/index.html:318
+msgid "Back to structured search"
+msgstr "Επιστροφή στην οδηγό αναζήτησης"
+
+#: app/templates/app/nas/invitations/index.html:42
+msgid "Setup your network of carers"
+msgstr "Δημιουργήστε το δικτύο με τους φροντιστές σας"
+
+#: app/templates/app/nas/invitations/index.html:42
+#: app/templates/app/nas/requests/index.html:87
+msgid "Professionals and family members"
+msgstr "Επαγγελματίες και μέλη της οικογένειας"
+
+#: app/templates/app/nas/invitations/index.html:47
+msgid "Enter the user's email account"
+msgstr "Εισάγετε το email του χρήστη"
+
+#: app/templates/app/nas/invitations/index.html:50
+msgid "enter email account"
+msgstr "εισάγετε ένα email"
+
+#: app/templates/app/nas/invitations/index.html:55
+#: app/templates/app/nas/requests/create-new.html:53
+msgid "No valid email"
+msgstr "Μη έγκυρο email"
+
+#: app/templates/app/nas/invitations/index.html:55
+#: app/templates/app/nas/requests/create-new.html:53
+msgid "The characters"
+msgstr "Οι χαρακτήρες"
+
+#: app/templates/app/nas/invitations/index.html:55
+#: app/templates/app/nas/requests/create-new.html:53
+msgid "are required"
+msgstr "απαιτούνται"
+
+#: app/templates/app/nas/invitations/index.html:73
+#: app/templates/app/nas/requests/create-new.html:71
+msgid "Name"
+msgstr "Όνομα"
+
+#: app/templates/app/nas/invitations/index.html:74
+#: app/templates/app/nas/requests/create-new.html:72
+msgid "Lastname"
+msgstr "Επίθετο"
+
+#: app/templates/app/nas/invitations/index.html:76
+msgid "Send invitation"
+msgstr "Αποστολή πρόσκλησης"
+
+#: app/templates/app/nas/invitations/index.html:85
+#: app/templates/app/nas/preview/index.html:256
+#: app/templates/app/nas/requests/create-new.html:83
+msgid "Back to carer dashboard"
+msgstr "Επιστροφή στο πάνελ του φροντιστή"
+
+#: app/templates/app/nas/invitations/index.html:85
+msgid "Back to guided assistance"
+msgstr "Επιστροφή στην καθοδηγούμενη βοήθεια"
+
+#: app/templates/app/nas/preview/index.html:39
+msgid "Preview"
+msgstr "Προεσκόπιση"
+
+#: app/templates/app/nas/preview/index.html:56
+msgid "Purchased services"
+msgstr "Αγορασμένες υπηρεσίες"
+
+#: app/templates/app/nas/preview/index.html:61
+msgid "WishList"
+msgstr "Αγαπημένα"
+
+#: app/templates/app/nas/preview/index.html:61
+msgid "(Interesting services)"
+msgstr "(Ενδιαφέρον υπηρεσίες)"
+
+#: app/templates/app/nas/preview/index.html:244
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: app/templates/app/nas/requests/create-new.html:31
+msgid "Send a permission request"
+msgstr "Στείλτε ένα αίτημα χορήγησης άδειας"
+
+#: app/templates/app/nas/requests/create-new.html:39
+msgid ""
+"Find the user you want to assist and require permission to setup his/her "
+"network of services"
 msgstr ""
+"Αναζητήστε το χρήστη που θέλετε να βοηθήσετε και ζητήστε χορήγηση άδειας για"
+" τη δημιουργία του δικτύου υπηρεσιών  του / της"
+
+#: app/templates/app/nas/requests/create-new.html:44
+msgid "Enter the user\\'s email account"
+msgstr "Εισάγετε το λογαριασμό ηλεκτρονικού ταχυδρομίου του χρήστη"
+
+#: app/templates/app/nas/requests/create-new.html:74
+#: app/templates/app/nas/requests/index.html:50
+msgid "Send assistance request"
+msgstr "Στείλτε ένα αίτημα βοήθειας"
+
+#: app/templates/app/nas/requests/create-new.html:111
+msgid "Declare you interest"
+msgstr "Εκδηλώστε ενδιαφέρον"
+
+#: app/templates/app/nas/requests/index.html:45
+msgid "Care giver overview"
+msgstr "Πάνελ φροντιστή"
+
+#: app/templates/app/nas/requests/index.html:48
+msgid ""
+"The toolbar provides to users of set of actions such as add,remove or search"
+" a service"
+msgstr ""
+"Παροχή ενεργειών  στους χρήστες, όπως η προσθήκη, διαγραφή ή αναζήτηση μιας "
+"υπηρεσίας"
+
+#: app/templates/app/nas/requests/index.html:49
+msgid "Search users to provide assistance"
+msgstr "Αναζήτηση χρηστών για την παροχή βοήθειας"
+
+#: app/templates/app/nas/requests/index.html:67
+msgid "User"
+msgstr "Χρήστης"
+
+#: app/templates/app/nas/requests/index.html:68
+#: app/templates/app/nas/requests/index.html:110
+msgid "Reply"
+msgstr "Απόκριση"
+
+#: app/templates/app/nas/requests/index.html:69
+msgid "Grant permission"
+msgstr "Χορήγηση άδειας"
+
+#: app/templates/app/nas/requests/index.html:70
+#: app/templates/app/nas/requests/index.html:112
+msgid "Request timestamp"
+msgstr "Ημέρα και ώρα αιτήματος"
+
+#: app/templates/app/nas/requests/index.html:71
+#: app/templates/app/nas/requests/index.html:113
+msgid "Request feedback timestamp"
+msgstr "Ημέρα και ώρα απόκρισης σε αίτημα"
+
+#: app/templates/app/nas/requests/index.html:72
+msgid "Set up network"
+msgstr "Δημιουργήστε δίκτυο υπηρεσιών"
+
+#: app/templates/app/nas/requests/index.html:73
+msgid "View network"
+msgstr "Προεσκόπιηση δίκτύου"
+
+#: app/templates/app/nas/requests/index.html:74
+msgid "Cancel assistance request"
+msgstr "Ακύρωση αιτήματος παροχής βοήθειας"
+
+#: app/templates/app/nas/requests/index.html:87
+msgid "Network of carers"
+msgstr "Δίκτυο φροντιστών"
+
+#: app/templates/app/nas/requests/index.html:91
+msgid "Invite new carer"
+msgstr "Προσκαλέστε έναν νέο φροντιστή"
+
+#: app/templates/app/nas/requests/index.html:92
+msgid "Invite carer"
+msgstr "Προσκαλέστε έναν φροντιστή"
+
+#: app/templates/app/nas/requests/index.html:109
+#: app/templates/app/visitors/registration.html:184
+msgid "Carer"
+msgstr "Φροντιστής"
+
+#: app/templates/app/nas/requests/index.html:111
+msgid "Assistance request"
+msgstr "Αίτημα βοήθειας"
+
+#: app/templates/app/nas/requests/index.html:114
+msgid "Update"
+msgstr "Επεξεργασία"
+
+#: app/templates/app/nas/requests/index.html:115
+msgid "Cancel assistance"
+msgstr "Ακύρωση βοήθειας"
+
+#: app/templates/app/navbar-users.html:12
+msgid "Assistance On Demand"
+msgstr "Assistance On Demand"
+
+#: app/templates/app/navbar-users.html:13
+msgid "Prosperity 4 All logo"
+msgstr "Λογότυπο του εργου Prosperity4All"
+
+#: app/templates/app/navbar-users.html:31
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+#: app/templates/app/navbar-users.html:33
+msgid "My account"
+msgstr "Ο λογαρισμός μου"
+
+#: app/templates/app/navbar-users.html:38
+msgid "Show the services you provide on AoD"
+msgstr "Υπηρεσίες που παρέχετε"
+
+#: app/templates/app/navbar-users.html:43
+msgid "Show the services you have purchased"
+msgstr "Υπηρεσίες που έχετε αγοράσει"
+
+#: app/templates/app/navbar-users.html:49
+msgid "Shopping card"
+msgstr "Το καλάθι"
+
+#: app/templates/app/navbar-users.html:50
+msgid "My Cart"
+msgstr "Το καλάθι μου"
+
+#: app/templates/app/navbar-users.html:58
+msgid "Manage your account"
+msgstr "Διαχειριστείτε τον λογαριασμό σας"
+
+#: app/templates/app/navbar-users.html:64
+#: app/templates/app/navbar-users.html:65
+msgid "My Notifications"
+msgstr "Οι ειδοποιήσεις μου"
+
+#: app/templates/app/navbar-users.html:80
+#: app/templates/app/navbar-users.html:82
+#, fuzzy
+msgid "Social Network"
+msgstr "Κοινωνικό δίκτυο"
+
+#: app/templates/app/navbar-users.html:88
+#: app/templates/app/navbar-users.html:90
+#: app/templates/app/navbar-visitors-iam.html:38
+#: app/templates/app/navbar-visitors.html:36
+#: app/templates/app/navbar-visitors.html:38
+msgid "Help"
+msgstr "Βοήθεια"
+
+#: app/templates/app/navbar-visitors-iam.html:56
+#: app/templates/app/navbar-visitors.html:54
+#: app/templates/app/navbar-visitors.html:55
+msgid "Sign up"
+msgstr "Εγγραφή"
+
+#: app/templates/app/navbar-visitors.html:11
+msgid "Welcome to Assistance On Demand platform"
+msgstr "Καλωσήρθατε στο Assistance On Demand "
+
+#: app/templates/app/navbar-visitors.html:12
+msgid "Logo of Prosperity4All project"
+msgstr "Λογότυπο του έργου Prosperity4All "
+
+#: app/templates/app/preferences.html:7
+msgid "Setup your preferences"
+msgstr "Καθορίστε τις προτιμήσεις σας"
+
+#: app/templates/app/preferences.html:9
+msgid "Preferences"
+msgstr "Προτιμήσεις"
+
+#: app/templates/app/preferences.html:16
+msgid "FONT SIZE"
+msgstr "Μέγεθος γραμματοσειράς"
+
+#: app/templates/app/preferences.html:18
+msgid "Decrease font-size"
+msgstr "Μείωση μεγέθους γραμματοσειράς"
+
+#: app/templates/app/preferences.html:21
+msgid "Increase font-size"
+msgstr "Αύξηση μεγέθους γραμματοσειράς"
+
+#: app/templates/app/preferences.html:30
+msgid "FONT STYLE"
+msgstr "Στυλ γραμματοσεριάς"
+
+#: app/templates/app/preferences.html:38
+msgid "LINE SPACING"
+msgstr "Διάστημα γραμμής"
+
+#: app/templates/app/preferences.html:46
+msgid "TEMPLATE"
+msgstr "Περίγραμμα"
+
+#: app/templates/app/visitors/forgot-password.html:12
+msgid "Enter your registered email account"
+msgstr "Εισάγετε τον καταχωρημένο email λογαριασμό"
+
+#: app/templates/app/visitors/forgot-password.html:21
+msgid "enter your valid email"
+msgstr "εισάγετε το έγκυρο email σας"
+
+#: app/templates/app/visitors/forgot-password.html:30
+#: app/templates/app/visitors/registration_success.html:18
+msgid "Go to Home page"
+msgstr "Επσιτροφή στην Αρχική σελίδα"
+
+#: app/templates/app/visitors/home.html:103
+msgid "Welcome on the Assistance On Demand platform"
+msgstr "Καλωσήρθατε στο Assistance On Demand "
+
+#: app/templates/app/visitors/home.html:104
+msgid "Fill in with content or load a static image"
+msgstr "Συμπληρώστε με το περιεχόμενο ή να φορτώσετε μια στατική εικόνα"
+
+#: app/templates/app/visitors/home.html:111
+msgid "Most popular service"
+msgstr "Δημοφιλέστερη υπηρεσία"
+
+#: app/templates/app/visitors/home.html:122
+#: app/templates/app/visitors/home.html:183
+msgid "Buy it"
+msgstr "Απόκτησε το"
+
+#: app/templates/app/visitors/home.html:172
+msgid "Most recently service"
+msgstr "Πιο πρόσφατη υπηρεσία"
+
+#: app/templates/app/visitors/home.html:232
+msgid "AoD description"
+msgstr "Περιγραφή του AoD"
+
+#: app/templates/app/visitors/home.html:235
+msgid ""
+"P4A AoD will adopt leading edge cloud computing technologies to efficiently \n"
+"                            support scalable access to services from/across different hardware/software platforms. Flexibility with \n"
+"                            respect both to the type of assistance services that will be offered through the aoD and to the way the \n"
+"                            user is interfaced/supported in his service search, reliability, robustness and affordability are of \n"
+"                            prime importance for the penetration of the Assistance Services that will be offered and for creating major \n"
+"                            impact in the marketplace."
+msgstr ""
+"Το AoD υιοθετεί τεχνολογίες αιχμής cloud computing για να υποστηρίξει\n"
+"επεκτάσιμη πρόσβαση σε υπηρεσίες από / προς πλατφόρμες με διαφορετικό hardware / software. \n"
+"Το AoD παρέχει ευελιξία ως προς το είδος υπηρεσιών και ως προς την αναζήτηση των υπηρεσιών. Η αξιοπιστία, η αντοχή και το προσιτό κόστος του είναι \n"
+"πρωταρχικής σημασίας για τη διείσδυση των ΑAssistance υπηρεσιών που θα προσφέρεται και για τη δημιουργία μεγάλου αντίκτυπου στην αγορά."
+
+#: app/templates/app/visitors/home.html:243
+msgid "Read More"
+msgstr "Διαβάστε περισσότερα"
+
+#: app/templates/app/visitors/login.html:40
+msgid "Enter your username"
+msgstr "Εισάγετε το όνομα χρήστη σας"
+
+#: app/templates/app/visitors/login.html:50
+msgid "Username or Email"
+msgstr "Όνομα χρήστη ή email"
+
+#: app/templates/app/visitors/login.html:58
+msgid "Enter your password"
+msgstr "Εισάγετε το συνθηματικό σας"
+
+#: app/templates/app/visitors/login.html:101
+msgid "Remember me"
+msgstr "Αποθήκευση"
+
+#: app/templates/app/visitors/login.html:122
+msgid "Forgot your password?"
+msgstr "Ξεχάσατε το συνθηματικό σας;"
+
+#: app/templates/app/visitors/registration.html:16
+msgid "Create a new Account"
+msgstr "Δημιουργία ενός νέου λογαριασμού"
+
+#: app/templates/app/visitors/registration.html:17
+msgid "Do you want to access our platform? Create a new account now!"
+msgstr ""
+"Επιθυμείτε να αποκτήσετε πρόσβαση πλατφόρμα μας; Δημιουργήστε ένα νέο "
+"λογαριασμό τώρα!"
+
+#: app/templates/app/visitors/registration.html:28
+msgid "Insert your name"
+msgstr "Εισάγεται το όνομα σας"
+
+#: app/templates/app/visitors/registration.html:56
+msgid "Username"
+msgstr "Όνομα χρήστη"
+
+#: app/templates/app/visitors/registration.html:62
+msgid "the username on platform"
+msgstr "το όνομα χρήστη στο AoD"
+
+#: app/templates/app/visitors/registration.html:77
+msgid "a valid email account"
+msgstr "έναν έγκυρο email λογαριασμό"
+
+#: app/templates/app/visitors/registration.html:92
+msgid "a private password"
+msgstr "το ιδιωτικό συνθηματικό"
+
+#: app/templates/app/visitors/registration.html:95
+msgid "Use at least 1 digit, 6 characters and at<br>least 1 special character"
+msgstr ""
+"Χρησιμοποιήστε τουλάχιστον 1 ψηφίο, 6 χαρακτήρες και <br>τουλάχιστον 1 "
+"ειδικό χαρακτήρα"
+
+#: app/templates/app/visitors/registration.html:101
+msgid "Password confirmation"
+msgstr "Επιβεβαίωση συνθηματικού"
+
+#: app/templates/app/visitors/registration.html:107
+msgid "confirm the password"
+msgstr "επιβεβαιώστε το συνθηματικό"
+
+#: app/templates/app/visitors/registration.html:110
+msgid "The password does not match"
+msgstr "Το συνθηματικό δεν ταιριάζει"
+
+#: app/templates/app/visitors/registration.html:122
+msgid "the mobile phone"
+msgstr "ο αριθμός κινητού"
+
+#: app/templates/app/visitors/registration.html:122
+msgid "optional"
+msgstr "προαιρετικό"
+
+#: app/templates/app/visitors/registration.html:154
+#, fuzzy
+msgid "Familiarity with IT services"
+msgstr "Εξοικείωση με τις υπηρεσίες πληροφορικής"
+
+#: app/templates/app/visitors/registration.html:160
+msgid "Clarify your level"
+msgstr "Επιλέξτε το επίπεδό σας"
+
+#: app/templates/app/visitors/registration.html:169
+msgid "Select a level"
+msgstr "Επιλέξτε ένα επίπεδο"
+
+#: app/templates/app/visitors/registration.html:175
+msgid "User role(s)"
+msgstr "Ρόλος(οι) χρήστη"
+
+#: app/templates/app/visitors/registration.html:183
+msgid "Consumer"
+msgstr "Καταναλωτής"
+
+#: app/templates/app/visitors/registration.html:227
+msgid "Preferred communication channels"
+msgstr "Προτιμώμενες κατηγορίες επικοινωνίας"
+
+#: app/templates/app/visitors/registration.html:248
+msgid "Acknowledgment"
+msgstr "Εντοπισμός"
+
+#: app/templates/app/visitors/registration.html:255
+msgid "How did you hear for P4A platform"
+msgstr "Πώς ενημερώθηκες για το έργο Prosperity4All;"
+
+#: app/templates/app/visitors/registration.html:256
+msgid "Friend"
+msgstr "Φίλος"
+
+#: app/templates/app/visitors/registration.html:257
+msgid "Internet"
+msgstr "Διαδίκτυο"
+
+#: app/templates/app/visitors/registration.html:258
+msgid "TV/Radio"
+msgstr "Τηλεόραση/ραδιόφωνο"
+
+#: app/templates/app/visitors/registration.html:259
+msgid "Other"
+msgstr "Άλλο"
+
+#: app/templates/app/visitors/registration.html:266
+msgid "What is the sum of the"
+msgstr "Βρείτε το άθροισμα του"
+
+#: app/templates/app/visitors/registration.html:272
+msgid "Answer to the question right"
+msgstr "Δώστε την σωστή απάντηση"
+
+#: app/templates/app/visitors/registration.html:280
+msgid "These field are mandatory in order to be completed your registration"
+msgstr "Tα πεδία αυτά είναι υποχρεωτικά ώστε να ολοκληρωθεί η εγγραφή σας"
+
+#: app/templates/app/visitors/registration.html:295
+msgid "By creating an account, you agree to our"
+msgstr "Δημιουργώντας ένα λογαρισμό, συμφωνείτε με τους"
+
+#: app/templates/app/visitors/registration_success.html:13
+msgid "Dear user, thank you for your registration with P4A platform"
+msgstr "Αγαπητέ χρήστη, σας ευχαριστούμε για την εγγραφή σας στο AoD"
+
+#: app/templates/app/visitors/registration_success.html:15
+msgid "Please check your email account to verify your registration"
+msgstr ""
+"Παρακαλώ ελέγξτε το ηλεκτρονικού ταχυδρομείου σας για να επιβεβαιώσετε την "
+"εγγραφή σας"
+
+#~ msgid "Site Maps"
+#~ msgstr "Χάρτης ιστότοπου"

@@ -1,4 +1,4 @@
-﻿ {% extends "app/base.html" %}
+ {% extends "app/base.html" %}
     {% load i18n %}
     {% load l10n %}
     {% block title %} 
@@ -27,7 +27,7 @@
         {% block breadcrumb %}
         <ol class="row breadcrumb" aria-label="breadcrumb">
             <li>
-                <a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="Home page">
+                <a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="{% trans 'Home page' %}">
                     <span class="fa fa-home"></span> {% trans 'Home' %}
                 </a>
             </li>
@@ -141,7 +141,7 @@
                                                         <h5>{% trans 'Licences' %}:</h5>
                                                     </div>
                                                     <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
-                                                        <h5 id="bought-service-license">None</h5>
+                                                        <h5 id="bought-service-license">{% trans 'None' %}</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -160,7 +160,7 @@
                                         <h3><span class="fa fa-book"></span> {% trans 'Instructions'%}</h3>
                                         <div class="margin-top-10 margin-bottom-10 padding-left-5">
                                             <h4>{% trans 'Requirements'%}</h4>
-                                            <div id="bought-service-requirements">None</div>
+                                            <div id="bought-service-requirements">{% trans 'None' %}</div>
                                         </div>
 
                                         <div class="margin-top-10 margin-bottom-10 bought-machine-service hidden padding-left-5">
@@ -180,7 +180,7 @@
                                     
                                     <!--Restrictions-->
                                     <div class="margin-top-10 padding-bottom-percent-1 info-block" >
-                                        <h3><span class="fa fa-filter"></span> Restrictions</h3>
+                                        <h3><span class="fa fa-filter"></span> {% trans 'Restrictions' %}</h3>
                                         <div class="margin-top-10 margin-bottom-10 padding-left-5">
                                             <h4>{% trans 'Languages availability'%}</h4>
                                             <div id="bought-service-languages">{% trans 'All languages are supported'%}</div>
@@ -207,15 +207,15 @@
                                     <div class="margin-top-10 padding-bottom-percent-1 info-block" >
                                         <h3><span class="fa fa-support"></span> {% trans 'Troubleshooting'%}</h3>
                                         <div class="padding-left-5">
-                                            <h4>Videos</h4>
+                                            <h4>{% trans 'Videos' %}</h4>
                                             <div id="bought-service-support-videos"></div>
-                                            <h4>Documents</h4>
+                                            <h4>{% trans 'Documents' %}</h4>
                                             <div id="bought-service-support-docs"></div>
-                                            <h4>Ask a volunteer</h4>
-                                            <div id="bought-service-support-volunteers">No available</div>
-                                            <h4>Ask a professional</h4>
-                                            <div id="bought-service-support-volunteers">No available</div>
-                                            <h4> Chat with service provider</h4>
+                                            <h4>{% trans 'Ask a volunteer' %}</h4>
+                                            <div id="bought-service-support-volunteers">{% trans 'No available' %}</div>
+                                            <h4>{% trans 'Ask a professional' %}</h4>
+                                            <div id="bought-service-support-volunteers">{% trans 'No available' %}</div>
+                                            <h4>{% trans 'Chat with service provider' %}</h4>
                                             <div id="bought-service-provider-skype"></div>
                                         </div>
                                     </div>
@@ -237,11 +237,11 @@
                                 <thead class="custom-aod-table-thead">
                                 <tr>
                                     <th data-field="id" data-sortable="true" data-switchable="false" data-visible="false" ></th>
-                                    <th data-field="title" data-align="center" data-sortable="true">Service title</th>
-                                    <th data-field="description" data-align="center" data-sortable="true" >Description</th>
-                                    <th data-field="type" data-align="center" data-sortable="true" data-visible="true" data-formatter="setTypeFormatter">Type</th>
-                                    <th data-field="price" data-sortable="true" data-visible="true" >Price</th>
-                                    <th data-field="action" data-sortable="true" data-visible="true" data-formatter="setRemoveFormatter">Remove</th>
+                                    <th data-field="title" data-align="center" data-sortable="true">{% trans 'Service title' %}</th>
+                                    <th data-field="description" data-align="center" data-sortable="true" >{% trans 'Description' %}</th>
+                                    <th data-field="type" data-align="center" data-sortable="true" data-visible="true" data-formatter="setTypeFormatter">{% trans 'Type' %}</th>
+                                    <th data-field="price" data-sortable="true" data-visible="true" >{% trans 'Price' %}</th>
+                                    <th data-field="action" data-sortable="true" data-visible="true" data-formatter="setRemoveFormatter">{% trans 'Delete' %}</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -253,7 +253,7 @@
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 margin-top-50" style="clear:both">
                     <center>
-                        <a href="{% url 'guided_assistance_landing_page' %}" class="btn btn-default" >Back to carer dashboard</a>
+                        <a href="{% url 'guided_assistance_landing_page' %}" class="btn btn-default" >{% trans 'Back to carer dashboard' %}</a>
                     </center>
                 </div>
             </div>
@@ -266,13 +266,17 @@
     {% block scripts %}
         <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
         <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM"></script>
+        <script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
         <script src="{% static 'app/scripts/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+        {% with 'app/scripts/bootstrap-table/dist/locale/'|add:bootstrap_table_locale_url as bootstrap_table_locale %}
+            <script type="text/javascript" src="{% static bootstrap_table_locale %}"></script>
+        {% endwith %}
         <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
         <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
         <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
         <script src="{% static 'app/scripts/p4a-lib/nas/preview/main.js' %}"></script>
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM"></script>
-        <script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
+
 
         <script type="text/javascript">
             

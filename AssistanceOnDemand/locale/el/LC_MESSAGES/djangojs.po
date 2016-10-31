@@ -1,0 +1,731 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-14 09:36+0300\n"
+"PO-Revision-Date: 2016-09-14 09:57+0135\n"
+"Last-Translator:   <admin@localhost.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Translated-Using: django-rosetta 0.7.11\n"
+
+#: app/static/app/scripts/jquery-ui/1.11.3/jquery-ui.min.js:8
+msgid "'"
+msgstr "'"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:197
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:208
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:227
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:238
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:249
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:264
+msgid "Invalid input"
+msgstr "Μη έγκυρη είσοδος"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:198
+msgid "The price values must be non negative numbers!"
+msgstr "Οι τιμές δεν πρέπει να είναι αρνητικός αριθμός!"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:200
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:211
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:230
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:241
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:252
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:267
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:294
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:303
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:826
+#: app/static/app/scripts/p4a-lib/nas/invitations/main.js:133
+#: app/static/app/scripts/p4a-lib/nas/requests/search.js:143
+#: app/templates/app/nas/configuration/index.html:661
+msgid "Continue"
+msgstr "Συνέχεια"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:209
+msgid ""
+"The maximum price value must be greater than (or equal with) the minimum "
+"one!"
+msgstr ""
+"Η μέγιστη τιμή πρέπει να είναι μεγαλύτερη από (ή ίση με) το ελάχιστο ένα!"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:228
+msgid ""
+"The minimum value of Quality of Service field is out of range. Please enter "
+"a value in range [0,5]!"
+msgstr ""
+"Η ελάχιστη τιμή του πεδίου Ποιότητα Υπηρεσιών είναι εκτός του επιτρεπτού. "
+"Παρακαλώ εισάγετε μια τιμή στο διάστημα [0,5]!"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:239
+msgid ""
+"The maximum value of Quality of Service field is out of range. Please enter "
+"a value in range [0,5]!"
+msgstr ""
+"Η μέγιστη τιμή του πεδίου Ποιότητα Υπηρεσιών είναι εκτός του επιτρεπτού. "
+"Παρακαλώ εισάγετε μια τιμή στο διάστημα [0,5]!"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:250
+msgid ""
+"The maximum value of Quality of Service field must be greater than (or equal"
+" with) the corresponding minimum one!"
+msgstr ""
+"Η μέγιστη τιμή του πεδίου Ποιότητα Υπηρεσιών πρέπει να είναι μεγαλύτερη από "
+"(ή ίση με) το αντίστοιχο ελάχιστο ένα!"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:265
+msgid ""
+"The distance value must be a non negative number. Keep in mind that this "
+"value maps to kilometers."
+msgstr ""
+"Η τιμή της απόστασης δεν πρέπει να είναι ένας αρνητικός αριθμός. Λάβετε "
+"υπόψη ότι η τιμή αυτή αντιστοιχίζεται σε χιλιόμετρα."
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:276
+msgid "AoD message"
+msgstr "Μήνυμα από AoD"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:277
+msgid ""
+"The AoD platform wants your permission to track your location. Do you agree "
+"with this action?"
+msgstr ""
+"Η πλατφόρμα AOD θέλει την άδειά σας για να παρακολουθεί τη θέση σας. "
+"Συμφωνείτε με αυτή την ενέργεια;"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:281
+msgid "Yes, I agree!"
+msgstr "Ναι, συμφωνώ!"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:282
+msgid "No, I do not agree!"
+msgstr "Όχι, δε συμφωνώ!"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:291
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:300
+msgid "Search progress"
+msgstr "Πρόοδος αναζήτησης"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:292
+msgid "AoD scans the services that meet your requirements"
+msgstr "Η AOD σαρώνει τις υπηρεσίες που ανταποκρίνονται στις απαιτήσεις σας"
+
+#: app/static/app/scripts/p4a-lib/consumers/dashboard.js:301
+msgid "The service searching was aborted."
+msgstr "Η αναζήτηση της υπηρεσίας ματαιώθηκε."
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/actions.js:28
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:295
+msgid "The deletion of this service failed"
+msgstr "Η διαγραφή αυτής της υπηρεσίας απέτυχε."
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:38
+msgid "load service details error"
+msgstr "Λάθος στη φόρτωση των λεπτομερειών της υηρεσίας"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:62
+msgid "Get stats"
+msgstr "Λήψη στατιστικών"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:66
+#: app/static/app/scripts/p4a-lib/nas/requests/search.js:149
+#: app/static/app/scripts/p4a-lib/profile-management.js:164
+#: app/static/app/scripts/p4a-lib/profile-management.js:215
+#: app/static/app/scripts/p4a-lib/profile-management.js:255
+#: app/static/app/scripts/p4a-lib/profile-management.js:303
+msgid "error"
+msgstr "Λάθος"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:79
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:248
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:148
+msgid "Service owner does not provide videos"
+msgstr "Ο ιδιοκτήτης της υπηρεσίας δεν παρέχει οπτικοακουστικό υλικό"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:80
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:248
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:148
+msgid ""
+"Service owner does not provide further documents (pdf, office documents, "
+"images, etc..)"
+msgstr ""
+"Ο ιδιοκτήτης της υπηρεσίας δεν παρέχει επιπλέον έγγραφα (pdf, office, "
+"εικόνες κτλ)"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:98
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:256
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:156
+msgid "Video presentation"
+msgstr "Παρουσίαση βίντεο"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:103
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:261
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:161
+msgid "Your browser does not support the video tag."
+msgstr "Το πρόγραμμα περιήγησής σας δεν υποστηρίζει την ετικέτα βίντεο."
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:110
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:268
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:168
+msgid "Office word document"
+msgstr "Έγγραφο του Office Word"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:116
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:274
+msgid "Office Excel document"
+msgstr "Έγγραφο του Office Excel"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:122
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:280
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:180
+msgid "Pdf document"
+msgstr "Έγγραφο Pdf"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:128
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:286
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:186
+msgid "Image file"
+msgstr "Αρχείο εικόνας"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:141
+msgid "ID"
+msgstr "Ταυτότητα"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:181
+msgid "No user feedback."
+msgstr "Δεν υπάρχουν σχόλια από το χρήστη"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/item/main.js:199
+msgid "User feedback for the service"
+msgstr "Σχόλια χρήστη για την υπηρεσία"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/list/provider-services.js:16
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:72
+msgid "Edit the service"
+msgstr "Επεξεργασία της υπηρεσίας"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/list/provider-services.js:24
+msgid "Remove the service"
+msgstr "Αφαιρέστε την υπηρεσία"
+
+#: app/static/app/scripts/p4a-lib/consumers/services/list/provider-services.js:32
+msgid "Show statistics"
+msgstr "Δείξε στατιστικά"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:46
+#: app/static/app/scripts/p4a-lib/google_map.js:28
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:288
+#: app/templates/app/nas/configuration/index.html:390
+msgid "Service"
+msgstr "Υπηρεσία"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:46
+#: app/static/app/scripts/p4a-lib/google_map.js:31
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:288
+#: app/templates/app/consumers/search/services/preview.html:62
+#: app/templates/app/nas/configuration/index.html:390
+msgid "Latitude"
+msgstr "Γεωγραφικό πλάτος"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:46
+#: app/static/app/scripts/p4a-lib/google_map.js:34
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:288
+#: app/templates/app/consumers/search/services/preview.html:62
+#: app/templates/app/nas/configuration/index.html:390
+msgid "Longitude"
+msgstr "Γεωγραφικό μήκος"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:140
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:41
+msgid "Service logo"
+msgstr "Λογότυπο της υπηρεσίας"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:152
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:53
+msgid "The service title is "
+msgstr "Ο τίτλος της υπηρεσίας είναι"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:171
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:56
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:276
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:72
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:304
+#: app/templates/app/nas/configuration/index.html:621
+#: app/templates/app/nas/configuration/index.html:706
+#: app/templates/app/nas/configuration/index.html:766
+msgid "Human-based"
+msgstr "Ανθρώπινες υπηρεσίες"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:176
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:57
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:276
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:77
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:306
+#: app/templates/app/nas/configuration/index.html:621
+#: app/templates/app/nas/configuration/index.html:706
+#: app/templates/app/nas/configuration/index.html:766
+msgid "Machine-based"
+msgstr "Υπηρεσίες λογισμικού"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:181
+msgid "All languages are supported"
+msgstr "Υποστηρίζονται όλες οι γλώσσες"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:207
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:107
+msgid "Useful link"
+msgstr "Χρήσιμος Σύνδεσμος"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:296
+msgid "Not available"
+msgstr "Μη διαθέσιμος"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:312
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:170
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:210
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:240
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:354
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:406
+#: app/static/app/scripts/p4a-lib/nas/invitations/main.js:139
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:212
+#: app/static/app/scripts/p4a-lib/nas/requests/search.js:140
+msgid "Network of assistance services"
+msgstr "Δίκτυο υπηρεσιών βοήθειας"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:313
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:171
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:211
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:241
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:355
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:437
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:213
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:333
+#: app/templates/app/nas/configuration/index.html:671
+msgid "Sorry, an error has occurred"
+msgstr "Λυπούμαστε, παρουσιάστηκε ένα σφάλμα"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:315
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:173
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:213
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:243
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:357
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:439
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:215
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:335
+#: app/templates/app/nas/configuration/index.html:673
+msgid "Try again!"
+msgstr "Προσπαθήστε ξανά!"
+
+#: app/static/app/scripts/p4a-lib/consumers/statistics/statistics.js:342
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:59
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:117
+msgid "YES"
+msgstr "ΝΑΙ"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:58
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:278
+#: app/templates/app/nas/configuration/index.html:710
+#: app/templates/app/nas/configuration/index.html:770
+msgid "FREE"
+msgstr "ΔΩΡΕΑΝ"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:60
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:114
+msgid "NO"
+msgstr "ΟΧΙ"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:285
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:292
+#: app/templates/app/nas/configuration/index.html:747
+#: app/templates/app/nas/configuration/index.html:787
+msgid "Purchase"
+msgstr "Αγορά"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:306
+msgid ""
+"Access the service configuration\n"
+" that provider suggests"
+msgstr "Δείτε τη διαμόρφωσης υπηρεσίας που προτείνει ο πάροχος "
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:318
+msgid "Select service"
+msgstr "Επιλέξτε Υπηρεσία"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:337
+msgid ""
+"No services selected. Navigate in the previous steps to select some services"
+msgstr ""
+"Δεν έχουν επιλεχθεί υπηρεσίες. Περιηγηθείτε στα προηγούμενα βήματα για να "
+"επιλέξετε κάποιες υπηρεσίες"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:392
+msgid "Error in services' retrieval"
+msgstr "Σφάλμα κατά την ανάκτηση των υπηρεσιών"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:402
+msgid ""
+"You have not selected services for all categories. If you want to declare "
+"more services as interesting or purchase more, please click on Select "
+"service button of the corresponding category."
+msgstr ""
+"Δεν έχετε επιλέξει υπηρεσίες για όλες τις κατηγορίες. Αν θέλετε να δηλώσετε "
+"περισσότερες υπηρεσίες ως ενδιαφέρουσες ή να αγοράσετε περισσότερες, "
+"παρακαλούμε κάντε κλικ στο κουμπί Επιλογή υπηρεσίας της αντίστοιχης "
+"κατηγορίας."
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:409
+msgid "Confirm"
+msgstr "Επιβεβαίωση"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:436
+msgid "Network of assistance services: installation steps"
+msgstr "Δίκτυο υπηρεσιών βοήθειας: βήματα εγκατάστασης"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:478
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:517
+msgid "No configuration has been set by service provider!"
+msgstr "Δεν έχει οριστεί ρύθμιση από τον πάροχο της υπηρεσίας!"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:773
+msgid "Customize the service configuration"
+msgstr "Προσαρμόστε τη ρύθμιση παραμέτρων των υπηρεσιών"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:778
+msgid "Proceed to service purchase"
+msgstr "Συνεχίστε στην αγορά της υηρεσίας"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:807
+msgid "Service configuration that provider offers"
+msgstr "Ρύθμιση παραμέτρων της υπηρεσίας που προσφέρεται αό τον πάροχο"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:814
+msgid "Parameters"
+msgstr "Παράμετροι"
+
+#: app/static/app/scripts/p4a-lib/guided_service_wizard.js:815
+msgid "Values"
+msgstr "Τιμές"
+
+#: app/static/app/scripts/p4a-lib/nas/invitations/main.js:89
+msgid "Express your interest"
+msgstr "Εκδήλωση ενδιαφέροντος"
+
+#: app/static/app/scripts/p4a-lib/nas/invitations/main.js:125
+msgid "Your invitation has been sent on "
+msgstr "Η πρόσκλησή σας έχει αποσταλεί"
+
+#: app/static/app/scripts/p4a-lib/nas/invitations/main.js:130
+msgid "Network of carers"
+msgstr "Δίκτυο υποστηρικτών"
+
+#: app/static/app/scripts/p4a-lib/nas/invitations/main.js:140
+#: app/static/app/scripts/p4a-lib/nas/requests/search.js:152
+msgid "An error occurred an your request has been abandoned."
+msgstr "Ένα λάθος προέιυψε και το αίτημά σας εγκαταλείφθηκε"
+
+#: app/static/app/scripts/p4a-lib/nas/invitations/main.js:142
+#: app/static/app/scripts/p4a-lib/nas/requests/search.js:154
+msgid "Sorry, try again!"
+msgstr "Λυπούμαστε, προσπαθήστε ξανά!"
+
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:174
+msgid "Office Excel dociument"
+msgstr "Έγγραφο του Office Excel"
+
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:312
+#: app/templates/app/nas/configuration/index.html:515
+#: app/templates/app/nas/configuration/index.html:733
+msgid "Remove"
+msgstr "Αφαίρεση"
+
+#: app/static/app/scripts/p4a-lib/nas/preview/main.js:332
+msgid "Remove an insteresting service"
+msgstr "Αφαίρεση ζητούμενης υπηρεσίας"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:26
+msgid "Cancel assistance request"
+msgstr "Ακύρωση αιτήματος υποστήριξης"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:27
+msgid ""
+"In case you cancel your assistance to a person with disabilities, the "
+"selected and purchased services will not be removed."
+msgstr ""
+"Σε περίπτωση που ακυρώσετε την συνδρομή σας σε ένα άτομο με αναπηρία, οι "
+"επιλεγμένες και αγορασμένες υπηρεσίες δεν θα αφαιρεθούν."
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:29
+msgid "Continue!"
+msgstr "Συνέχεια!"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:80
+msgid "Cancel your assistance on"
+msgstr "Ακύρωση υποστήριξης"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:80
+msgid " without the network removal"
+msgstr "χωρίς την αφαίρεση του δικτύου"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:89
+msgid "Set up the network of assistance services of"
+msgstr "Ρύθμιση του δικτύου υπηρεσιών υποστήριξης για"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:90
+msgid "Start"
+msgstr "Αρχή"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:103
+#: app/templates/app/nas/configuration/index.html:715
+#: app/templates/app/nas/configuration/index.html:775
+msgid "View"
+msgstr "Θέα"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:114
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:117
+msgid "The response in this request is still pending"
+msgstr "Η απάντηση σε αυτό το αίτημα εκκρεμεί"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:124
+msgid "Your assistance request has accepted"
+msgstr "Το αίτημα υποστήριξής σας έχει γίνει αποδεκτό"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:124
+msgid "Accepted"
+msgstr "Αποδεκτό"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:126
+msgid "Your assistance request has rejected"
+msgstr "Το αίτημα υποστήριξής σας δεν έχει γίνει αποδεκτό"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:126
+msgid "Forbidden"
+msgstr "Απαγορέυεται"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:128
+msgid "Your assistance request is still pending"
+msgstr "Το αίτημα υποστήριξής σας εκκρεμεί"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/main.js:128
+msgid "Pending"
+msgstr "Εκκρεμεί"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/search.js:141
+msgid "You need permission from "
+msgstr "Χρειάζεστε άδεια από"
+
+#: app/static/app/scripts/p4a-lib/nas/requests/search.js:141
+msgid ""
+" to setup his/her network of assistance services on behalf of him/her.\n"
+"Your request has been submitted."
+msgstr ""
+"για την εγκατάσταση του/της δικτύου καθοδηγούμενων υπηρεσιών εκ μέρους του / της. \n"
+"Το αίτημά σας έχει υποβληθεί."
+
+#: app/static/app/scripts/p4a-lib/nas/requests/search.js:151
+msgid "Network of assistance services "
+msgstr "Δίκτυο καθοδηγούμενων υπηρεσιών"
+
+#: app/static/app/scripts/p4a-lib/profile-management.js:168
+msgid "error 2"
+msgstr "σφάλμα-2"
+
+#: app/static/app/scripts/p4a-lib/profile-management.js:251
+msgid "Contact information was updated!"
+msgstr "Οι πληροφορίες επικοινωνίες ενημερώθηκαν"
+
+#: app/static/app/scripts/p4a-lib/profile-management.js:299
+msgid "Platform settings were updated!"
+msgstr "Οι ρυθμίσεις της εφαρμογής έχουν ενημερωθεί!"
+
+#: app/static/app/scripts/p4a-lib/profile-management.js:366
+#: app/static/app/scripts/p4a-lib/profile-management.js:370
+msgid "The replace of the cover image failed. Try again"
+msgstr "Η αλλαγή του εξώφυλλου απέτυχε. Προσπαθήστε πάλι"
+
+#: app/static/app/scripts/p4a-lib/profile-management.js:409
+#: app/static/app/scripts/p4a-lib/profile-management.js:413
+msgid "The replace of the logo failed. Try again"
+msgstr "Η αλλαγή του εικόνας απέτυχε. Προσπαθήστε πάλι"
+
+#: app/static/app/scripts/p4a-lib/profile-management.js:463
+#: app/static/app/scripts/p4a-lib/validate-registration.js:162
+msgid "Type at least 4 characters<br>without spaces"
+msgstr "Πληκτρολογήστε τουλάχιστον 4 χαρακτήρες <br> χωρίς κενά"
+
+#: app/static/app/scripts/p4a-lib/profile-management.js:467
+#: app/static/app/scripts/p4a-lib/validate-registration.js:166
+msgid " and select unique username"
+msgstr "και επιλέξτε μοναδικό όνομα χρήστη"
+
+#: app/static/app/scripts/p4a-lib/profile-management.js:467
+#: app/static/app/scripts/p4a-lib/validate-registration.js:166
+msgid "Type a non registered username"
+msgstr "Εισάγετε ένα μη καταχωρημένο όνομα χρήστη"
+
+#: app/static/app/scripts/p4a-lib/profile-management.js:547
+#: app/static/app/scripts/p4a-lib/validate-registration.js:271
+msgid "Invalid email"
+msgstr "Μη έγκυρο email"
+
+#: app/static/app/scripts/p4a-lib/profile-management.js:551
+#: app/static/app/scripts/p4a-lib/validate-registration.js:275
+msgid " - select <br/> a non registered email"
+msgstr "- επιλέξτε <br/>ένα μη καταχωρημένο email"
+
+#: app/static/app/scripts/p4a-lib/profile-management.js:551
+#: app/static/app/scripts/p4a-lib/validate-registration.js:275
+msgid "Type a non registered email"
+msgstr "Εισάγετε ένα μη καταχωρημένο email"
+
+#: app/static/app/scripts/p4a-lib/service-registration.js:534
+msgid "Success registration"
+msgstr "Η εγγραφή ολοκληρώθηκε επιτυχώς"
+
+#: app/static/app/scripts/p4a-lib/service-registration.js:538
+msgid "Fail in registration"
+msgstr "Η εγγραφή απέτυχε"
+
+#: app/static/app/scripts/p4a-lib/service-registration.js:632
+msgid "An error has occurred. The service modification failed"
+msgstr "Η ενημέρωση της υπηρεσίας απέτυχε λόγω ενός σφάλματος"
+
+#: app/static/app/scripts/p4a-lib/swap-buttons.js:35
+msgid "Debug state: "
+msgstr "Κατάσταση εκσφαλμάτωσης"
+
+#: app/static/app/scripts/p4a-lib/swap-buttons.js:44
+#, fuzzy
+msgid "Child node of btn A:"
+msgstr "Child node of btn A:"
+
+#: app/static/app/scripts/p4a-lib/swap-buttons.js:45
+#, fuzzy
+msgid "Child node of btn B:"
+msgstr "Child node of btn B:"
+
+#: app/static/app/scripts/p4a-lib/swap-buttons.js:55
+#, fuzzy
+msgid "Icon of btn A:"
+msgstr "Icon of btn A:"
+
+#: app/static/app/scripts/p4a-lib/swap-buttons.js:56
+#, fuzzy
+msgid "Icon of btn B:"
+msgstr "Icon of btn B:"
+
+#: app/static/app/scripts/p4a-lib/swap-buttons.js:66
+#, fuzzy
+msgid "Color of btn A:"
+msgstr "Color of btn A:"
+
+#: app/static/app/scripts/p4a-lib/swap-buttons.js:67
+#, fuzzy
+msgid "Color of btn B:"
+msgstr "Color of btn B:"
+
+#: app/static/app/scripts/p4a-lib/swap-buttons.js:90
+msgid "Initiate properties of buttons"
+msgstr "Αρχικοποίηση ιδιοτήτων κουμπιών"
+
+#: app/static/app/scripts/p4a-lib/swap-buttons.js:104
+msgid "Swap properties of buttons"
+msgstr "Εναλλαγή ιδιοτήτων των κουμπιών"
+
+#: app/static/app/scripts/p4a-lib/swap-buttons.js:112
+msgid "First button:"
+msgstr "Πρώτο κουμπί:"
+
+#: app/static/app/scripts/p4a-lib/swap-buttons.js:113
+msgid "Second button:"
+msgstr "Δεύτερο κουμπί:"
+
+#: app/static/app/scripts/p4a-lib/validate-registration.js:91
+#: app/static/app/scripts/p4a-lib/validate-registration.js:95
+msgid "Oops, an error is occured!!!"
+msgstr "Ένα σφάλμα προέκυψε!"
+
+#: app/static/app/scripts/p4a-lib/validate-registration.js:222
+msgid "% Complete (success)"
+msgstr "% Ολοκλήρωση (επιτυχώς)"
+
+#: app/templates/app/consumers/cart/index.html:44
+#: app/templates/app/consumers/search/services/preview.html:91
+msgid "An error occured"
+msgstr "Ένα σφάλμα συνέβη"
+
+#: app/templates/app/consumers/cart/index.html:48
+#: app/templates/app/consumers/search/services/preview.html:95
+msgid "An error is occured. The service modification failed"
+msgstr "Η ενημέρωση της υπηρεσίας απέτυχε. Προσπαθήστε ξάνα"
+
+#: app/templates/app/nas/configuration/index.html:522
+#: app/templates/app/nas/configuration/index.html:726
+msgid "Add"
+msgstr "Προσθήκη"
+
+#: app/templates/app/nas/configuration/index.html:538
+#: app/templates/app/nas/configuration/index.html:754
+msgid "Purchased"
+msgstr "Αγορασμένη"
+
+#: app/templates/app/nas/configuration/index.html:620
+msgid "Type"
+msgstr "Είδος"
+
+#: app/templates/app/nas/configuration/index.html:624
+msgid "Charging policy"
+msgstr "Πολιτική χρέωσης"
+
+#: app/templates/app/nas/configuration/index.html:628
+msgid "Price"
+msgstr "Κόστος"
+
+#: app/templates/app/nas/configuration/index.html:632
+msgid "Unit"
+msgstr "Νόμισμα"
+
+#: app/templates/app/nas/configuration/index.html:636
+msgid "Languages"
+msgstr "Γλώσσες"
+
+#: app/templates/app/nas/configuration/index.html:640
+msgid "Constraints"
+msgstr "Περιορισμοί"
+
+#: app/templates/app/nas/configuration/index.html:644
+msgid "Requirements"
+msgstr "Προαπαιτούμεν"
+
+#: app/templates/app/nas/configuration/index.html:648
+msgid "Installation guidelines"
+msgstr "Οδηγίες εγκατάστασης"
+
+#: app/templates/app/nas/configuration/index.html:670
+msgid "Error"
+msgstr "Σφάλμα"
+
+#: app/templates/app/nas/configuration/index.html:702
+#: app/templates/app/nas/configuration/index.html:762
+msgid "More details"
+msgstr "Λεπτομέρειες"
+
+#: app/templates/app/nas/configuration/index.html:725
+msgid "Denote service as interesting"
+msgstr "Δηλώστε την υπηρεσία ως ενδιαφέρουσα"
+
+#: app/templates/app/nas/configuration/index.html:754
+msgid "This service has been purchased"
+msgstr "Η υπηρεσία έχει αγοραστεί"
+
+#: app/templates/app/nas/configuration/index.html:775
+msgid "View on the map"
+msgstr "Δείτε στον χάρτη"

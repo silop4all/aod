@@ -84,13 +84,14 @@ class TechnicalSupportSerializer(serializers.ModelSerializer):
         model = TechnicalSupport
         fields = '__all__'
 
-class ServiceTechnicalSupport(serializers.ModelSerializer):
+class ServiceTechnicalSupportSerializer(serializers.ModelSerializer):
     technical_support_type = TechnicalSupportSerializer(read_only=True, many=True)
     class Meta:
         model = ServicesToTechnicalSupport
-        #fields = '__all__'
-        fields = ('id', 'title', 'service','technical_support','path', 'software_dependencies', 'format', 'technical_support_type',)
-
+        fields = ('id', 'title', 'service','technical_support','path', 'software_dependencies',
+            'format', 'technical_support_type', 'created_date', 'modified_date', 'visible'
+        )
+        depth=1
 
 class ServiceSerializer(serializers.ModelSerializer):
     
@@ -98,7 +99,7 @@ class ServiceSerializer(serializers.ModelSerializer):
         model = Services
         fields = ('id', 'title', 'description', 'categories', 'type', 'charging_policy', 'owner', 
             'price', 'unit', 'version', 'license','requirements', 'installation_guide', 
-            'link', 'usage_guidelines', 'availability', 'constraints', 'coverage', 'skype',
+            'usage_guidelines', 'is_public', 'constraints', 'coverage', 'skype',
             'language_constraint', 'location_constraint', 'latitude', 'longitude',  
             'created_date', 'modified_date',
             'languages', 'keywords', 'configuration', 'technical_support'
@@ -111,15 +112,15 @@ class DetailedServiceSerializer(serializers.ModelSerializer):
     languages       = ServiceLanguagesSerializer(read_only=True, many=True)
     keywords        = ServiceKeywordsSerializer(read_only=True, many=True)
     configuration   = ConfigurationSerializer(read_only=True, many=True)
-    technical_support = ServiceTechnicalSupport(read_only=True, many=True)
+    technical_support = ServiceTechnicalSupportSerializer(read_only=True, many=True)
     
     class Meta:
         model = Services
         fields = ('id', 'title', 'description', 'categories', 'type', 'charging_policy', 'owner', 
             'price', 'unit', 'version', 'license','requirements', 'installation_guide', 
-            'link', 'usage_guidelines', 'availability', 'constraints', 
+            'usage_guidelines', 'is_public', 'constraints', 
             'language_constraint', 'location_constraint', 'latitude', 'longitude',  
-            'created_date', 'modified_date', 'cover', 'image', 'coverage', 'skype',
+            'created_date', 'modified_date', 'image', 'coverage', 'skype',
             'languages', 'keywords', 'configuration', 'technical_support',
         )
         depth = 1
@@ -139,7 +140,7 @@ class ServiceLanguagesSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'languages')
 
 class ServiceTechicalSupportSerializer(serializers.ModelSerializer):
-    technical_support = ServiceTechnicalSupport(read_only=True, many=True)
+    technical_support = ServiceTechnicalSupportSerializer(read_only=True, many=True)
     
     class Meta:
         model = Services
@@ -197,4 +198,25 @@ class ConsumerAssistServicesConfigurationSerializer(serializers.ModelSerializer)
 
 
 
-# ML 
+class UserThemeSerializer(serializers.ModelSerializer):
+    
+    
+    class Meta:
+        model = UserTheme
+        fields = '__all__'
+
+
+class PublishQuestionSerializer(serializers.ModelSerializer):
+    """Serialize the incoming questions"""
+    class Meta:
+        model = IncomingQuestions
+        fields = '__all__'
+
+
+
+
+class SimpleServiceSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Services
+        fields = '__all__'

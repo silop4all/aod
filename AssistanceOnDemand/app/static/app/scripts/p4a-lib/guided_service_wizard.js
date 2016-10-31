@@ -8,6 +8,8 @@
  */
 
 var GuidedWizard = GuidedWizard || (function () {
+    // use gettext(variable) for translation 
+
     // private variables
     var prevElement = null;
     var currElement = null;
@@ -51,11 +53,11 @@ var GuidedWizard = GuidedWizard || (function () {
     };
 
     var translation = {
-        "label_human_based":    "Human-based",
-        "label_machine_based":  "Machine-based",
-        'label_cost_free':      'FREE',
-        'label_yes':            "YES",
-        'label_no':             "NO"
+        "label_human_based":    gettext("Human-based"),
+        "label_machine_based":  gettext("Machine-based"),
+        'label_cost_free':      gettext('FREE'),
+        'label_yes':            gettext("YES"),
+        'label_no':             gettext("NO")
     };
 
     
@@ -165,10 +167,10 @@ var GuidedWizard = GuidedWizard || (function () {
             error: function (response) {
                 swal({
                     html: false,
-                    title: "Network of assistance services",
-                    text: 'Sorry, an error has occurred',
+                    title: gettext("Network of assistance services"),
+                    text: gettext('Sorry, an error has occurred'),
                     type: "warning",
-                    confirmButtonText: "Try again!",
+                    confirmButtonText: gettext("Try again!"),
                     confirmButtonColor: "#d9534f"
                 });
             },
@@ -205,10 +207,10 @@ var GuidedWizard = GuidedWizard || (function () {
             error: function (response) {
                 swal({
                     html: false,
-                    title: "Network of assistance services",
-                    text: 'Sorry, an error has occurred',
+                    title: gettext("Network of assistance services"),
+                    text: gettext('Sorry, an error has occurred'),
                     type: "warning",
-                    confirmButtonText: "Try again!",
+                    confirmButtonText: gettext("Try again!"),
                     confirmButtonColor: "#d9534f"
                 });
             },
@@ -235,10 +237,10 @@ var GuidedWizard = GuidedWizard || (function () {
             error: function (response) {
                 swal({
                     html: false,
-                    title: "Network of assistance services",
-                    text: 'Sorry, an error has occurred',
+                    title: gettext("Network of assistance services"),
+                    text: gettext('Sorry, an error has occurred'),
                     type: "warning",
-                    confirmButtonText: "Try again!",
+                    confirmButtonText: gettext("Try again!"),
                     confirmButtonColor: "#d9534f"
                 });
             },
@@ -271,23 +273,23 @@ var GuidedWizard = GuidedWizard || (function () {
                     for (var i in response["servicesList"]) {
                         if (response["servicesList"][i]['services'].length > 0) {
                             for (var s in response["servicesList"][i]['services']) {
-                                var type = (response["servicesList"][i].type == 'H') ? "Human-based" : "Machine-based";
+                                var type = (response["servicesList"][i].type == 'H') ? gettext("Human-based") : gettext("Machine-based");
                                 var location = (response["servicesList"][i].location_constraint == 1) ? "<button class='btn btn-link nas-coordinates-btn'><span class='fa fa-globe fa-lg text-info'></span></button>" : "-";
-                                var price = (response["servicesList"][i].price == 0) ? 'FREE' : response["servicesList"][i].price + ' (' + response["servicesList"][i].unit + ')';
+                                var price = (response["servicesList"][i].price == 0) ? gettext('FREE') : response["servicesList"][i].price + ' (' + response["servicesList"][i].unit + ')';
                                 var selected = '';
 
                                 if (response['servicesList'][i].temp_selected == false) {
                                     selected += [
                                         '<button class="btn btn-success btn-xs nas-submit-service" data-action="" data-resource="" data-service-id="' + response["servicesList"][i]['services'][s].id + '">',
                                         '<i class="fa fa-check"></i> ',
-                                        '<span> Purchase</span>',
+                                        '<span> '+ gettext('Purchase') +'</span>',
                                         '</button>'
                                     ].join('');
                                 }
                                 else {
                                     selected += [
                                         '<button class="btn btn-info btn-xs nas-submit-service" data-action="' + response["servicesList"][i]['services'][s].submit_service_url + '" data-resource="' + response["servicesList"][i]['services'][s].service_config_url + '" data-service-id="' + response["servicesList"][i]['services'][s].id + '">',
-                                            '<span data-placement="bottom" title="Purchase the ' + response["servicesList"][i]['services'][s].title  + ' service"> Purchase</span>',
+                                            '<span data-placement="bottom" title="Purchase the ' + response["servicesList"][i]['services'][s].title + ' service"> ' + gettext('Purchase') + '</span>',
                                         '</button>'
                                     ].join('');
                                 }
@@ -301,7 +303,7 @@ var GuidedWizard = GuidedWizard || (function () {
                                         '<span class="text-muted preview-service"></span>',
                                     '</td>',
                                     '<td class="custom-aod-table-td text-center">',
-                                        '<button class="btn btn-link nas-config-btn" data-url="' + response["servicesList"][i]['services'][s].details_url + '" data-service-id="' + response["servicesList"][i]['services'][s].id + '" data-placement="bottom" title="Access the service configuration\n that provider suggests">',
+                                        '<button class="btn btn-link nas-config-btn" data-url="' + response["servicesList"][i]['services'][s].details_url + '" data-service-id="' + response["servicesList"][i]['services'][s].id + '" data-placement="bottom" title="'+gettext("Access the service configuration\n that provider suggests") +'">',
                                         '<span class="fa fa-cogs fa-lg"></span></button>',
                                     '</td>',
                                     '<td class="text-center custom-aod-table-td">' + selected + '</td>',
@@ -313,7 +315,7 @@ var GuidedWizard = GuidedWizard || (function () {
                             catAlert = 0;
                             var selected = [
                                         '<button class="btn btn-default btn-xs final-step-select-service" data-href="#cat' + response["servicesList"][i].category.id + '">',
-                                            '<span data-placement="bottom" title="Access the \n' + response["servicesList"][i].category.title + ' category"> Select service</span>',
+                                            '<span data-placement="bottom" title="Access the \n' + response["servicesList"][i].category.title + ' category"> '+gettext("Select service") +'</span>',
                                         '</button>'
                             ].join('');
 
@@ -332,7 +334,7 @@ var GuidedWizard = GuidedWizard || (function () {
                     catAlert = 0;
                     tbody = [
                         '<tr>',
-                            '<td colspan="4" class="text-center custom-aod-table-td">No services selected. Navigate in the previous steps to select some services!<td>',
+                            '<td colspan="4" class="text-center custom-aod-table-td">'+ gettext("No services selected. Navigate in the previous steps to select some services") +'!<td>',
                         '</tr>'
                     ].join('');
                 }
@@ -349,10 +351,10 @@ var GuidedWizard = GuidedWizard || (function () {
             error: function (response) {
                 swal({
                     html: false,
-                    title: "Network of assistance services",
-                    text: 'Sorry, an error has occurred',
+                    title: gettext("Network of assistance services"),
+                    text: gettext('Sorry, an error has occurred'),
                     type: "warning",
-                    confirmButtonText: "Try again!",
+                    confirmButtonText: gettext("Try again!"),
                     confirmButtonColor: "#d9534f"
                 });
             },
@@ -387,7 +389,7 @@ var GuidedWizard = GuidedWizard || (function () {
                 $("span").tooltip({ trigger: "hover" });
             },
             error: function (response) {
-                console.error("Error in services' retrieval");
+                console.error(gettext("Error in services' retrieval"));
             },
             complete: function () {
                 loading.hide();
@@ -397,14 +399,14 @@ var GuidedWizard = GuidedWizard || (function () {
     }
 
     var categoriesAlert = function categoriesAlert() {
-        var text = "You have not selected services for all categories. If you want to declare more services as interesting or purchase more, please click on Select service button of the corresponding category.";
+        var text = gettext("You have not selected services for all categories. If you want to declare more services as interesting or purchase more, please click on Select service button of the corresponding category.");
 
         swal({
             html: false,
-            title: "Network of assistance services",
+            title: gettext("Network of assistance services"),
             text: text,
             type: "info",
-            confirmButtonText: "Confirm",
+            confirmButtonText: gettext("Confirm"),
             confirmButtonColor: "#428bca"
         });
     }
@@ -431,10 +433,10 @@ var GuidedWizard = GuidedWizard || (function () {
             error: function (response) {
                 swal({
                     html: false,
-                    title: "Network of assistance services: installation steps",
-                    text: 'Sorry, an error has occurred',
+                    title: gettext("Network of assistance services: installation steps"),
+                    text: gettext('Sorry, an error has occurred'),
                     type: "warning",
-                    confirmButtonText: "Try again!",
+                    confirmButtonText: gettext("Try again!"),
                     confirmButtonColor: "#d9534f"
                 });
             },
@@ -473,7 +475,7 @@ var GuidedWizard = GuidedWizard || (function () {
                 else {
                     tbody += [
                         '<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">',
-                            '<span>No configuration has been set by service provider!</span>',
+                            '<span>' + gettext('No configuration has been set by service provider!') +'</span>',
                         '</div>'
                     ].join('');
                 }
@@ -512,7 +514,7 @@ var GuidedWizard = GuidedWizard || (function () {
                 else {
                     tbody += [
                         '<tr>',
-                        '<td colspan="2" class="custom-aod-table-td text-center">No configuration has been set by service provider!</td>',
+                        '<td colspan="2" class="custom-aod-table-td text-center">' + gettext('No configuration has been set by service provider!') + '</td>',
                         '</tr>'
                     ].join('');
                 }
@@ -768,12 +770,12 @@ var GuidedWizard = GuidedWizard || (function () {
         purchase: function (element) {
             // Consumer purchases a service (write configuration and relationship)
             var serviceId = element.data('serviceId');
-            var title = "Customize the service configuration";
+            var title = gettext("Customize the service configuration");
             var content = '<div id="update-configuration"></div>';
             retrieveEditableConfiguration(element.data('resource'));
             var nasID = submitSelectedServices(serviceId);
 
-            modalAction(title, content, "Proceed to service purchase", function (feedback) {
+            modalAction(title, content, gettext("Proceed to service purchase"), function (feedback) {
                 if (feedback) {
                     $("#update-configuration").find($(".row")).each(function () {
                         var config = {
@@ -802,15 +804,15 @@ var GuidedWizard = GuidedWizard || (function () {
         viewConfig: function (element) {
             // Load and preview service configuration
             var url = element.data('url');
-            var title = "Service configuration that provider offers";
+            var title = gettext("Service configuration that provider offers");
             var content = [
                 '<div class="row">',
                     '<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">',
                         '<table class="configuration-table table table-responsive">',
                             '<thead>',
                                 '<tr class="">',
-                                    '<th class="custom-aod-table-th">Parameters</th>',
-                                    '<th class="custom-aod-table-th">Values</th>',
+                                    '<th class="custom-aod-table-th">'+ gettext("Parameters") +'</th>',
+                                    '<th class="custom-aod-table-th">'+ gettext("Values") + '</th>',
                                 '</tr>',
                             '</thead>',
                             '<tbody id="configuration-table-body"></tbody>',
@@ -821,7 +823,7 @@ var GuidedWizard = GuidedWizard || (function () {
 
             retrieveConfiguration(url);
 
-            modalAction(title, content, "Continue", function () { });
+            modalAction(title, content, gettext("Continue"), function () { });
         },
         search: keywordsResult
     }

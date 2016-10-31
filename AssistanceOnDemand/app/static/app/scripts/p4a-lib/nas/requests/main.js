@@ -23,12 +23,12 @@
     $(document).on('click', '#cancel-assist-request', function () {
         swal({
             html: false,
-            title: "Cancel assistance request",
-            text: "In case you cancel your assistance to a person with disabilities, the selected and purchased services will not be removed.",
+            title: gettext("Cancel assistance request"),
+            text: gettext("In case you cancel your assistance to a person with disabilities, the selected and purchased services will not be removed."),
             type: "info",
-            confirmButtonText: "Continue!",
-            confirmButtonColor: "#3a87ad",
-            confirmButtonClass: "btn-info",
+            confirmButtonText: gettext("Continue!"),
+            confirmButtonColor:  "#3a87ad",
+            confirmButtonClass: "text-success",
             showCancelButton: false
         });
     });
@@ -69,7 +69,7 @@ function setTable() {
 
 function editFormatter(value, row, index) {
     return [
-        '<a class="btn btn-toolbar edit-service" href="javascript:void(0)" title="Edit the service">',
+        '<a class="btn btn-toolbar edit-service" href="javascript:void(0)" title="' + gettext("Edit the service") + '">',
             '<span class="fa fa-pencil-square-o fa-lg text-success"></span>',
         '</a>'
     ].join('');
@@ -77,7 +77,7 @@ function editFormatter(value, row, index) {
 
 function removeInterestFormatter(value, row, index) {
     return [
-        '<a class="btn btn-toolbar delete-interest" data-resource="' + row['resource'] + '" href="javascript:void(0)" data-placement="bottom" title="Cancel your assistance on ' + row['user_info'] + ' without the network removal" data-request-id="' + row['id'] + '">',
+        '<a class="btn btn-toolbar delete-interest" data-resource="' + row['resource'] + '" href="javascript:void(0)" data-placement="bottom" title="' + gettext('Cancel your assistance on') + ' ' + row['user_info'] + gettext(' without the network removal') + '" data-request-id="' + row['id'] + '">',
             '<span class="fa fa-remove fa-lg text-danger"></span> <span class="text-danger">Cancel</span>',
         '</a>'
     ].join('');
@@ -86,8 +86,8 @@ function removeInterestFormatter(value, row, index) {
 function setNetworkFormatter(value, row, index) {
     if (row['request_state'] == "True") {
         return [
-            '<a class="btn btn-link" href="' + row['setup_network'] + '" data-placement="bottom" title="Set up the network of assistance services of ' + row['user_info'] + '" data-request-id="' + row['consumer_id'] + '">',
-                '<span class="fa fa-play-circle fa-lg text-success"></span> <span class="text-success">Start</span>',
+            '<a class="btn btn-link" href="' + row['setup_network'] + '" data-placement="bottom" title="' + gettext('Set up the network of assistance services of') + ' '  + row['user_info'] + '" data-request-id="' + row['consumer_id'] + '">',
+                '<span class="fa fa-play-circle fa-lg text-success"></span> <span class="text-success">' + gettext("Start") + '</span>',
             '</a>'
         ].join('');
     }
@@ -100,7 +100,7 @@ function previewNetworkFormatter(value, row, index) {
     if (row['request_state'] == "True") {
         return [
             '<a class="btn btn-link" data-consumer-id="' + row['consumer_id'] + '" href="' + row['view_network'] + '" data-placement="bottom" title="Access the network of assistance services of ' + row['user_info'] + '">',
-            '<i class="fa fa-search fa-lg text-info"></i> <span class="text-primary">View</span>',
+            '<i class="fa fa-search fa-lg text-primary"></i> <span class="text-primary">' + gettext("View") + '</span>',
             '</a>'
         ].join('');
     }
@@ -111,21 +111,21 @@ function previewNetworkFormatter(value, row, index) {
 
 function setRequestResponseFormatter(value, row, index) {
     if (row['request_response'] == "False") {
-        return '<label class="label label-warning" data-placement="bottom" title="The response in this request is still pending">NO</label>';
+        return '<label class="label label-warning" data-placement="bottom" title="' + gettext("The response in this request is still pending") + '">' + gettext("NO") + '</label>';
     }
     else{
-        return '<label class="label label-success" data-placement="bottom" title="The response in this request is still pending">YES</label>';
+        return '<label class="label label-success" data-placement="bottom" title="' + gettext("The response in this request is still pending") + '">' + gettext("YES") + '</label>';
     }
 }
 
 function setRequestStateFormatter(value, row, index) {
     if (row['request_response'] == "True") {
         if (row['request_state'] == "True") {
-            return '<label class="label label-success" data-placement="bottom" title="Your assistance request has accepted">Accepted</label>';
+            return '<label class="label label-success" data-placement="bottom" title="' + gettext("Your assistance request has accepted") + '">' + gettext("Accepted") + '</label>';
         }
-        return '<label class="label label-danger" data-placement="bottom" title="Your assistance request has rejected">Forbidden</label>';
+        return '<label class="label label-danger" data-placement="bottom" title="' + gettext("Your assistance request has rejected") + '>' + gettext("Forbidden") + '</label>';
     }
-    return '<label class="label label-warning" data-placement="bottom" title="Your assistance request is still pending">Pending</label>';
+    return '<label class="label label-warning" data-placement="bottom" title="' + gettext("Your assistance request is still pending") + '>' + gettext("Pending") + '</label>';
 }
 
 function deleteNasRequest(element) {

@@ -88,11 +88,11 @@ $("form").submit(function (event) {
                 window.location = response.redirect;
             }
             else {
-                alert("Oops, an error is occured!!!");
+                alert(gettext("Oops, an error is occured!!!"));
             }
         },
         error: function(response){
-            alert("Oops, an error is occured!!!");
+            alert(gettext("Oops, an error is occured!!!"));
         },
         complete: function () {
             loading.hide();
@@ -159,11 +159,11 @@ function validateUsername(username, label) {
 
     if (!regex.test(username.val())) {
         valid = false;
-        message = "Type at least 4 characters<br>without spaces";
+        message = gettext("Type at least 4 characters<br>without spaces");
     }
 
     if (unique == false) {
-        message += (message.length > 0) ? " and select unique username" : "Type a non registered username";
+        message += (message.length > 0) ? gettext(" and select unique username") : gettext("Type a non registered username");
     }
 
     if (!(valid && unique)) {
@@ -219,7 +219,7 @@ $("#rg_pwd").keyup(function () {
 // Show the strength level of password
 function progressBar(color, curValue) {
     return '<div class="progress-bar ' + color + '" role="progressbar" id="my_bar" aria-valuenow="' + curValue + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + curValue + '%">' +
-            '<span class="sr-only">' + curValue + '% Complete (success)</span>' +
+            '<span class="sr-only">' + curValue + gettext('% Complete (success)') + '</span>' +
         '</div>';
 }
 
@@ -268,11 +268,11 @@ function validateEmail(email, label) {
 
     if (!regex.test(email.val())) {
         valid = false;
-        message = "Invalid email";
+        message = gettext("Invalid email");
     }
 
     if (unique == false) {
-        message += (message.length > 0) ? " - select <br/> a non registered email" : "Type a non registered email";
+        message += (message.length > 0) ? gettext(" - select <br/> a non registered email") : gettext("Type a non registered email");
     }
 
     if (!(valid && unique)) {

@@ -1,280 +1,134 @@
 ﻿{% load i18n %}
 {% load l10n %}
 <div class="service-basic-info-box">
-    <div class="row form-group">
-        <h4 class="col-lg-offset-1 col-xs-offset-1 col-md-offset-1 col-sm-offset-10 text-center"> Basic information</h4>
-    </div>
-    <hr class="service-hr">
-
-    <!--title-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_title" title="Enter the title of the service">Title<span class="mandatory-field"> *</span></label>
+    <form  id="BasicServiceForm" name="BasicServiceForm" action="#basic">
+        <div class="row form-group">
+            <h3 class="col-lg-offset-1 col-xs-offset-1 col-md-offset-1 col-sm-offset-10"> {% trans 'Basic information' %}</h3>
         </div>
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Enter the title of the service">
-            <span class="input-group-addon">
-                <span class="fa fa-info fa-fw" role="img"></span>
-            </span>
-            <input type="text" class="form-control" name="srv_title" id="srv_title" value="{{ service.title |safe}}" autocomplete="off" maxlength="128" placeholder="The title of the service" autofocus />    
-        </div>
-        <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_title_error" data-placement="right" data-toggle="tooltip" title="Title required"></label>
-        </div>
-    </div>
-
-    <!--description-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_description" title="Description of the service">Description<span class="mandatory-field"> *</span></label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Description of the service" id="srv_description_node">
-            <span class="input-group-addon">
-                <span class="fa fa-info fa-fw" role="img"></span>
-            </span>
-            <textarea rows="3" cols="50" id="srv_description" name="srv_description" class="form-control" form="insert-new-service" maxlength="500" placeholder="Provide a brief description of the service (500 characters)">{{ service.description |safe}}</textarea>
-        </div>
-        <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_description_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Title required"></label>
-        </div>
-    </div>
-
-    <!--service type-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_type" title="Type of the service">Type<span class="mandatory-field"> *</span></label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Type of the service" id="srv_type_node">
-            <span class="input-group-addon">
-                <span class="fa fa-info fa-fw" role="img"></span>
-            </span>
-            <select class="selectpicker form-control show-tick"  name="srv_type" id="srv_type" data-max-options="1" data-size="3"  data-header="Select the type of the service" data-live-search="false" title="-- Select the type --">
-                <option value="-1" disabled selected>-- Select the type --</option> 
-                {% if types %}
-                    {% for i in types %}
-                        {% if service.type == i.id %}
-                            <option value="{{ i.id }}" selected>{{ i.description }}</option>
-                        {% else %}
-                            <option value="{{ i.id }}">{{ i.description }}</option>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            </select>
-        </div>
-        <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_type_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Title required"></label>
-        </div>
-    </div>
-
-    <!--categories list-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_category" title="Clarify the service in categories">Category<span class="mandatory-field"> *</span></label>
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Clarify the service in categories" id="srv_category_node">
-            <span class="input-group-addon">
-                <span class="fa fa-info fa-fw" role="img"></span>
-            </span>
-            <select class="selectpicker form-control"  name="srv_category" id="srv_category" data-size="6" data-resource="{% url 'private_api:categories_tree' %}" data-header="Clarify your service" data-live-search="true" role="list" title="-- Clarify your service --" data-selected-text-format="count>3" multiple>
-                <!--append categories-->
-            </select>
-        </div>
-        <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_category_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Title required"></label>
-        </div>
-    </div>
-
-   <!--image/logo-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_logo" title="The image of the service">Image<span class="mandatory-field"> *</span></label>
-        </div>
-        <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12 input-group controls" title="The logo of the service">
-            {% if service %}
-                <input type="file" id="srv_logo" name="srv_logo" accept="image/*" size="1" value="{{ MEDIA_URL}}app/services/images/{{ service.image }}" style="display:none" form="insert-new-service" />
-            {% else %}
-                <input type="file" id="srv_logo" name="srv_logo" accept="image/*" size="1" style="display:none" form="insert-new-service" />
-            {% endif %}
-            <div class="row col-md-12 col-sm-12 col-lg-12 col-xs-12">
-                <img id="thumbnail" class="img-thumbnail img-responsive" src="{{ MEDIA_URL}}app/services/images/{{ service.image }}" style="border:1px solid #D8D8D8; max-width:450px" alt="Service logo"/>
+        <hr class="service-hr">
+        <!--title-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="title" title="{% trans 'Enter the title of the service' %}">{% trans 'Title' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="title" title="{% trans 'Enter the title of the service' %}">{% trans 'Title' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Enter the title of the service' %}">
+                <input type="text" class="form-control" name="title" id="title" value="{{ service.title |safe}}" autocomplete="off" maxlength="128" placeholder="{% trans 'The title of the service' %}" autofocus required/>    
             </div>
         </div>
-        <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_logo_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Upload at least an image/logo"></label>
-        </div>
-    </div>
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12"></div>
-        <div class=" row col-md-8 col-sm-8 col-lg-8 col-xs-12 input-group controls">
-            <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" >
-                <a href="#" class="btn btn-default btn-sm pull-left" onclick="return addLogo();" id="load_logo" title="Add the image of the service">
-                    <i class="fa fa-plus fa-fw text-primary"></i> Load image
-                </a>
+        <!--description-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="description" title="{% trans 'Description of the service' %}">{% trans 'Description' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="description" title="{% trans 'Description of the service' %}">{% trans 'Description' %}<span class="highlight-error-message"> *</span></label>
             </div>
-            <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 input-group controls {% if not service.image %} hidden {% endif %}" id="clear_thumbnail">
-                <a href="#" class="btn btn-default btn-sm pull-right" onclick="return removeLogo();" title="Remove the image of the service">
-                    <i class="fa fa-remove fa-fw text-danger"></i> Clear image
-                </a>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Description of the service' %}" id="description_node">
+                <textarea rows="6" cols="50" id="description" name="description" class="form-control" form="BasicServiceForm" maxlength="500" placeholder="{% trans 'Provide a brief description of the service (500 characters)' %}" required>{{ service.description |safe}}</textarea>
             </div>
         </div>
-    </div>
-
-    <!--bgr cover-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_cover_image" title="Select a image for background">Background image<small>*</small></label>
+        <!--service type-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="type" title="{% trans 'Type of the service' %}">{% trans 'Type' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="type" title="{% trans 'Type of the service' %}">{% trans 'Type' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12 input-group controls clearfix" title="{% trans 'Type of the service' %}" id="type_node">
+                <select class="selectpicker form-control show-tick"  name="type" id="type" form="BasicServiceForm"  data-max-options="1" data-size="3"  data-header="{% trans 'Select the type of the service' %}" data-live-search="false" title="-- {% trans 'Select the type' %} --" required>
+                    <option value="-1" disabled selected>-- {% trans 'Select the type' %} --</option> 
+                        {% for i in types %}
+                            <option value="{{ i.0 }}" {% if service.type == i.0 %} selected {% endif %}>{{ i.1 }}</option>
+                        {% empty %}
+                        {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-5 col-md-5 col-lg-5"></div>
         </div>
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="Select a image for background" id="srv_cover_image_node">
-            <span class="input-group-addon">
-                <span class="fa fa-image fa-fw" role="img"></span>
-            </span>
-            {% if service.cover %}
-            <select class="selectpicker form-control show-tick"  name="srv_cover_image" id="srv_cover_image" data-max-options="1" data-size="5"  data-header="Select the cover image for the service" data-live-search="false" role="list" title="-- Cover image --">
-                {% if covers %}
-                    {% for i in covers %}
-                        {% if service.cover == i.path %}
-                        <option value="{{ i.path }}" class="cover-name" selected>{{ i.file|safe }}</option>
-                        {% else %}
-                        <option value="{{ i.path }}" class="cover-name">{{ i.file|safe }}</option>
-                        {% endif %}
-                    {% endfor %}
+        <!--categories list-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="categories" title="{% trans 'Clarify the service in categories' %}">{% trans 'Category' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="categories" title="{% trans 'Clarify the service in categories' %}">{% trans 'Category' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12 input-group controls clearfix" title="{% trans 'Clarify the service in categories' %}" id="category_node">
+                <select class="form-control"  name="categories" id="categories" form="BasicServiceForm"  data-size="6" data-resource="{% url 'private_api:categories_tree' %}" data-header="{% trans 'Clarify your service' %}" data-live-search="true" role="list" title="-- {% trans 'Clarify your service' %} --" data-selected-text-format="count>3" multiple required>
+                    <!--append categories-->
+                </select>
+            </div>
+            <div class="col-sm-5 col-md-5 col-lg-5"></div>
+        </div>
+       <!--image-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="image" title="{% trans 'The image of the service' %}">{% trans 'Image'%}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="image" title="{% trans 'The image of the service' %}">{% trans 'Image'%}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'The logo of the service' %}">
+                {% if service %}
+                    <input type="file" id="image" name="image"  accept="image/*" size="1" value="{% if service.image %}{{ MEDIA_URL}}app/services/images/{{ service.image }}{% else %}{% endif %}" style="display:none" form="BasicServiceForm"/>
+                {% else %}
+                    <input type="file" id="image" name="image" accept="image/*" size="1" style="display:none" form="BasicServiceForm"/>
                 {% endif %}
-            </select>
-            {% else %}
-            <select class="selectpicker form-control show-tick"  name="srv_cover_image" id="srv_cover_image" data-max-options="1" data-size="5"  data-header="Select the cover image for the service" data-live-search="false" title="-- Cover image --">
-                <option value="-1" disabled selected>-- Cover image --</option>
-                {% if covers %}
-                    {% for i in covers %}
-                        <option value="{{ i.path }}" class="cover-name">{{ i.file|safe }}</option>
-                    {% endfor %}
-                {% endif %}
-            </select>
-            {% endif %}
+                <div class="row col-md-12 col-sm-12 col-lg-12 col-xs-12">
+                    {% if service %}
+                    <img id="thumbnail" class="img-thumbnail img-responsive" src="{% if service.image %}{{ MEDIA_URL}}app/services/images/{{ service.image }}{% else %}{% endif %}" style="border:1px solid #D8D8D8; max-width:100%" alt={% trans 'Service image' %}/>
+                    {% else %}
+                    <img id="thumbnail" class="img-thumbnail img-responsive hidden" src="#" style="border:1px solid #D8D8D8; max-width:100%" alt="{% trans 'Service image' %}"/>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-        <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_cover_image_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Select a background cover for the service"></label>
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12"></div>
+            <div class=" row col-md-8 col-sm-8 col-lg-8 col-xs-12 input-group controls">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" >
+                    <a href="#" class="btn btn-default btn-sm pull-left" id="load_image" title="{% trans 'Add the image of the service' %}">
+                        <i class="fa fa-plus fa-fw text-primary"></i> {% trans 'Load image' %}
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 input-group controls {% if not service.image %} hidden {% endif %}" id="clear_thumbnail">
+                    <a href="#" class="btn btn-default btn-sm pull-right" onclick="return removeLogo();" title="{% trans 'Remove the image of the service' %}">
+                        <i class="fa fa-remove fa-fw text-danger"></i> {% trans 'Clear image' %}
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
-
-    <!--cover picker-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" title="Pick a image for background">Picker<small>*</small></label>
+       <!--keyword-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="keywords" title="{% trans 'Keyword related to the service'%}">{% trans 'Related Keywords'%}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="keywords" title="{% trans 'Keyword related to the service'%}">{% trans 'Related Keywords'%}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Keyword related to the service' %}">
+                <textarea class="form-control" rows="3" form="BasicServiceForm" maxlength="100" id="keywords" name="keywords" placeholder="{% trans 'Enter keywords related to your using the space character among them' %}">{% if service %}{% for k in service.keywords.all %}{{ k.title }},{% empty %}{% endfor %}{% endif %}</textarea>
+            </div>
         </div>
-         <div class="row col-md-9 col-sm-9 col-lg-9 col-xs-12">
-            {% if covers %}
-                {% for i in covers %}
-                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 img-responsive cover-selection" style="margin-bottom:1%" data-image="{{i.path}}">
-                        <a href="#" class="thumbnail">
-                           <img src="{{ i.path }}" class="img-rounded" style="width:auto; margin-right:1%; border:3px solid inherit;float:none" alt="{{ i.file|safe }}"/>
-                           <span class="fa fa-plus-circle text-muted cover-name"></span> {{ i.file|safe }}
-                        </a>
-                    </div>
-                {% endfor %}
-            {% endif %}
+       <!--version-->
+        <div class="row form-group hidden" id="version_input">
+            <div class="col-sm-3 col-xs-12" title="{% trans 'The version and licenses of the service' %}">
+                <label class="text-right control-label hidden-xs" for="version">{% trans 'Version' %}</label>
+                <label class="text-left control-label visible-xs" for="version">{% trans 'Version' %}</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'The version of the service' %}">
+                <input type="text" class="form-control" name="version" id="version" value="{% if service.version%}{{ service.version|safe }}{% endif %}" autocomplete="off" maxlength="10" placeholder="{% trans 'Current version' %}" autofocus />    
+            </div>
         </div>
-    </div>
-
-
-   <!--version-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12" title="The version and licenses of the service">
-            <label class="pull-right  control-label" for="srv_license">, Licenses</label>
-            <label class="pull-right control-label" for="srv_version">Version</label>
+       <!--license-->
+        <div class="row form-group hidden" id="license_input">
+            <div class="col-sm-3 col-xs-12" title="{% trans 'Define the licenses of the service, if any' %}">
+                <label class="text-right control-label hidden-xs" for="license">{% trans 'Licenses' %}</label>
+                <label class="text-left control-label visible-xs" for="license">{% trans 'Licenses' %}</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'The license of the service' %}">
+                <input type="text" class="form-control" name="license" id="license"  value="{% if service.license%}{{ service.license }}{% endif %}" autocomplete="off" maxlength="25" placeholder="{% trans 'License'%}" autofocus />    
+            </div>
         </div>
-        <div class="col-md-6 col-sm-3 col-lg-3 col-xs-12 input-group controls" title="The version of the service">
-            <span class="input-group-addon">
-                <span class="fa fa-tag fa-fw" role="img"></span>
-            </span>
-            <input type="text" class="form-control" name="srv_version" id="srv_version" value="{{ service.version|safe }}" autocomplete="off" maxlength="10" placeholder="Current version" autofocus />    
+        <!--info-->
+        <hr class="service-hr">
+        <div class="row form-group">
+            <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Mandatory fields' %}">
+                <h5><strong class="text-center highlight-error-message">* {% trans 'Mandatory fields' %}</strong></h5>
+            </div>
         </div>
-        <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12 input-group controls" title="The license of the service">
-            <span class="input-group-addon">
-                <span class="fa fa-life-buoy fa-fw" role="img"></span>
-            </span>
-            <input type="text" class="form-control" name="srv_license" id="srv_license"  value="{{ service.license|safe }}" autocomplete="off" maxlength="25" placeholder="License" autofocus />    
-        </div>
-
-        <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_version_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Enter a valid version"></label>
-        </div>
-    </div>
-
-
-
-   <!--keyword-->
-    <div class="row form-group">
-        <div class="col-sm-3 col-xs-12">
-            <label class="pull-right control-label" for="srv_keyword" title="Keyword related to the service">Related Keywords<span class="mandatory-field"> *</span></label>
-        </div>
-        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12 input-group controls" title="Keyword related to the service">
-            <span class="input-group-addon">
-                <span class="fa fa-tag fa-fw" role="img"></span>
-            </span>
-            <input type="text" class="form-control" name="srv_keyword" id="srv_keyword" autocomplete="off" maxlength="100" placeholder="Enter a keyword" data-placement="right" title="Enter your keyword and press ENTER"/>    
-        </div>
-        <div class="col-sm-2 col-xs-6">
-            <!--
-            <button type="button" class="btn btn-link" id="add_new_srv_keyword" role="option" title="Send keyword to list"> 
-                <span class="fa fa-plus fa-fw text-primary"></span> Send keyword to list
-            </button>
-            -->
-        </div>
-        <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_keywords_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Keyword(s) is(are) required"></label>
-        </div>
-    </div>
-
-    <div>
-        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"></div>
-        <div class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
-            <span class="fa fa-info-circle fa-fw text-primary"></span> Enter your keyword and press ENTER
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"></div>
-        <div id="test" class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
-            {% if keywords %}
-                {% for k in keywords %}
-                    <label class="label label-primary margin-right-5"><span class="fa fa-remove fa-fw remove-kwd cursor-pointer"></span> <span class="srv_keyword_list ">{{ k.title }} </span></label>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
-
-
-    <!--list of keywords: deprecated-->
-    <div class="row form-group hidden">
-        <div class="col-md-offset-3 col-md-4 col-sm-offset-3 col-lg-4 col-xs-12 input-group controls" title="List of entered keywords">
-            <span class="input-group-addon">
-                <span class="fa fa-tags fa-fw" role="img"></span>
-            </span>
-            <select class="form-control"  id="srv_keyword_list" name="srv_keyword_list" size="5" multiple form="insert-new-service">
-                <option value="-1" disabled> Keywords list </option>
-                {% if keywords %}
-                    {% for k in keywords %}
-                        <option value="{{ k.title }}" selected>{{ k.title }}</option>
-                    {% endfor %}
-                {% endif %}
-            </select>
-        </div>
-        <div class="col-sm-1 col-xs-12">
-            <button type="button" class="btn btn-link" id="remove_srv_keyword" role="option" title=" Remove keyword from list"> 
-                <i class="fa fa-remove fa-fw text-danger"></i> Remove keyword(s) from list
-            </button>
-        </div>
-        <div class="col-xs-6 col-sm-3 col-md-3">
-            <label id="srv_category_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Title required"></label>
-        </div>
-    </div>
-
-    <!--info-->
-    <hr>
-    <div class="row form-group">
-        <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="Mandatory fields">
-            <h5><span class="text-center mandatory-field">* </span>Mandatory fields</h5>
-        </div>
-    </div>
-
-
+        <!--end of fields-->
+    </form>
 </div>

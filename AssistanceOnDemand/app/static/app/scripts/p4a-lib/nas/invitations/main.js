@@ -86,7 +86,7 @@ $(document).ready(function () {
 
 function sendInvitationFormatter(value, row, index) {
     return [
-        '<button class="btn btn-link invite-btn" data-user-id="' + row['id'] + '" data-name="' + row['name'] + '" data-lastname="' + row['lastname'] + '" title="Express your interest">',
+        '<button class="btn btn-link invite-btn" data-user-id="' + row['id'] + '" data-name="' + row['name'] + '" data-lastname="' + row['lastname'] + '" title="' + gettext("Express your interest") + '">',
             '<span class="fa fa-envelope-o fa-lg text-success"></span>',
         '</button>'
     ].join('');
@@ -122,24 +122,24 @@ function submitPermissionRequest(user) {
         },
         contentType: 'application/json',
         success: function (response) {
-            var content = "Your invitation has been sent on " + receiver + ".";
+            var content = gettext("Your invitation has been sent on ") + receiver + ".";
             if (response.message !== undefined) {
                 content = response.message;
             }
             swal({
-                title: "Network of carers",
+                title: gettext("Network of carers"),
                 text: content,
                 type: "success",
-                confirmButtonText: "Continue",
+                confirmButtonText: gettext("Continue"),
                 confirmButtonColor: "#228B22"
             });
         },
         error: function (response) {
             swal({
-                title: "Network of assistance services ",
-                text: "An error occurred an your request has been abandoned.",
+                title: gettext("Network of assistance services"),
+                text: gettext("An error occurred an your request has been abandoned."),
                 type: "warning",
-                confirmButtonText: "Sorry, try again!",
+                confirmButtonText: gettext("Sorry, try again!"),
                 confirmButtonColor: "#b94a48"
             });
         },

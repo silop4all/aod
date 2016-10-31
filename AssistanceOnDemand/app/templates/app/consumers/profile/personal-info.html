@@ -4,7 +4,7 @@
     <div class="form-group">
         <div class="col-md-4 col-sm-4 col-xs-12 pull-left text-center" style="text-align: center">
             <input type="file" id="logo" name="logo" data-link="{% url 'profile_media' object.id %}" accept="image/*" size="1" style="display:none" onchange="return loadLogo(this);"/>
-            <a href="#" class="img-responsive" title="Update logo" id="edit-logo" onclick="return addLogo();" style="position:relative;" >
+            <a href="#" class="img-responsive" title="{% trans 'Update logo' %}" id="edit-logo" onclick="return addLogo();" style="position:relative;" >
                 
                 {% if object.logo %}
                     <img src="{{ logo }}" alt="{{ object.name}}_{{ object.lastname}}_logo" class="img-rounded personal-info-profile-img" style="height:150px;width:150px; cursor: pointer" />                                  
@@ -24,19 +24,19 @@
         <div class="col-md-8 col-sm-8 col-xs-12 pull-right">
             <div class="form-group">
                 <div class="col-md-12 col-sm-12">
-                    <h4 class="text-left" role="heading" title="Personal information">
-                        Personal information
+                    <h4 class="text-left" role="heading" title="{% trans 'Personal information' %}">
+                        {% trans 'Personal information' %}
                     </h4>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-md-12 col-sm-12">
-                    <h5 title="The username that characterize any AoD user"><i class="fa fa-user fa-lg p4a-username" data-link="{{object.id}}"></i> {{ object.username }} </h5>
+                    <h5 title="{% trans 'The username that characterize any AoD user' %}"><i class="fa fa-user fa-lg p4a-username" data-link="{{object.id}}"></i> {{ object.username }} </h5>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-md-6 col-sm-6 pull-left">
-                    <h5 title="Registration date and time"> <i class="fa fa-calendar text-muted"></i> {{ object.registration| date:"M d, Y" }} <i class="fa fa-clock-o text-muted"></i> {{ object.registration| date:"H:i" }}</h5>
+                    <h5 title="{% trans 'Registration date and time' %}"> <i class="fa fa-calendar text-muted"></i> {{ object.registration| date:"M d, Y" }} <i class="fa fa-clock-o text-muted"></i> {{ object.registration| date:"H:i" }}</h5>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
         <!-- name -->
         <div class="form-group">
             <div class="col-sm-3 col-xs-12">
-                <label class="pull-right">First name</label>
+                <label class="pull-right">{% trans 'First name' %}</label>
             </div>
             <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12" title="Your first name">
                 <span id="preview_name">{{ object.name }}</span>
@@ -62,7 +62,7 @@
         <!-- last name -->
         <div class="form-group">
             <div class="col-sm-3 col-xs-12">
-                <label class="pull-right">Last name<small></small></label>
+                <label class="pull-right">{% trans 'Last name' %}<small></small></label>
             </div>
             <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12" title="Your last name">
                 <span id="preview_lastname">{{ object.lastname }}</span>
@@ -71,7 +71,7 @@
         <!-- geological info -->
         <div class="form-group">
             <div class="col-sm-3 col-xs-12">
-                <label class="pull-right ">Country<small></small></label>
+                <label class="pull-right ">{% trans 'Country' %}<small></small></label>
             </div>
             <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12" title="Your country">
                 <span id="preview_country">{{ object.country }}</span>
@@ -79,28 +79,28 @@
         </div>
         <div class="form-group">
             <div class="col-sm-3 col-xs-12">
-                <label class="pull-right">City<small></small></label>
+                <label class="pull-right">{% trans 'City' %}<small></small></label>
             </div>
-            <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12" title="Your city">
+            <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12" title="{% trans 'Your city' %}">
                 {% if object.city %}
-                <span  id="preview_city">{{ object.city|default_if_none:"N/A" }}</span>
+                <span  id="preview_city">{{ object.city|default_if_none:"Not set" }}</span>
                 {% else %}
-                <span  for="preview_city">N/A</span>
+                <span  for="preview_city">{% trans 'Not set' %}</span>
                 {% endif %}
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-3 col-xs-12">
-                <label class="pull-right">Address, zip code<small></small></label>
+                <label class="pull-right">{% trans 'Address' %}, {% trans 'zip code' %}<small></small></label>
             </div>
             <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12" title="The address and zip code of your residence">
                 {% if object.address or object.postal_code %}
                 <span  id="preview_address">
-                    {% if object.address %}{{ object.address|default_if_none:"N/A" }}{% else %}N/A{% endif %}, 
-                    {% if object.postal_code %}{{ object.postal_code|default_if_none:"N/A" }}{% else %}N/A{% endif %}
+                    {% if object.address %}{{ object.address|default_if_none:"Not set" }}{% else %}{% trans 'Not set' %}{% endif %}, 
+                    {% if object.postal_code %}{{ object.postal_code|default_if_none:"Not set" }}{% else %}{% trans 'Not set' %}{% endif %}
                 </span>
                 {% else %}
-                    <span  id="preview_address">N/A</span>
+                    <span  id="preview_address">{% trans 'Not set' %}</span>
                 {% endif %}
             </div>
         </div>
@@ -109,44 +109,44 @@
     <div class="editable-personal-info hidden">
         <div class="form-group ">
             <div class="col-sm-3 col-xs-12">
-                <label class="pull-right control-label" for="rg_name">First name<small>*</small></label>
+                <label class="pull-right control-label" for="rg_name">{% trans 'First name' %}<small>*</small></label>
             </div>
-            <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12 input-group controls" title="Update your name">
+            <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12 input-group controls" title="{% trans 'Update your name' %}">
                 <span class="input-group-addon">
                     <span class="fa fa-info fa-fw" role="img"></span>
                 </span>
-                <input type="text" class="form-control" name="rg_name" id="rg_name" value="{{ object.name }}" autocomplete="off" maxlength="200" placeholder="the name of user" autofocus/>    
+                <input type="text" class="form-control" name="rg_name" id="rg_name" value="{{ object.name }}" autocomplete="off" maxlength="200" placeholder="{% trans 'the name of user' %}" autofocus/>    
             </div>
             <div class="col-xs-6 col-sm-3 col-md-3">
-                <label class="label control-label label-danger pull-left hidden" id="rg_name_info">Type at least 2 characters</label>
+                <label class="label control-label label-danger pull-left hidden" id="rg_name_info">{% trans 'Type at least 2 characters' %}</label>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-sm-3 col-xs-12">
-                <label class="pull-right control-label" for="rg_lastname">Last name<small>*</small></label>
+                <label class="pull-right control-label" for="rg_lastname">{% trans 'Last name' %}<small>*</small></label>
             </div>
             <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
                 <span class="input-group-addon">
                     <span class="fa fa-info fa-fw"></span>
                 </span>
-                <input type="text" class="form-control" name="rg_lastname" id="rg_lastname" value="{{ object.lastname }}" autocomplete="off" maxlength="200" placeholder="the lastname of user" />
+                <input type="text" class="form-control" name="rg_lastname" id="rg_lastname" value="{{ object.lastname }}" autocomplete="off" maxlength="200" placeholder="{% trans 'the lastname of user' %}" />
             </div>
             <div class="col-xs-6 col-sm-3 col-md-3">
                 <!--<label class="label pull-left label-danger hidden" id="rg_lastname_info">Type at least 2 characters</label>-->
-                <label id="rg_lastname_info" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="Type at least 2 characters"></label>
+                <label id="rg_lastname_info" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{% trans 'Type at least 2 characters' %}"></label>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-sm-3 col-xs-12">
-                <label class="pull-right control-label" for="rg_country">Country<small>*</small></label>
+                <label class="pull-right control-label" for="rg_country">{% trans 'Country' %}<small>*</small></label>
             </div> 
             <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
                 <span class="input-group-addon">
                     <span class="fa fa-globe fa-fw"></span>
                 </span>
-                <select class="selectpicker form-control"  name="rg_country" id="rg_country" data-max-options="1" data-size="6"  data-header="Select a country" data-live-search="true" title="-- List --">
+                <select class="selectpicker form-control"  name="rg_country" id="rg_country" data-max-options="1" data-size="6"  data-header="{% trans 'Select a country' %}" data-live-search="true" title="-- {% trans 'List' %} --">
                     {% if countryList %}
                         {% for country in countryList %}
                             {% if object.country == country %}
@@ -159,52 +159,52 @@
                 </select>
             </div>
             <div class="col-xs-6 col-sm-3 col-md-3">
-                <label class="label pull-left label-danger hidden" id="rg_country_info">Select a country</label>
+                <label class="label pull-left label-danger hidden" id="rg_country_info">{% trans 'Select a country' %}</label>
             </div>
         </div> 
 
         <div class="form-group">
             <div class="col-sm-3 col-xs-12">
-                <label class="pull-right control-label" for="rg_city">City</label>
+                <label class="pull-right control-label" for="rg_city">{% trans 'City' %}</label>
             </div>
             <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
                 <span class="input-group-addon">
                     <span class="fa fa-map-marker fa-fw"></span>
                 </span>
-                <input type="text" class="form-control" name="rg_city" id="rg_city" value="{{ object.city|default_if_none:"" }}" autocomplete="off" maxlength="128" placeholder="the city of residence" />
+                <input type="text" class="form-control" name="rg_city" id="rg_city" value="{{ object.city|default_if_none:"" }}" autocomplete="off" maxlength="128" placeholder="{% trans 'the city of residence' %}" />
             </div>
             <div class="col-xs-6 col-sm-3 col-md-3">
-                <label class="label pull-left label-danger hidden" id="rg_city_info">Type at least 2 characters</label>
+                <label class="label pull-left label-danger hidden" id="rg_city_info">{% trans 'Type at least 2 characters' %}</label>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-sm-3 col-xs-12">
-                <label class="pull-right control-label" for="rg_address">Address</label>
+                <label class="pull-right control-label" for="rg_address">{% trans 'Address' %}</label>
             </div>
             <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
                 <span class="input-group-addon">
                     <span class="fa fa-map-marker fa-fw"></span>
                 </span>
-                <input type="text" class="form-control" name="rg_address" id="rg_address" value="{{ object.address|default_if_none:"" }}" autocomplete="off" maxlength="255" placeholder="the residence address" />
+                <input type="text" class="form-control" name="rg_address" id="rg_address" value="{{ object.address|default_if_none:"" }}" autocomplete="off" maxlength="255" placeholder="{% trans 'the residence address' %}" />
             </div>
             <div class="col-xs-6 col-sm-3 col-md-3">
-                <label class="label pull-left label-danger hidden" id="rg_address_info">Type at least 2 characters</label>
+                <label class="label pull-left label-danger hidden" id="rg_address_info">{% trans 'Type at least 2 characters' %}</label>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-sm-3 col-xs-12">
-                <label class="pull-right control-label" for="rg_postal_code">Postal code</label>
+                <label class="pull-right control-label" for="rg_postal_code">{% trans 'Postal code' %}</label>
             </div>
             <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
                 <span class="input-group-addon">
                     <span class="fa fa-map-marker fa-fw"></span>
                 </span>
-                <input type="text" class="form-control" name="rg_postal_code" id="rg_postal_code" value="{{ object.postal_code|default_if_none:"" }}" autocomplete="off" maxlength="16" placeholder="the residence postal code" />
+                <input type="text" class="form-control" name="rg_postal_code" id="rg_postal_code" value="{{ object.postal_code|default_if_none:"" }}" autocomplete="off" maxlength="16" placeholder="{% trans 'the residence postal code' %}" />
             </div>
             <div class="col-xs-6 col-sm-3 col-md-3">
-                <label class="label pull-left label-danger hidden" id="rg_postal_code_info">Type at least 2 characters</label>
+                <label class="label pull-left label-danger hidden" id="rg_postal_code_info">{% trans 'Type at least 2 characters' %}</label>
             </div>
         </div>
     </div>
@@ -217,15 +217,15 @@
     <div id="personal-toolbar">
         <div class="row" id="edit">
             <div class="col-md-12 col-sm-12 text-center">
-                <button type="button" class="btn btn-default btn-sm" id="edit-personal-btn" name="edit-personal-btn" role="button"><i class="fa fa-pencil"></i> Edit</button>
+                <button type="button" class="btn btn-default btn-sm" id="edit-personal-btn" name="edit-personal-btn" role="button"><i class="fa fa-pencil"></i> {% trans 'Edit' %}</button>
             </div>
         </div>
         <div class="row hidden" id="save">
             <div class="col-md-6 col-sm-6 text-center">
-                <button type="reset" class="btn btn-default btn-sm" id="reset-personal-btn" name="reset-personal-info" role="button"> Cancel</button>
+                <button type="reset" class="btn btn-default btn-sm" id="reset-personal-btn" name="reset-personal-info" role="button"> {% trans 'Cancel' %}</button>
             </div>
             <div class="col-md-6 col-sm-6 text-center">
-                <button type="button" class="btn btn-primary btn-sm" id="save-personal-btn" data-url="{% url 'personal_profile_update' object.id %}" name="save-personal-info-btn" role="button"> Save</button>
+                <button type="button" class="btn btn-primary btn-sm" id="save-personal-btn" data-url="{% url 'personal_profile_update' object.id %}" name="save-personal-info-btn" role="button"> {% trans 'Save' %}</button>
             </div>
         </div>
     </div>

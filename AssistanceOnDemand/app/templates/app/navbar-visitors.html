@@ -8,9 +8,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="{% url 'landing_page' %}" class="navbar-brand" title="Welcome to Assistance On Demand platform">
-                    <img src="{{ MEDIA_URL }}app/aod/logos/logo2.png" alt="Logo of Prosperity4All project" />
-                    <strong> AoDemand</strong>
+                <a href="{% url 'landing_page' %}" class="navbar-brand" title="{{ logo.placeholder }}">
+                    <img src="{{ logo.logo.url }}" alt="{{ logo.title }}"/>
+                    <strong> {{ logo.title }}</strong>
                 </a>
             </div>
             <div class="navbar-collapse collapse">
@@ -33,7 +33,7 @@
 
 
                     <li>
-                        <a href="{% url 'platform_technical_support_page' %}"  title="Help" role="link">
+                        <a href="{% url 'faq_topics' %}"  title="{%trans 'Help' %}" role="link">
                             <span class="btn navbar-btn disable-btn-box-shadow" role="button">
                                 <span class="fa fa-question-circle"></span> {%trans 'Help' %}
                             </span>
@@ -42,7 +42,7 @@
 
                     {% block loginBlock %}
                     <li>
-                        <a href="{% url 'login_page' %}" title="Log in" role="link">
+                        <a href="{% url 'login_page' %}" title="{%trans 'Log in'  %}" role="link">
                             <span class="btn navbar-btn disable-btn-box-shadow" role="button">
                                 <span class="fa fa-sign-in" role="img"></span> {%trans 'Log in'  %}
                             </span>
@@ -51,7 +51,7 @@
                     {% endblock loginBlock %}
 
                     <li>
-                        <a href="{% url 'registration_page' %}" title="Sign up" role="link">
+                        <a href="{% url 'registration_page' %}" title="{%trans 'Sign up' %}" role="link">
                             <span  class="btn navbar-btn disable-btn-box-shadow" role="button">{%trans 'Sign up' %}</span>
                         </a>
                     </li>

@@ -1,4 +1,4 @@
-﻿{% extends "app/base.html" %}
+{% extends "app/base.html" %}
 {% load i18n %}
 {% load l10n %}
     {% block title %} 
@@ -27,8 +27,8 @@
         {% block breadcrumb %}
         <ol class="row breadcrumb" role="navigation" aria-label="breadcrumb">
             <li>
-                <a href="{% url 'home_page' %}" aria-label="link" class="custom-inactive-breadcrumb" title="Home page">
-                    <span class="fa fa-home"></span> Home
+                <a href="{% url 'home_page' %}" aria-label="link" class="custom-inactive-breadcrumb" title="{% trans 'Home page' %}">
+                    <span class="fa fa-home"></span> {% trans 'Home' %}
                 </a>
             </li>
             <li>
@@ -89,7 +89,7 @@
                                                 <h4 class="panel-title">
                                                     <a class="wizard-nav" data-toggle="collapse" data-parent="#accordion" href="#cat{{category.id}}">{% trans 'Step' %} {{category.order}}: {{category.title}}</a>
                                                     <small>
-                                                        <label class="badge total-services pull-right" style="background-color: #fff; color: #51A951" data-placement="right" title="Number of services in selected categories"></label>
+                                                        <label class="badge total-services panel-custom-active-badge pull-right" data-placement="right" title="{% trans 'Number of services in selected categories' %}"></label>
                                                     </small>
                                                 </h4>
                                             </div>
@@ -102,9 +102,9 @@
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
-                                                    <a class="wizard-nav" data-toggle="collapse" data-parent="#accordion" href="#cat{{category.id}}">Step {{category.order}}: {{category.title}}</a>
+                                                    <a class="wizard-nav" data-toggle="collapse" data-parent="#accordion" href="#cat{{category.id}}">{% trans 'Step' %} {{category.order}}: {{category.title}}</a>
                                                     <small>
-                                                        <label class="badge total-services pull-right" style="background-color: #fff; color: gray" data-placement="right" title="Number of services in selected categories"></label>
+                                                        <label class="badge total-services pull-right panel-custom-inactive-badge"  data-placement="right" title="{% trans 'Number of services in selected categories' %}"></label>
                                                     </small>
                                                 </h4>
                                             </div>
@@ -113,7 +113,7 @@
                                     {% endif %}
                                                     <div class="select-category" title="{{ category.description }}">
                                                         <input type="checkbox" checked class="parent-category cursor-pointer" data-id="{{category.id}}" id="{{category.id}}"/>
-                                                        <label class="cursor-pointer" for="{{ category.id }}" data-placement="right" title="Check or uncheck the sub-categories of {{ category.title }} category">Check/uncheck all</label>
+                                                        <label class="cursor-pointer" for="{{ category.id }}" data-placement="right" title="Check or uncheck the sub-categories of {{ category.title }} category">{% trans 'Check/uncheck all' %}</label>
                                                     </div>
                                 {% else %}
                                                     <div class="select-category padding-left-percent-15" title="{{ category.description }}">
@@ -130,12 +130,12 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
-                                        <a class="wizard-nav" data-toggle="collapse" data-parent="#accordion" href="#wizard-final-step">Final step: Overview</a>
+                                        <a class="wizard-nav" data-toggle="collapse" data-parent="#accordion" href="#wizard-final-step">{% trans 'Final step: Overview' %}</a>
                                     </h4>
                                 </div>
                                 <div id="wizard-final-step" data-step="-1" class="panel-collapse collapse">
                                     <div class="panel-body">
-                                        <p>The selected services are ordered by category. You have the capability to purchase them and optionally modify their configuration!</p>
+                                        <p>{% trans 'The selected services are ordered by category. You have the capability to purchase them and optionally modify their configuration' %}!</p>
                                     </div>
                                 </div>
                             </div>
@@ -153,29 +153,29 @@
                         <p class="font-size-pt-18">
                             <blockquote class="font-size-pt-14 text-justify">
                                 <small class="color-black">
-                                    You set up a network of assistance services on behalf of <span data-placement="bottom" class="cursor-context-menu" title="Target end-user">{{ consumer.name }} {{ consumer.lastname }} (<em id="target-consumer" data-target="{{ consumer.id }}">{{ consumer.username }}</em>)</span>. 
+                                    {% trans 'You set up a network of assistance services on behalf of' %} <span data-placement="bottom" class="cursor-context-menu" title="Target end-user">{{ consumer.name }} {{ consumer.lastname }} (<em id="target-consumer" data-target="{{ consumer.id }}">{{ consumer.username }}</em>)</span>. 
                                 </small>
                             </blockquote>
                         </p>
 
                         <p class="font-size-px-16 text-justify"  id="hint">
-                            <span class="text-danger"><span class="fa fa-lightbulb-o"></span> <strong>Hint:</strong></span>
-                            <span id="steps">Please use the buttons <span id="previous-step-hint" class="cursor-help" data-placement="bottom" title="Proceed to previous step"><em>Previous step</em></span>  and <span id="next-step-hint" class="cursor-help" data-placement="bottom" title="Proceed to next step"><em>Next step</em></span> to navigate in the wizard step-by-step.
-                            In every step, you can filter the list of services (see the table below) by selecting the (sub)categories of your interest in the left column of page.
-                            Then, please check the services you want to use and proceed to the next step.
+                            <span class="text-danger"><span class="fa fa-lightbulb-o"></span> <strong>{% trans 'Hint' %}:</strong></span>
+                            <span id="steps">{% trans 'Please use the buttons' %} <span id="previous-step-hint" class="cursor-help" data-placement="bottom" title="{% trans 'Proceed to previous step' %}"><em>{% trans 'Previous step' %}</em></span>  {% trans 'and'%} <span id="next-step-hint" class="cursor-help" data-placement="bottom" title="Proceed to next step"><em>{% trans 'Next step' %}</em></span> {% trans 'to navigate in the wizard step-by-step' %}.
+                            {% blocktrans %}In every step, you can filter the list of services (see the table below) by selecting the (sub)categories of your interest in the left column of page.
+                            Then, please check the services you want to use and proceed to the next step{% endblocktrans %}.
                             </span>
                             <span id="final-step" class="hidden">
-                                In this step, platform provides you a summary of the selected services that are grouped by category.
-                                Find marked with icon <span class="fa fa-exclamation-circle text-danger hint-additional-services cursor-help" data-placement="bottom" title="Mark categories in which none service has selected."></span> the categories in which you did not select any service. 
-                                On the other hand, find marked with icon <span class="fa fa-check-circle text-success cursor-help" data-placement="bottom" title="Categories in which the selected services belong to"></span> the categories in which you have selected at least a service.
+                                {% trans 'In this step, platform provides you a summary of the selected services that are grouped by category' %}.
+                                {% trans 'Find marked with icon' %} <span class="fa fa-exclamation-circle text-danger hint-additional-services cursor-help" data-placement="bottom" title="{% trans 'Mark categories in which none service has selected' %}."></span> {% trans 'the categories in which you did not select any service' %}. 
+                                {% trans 'On the other hand, find marked with icon' %} <span class="fa fa-check-circle text-success cursor-help" data-placement="bottom" title="{% trans 'Categories in which the selected services belong to' %}"></span> {% trans 'the categories in which you have selected at least a service' %}.
                             </span>
                         </p>
                     </div>
 
                     <div class="row margin-bottom-percent-2" >
                         <div class="col-sm-12 col-xs-1 col-lg-12 col-md-12">
-                            <button class="btn btn-default hidden" id="wizard-previous-step"><span class="fa fa-long-arrow-left text-info"></span> Previous step</button>
-                            <button class="pull-right btn btn-default" id="wizard-next-step"> Next step <span class="fa fa-long-arrow-right text-info"></span></button>
+                            <button class="btn btn-default hidden" id="wizard-previous-step"><span class="fa fa-long-arrow-left text-info"></span> {% trans 'Previous step' %}</button>
+                            <button class="pull-right btn btn-default" id="wizard-next-step"> {% trans 'Next step' %} <span class="fa fa-long-arrow-right text-info"></span></button>
                         </div>
                     </div>
 
@@ -206,12 +206,12 @@
                             data-sort-name="title" data-sort-order="asc">
                         <thead class="custom-aod-table-thead">
                         <tr >
-                            <th data-field="title"  data-sortable="true" data-switchable="false" data-formatter="setServiceTitleFormatter">Service title</th>
-                            <th data-field="type"   data-align="center" data-sortable="true" data-visible="true" data-formatter="setServiceTypeFormatter">Type</th>
-                            <th data-field="price"  data-align="center" data-sortable="true" data-formatter="setServicePriceFormatter">Price</th>
-                            <th data-field="location_constraint" data-align="center" data-visible="true" data-sortable="true" data-formatter="setServiceLocationFormatter">Location constraints</th>
-                            <th data-field="interesting" data-sortable="false" data-formatter="setServiceInterestingFormatter" data-align="center">Wishlist</th>
-                            <th data-field="purchase" data-sortable="false" data-formatter="setServicePurchaseFormatter" data-align="center">Action</th>
+                            <th data-field="title"  data-sortable="true" data-switchable="false" data-formatter="setServiceTitleFormatter">{% trans 'Service title' %}</th>
+                            <th data-field="type"   data-align="center" data-sortable="true" data-visible="true" data-formatter="setServiceTypeFormatter">{% trans 'Type' %}</th>
+                            <th data-field="price"  data-align="center" data-sortable="true" data-formatter="setServicePriceFormatter">{% trans 'Price' %}</th>
+                            <th data-field="location_constraint" data-align="center" data-visible="true" data-sortable="true" data-formatter="setServiceLocationFormatter">{% trans 'Location constraints' %}</th>
+                            <th data-field="interesting" data-sortable="false" data-formatter="setServiceInterestingFormatter" data-align="center">{% trans 'Wishlist' %}</th>
+                            <th data-field="purchase" data-sortable="false" data-formatter="setServicePurchaseFormatter" data-align="center">{% trans 'Action' %}</th>
                         </tr>
                         </thead>
                     </table>
@@ -220,10 +220,10 @@
                     <table class="table table-responsive finalize-services-table custom-aod-table hidden">
                         <thead>
                             <tr class="custom-aod-table-thead">
-                                <th class="custom-aod-table-th">Category title</th>
-                                <th class="custom-aod-table-th">Service title</th>
-                                <th class="custom-aod-table-th text-center">More details</th>
-                                <th class="custom-aod-table-th text-center">Action buttons</th>
+                                <th class="custom-aod-table-th">{% trans 'Category title' %}</th>
+                                <th class="custom-aod-table-th">{% trans 'Service title' %}</th>
+                                <th class="custom-aod-table-th text-center">{% trans 'More details' %}</th>
+                                <th class="custom-aod-table-th text-center">{% trans 'Action buttons' %}</th>
                             </tr>
                         </thead>
                         <tbody id="finalize-services-body"></tbody>
@@ -240,7 +240,7 @@
 
                     <div class="row clearfix margin-top-10 margin-bottom-5">
                         <center>
-                            <button data-url="{% url 'guided_assistance_landing_page' %}" role="navigation" class="btn btn-default hidden center" id="return-nas-page"><span class="text-center">Back to guided assistance page</span></button>
+                            <button data-url="{% url 'guided_assistance_landing_page' %}" role="navigation" class="btn btn-default hidden center" id="return-nas-page"><span class="text-center">{% trans 'Back to guided assistance page' %}</span></button>
                         </center>
                     </div>
                 </section>
@@ -249,11 +249,11 @@
                 <section class="col-sm-9 col-xs-12 col-md-9 col-lg-9 hidden keywords-based-search">
                                            
                     <div class="jumbotron">
-                        <h3>Network of assistance services: installation steps </h3>
+                        <h3>{% trans 'Network of assistance services: installation steps' %} </h3>
                         <p class="font-size-px-18">
                             <blockquote class="font-size-pt-14 text-justify">
                                 <small class="color-black">
-                                    You set up a network of assistance services on behalf of {{ consumer.name }} {{ consumer.lastname }} (<em id="target-consumer" data-target="{{ consumer.id }}">{{ consumer.username }}</em>). 
+                                    {% trans 'You set up a network of assistance services on behalf of' %} {{ consumer.name }} {{ consumer.lastname }} (<em id="target-consumer" data-target="{{ consumer.id }}">{{ consumer.username }}</em>). 
                                 </small>
                             </blockquote>
                         </p>
@@ -276,8 +276,8 @@
                         -->
 
                         <div id="results" class="btn-group" title="The toolbar provides to users of set of actions such as add,remove or search a service">
-                            <h4><strong>Search results:</strong>
-                                <span id="results-number"></span> service(s) found!
+                            <h4><strong>{% trans 'Search results' %}:</strong>
+                                <span id="results-number"></span> {% trans 'service(s) found' %}!
                             </h4>
                         </div>
                         <table class="search-services-table center"
@@ -294,12 +294,12 @@
                                 data-sort-name="pk" data-sort-order="asc">
                             <thead class="custom-aod-table-thead">
                             <tr >
-                                <th data-field="title"  data-sortable="true" data-switchable="false" data-formatter="setKwdServiceFormatter">Service title</th>
-                                <th data-field="type"   data-align="center" data-sortable="true" data-visible="true" data-formatter="setKwdServiceTypeFormatter">Type</th>
-                                <th data-field="price"  data-align="center" data-sortable="true" data-formatter="seKwdtServicePriceFormatter">Price</th>
-                                <th data-field="location_constraint" data-align="center" data-visible="true" data-sortable="true" data-formatter="setKwdServiceLocationFormatter">Location constraints</th>
-                                <th data-field="pk" data-sortable="false" data-formatter="setKwdServiceConfigFormatter" data-align="center">More details</th>
-                                <th data-field="purchase" data-sortable="false" data-formatter="setKwdServicePurchaseFormatter" data-align="center">Action</th>
+                                <th data-field="title"  data-sortable="true" data-switchable="false" data-formatter="setKwdServiceFormatter">{% trans 'Service title' %}</th>
+                                <th data-field="type"   data-align="center" data-sortable="true" data-visible="true" data-formatter="setKwdServiceTypeFormatter">{% trans 'Type' %}</th>
+                                <th data-field="price"  data-align="center" data-sortable="true" data-formatter="seKwdtServicePriceFormatter">{% trans 'Price' %}</th>
+                                <th data-field="location_constraint" data-align="center" data-visible="true" data-sortable="true" data-formatter="setKwdServiceLocationFormatter">{% trans 'Location constraints' %}</th>
+                                <th data-field="pk" data-sortable="false" data-formatter="setKwdServiceConfigFormatter" data-align="center">{% trans 'More details' %}</th>
+                                <th data-field="purchase" data-sortable="false" data-formatter="setKwdServicePurchaseFormatter" data-align="center">{% trans 'Action' %}</th>
                             </tr>
                             </thead>
                         </table>
@@ -315,7 +315,7 @@
 
                     <div class="row  margin-top-10 margin-bottom-10">
                         <center>
-                            <button class="btn btn-default text-info" id="swap-structured-search">Back to structured search </button>
+                            <button class="btn btn-default text-info" id="swap-structured-search">{% trans 'Back to structured search' %}</button>
                         </center>
                     </div>
                 </section>
@@ -331,6 +331,9 @@
         <script src="{% static 'app/scripts/bootstrap.min.js' %}"></script>
         <script src="{% static 'app/scripts/bootbox/bootbox.min.js' %}"></script>
         <script src="{% static 'app/scripts/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+        {% with 'app/scripts/bootstrap-table/dist/locale/'|add:bootstrap_table_locale_url as bootstrap_table_locale %}
+            <script type="text/javascript" src="{% static bootstrap_table_locale %}"></script>
+        {% endwith %}
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM"></script>
 
         <script type="text/javascript">
@@ -386,7 +389,7 @@
                 });
 
                 var infoWindow = new google.maps.InfoWindow({
-                    content: "<div><strong>Service:</strong> " + obj.serviceTitle  + " <br><strong>Latitude:</strong> " + obj.latitude + "<br><strong>Longitude:</strong> " + obj.longitude + "</div>"
+                    content: "<div><strong>" + gettext("Service") + ":</strong> " + obj.serviceTitle  + " <br><strong>" + gettext("Latitude") + ":</strong> " + obj.latitude + "<br><strong>" + gettext("Longitude") +":</strong> " + obj.longitude + "</div>"
                 });
 
                 // Handle user actions
@@ -511,14 +514,14 @@
 
                 var elem = $("span.no-interesting-service");
                 if ($(this).find(elem).length) {
-                    $(this).find('span').text('Remove');
+                    $(this).find('span').text(gettext('Remove'));
                     $(this).find('span').addClass('interesting-service').removeClass('no-interesting-service');
                     $(this).removeClass('btn-success').addClass('btn-danger');
                     // push service
                     GuidedWizard.addWishList(info);
                 }
                 else {
-                    $(this).find('span').text('Add');
+                    $(this).find('span').text(gettext('Add'));
                     $(this).find('span').removeClass('interesting-service').addClass('no-interesting-service');
                     $(this).removeClass('btn-danger').addClass('btn-success');
                     // pop service
@@ -534,7 +537,7 @@
                 if (!$(".finalize-services-table").hasClass('hidden')) {
                     element.fadeOut();
                     element.addClass('disabled');
-                    element.find("span").text("Purchased");
+                    element.find("span").text(gettext("Purchased"));
                     element.prepend('<span class="fa fa-shopping-bag"></span> ');
                     element.fadeIn();
                 }
@@ -616,35 +619,35 @@
                                     '<thead>',
                                     '<tbody id="configuration-table-body">',
                                         '<tr>',
-                                            '<td class="custom-aod-table-td"><strong>Type</strong></td>',
-                                            '<td class="custom-aod-table-td">' + ((response.type == 'H')? "Human-based" : "Machine-based") + '</td>',
+                                            '<td class="custom-aod-table-td"><strong>' + gettext("Type") + '</strong></td>',
+                                            '<td class="custom-aod-table-td">' + ((response.type == 'H')?  gettext("Human-based") :  gettext("Machine-based") ) + '</td>',
                                         '</tr>',
                                         '<tr>',
-                                            '<td class="custom-aod-table-td"><strong>Charging policy</strong></td>',
+                                            '<td class="custom-aod-table-td"><strong>' + gettext("Charging policy") +'</strong></td>',
                                             '<td class="custom-aod-table-td">' + response.charging_policy.name + '</td>',
                                         '</tr>',
                                         '<tr>',
-                                            '<td class="custom-aod-table-td"><strong>Price</strong></td>',
+                                            '<td class="custom-aod-table-td"><strong>' + gettext("Price") + '</strong></td>',
                                             '<td class="custom-aod-table-td">' + parseFloat(response.price) + '</td>',
                                         '</tr>',
                                         '<tr>',
-                                            '<td class="custom-aod-table-td"><strong>Unit</strong></td>',
+                                            '<td class="custom-aod-table-td"><strong>' + gettext("Unit") +'</strong></td>',
                                             '<td class="custom-aod-table-td">' + response.unit + '</td>',
                                         '</tr>',
                                         '<tr>',
-                                            '<td class="custom-aod-table-td"><strong>Languages</strong></td>',
+                                            '<td class="custom-aod-table-td"><strong>' + gettext("Languages") + '</strong></td>',
                                             '<td class="custom-aod-table-td">' + langList.slice(0, -1) + '</td>',
                                         '</tr>',
                                         '<tr>',
-                                            '<td class="custom-aod-table-td"><strong>Constraints</strong></td>',
+                                            '<td class="custom-aod-table-td"><strong>' + gettext("Constraints") + '</strong></td>',
                                             '<td class="custom-aod-table-td">' + response.constraints + '</td>',
                                         '</tr>',
                                         '<tr>',
-                                            '<td class="custom-aod-table-td"><strong>Requirements</strong></td>',
+                                            '<td class="custom-aod-table-td"><strong>' + gettext("Requirements") + '</strong></td>',
                                             '<td class="custom-aod-table-td">' + response.requirements + '</td>',
                                         '</tr>',
                                         '<tr>',
-                                            '<td class="custom-aod-table-td"><strong>installation guidelines</strong></td>',
+                                            '<td class="custom-aod-table-td"><strong>' + gettext("Installation guidelines") + '</strong></td>',
                                             '<td class="custom-aod-table-td">' + response.installation_guide + '</td>',
                                         '</tr>',
                                     '</tbody>',
@@ -657,7 +660,7 @@
                             title: response.title,
                             text: html,
                             type: "info",
-                            confirmButtonText: "Continue",
+                            confirmButtonText: gettext("Continue"),
                             confirmButtonColor: "#428bca",
                             customClass: "text-justify",
                             //imageUrl: response.image
@@ -666,10 +669,10 @@
                     error: function (response) {
                         swal({
                             html: false,
-                            title: "Error",
-                            text: 'Sorry, an error has occurred',
+                            title: gettext("Error"),
+                            text: gettext('Sorry, an error has occurred'),
                             type: "warning",
-                            confirmButtonText: "Try again!",
+                            confirmButtonText: gettext("Try again!"),
                             confirmButtonColor: "#d9534f"
                         });
                     },
@@ -698,20 +701,20 @@
 
 
             function setServiceTitleFormatter(value, row, index) {
-                return '<span class="cursor-pointer service-details" data-resource="' + row['details_url'] +'" data-service-id="' + row['id'] + '" data-placement="right" title="More details">' + value + ' <span class="fa fa-external-link text-primary preview-service"></span></span>';
+                return '<span class="cursor-pointer service-details" data-resource="' + row['details_url'] +'" data-service-id="' + row['id'] + '" data-placement="right" title="' + gettext("More details") +'">' + value + ' <span class="fa fa-external-link text-primary preview-service"></span></span>';
             }
 
             function setServiceTypeFormatter(value, row, index) {
-                return (value === 'H') ? "<span class='fa fa-users'></span> Human-based" : "<span class='fa fa-laptop'></span> Machine-based";
+                return (value === 'H') ? "<span class='fa fa-users'></span>" +gettext("Human-based") : "<span class='fa fa-laptop'></span>" + gettext("Machine-based");
             }
 
             function setServicePriceFormatter(value, row, index) {
-                return (value == 0) ? 'FREE' : value + ' (' + row.unit + ')';
+                return (value == 0) ? gettext('FREE') : value + ' (' + row.unit + ')';
             }
 
             function setServiceLocationFormatter(value, row, index) {
                 if (value == true) {
-                    return "<button class='btn btn-xs btn-default nas-coordinates-btn' data-service-title='" + row.title + "' data-latitude='" + row.latitude + "'  data-longitude='" + row.longitude + "' data-radius='" + row.coverage + "' data-placement='right' title='View on the map'><span class='fa fa-map-marker fa-lg text-danger'></span> View</button>";
+                    return "<button class='btn btn-xs btn-default nas-coordinates-btn' data-service-title='" + row.title + "' data-latitude='" + row.latitude + "'  data-longitude='" + row.longitude + "' data-radius='" + row.coverage + "' data-placement='right' title='View on the map'><span class='fa fa-map-marker fa-lg text-danger'></span>" + gettext("View") + "</button>";
                 }
                 return "-";
             }
@@ -721,15 +724,15 @@
                 if ((row.purchased == false)) {
                     if (row.temp_selected == false) {
                         selected = [
-                            '<button class="btn btn-success btn-xs nas-select-btn" data-service-id="' + row.id + '" data-placement="bottom" title="Denote service as interesting">',
-                                '<span class="no-interesting-service"> Add</span> ',
+                            '<button class="btn btn-success btn-xs nas-select-btn" data-service-id="' + row.id + '" data-placement="bottom" title="'+gettext('Denote service as interesting') +'">',
+                                '<span class="no-interesting-service">' + gettext("Add") + '</span> ',
                             '</button>',
                         ].join('');
                     }
                     else {
                         selected = [
                             '<button class="btn btn-danger btn-xs nas-select-btn" data-service-id="' + row.id + '"  data-placement="bottom" title="Remove service from wishlist">',
-                                '<span class="interesting-service"> Remove</span> ',
+                                '<span class="interesting-service">' + gettext("Remove") +'</span> ',
                             '</button>'
                         ].join('');
                     }
@@ -743,14 +746,14 @@
                 if ((row.purchased == false)) {
                     selected = [
                         '<button class="btn btn-info btn-xs nas-submit-service" data-action="' + row.submit_service_url + '" data-resource="' + row.service_config_url + '" data-service-id="' + row.id + '">',
-                            '<span data-placement="bottom" title="Purchase the ' + row.title + ' service"> Purchase</span>',
+                            '<span data-placement="bottom" title="Purchase the ' + row.title + ' service">' +  gettext("Purchase") + '</span>',
                         '</button>'
                     ].join('');
                 }
                 else {
                     selected = [
                         '<button class="btn btn-info btn-xs disabled" data-service-id="' + row.id + '">',
-                        '<span class="fa fa-shopping-bag"></span> <span data-placement="bottom" title="This service has been purchased">Purchased</span>',
+                        '<span class="fa fa-shopping-bag"></span> <span data-placement="bottom" title="' + gettext("This service has been purchased") +'">' + gettext("Purchased") + '</span>',
                         '</button>'
                     ].join('');
                 }
@@ -758,20 +761,20 @@
             }
 
             function setKwdServiceFormatter(value, row, index) {
-                return '<span class="cursor-pointer service-details" data-resource="' + row.details_url + '" data-service-id="' + row.id + '" data-placement="right" title="More details">' + row.title + ' <span class="fa fa-external-link text-primary preview-service"></span></span>';
+                return '<span class="cursor-pointer service-details" data-resource="' + row.details_url + '" data-service-id="' + row.id + '" data-placement="right" title="' + gettext("More details") + '">' + row.title + ' <span class="fa fa-external-link text-primary preview-service"></span></span>';
             }
 
             function setKwdServiceTypeFormatter(value, row, index) {
-                return (row.type === 'H') ? "<span class='fa fa-users'></span> Human-based" : "<span class='fa fa-laptop'></span> Machine-based";
+                return (row.type === 'H') ? "<span class='fa fa-users'></span>" + gettext("Human-based") : "<span class='fa fa-laptop'></span>" + gettext("Machine-based");
             }
 
             function seKwdtServicePriceFormatter(value, row, index) {
-                return (row.price == 0) ? 'FREE' : row.price + ' (' + row.unit + ')';
+                return (row.price == 0) ? gettext('FREE') : row.price + ' (' + row.unit + ')';
             }
 
             function setKwdServiceLocationFormatter(value, row, index) {
                 if (row.location_constraint == true) {
-                    return "<button class='btn btn-xs btn-default nas-coordinates-btn-kwd' data-service-title='" + row.title + "' data-latitude='" + row.latitude + "'  data-longitude='" + row.longitude + "' data-radius='" + row.coverage + "' data-placement='right' title='View on the map'><span class='fa fa-map-marker fa-lg text-danger'></span> View</button>";
+                    return "<button class='btn btn-xs btn-default nas-coordinates-btn-kwd' data-service-title='" + row.title + "' data-latitude='" + row.latitude + "'  data-longitude='" + row.longitude + "' data-radius='" + row.coverage + "' data-placement='right' title='" + gettext("View on the map") +"'><span class='fa fa-map-marker fa-lg text-danger'></span>" + gettext("View") + "</button>";
                 }
                 return "-";
             }
@@ -783,7 +786,7 @@
             function setKwdServicePurchaseFormatter(value, row, index) {
                 return [
                     '<button class="btn btn-info btn-xs kwd-buy-service" data-resource="'+ row.service_config_url +'" data-service-id="' + row.id + '" data-index="'+index+'">',
-                        '<span> Purchase</span>',
+                        '<span> ' + gettext("Purchase") + '</span>',
                     '</button>'
                 ].join('');
             }

@@ -1,4 +1,4 @@
-﻿{% extends "app/base.html" %}
+{% extends "app/base.html" %}
 {% load i18n %}
 {% load l10n %}
 {% block title %} AoD | {{ title }} {% endblock title %}
@@ -41,11 +41,11 @@
                         location.reload();
                     }
                     else {
-                        alert("An error occured");
+                        alert(gettext("An error occured"));
                     }
                 },
                 error: function (response) {
-                    alert("An error is occured. The service modification failed");
+                    alert(gettext("An error is occured. The service modification failed"));
                 }
             });
         });
@@ -79,8 +79,8 @@
                     <div>
                         <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12">
                             <h3>
-                                <i class="fa fa-bookmark fa-lg text-success"></i> Your AoD shopping cart
-                                <small>(After you log out, the list is removed)</small>
+                                <i class="fa fa-bookmark fa-lg text-success"></i> {% trans 'Your AoD shopping cart' %}
+                                <small>({% trans 'After you log out, the list is removed' %})</small>
                             </h3>
                         </div>    
                         <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12">
@@ -97,14 +97,14 @@
                                             <span class="text-muted">{% trans 'Provider' %}: {% for p in providers %} {% if p.service == s.id %}{{ p.owner }} {% endif %} {% endfor %}</span>
                                         </div>
                                         <div class="col-lg-3 col-sm-3 col-md-3">
-                                            Quantity 1 
+                                            {% trans 'Quantity 1' %}
                                         </div>
                                         <div class="col-lg-3 col-sm-3 col-md-3">
-                                            Price: <b>{{ s.unit }} {{ s.price }}</b>
+                                            {% trans 'Price' %}: <b>{{ s.unit }} {{ s.price }}</b>
                                         </div>
                                     </div>
                                     <div class="row text-center">
-                                        <a href="#" class="btn btn-default btn-sm remove-service-cart" data-url="{% url 'remove_item_cart' s.id%}" data-id="{{ s.id }}"><i class="fa fa-remove text-danger"></i> Remove</a>
+                                        <a href="#" class="btn btn-default btn-sm remove-service-cart" data-url="{% url 'remove_item_cart' s.id%}" data-id="{{ s.id }}"><i class="fa fa-remove text-danger"></i> {% trans 'Remove' %}</a>
                                     </div>
                                 </div>
                                 {% endfor %}
@@ -120,7 +120,7 @@
 
                 <!--right menu-->
                 <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pull-right" style=" background-color: whitesmoke; padding-bottom: 3%;border-radius:5px 5px;">
-                    <h3 class="text-center">{% trans 'Cart summary' %} <small>{{services.count}}{% if services.count == 1 %} {% trans 'services' %} {%else%} {% trans 'service' %} {% endif %}</small></h3>
+                    <h3 class="text-center">{% trans 'Cart summary' %} <br><small>{{services.count}}{% if services.count == 1 %} {% trans 'services' %} {%else%} {% trans 'service' %} {% endif %}</small></h3>
                     <hr class="service-hr">
                     <div class="row text-center" style="margin-bottom: 2%">
                         <h3>{% trans 'Total' %}: {{ total|default_if_none:"-" }}</h3>

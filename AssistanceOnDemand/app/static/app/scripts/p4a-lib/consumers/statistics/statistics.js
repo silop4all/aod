@@ -43,7 +43,7 @@ var getMap = function getMap(obj, elemID) {
 
 
     var infoWindow = new google.maps.InfoWindow({
-        content: "<div><strong>Service:</strong> " + obj.serviceTitle + " <br><strong>Latitude:</strong> " + obj.latitude + "<br><strong>Longitude:</strong> " + obj.longitude + "</div>"
+        content: "<div><strong>" + gettext("Service") +":</strong> " + obj.serviceTitle + " <br><strong>" + gettext("Latitude") +":</strong> " + obj.latitude + "<br><strong>" + gettext("Longitude") +":</strong> " + obj.longitude + "</div>"
     });
 
     // Handle user actions
@@ -137,7 +137,7 @@ $(document).on('all.bs.table', collectionSelector, function (name, args) {
             var imageElement = '';
             if (response.image != null && response.image.includes("/")) {
                 var img = response.image.split("/");
-                imageElement = '<img src="/media/app/services/images/' + img[img.length - 1] + '" alt="Service logo" class="img-thumbnail" style="max-height:200px; border-radius:3px 3px" />';
+                imageElement = '<img src="/media/app/services/images/' + img[img.length - 1] + '" alt="' + gettext("Service logo") + '" class="img-thumbnail" style="max-height:200px; border-radius:3px 3px" />';
             }
             else {
                 imageElement = [
@@ -149,7 +149,7 @@ $(document).on('all.bs.table', collectionSelector, function (name, args) {
             $("#bought-service-img").html(imageElement);
 
             $("#bought-service-title").text(response.title);
-            $("#bought-service-title").parent().attr("title", "The service title is " + response.title);
+            $("#bought-service-title").parent().attr("title", gettext("The service title is ") + response.title);
             $("#bought-service-descr").text(response.description);
 
             var categories = '';
@@ -168,17 +168,17 @@ $(document).on('all.bs.table', collectionSelector, function (name, args) {
 
             if (response.type == "H") {
                 $(".bought-machine-service").addClass('hidden');
-                $("#bought-service-type").html("<span class='fa fa-users fa-lg'></span> Human-based");
+                $("#bought-service-type").html("<span class='fa fa-users fa-lg'></span>" + gettext("Human-based"));
                 $("#bought-service-installation").text(response.installation_guide);
             }
             else {
                 $(".bought-machine-service").removeClass('hidden');
-                $("#bought-service-type").html("<span class='fa fa-laptop fa-lg'></span> Machine-based");
+                $("#bought-service-type").html("<span class='fa fa-laptop fa-lg'></span>" + gettext("Machine-based"));
                 $("#bought-service-license").html(response.license + " (version: " + response.version + ")");
                 $("#bought-service-installation").text(response.installation_guide);
             }
 
-            var languages = "All languages are supported";
+            var languages = gettext("All languages are supported");
             if (response.languages.length) {
                 languages = '';
                 for (i in response.languages) {
@@ -204,7 +204,7 @@ $(document).on('all.bs.table', collectionSelector, function (name, args) {
 
             // Display link if any
             if (response.link != null && response.link !== "") {
-                var linkElem = '<a href="' + response.link + '" title="Useful link">' + response.link + '</a>';
+                var linkElem = '<a href="' + response.link + '" title="' + gettext("Useful link") +'">' + response.link + '</a>';
                 $("#bought-service-link").html(linkElem);
                 $("#bought-service-link").parent().removeClass('hidden');
             }
@@ -245,7 +245,7 @@ $(document).on('all.bs.table', collectionSelector, function (name, args) {
             }
 
 
-            var videos = 'Service owner does not provide videos', docs = 'Service owner does not provide further documents (pdf, office documents, images, etc..)';
+            var videos = gettext('Service owner does not provide videos'), docs = gettext('Service owner does not provide further documents (pdf, office documents, images, etc..)');
             if (response.technical_support.length) {
                 videos = '';
                 docs = '';
@@ -253,37 +253,37 @@ $(document).on('all.bs.table', collectionSelector, function (name, args) {
                     if ($.inArray(response.technical_support[i].format, ["mp4", "mp3"]) > -1) {
                         videos += [
                             '<div data-support-id="' + response.technical_support[i].id + '">',
-                                '<span class="fa fa-video-camera text-muted fa-lg" role="img" alt="Video presentation"></span> ',
+                                '<span class="fa fa-video-camera text-muted fa-lg" role="img" alt="' + gettext("Video presentation") + '"></span> ',
                                 '<a href="#vd' + response.technical_support[i].id + '" class="access-resource text-primary">' + response.technical_support[i].title + '</a><br>',
                                 '<video style="display:none; width:100%" controls  title="' + response.technical_support[i].title + '" id="vd' + response.technical_support[i].id + '">',
                                     '<source src="' + response.technical_support[i].path + '" type="video/mp4">',
                                     '<source src="movie.ogg" type="video/ogg">',
-                                    'Your browser does not support the video tag.',
+                                    gettext('Your browser does not support the video tag.'),
                                 '</video>',
                             '</div>'
                         ].join('');
                     }
                     else if ($.inArray(response.technical_support[i].format, ["doc", "docx"]) > -1) {
                         docs += "<div data-support-id='" + response.technical_support[i].id + "'>";
-                        docs += "<span class='fa fa-file-word-o text-primary fa-lg' role='img' alt='Office word document'></span> <a href='#wd" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
+                        docs += "<span class='fa fa-file-word-o text-primary fa-lg' role='img' alt='" + gettext("Office word document") + "'></span> <a href='#wd" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
                         docs += "<iframe style='display:none' title='" + response.technical_support[i].title + "' width='540' id='wd" + response.technical_support[i].id + "' height='360' frameborder='0' src='" + response.technical_support[i].path + "' ebkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
                         docs += "</div>";
                     }
                     else if ($.inArray(response.technical_support[i].format, ["xls", "xlsx"]) > -1) {
                         docs += "<div data-support-id='" + response.technical_support[i].id + "'>";
-                        docs += "<span class='fa fa-file-excel-o text-success fa-lg' role='img' alt='Office Excel dociument'></span> <a href='#wd" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
+                        docs += "<span class='fa fa-file-excel-o text-success fa-lg' role='img' alt='" + gettext("Office Excel document") + "'></span> <a href='#wd" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
                         docs += "<iframe style='display:none' title='" + response.technical_support[i].title + "' width='540' id='wd" + response.technical_support[i].id + "' height='360' frameborder='0' src='" + response.technical_support[i].path + "' ebkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
                         docs += "</div>";
                     }
                     else if ($.inArray(response.technical_support[i].format, ["pdf"]) > -1) {
                         docs += "<div data-support-id='" + response.technical_support[i].id + "'>";
-                        docs += "<span class='fa fa-file-pdf-o text-danger fa-lg' role='img' alt='Pdf document'></span> <a href='#pdf" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
+                        docs += "<span class='fa fa-file-pdf-o text-danger fa-lg' role='img' alt='" + gettext("Pdf document") + "'></span> <a href='#pdf" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
                         docs += "<iframe style='display:none; width: 100%; min-height:100%' title='" + response.technical_support[i].title + "' width='540' id='pdf" + response.technical_support[i].id + "' height='360' frameborder='0' src='" + response.technical_support[i].path + "' ebkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
                         docs += "</div>";
                     }
                     else if ($.inArray(response.technical_support[i].format, ["png", "gif", "jpeg", "jpg"]) > -1) {
                         docs += "<div data-support-id='" + response.technical_support[i].id + "'>";
-                        docs += "<span class='fa fa-file-picture-o text-primary fa-lg' role='img' alt='Image file'></span> <a href='#img" + response.technical_support[i].id + "' class='access-resource'>" + response.technical_support[i].title + "</a><br>";
+                        docs += "<span class='fa fa-file-picture-o text-primary fa-lg' role='img' alt='" + gettext("Image file") + "'></span> <a href='#img" + response.technical_support[i].id + "' class='access-resource'>" + response.technical_support[i].title + "</a><br>";
                         docs += "<iframe style='display:none' title='" + response.technical_support[i].title + "' width='540' id='img" + response.technical_support[i].id + "' height='360' frameborder='0' src='" + response.technical_support[i].path + "' ebkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
                         docs += "</div>";
                     }
@@ -293,7 +293,7 @@ $(document).on('all.bs.table', collectionSelector, function (name, args) {
             $("#bought-service-support-docs").html(docs);
 
             // skype
-            var skypeID = 'Not available';
+            var skypeID = gettext('Not available');
             if (response.skype != '' && response.skype != null) {
                 skypeID = [
                     '<div id="SkypeButton_Call_' + response.skype + '_1">',
@@ -309,10 +309,10 @@ $(document).on('all.bs.table', collectionSelector, function (name, args) {
         error: function (response) {
             swal({
                 html: false,
-                title: "Network of assistance services",
-                text: 'Sorry, an error has occurred',
+                title: gettext("Network of assistance services"),
+                text: gettext('Sorry, an error has occurred'),
                 type: "warning",
-                confirmButtonText: "Try again!",
+                confirmButtonText: gettext("Try again!"),
                 confirmButtonColor: "#d9534f"
             });
         },
@@ -339,7 +339,7 @@ $(document).on('mouseover', ".info-block", function () {
 
 var setAssistFlagFormatter = function setAssistFlagFormatter(value, row, index) {
     if (value) {
-        return "<label class='label label-info'>YES</label>";
+        return "<label class='label label-info'>" + gettext("YES") +"</label>";
     }
     return "-";
 }

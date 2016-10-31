@@ -9,9 +9,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="{% url 'home_page' %}" class="navbar-brand" title="Assistance On Demand - Home page">
-                    <img src="{{ MEDIA_URL }}app/aod/logos/logo2.png" alt="Prosperity 4 All logo">
-                    <strong> AoDemand</strong>
+                <a href="{% url 'home_page' %}" class="navbar-brand" title="{{ logo.title }} - {% trans 'Home page' %}">
+                    <img src="{{ logo.logo.url }}" alt="{{ logo.title }}">
+                    <strong> {{ logo.title }}</strong>
                 </a>
             </div>
             <div class="navbar-collapse collapse">
@@ -28,64 +28,72 @@
 
 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" title="Settings" data-toggle="dropdown" role="button" aria-expanded="true">
+                        <a href="#" class="dropdown-toggle" title="{% trans 'Settings' %}" data-toggle="dropdown" role="button" aria-expanded="true">
                             <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding"  id="settings_menu">
                                 <span class="fa fa-user"></span>{% if username %} {% trans 'My account' %} {% endif %}<span class="fa fa-caret-down"></span>
                             </span>
                         </a>   
                         <ul class="dropdown-menu under-construction" role="menu" aria-labelledby="settings_menu">
                             <li role="presentation">
-                                <a href="{% url 'provider_dashboard' %}" title="Show the services you provide on AoD" role="menuitem" tabindex="-1">
+                                <a href="{% url 'provider_dashboard' %}" title="{% trans 'Show the services you provide on AoD' %}" role="menuitem" tabindex="-1">
                                     <span class="fa fa-archive fa-fw"></span> {% trans 'My offerings' %}
                                 </a>
                             </li>
                             <li role="presentation">
-                                <a href="{% url 'consumer_dashboard' %}" title="Show the services you have purchased" role="menuitem" tabindex="-1">
+                                <a href="{% url 'consumer_dashboard' %}" title="{% trans 'Show the services you have purchased' %}" role="menuitem" tabindex="-1">
                                     <span class="fa fa-area-chart fa-fw"></span> {% trans 'My collection' %}
                                 </a>
                             </li>
 
+                            {% if components.add_to_cart %}
                             <li>
                                 <a href="{% url 'cart_preview' %}" title="{% trans 'Shopping card' %}" class="under-construction">
-                                    <span class="fa fa-shopping-cart"></span> My Cart
+                                    <span class="fa fa-shopping-cart"></span> {% trans 'My Cart' %}
                                     {% if links.cart_items > 0 %}
                                         <span class="label label-success">{{ links.cart_items }}</span>
                                     {% endif %}
                                 </a>
                             </li>
-
+                            {% endif %}
+                            <li role="separator" class="divider"></li>
                             <li role="presentation">
-                                <a href="{% url 'user_profile' username %}" title="Manage your account" role="menuitem" tabindex="-1">
+                                <a href="{% url 'user_profile' username %}" title="{% trans 'Manage your account' %}" role="menuitem" tabindex="-1">
                                     <span class="fa fa-user fa-fw"></span> {% trans 'Account settings' %}
                                 </a>
                             </li>
 
                             <li >
-                                <a href="#" title="notification" class="under-construction">
-                                    <span class="fa fa-bell-o fa-fw"></span> My Notifications
+                                <a href="{% url 'user_calendar' username %}" title="{% trans 'My calendar' %}" class="under-construction">
+                                    <span class="fa fa-bell-o fa-fw"></span> {% trans 'My calendar' %}
+                                </a>
+                            </li>
+
+                            <li >
+                                <a href="#" title="{% trans 'My Notifications' %}" class="under-construction">
+                                    <span class="fa fa-bell-o fa-fw"></span> {% trans 'My Notifications' %}
                                 </a>
                             </li>
                         </ul>
                     </li>
 
                     <!--link to NAS component -->
-                    {% block guidedAssistanceList %}
-                        {% if links.is_nas_active %}
-                            {% include "app/guidedAssistanceLinks.html" %}
-                        {% endif %}
-                    {% endblock guidedAssistanceList %}
+                    {% if components.network_of_assistance_services %}
+                        {% include "app/guidedAssistanceLinks.html" %}
+                    {% endif %}
 
-
+                    {% if components.social_network %}
                     <li>
-                        <a href="{{ links.social_network }}" target="_blank" title="{% trans 'Social Network' %}" class="under-construction">
+                        <a href="{% url 'social_network' %}" title="{% trans 'Social Network' %}">
                             <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button">
                                 <span class="fa fa-cloud"></span> {% trans 'Social Network' %}
                             </span>
                         </a>
                     </li>
+                    {% endif %}
+
 
                     <li>
-                        <a href="{% url 'platform_technical_support_page' %}"  title="{% trans 'Help' %}" class="under-construction">
+                        <a href="{% url 'faq_topics' %}"  title="{% trans 'Help' %}" class="under-construction">
                             <span class="btn navbar-btn disable-btn-box-shadow navbar-btn-limited-padding" role="button">
                                 <span class="fa fa-question-circle"></span> {% trans 'Help' %}
                             </span>
