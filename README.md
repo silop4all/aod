@@ -513,14 +513,6 @@ $ sudo service apache2 restart
 ```
 
 
-### Users management
-
-- Super user (administrator)
-    + admin/@dm!n
-- Demo user
-    + demo/1qaz@WSX
-
-
 ## Install PhpMyAdmin (optional)
 
 Use the following commands to install the PhpMyAdmin (served by Apache web server). 
