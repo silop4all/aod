@@ -18,7 +18,7 @@ DEBUG = True
 #   EVALUATION CONTACT     
 #=================================
 EVALUATION_PROCESS  = False
-DEVELOPER_EMAIL = 'pathanasoulis@ep.singularlogic.eu'
+DEVELOPER_EMAIL = {DEVELOPER_EMAIL}
 EVALUATOR_EMAIL = DEVELOPER_EMAIL
 RECEIVER_EMAIL = [EVALUATOR_EMAIL]
 
@@ -27,8 +27,8 @@ RECEIVER_EMAIL = [EVALUATOR_EMAIL]
 #=================================
 AOD_HOST = {
     'PROTOCOL': "http",
-    'IP': "192.168.1.47", 
-    'PORT': 8000,
+    'IP': "127.0.0.1", 
+    'PORT': 80,
     'PATH': ''
 }
 PREVIEW_SITE_URL = AOD_HOST['PATH']
@@ -51,9 +51,9 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pros4all',
-        'USER': 'root',
-        'PASSWORD': '',
+        'NAME': 'aod',
+        'USER': 'aod',
+        'PASSWORD': 'aod',
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {

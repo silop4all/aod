@@ -1,6 +1,6 @@
 # Prosperity4All project
 
-[Prosperity4All logo](https://github.com/silop4all/aod/blob/master/P4A.png "")
+![Prosperity4All](https://github.com/silop4all/aod/blob/master/P4A.png "")
 
 ## Assistance On Demand service Infrastructure (AoD)
 
