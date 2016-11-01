@@ -124,7 +124,9 @@ ROOT_URLCONF = 'AssistanceOnDemand.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'AssistanceOnDemand.wsgi.application'
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'n(bd1f1c%e8=_xad02x5qtfn%wgwpi492e$8_erx+d)!tpeoim'
+# https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
+# Generate it http://www.miniwebtool.com/django-secret-key-generator/
+SECRET_KEY = {SECRET_KEY}
 
 #=================================
 #   TIMEZONE SETTINGS           
