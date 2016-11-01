@@ -8,7 +8,7 @@ As first step, execute the installation script (as the usual ubuntu user; not ro
     $ cd /opt
     $ sudo chmod 777 AoD_installation.sh
     $ ./AoD_installation.sh {git_repository_url} {git_repository_folder_name}
-    # i.e: AoD_installation.sh https://github.com/silop4all/aod aod
+    # i.e: AoD_installation.sh https://github.com/silop4all/aod.git aod
 ```
 
 
