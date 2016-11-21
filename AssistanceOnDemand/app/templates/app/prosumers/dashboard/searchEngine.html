@@ -1,0 +1,241 @@
+{% load i18n %}
+{% load l10n %}
+
+<section id="search_services_module" class="panel" style="padding-left: 5px; padding-right: 5px">
+    <form action="{% url 'private_api:search_engine' %}" method="GET" id="service-search-form" name="service-search-form">
+        <h4 class="text-center bg-primary"  role="heading">
+            <span class="fa fa-search fa-lg text-success"></span> {% trans 'Find your services' %}
+        </h4>
+        <hr>
+        <!--categories list-->
+        <div class="form-group" id="categories-panel">
+            <div class="panel-group panel-toggle-arrows" id="categories-id" role="tablist" aria-multiselectable="true" >
+                <div class="panel  panel-custom-success">
+                    <div class="panel-heading" role="tab" id="categories-title">
+                        <h4 class="panel-title" title="{% trans 'Categories' %}">
+                            <a data-toggle="collapse" data-parent="#categories-id" href="#categories-list" aria-expanded="true" aria-controls="categories-list">
+                                {% trans 'Categories' %}
+                                <i class="fa fa-angle-double-up pull-right"></i>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="categories-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="categories-title">
+                        <div class="panel-body" style="background-color:whitesmoke">
+                            <div id="tree" data-resource="{% url 'private_api:categories_tree' %}" style="margin-left: -40px"><!--append categories tree--></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Companies-->
+        <div class="form-group" id="companies-panel">
+            <div class="panel-group panel-toggle-arrows" id="companies-id" role="tablist" aria-multiselectable="true" >
+                <div class="panel panel-custom-success" >
+                    <div class="panel-heading" role="tab" id="companies-title">
+                            <h4 class="panel-title" title="{% trans 'Service providers' %}">
+                                <a data-toggle="collapse" data-parent="#companies-id" href="#companies-list" aria-expanded="true" aria-controls="companies-list">
+                                    {% trans 'Service providers' %}
+                                    <span class="fa fa-angle-double-up pull-right"></span>
+                                </a>
+                            </h4>
+                    </div>
+                    <div id="companies-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="companies-title">
+                        <div class="panel-body" style="background-color:whitesmoke">
+                            {% for provider in providers %}
+                                <div class="checkbox">
+                                    <input type="checkbox" id="provider-{{ provider.id }}" name="provider-{{ provider.id }}" data-id="{{ provider.id }}" data-name="provider-{{ provider.id }}"/> 
+                                    <label for="provider-{{ provider.id }}" style="line-height:initial; vertical-align: super">{{ provider.name|capfirst }} {{ provider.lastname|capfirst}}</label>
+                                    <span class="label label-success pull-right">{{ provider.count }} </span>
+                                </div>
+                            {% empty %}
+                                {% trans 'Providers not found' %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--types-of-services-->
+        <div class="form-group" id="service-types-panel">
+            <div class="panel-group panel-toggle-arrows" id="service-types-id" role="tablist" aria-multiselectable="true" style="border-radius:0px!important">
+                <div class="panel panel-custom-success">
+                    <div class="panel-heading" role="tab" id="service-types-title">
+                            <h4 class="panel-title" title="{% trans 'Type of services' %}">
+                                <a data-toggle="collapse" data-parent="#service-types-id" href="#service-types-list" aria-expanded="true" aria-controls="service-types-list">
+                                    {% trans 'Type' %}
+                                    <i class="fa fa-angle-double-up pull-right"></i>
+                                </a>
+                            </h4>
+                    </div>
+                    <div id="service-types-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="service-types-title">
+                        <div class="panel-body " style="background-color:whitesmoke">
+                            {% for i in types %}
+                            <div class="checkbox">
+                                <input type="checkbox" id="{{i.type}}_service_type" name="{{i.type}}_service_type" data-id="{{i.alias}}"/> 
+                                <label for="{{i.type}}_service_type" style="line-height:initial; vertical-align: super">{{i.type|capfirst}}</label>
+                                <span class="label label-success pull-right" >{{i.count}}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--payment policy-->
+        <div class="form-group" id="charging-model-panel">
+            <div class="panel-group panel-toggle-arrows" id="charging-model-id" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-custom-success">
+                    <div class="panel-heading" role="tab" id="charging-model-title">
+                            <h4 class="panel-title" title="{% trans 'Payment policies' %}">
+                                <a data-toggle="collapse" data-parent="#charging-model-id" href="#charging-model-list" aria-expanded="true" aria-controls="charging-model-list">
+                                    {% trans 'Payment policies' %}
+                                    <i class="fa fa-angle-double-up pull-right"></i>
+                                </a>
+                            </h4>
+                    </div>
+                    <div id="charging-model-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="charging-model-title">
+                        <div class="panel-body " style="background-color:whitesmoke">
+                        <!-- 2015.04.21 it works. -->
+                        {#% if chargingModels %#}
+                            {#% for model in chargingModels %#}
+                                <!--
+                                <div class="checkbox">
+                                    <label for="charging-model-{#{ model.id }#}">
+                                        <input type="checkbox" id="charging-model-{#{ model.id }#}" name="charging-model-{#{ model.id }#}" data-id="{#{ model.id }#}" data-name="charging-model-{#{ model.id }#}"/> 
+                                        <span>{#{ model.name }#}</span>
+                                        <span class="label label-success pull-right">{#{ model.servNo }#}</span>
+                                    </label>
+                                </div> 
+                                -->
+                            {#% endfor %#}
+                        {#% endif %#}
+                        <!-- 2015.04.21 -->
+
+
+                        {% if chargingModels %}
+                            {% for model in chargingModels %}
+                                {% if model.name == "Free" %}
+                                <div class="checkbox">
+                                    <input type="checkbox" id="charging-model-{{ model.id }}" name="charging-model-{{ model.id }}" data-id="{{ model.id }}" data-name="charging-model-{{ model.id }}"/> 
+                                    <!--<label for="charging-model-{{ model.id }}" style="line-height:initial">{{ model.name }}</label>-->
+                                    <label for="charging-model-{{ model.id }}" style="line-height:initial; vertical-align: super">{% trans 'Free' %}</label>
+                                </div>
+                                <div class="checkbox">
+                                    <input type="checkbox" id="charging-model-0" name="charging-model-paid" data-id="0" data-name="charging-model-paid"/> 
+                                    <label for="charging-model-0" style="line-height:initial; vertical-align: super">{% trans 'Paid' %}</label>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--price-->
+        <div class="form-group" id="price-panel">
+            <div class="panel-group panel-toggle-arrows" id="price-id" role="tablist">
+                <div class="panel panel-custom-success">
+                    <div class="panel-heading" role="tab" id="price-title">
+                            <h4 class="panel-title" title="{% trans 'Price' %}">
+                                <a data-toggle="collapse" data-parent="#price-id" href="#price-list" aria-expanded="true" aria-controls="price-list">
+                                    {% trans 'Price' %}
+                                    <i class="fa fa-angle-double-up pull-right"></i>
+                                </a>
+                            </h4>
+                    </div>
+                    <div id="price-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="price-title">
+                        <div class="panel-body" style="background-color:whitesmoke">
+                                                        
+                            <div class="price input-group margin-bottom-5">
+                                <span for="low_price" class="input-group-addon">{% trans 'From' %}</span>
+                                <input type="number" step="0.01" placeholder="{% trans 'min value' %}"  aria-label="{% trans 'Define the minimum price' %}" min="0" id="low_price" data-parent=".price" data-min="0.00" data-max="9999999.00" max="9999999.00" class="form-control" style="background: whitesmoke;">
+                                <span class="input-group-addon">&#8364;</span>                                   
+                            </div>
+
+                            <div class="price input-group">
+                                <span for="high_price" class="input-group-addon">{% trans 'Up to' %}</span>
+                                <input type="number" step="0.01" placeholder="{% trans 'max value' %}"  aria-label="{% trans 'Define the maximum price' %}" min="0" id="high_price" max="9999999.00" data-parent=".price" data-min="0.00" data-max="9999999.00" class="form-control" style="background: whitesmoke">
+                                <span class="input-group-addon">&#8364;</span>                                   
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--QoS-->
+        <div class="form-group" id="quality-of-service-panel">
+            <div class="panel-group panel-toggle-arrows" id="quality-of-service-id" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-custom-success">
+                    <div class="panel-heading" role="tab" id="quality-of-service-title">
+                            <h4 class="panel-title" title="{% trans 'Searches based on Quality of Services measured by serviced users from zero (worst) to five (best)' %}.">
+                                <a data-toggle="collapse" data-parent="#quality-of-service-id" href="#quality-of-service-list" aria-expanded="true" aria-controls="quality-of-service-list">
+                                    {% trans 'Quality of Service' %}
+                                    <i class="fa fa-angle-double-up pull-right"></i>
+                                </a>
+                            </h4>
+                    </div>
+                    <div id="quality-of-service-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="quality-of-service-title">
+                        <div class="panel-body " style="background-color:whitesmoke;">    
+                            <div id="qos">
+                                <div class="input-group margin-bottom-5" style="max-width: 90%">
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-star-o star-colorize-yellow" role="img" alt="{% trans 'Minimum value of quality of service (rating)' %}"></span>
+                                    </span>
+                                    <input type="number" step="0.1" placeholder="{% trans 'minimum rating' %}" min="0" max="5" id="low_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control" style="background: whitesmoke">
+                                </div>
+                                <div class="input-group" style="max-width: 90%">
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-star star-colorize-yellow" role="img" alt="{% trans 'Maximum value of quality of service (rating)' %}"></span>
+                                    </span>
+                                    <input type="number" step="0.1" placeholder="{% trans 'maximum rating' %}" min="0" max="5" id="high_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control" style="background: whitesmoke">
+                                </div>
+                            </div> 
+                                <div>
+                                <span class="fa fa-info-circle text-primary"></span> 
+                                <span style="font-size: 12px">{% trans 'Set the QoS range of your interest' %}</span>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--distance-->
+        <div class="form-group" id="location-panel">
+            <div class="panel-group panel-toggle-arrows" id="location-id" role="tablist">
+                <div class="panel panel-custom-success">
+                    <div class="panel-heading" role="tab" id="location-title">
+                            <h4 class="panel-title" title="{% trans 'Searches for services offered around your current location' %}">
+                                <a data-toggle="collapse" data-parent="#location-id" href="#location-list" aria-expanded="true" aria-controls="location-list">
+                                    {% trans 'Your current location' %}
+                                    <i class="fa fa-angle-double-up pull-right"></i>
+                                </a>
+                            </h4>
+                    </div>
+                    <div id="location-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="location-title">
+                        <div class="panel-body" style="background-color:whitesmoke">
+                            <div class="location input-group" >
+                                <input type="number" step="0.01" min="0.00" maxlength="20" class="form-control" placeholder="{% trans 'max distance' %}"> 
+                                <span class="input-group-addon">{% trans 'km' %}</span>
+                            </div>
+                            <div>
+                                <span class="fa fa-info-circle text-primary"></span> 
+                                <span style="font-size: 12px">{% trans 'Scan for services within the distance of your interest from your location' %}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="service-hr">
+        <div class="form-group row">
+            <div class="col-xs-6 col-lg-6 col-sm-6 col-md-6">
+                <button type="reset" class="btn btn-default btn-block">{% trans 'Reset' %}</button>
+            </div>
+                <div class="col-xs-6 col-lg-6 col-sm-6 col-md-6">
+                <button type="button" id="search-btn" class="btn btn-success btn-block">{% trans 'Search' %}</button>
+            </div>
+        </div>
+    </form>
+</section>

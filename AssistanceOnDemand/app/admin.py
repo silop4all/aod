@@ -342,8 +342,8 @@ class TechnicalSupportAdmin(admin.ModelAdmin):
 admin.site.register(TechnicalSupport, TechnicalSupportAdmin)
 
 class ServicesToTechnicalSupportAdmin(admin.ModelAdmin):
-    list_display = ['id', 'service', 'technical_support', 'path',]
-    fields = ['service', 'technical_support', 'path', 'software_dependencies']  
+    list_display = ['id', 'service', 'technical_support', 'path', 'extension', ]
+    fields = ['service', 'description', 'technical_support', 'path', 'software_dependencies']  
     list_filter = ['service__title', 'technical_support__type']
     ordering = ['service', 'technical_support']
 
@@ -425,8 +425,8 @@ class TopicAdmin(admin.ModelAdmin):
 admin.site.register(Topic, TopicAdmin)
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display    = ['id', 'title', 'topic', 'included_videos', 'included_documents', 'published_date', 'modified_date', 'visible','protected']
-    list_filter     = ['title', 'topic', 'published_date', 'modified_date', 'visible', 'protected']
+    list_display    = ['id', 'title', 'topic', 'included_videos', 'included_documents', 'service', 'published_date', 'modified_date', 'visible','protected']
+    list_filter     = ['title', 'topic', 'published_date', 'modified_date', 'visible', 'protected', 'service']
     ordering        = ['topic','id']
     search_fields   = ['title', 'content']
     #date_hierarchy  = 'published_date'

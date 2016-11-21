@@ -464,6 +464,7 @@ class TechnicalSupport(models.Model):
 
     type        = models.CharField(max_length=64, null=False, blank=False)
     description = models.TextField(null=True, blank=False)
+    alias = models.CharField(max_length=32, blank=False, null=True)
 
     class Meta:
         db_table            = "app_technical_support_types"
@@ -480,12 +481,15 @@ class ServicesToTechnicalSupport(models.Model):
     Associate every service with the multiple types of technical support
     """
 
-    service             = models.ForeignKey(Services, related_name="technical_support")
-    technical_support   = models.ForeignKey(TechnicalSupport)
-    title               = models.CharField(max_length=255, null=False) 
-    format              = models.CharField(max_length=15)
-    path                = models.CharField(max_length=255, null=False, blank=False, unique=False)
+    service = models.ForeignKey(Services, related_name="technical_support")
+    technical_support = models.ForeignKey(TechnicalSupport)
+    title = models.CharField(max_length=255, null=False) 
+    description = models.TextField(null=True, blank=False)
     software_dependencies = models.TextField(null=True, blank=False)
+    link = models.CharField(max_length=300, default="")
+    #path = models.FileField(upload_to=settings.SERVICES_TECHNICAL_SUPPORT, default=settings.SERVICES_TECHNICAL_SUPPORT + '/test.pdf')
+    path = models.TextField(default=settings.MEDIA_URL + settings.SERVICES_TECHNICAL_SUPPORT + '/test.pdf')
+    extension = models.CharField(max_length=15, default="unknown")
     created_date = models.DateTimeField(blank=False, null=True, default=timezone.now)
     modified_date = models.DateTimeField(blank=False, null=False, auto_now=True)
     visible = models.BooleanField(default=True, blank=False, null=False)
@@ -496,7 +500,7 @@ class ServicesToTechnicalSupport(models.Model):
         verbose_name_plural = _("Service Technical Support")
 
     def __unicode__(self):
-        return self.id    
+        return self.id 
 
 
 class ConsumersToServices(models.Model):
@@ -505,7 +509,7 @@ class ConsumersToServices(models.Model):
     """
 
     consumer = models.ForeignKey(Consumers)
-    service = models.ForeignKey(Services)
+    service = models.ForeignKey(Services, related_name='service_consumers')
     cost = models.FloatField(blank=False, null=True)   # null cost means FREE
     purchased_date = models.DateTimeField()
     rating = models.FloatField(blank=False, null=True)
@@ -586,11 +590,13 @@ class Article(models.Model):
     """ Article per F.A.Q. topic """
     title           = models.CharField(max_length=128, null=False, blank=False, unique=True)
     topic           = models.ForeignKey(Topic, related_name='articles')
+    service         = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, blank=True, related_name="service")
     content         = RichTextUploadingField('contents')
     published_date  = models.DateTimeField(blank=False, null=True, default=timezone.now)
     modified_date   = models.DateTimeField(blank=False, null=False, auto_now=True)
     visible         = models.BooleanField(default=True, blank=False, null=False)
     protected       = models.BooleanField(default=False, blank=False, null=False)
+        
 
     def __unicode__(self):
         return self.title

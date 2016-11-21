@@ -85,20 +85,22 @@ patterns = patterns('',
     #=========================================
     url(r'^services/(?P<pk>\d+)/$',                                 ServiceConsumerView.as_view(),                      name="service_view_page"),
     #=========================================
-    ## Services -> Offerings
+    ## Provider dashboard
     #=========================================
-    url(r'^offerings/$',                                            ServicesIndex.as_view(),                            name='provider_dashboard'),
-    url(r'^offerings/services/$',                                   ServiceCreate.as_view(),                            name='insert_service'),
-    url(r'^offerings/services/(?P<pk>\d+)/$',                       ServiceView.as_view(),                              name='public_service_view'),
-    url(r'^offerings/services/(?P<pk>\d+)/modify/$',                ServiceUpdateView.as_view(),                        name='update_service'),
-    url(r'^offerings/services/media/upload/(?P<pk>\d+)$',           UploadServiceMedia.as_view(),                       name='upload_service_media'),
-    url(r'^offerings/services/(?P<pk>\d+)/technical-support/$',     ServiceTechnicalSupport.as_view(),                  name='service_technical_support'),
+    url(r'^provider-dashboard/$',                                   ProviderServices.as_view(),                         name='provider_dashboard'),
+    url(r'^provider-dashboard/services/$',                          ServiceCreate.as_view(),                            name='insert_service'),
+    url(r'^provider-dashboard/services/(?P<pk>\d+)/$',              ServiceView.as_view(),                              name='public_service_view'),
+    url(r'^provider-dashboard/services/(?P<pk>\d+)/modify/$',       ServiceUpdateView.as_view(),                        name='update_service'),
+    url(r'^provider-dashboard/services/media/upload/(?P<pk>\d+)$',  UploadServiceMedia.as_view(),                       name='upload_service_media'),
+    url(r'^provider-dashboard/services/(?P<pk>\d+)/technical-support/$',    ServiceTechnicalMaterialListView.as_view(),         name='service_technical_materials'),
+    url(r'^provider-dashboard/services/(?P<pk>\d+)/technical-support/(?P<material>\d+)/$',UploadServiceTechnicalMaterialView.as_view(),      name='upload_service_technical_material'),
+    url(r'^technical-support/materials/(?P<pk>\d+)/$',              ServiceTechnicalMaterialObjectView.as_view(),       name='service_technical_material'),
     #=========================================
-    # Consumer stats
+    # Consumer dashboard
     #=========================================
-    url(r'^collection/$',                                           MyStats.as_view(),                                  name='consumer_dashboard'),
+    url(r'^consumer-dashboard/$',                                   ConsumerDashboard.as_view(),                        name='consumer_dashboard'),
     #=========================================
-    # Assistance urls
+    # Carer dashboard
     #=========================================
     url(r'^guided-assistance/$',                                    NetworkAssistanceServicesRequests.as_view(),        name='guided_assistance_landing_page'),
     url(r'^guided-assistance/requests/$',                           NetworkAssistanceServicesCreateRequest.as_view(),   name='guided_assistance_carer_request'),
@@ -113,7 +115,7 @@ patterns = patterns('',
     url(r'^guided-assistance/services/submit$',                     NetworkAssistanceServicesSubmit.as_view(),          name="guided_assistance_submit_services"),
     url(r'^guided-assistance/services/search/keywords$',            SearchKwdNetworkAssistanceServices.as_view(),       name="guided_assistance_search_by_keywords"),
     url(r'^guided-assistance/services/preview/(?P<consumer>\d+)/$', PreviewNetworkAssistanceServices.as_view(),         name="guided_assistance_network_preview"),
-    url(r'^assistance/services/(?P<pk>\d+)/configuration$',     ServiceConfigurationView.as_view()),
+    url(r'^assistance/services/(?P<pk>\d+)/configuration$',         ServiceConfigurationView.as_view()),
     #=========================================
     # AoD technical support
     #=========================================
@@ -133,4 +135,8 @@ patterns = patterns('',
     # Cookies Policy
     #=========================================
     url(r'^cookies-policy/$',                                       CookiePolicyView.as_view(),                         name="cookie_policy"),
+    #=========================================
+    # Broken links
+    #=========================================
+    url(r'^detect-broken-links$',                                   DetectBrokenLinks.as_view(),                        name="detect_broken_links"),
 ) + access + social_network + cart

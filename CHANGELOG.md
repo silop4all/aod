@@ -1,5 +1,23 @@
 # Change Log
 
+## 2016-11-21
+- Capability to associate a service with one or more FAQ articles (admin panel)
+- Implement the customized search engine
+    + load services/products and relative FAQ articles that meet the user input (filters)
+    + search is achieved by invoking REST web services
+- Declare the customization state in project settings
+- Detect broken technical support links on demand performing HTTP HEAD request
+- Multiple links for technical support of service
+    + shared links (new tab in browser)
+    + embed youTube/vimeo videos
+    + documents (office, pdf)
+    + audio/video (mp3/mp4)
+- Refactor provider dashboard
+- Refactor some urls/templates absolute paths 
+- Fix bugs:
+    + upload image in service registration (POST method)
+
+
 ## 2016-10-31
 - Implementations:
     + Multilingual features

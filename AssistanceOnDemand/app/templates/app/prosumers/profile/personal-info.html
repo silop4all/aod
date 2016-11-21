@@ -1,0 +1,235 @@
+{% load i18n %}
+{% load l10n %}
+<div class="personal-info-box">
+    <div class="form-group">
+        <div class="col-md-4 col-sm-4 col-xs-12 pull-left text-center" style="text-align: center">
+            <input type="file" id="logo" name="logo" data-link="{% url 'profile_media' object.id %}" accept="image/*" size="1" style="display:none" onchange="return loadLogo(this);"/>
+            <a href="#" class="img-responsive" title="{% trans 'Update logo' %}" id="edit-logo" onclick="return addLogo();" style="position:relative;" >
+                
+                {% if object.logo %}
+                    <img src="{{ logo }}" alt="{{ object.name}}_{{ object.lastname}}_logo" class="img-rounded personal-info-profile-img" style="height:150px;width:150px; cursor: pointer" />                                  
+                    <label id="text" class="hidden"><i class="fa fa-camera fa-lg"></i> {% trans 'Upload logo' %}</label>
+                {% else %}
+                <div style="cursor: pointer">
+                    <span class="fa-stack fa-5x" >
+                        <i class="fa fa-square fa-stack-2x" style="color: #d7d5d5 "></i>
+                        <i class="fa fa-user fa-stack-1x" style="color: #ebebea"></i>
+                    </span>
+                </div>
+                {% endif %}
+            </a>
+            
+        </div>
+                  
+        <div class="col-md-8 col-sm-8 col-xs-12 pull-right">
+            <div class="form-group">
+                <div class="col-md-12 col-sm-12">
+                    <h4 class="text-left" role="heading" title="{% trans 'Personal information' %}">
+                        {% trans 'Personal information' %}
+                    </h4>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12 col-sm-12">
+                    <h5 title="{% trans 'The username that characterize any AoD user' %}"><i class="fa fa-user fa-lg p4a-username" data-link="{{object.id}}"></i> {{ object.username }} </h5>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-6 col-sm-6 pull-left">
+                    <h5 title="{% trans 'Registration date and time' %}"> <i class="fa fa-calendar text-muted"></i> {{ object.registration| date:"M d, Y" }} <i class="fa fa-clock-o text-muted"></i> {{ object.registration| date:"H:i" }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="preview-personal-info">
+        <!-- Non editable mode -->
+        {% if error %}
+        <div class="form-group">
+            <h6 class="label label-danger">{{ error | safe }}</h6>
+        </div>
+        {% endif %}
+
+        <!-- name -->
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right">{% trans 'First name' %}</label>
+            </div>
+            <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12" title="Your first name">
+                <span id="preview_name">{{ object.name }}</span>
+            </div>
+        </div>
+        <!-- last name -->
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right">{% trans 'Last name' %}<small></small></label>
+            </div>
+            <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12" title="Your last name">
+                <span id="preview_lastname">{{ object.lastname }}</span>
+            </div>
+        </div>
+        <!-- geological info -->
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right ">{% trans 'Country' %}<small></small></label>
+            </div>
+            <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12" title="Your country">
+                <span id="preview_country">{{ object.country }}</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right">{% trans 'City' %}<small></small></label>
+            </div>
+            <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12" title="{% trans 'Your city' %}">
+                {% if object.city %}
+                <span  id="preview_city">{{ object.city|default_if_none:"Not set" }}</span>
+                {% else %}
+                <span  for="preview_city">{% trans 'Not set' %}</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right">{% trans 'Address' %}, {% trans 'zip code' %}<small></small></label>
+            </div>
+            <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12" title="The address and zip code of your residence">
+                {% if object.address or object.postal_code %}
+                <span  id="preview_address">
+                    {% if object.address %}{{ object.address|default_if_none:"Not set" }}{% else %}{% trans 'Not set' %}{% endif %}, 
+                    {% if object.postal_code %}{{ object.postal_code|default_if_none:"Not set" }}{% else %}{% trans 'Not set' %}{% endif %}
+                </span>
+                {% else %}
+                    <span  id="preview_address">{% trans 'Not set' %}</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="editable-personal-info hidden">
+        <div class="form-group ">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right control-label" for="rg_name">{% trans 'First name' %}<small>*</small></label>
+            </div>
+            <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12 input-group controls" title="{% trans 'Update your name' %}">
+                <span class="input-group-addon">
+                    <span class="fa fa-info fa-fw" role="img"></span>
+                </span>
+                <input type="text" class="form-control" name="rg_name" id="rg_name" value="{{ object.name }}" autocomplete="off" maxlength="200" placeholder="{% trans 'the name of user' %}" autofocus/>    
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3">
+                <label class="label control-label label-danger pull-left hidden" id="rg_name_info">{% trans 'Type at least 2 characters' %}</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right control-label" for="rg_lastname">{% trans 'Last name' %}<small>*</small></label>
+            </div>
+            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
+                <span class="input-group-addon">
+                    <span class="fa fa-info fa-fw"></span>
+                </span>
+                <input type="text" class="form-control" name="rg_lastname" id="rg_lastname" value="{{ object.lastname }}" autocomplete="off" maxlength="200" placeholder="{% trans 'the lastname of user' %}" />
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3">
+                <!--<label class="label pull-left label-danger hidden" id="rg_lastname_info">Type at least 2 characters</label>-->
+                <label id="rg_lastname_info" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{% trans 'Type at least 2 characters' %}"></label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right control-label" for="rg_country">{% trans 'Country' %}<small>*</small></label>
+            </div> 
+            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
+                <span class="input-group-addon">
+                    <span class="fa fa-globe fa-fw"></span>
+                </span>
+                <select class="selectpicker form-control"  name="rg_country" id="rg_country" data-max-options="1" data-size="6"  data-header="{% trans 'Select a country' %}" data-live-search="true" title="-- {% trans 'List' %} --">
+                    {% if countryList %}
+                        {% for country in countryList %}
+                            {% if object.country == country %}
+                                <option value="{{ country }}" selected>{{ country }}</option>  
+                            {% else %}
+                                <option value="{{ country }}">{{ country }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3">
+                <label class="label pull-left label-danger hidden" id="rg_country_info">{% trans 'Select a country' %}</label>
+            </div>
+        </div> 
+
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right control-label" for="rg_city">{% trans 'City' %}</label>
+            </div>
+            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
+                <span class="input-group-addon">
+                    <span class="fa fa-map-marker fa-fw"></span>
+                </span>
+                <input type="text" class="form-control" name="rg_city" id="rg_city" value="{{ object.city|default_if_none:"" }}" autocomplete="off" maxlength="128" placeholder="{% trans 'the city of residence' %}" />
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3">
+                <label class="label pull-left label-danger hidden" id="rg_city_info">{% trans 'Type at least 2 characters' %}</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right control-label" for="rg_address">{% trans 'Address' %}</label>
+            </div>
+            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
+                <span class="input-group-addon">
+                    <span class="fa fa-map-marker fa-fw"></span>
+                </span>
+                <input type="text" class="form-control" name="rg_address" id="rg_address" value="{{ object.address|default_if_none:"" }}" autocomplete="off" maxlength="255" placeholder="{% trans 'the residence address' %}" />
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3">
+                <label class="label pull-left label-danger hidden" id="rg_address_info">{% trans 'Type at least 2 characters' %}</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right control-label" for="rg_postal_code">{% trans 'Postal code' %}</label>
+            </div>
+            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
+                <span class="input-group-addon">
+                    <span class="fa fa-map-marker fa-fw"></span>
+                </span>
+                <input type="text" class="form-control" name="rg_postal_code" id="rg_postal_code" value="{{ object.postal_code|default_if_none:"" }}" autocomplete="off" maxlength="16" placeholder="{% trans 'the residence postal code' %}" />
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3">
+                <label class="label pull-left label-danger hidden" id="rg_postal_code_info">{% trans 'Type at least 2 characters' %}</label>
+            </div>
+        </div>
+    </div>
+
+    <!--edit area-->
+    {% if readonly %}
+
+    {% else %}
+    <hr class="profile-hr">
+    <div id="personal-toolbar">
+        <div class="row" id="edit">
+            <div class="col-md-12 col-sm-12 text-center">
+                <button type="button" class="btn btn-default btn-sm" id="edit-personal-btn" name="edit-personal-btn" role="button"><i class="fa fa-pencil"></i> {% trans 'Edit' %}</button>
+            </div>
+        </div>
+        <div class="row hidden" id="save">
+            <div class="col-md-6 col-sm-6 text-center">
+                <button type="reset" class="btn btn-default btn-sm" id="reset-personal-btn" name="reset-personal-info" role="button"> {% trans 'Cancel' %}</button>
+            </div>
+            <div class="col-md-6 col-sm-6 text-center">
+                <button type="button" class="btn btn-primary btn-sm" id="save-personal-btn" data-url="{% url 'personal_profile_update' object.id %}" name="save-personal-info-btn" role="button"> {% trans 'Save' %}</button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+

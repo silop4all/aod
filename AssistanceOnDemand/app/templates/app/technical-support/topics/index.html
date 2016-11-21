@@ -1,0 +1,61 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} AoD | {{ title }} {% endblock title %}
+
+{% load staticfiles %}
+
+{% block extraCss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
+{% endblock extraCss %}
+
+{% block scripts %}
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+    <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+{% endblock %}
+
+
+{% block content %}
+    <section class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            {% if username %}
+                <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+                <li><a href="{% url 'faq_topics' %}" class="custom-inactive-breadcrumb"> {% trans 'Help Center' %}</a></li>
+            {% else %}
+                <li><a href="{% url 'faq_topics' %}" class="custom-inactive-breadcrumb"><i class="fa fa-support"></i> {% trans 'Help Center' %}</a></li>
+            {% endif %}
+            <li class="active"> {{topic.title|capfirst}}</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <section style="background-color:whitesmoke; padding-top:1%; padding-bottom:1%; border-radius:5px 5px;" class="col-lg-12 col-md-12 col-sm-12 margin-bottom-25 highlight-service-banner platform-info-box">
+            <div class="row col-sm-12 col-md-12 col-xs-12 col-lg-12" id="article">
+                <h2>{{topic.title|capfirst}}</h2>
+                <hr/>
+                <div>
+                    <ul class="list-unstyled">
+                        {% for i in topic.articles.all %}
+                            {% if forloop.first %} <i class="fa fa-list-alt"></i> {{ topic.articles.all|length  }} {% trans 'Articles' %}{% endif %}
+                            <li >
+                                <a href="{% url 'faq_article' i.id %}">
+                                    <h5><span class="text-muted">{% trans 'Q'%}:</span> {{ i.title|capfirst }}
+                                        <span class="fa fa-chevron-right pull-right"></span>
+                                    </h5>
+                                </a>
+                            </li>
+                        {% empty %}
+                            <li>{% trans 'Sorry, there are not available articles'%}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </section>
+{% endblock content %}

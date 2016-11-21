@@ -1,0 +1,331 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} AoD | {% trans 'Technical support' %} - {{ service.title }} {% endblock title %}
+
+{% load staticfiles %}
+
+{% block extraCss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
+{% endblock extraCss %}
+
+
+{% block content %}
+<div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+
+    {% block breadcrumb %}
+        <ol class="breadcrumb custom-inactive-breadcrumb" role="navigation" aria-label="breadcrumb">
+            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="{% trans 'Home page' %}"><span class="fa fa-home"></span> {% trans 'Home' %}</a></li>
+            <li><a href="{% url 'provider_dashboard' %}" class="custom-inactive-breadcrumb" title="{% trans 'My offerings' %}">{% trans 'My offerings' %}</a></li>
+            <li><a href="{% url 'public_service_view' service.id %}" class="custom-inactive-breadcrumb" title="{{ service.title}}">{{ service.title|capfirst }}</a></li>
+            <li>{% trans 'Technical support' %}</li>
+        </ol>
+    {% endblock breadcrumb %}
+
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 platform-info-box" style="min-height:550px">
+        <section role="region" >
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                <h2>{{ service.title|capfirst }} | {% trans 'Technical support' %}</h2>
+                <hr class="service-hr"/>
+
+                <div class="jumbotron">
+                    {% trans 'Feel free to manage the technical materials related to the service' %} {{ service.title }}. {% trans 'Add new material or edit, remove existing ones.' %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                    <!--materials list: left side-->
+                    <div class=" col-sm-6 col-md-6 col-lg-6 col-xs-12" style="border-top: 1px solid #ccc">
+                        <div class="list-group" id="listed-materials" >
+                            <h3><span class="fa fa-folder-open-o hidden-xs"></span> {% trans 'Uploaded materials' %}
+                                <!-- Single button -->
+                                <div class="btn-group pull-right"  aria-label="{% trans 'Add a material related to technical support of the service' %} ">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {% trans 'New material' %} <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        {% for t in technicalSupportList %}
+                                        <li><a href="#shared_link" class="show-insert-material-form" data-id="{{ t.id }}" data-title="{% trans 'Add' %} {{t.type}}">{% trans 'Add' %} {{t.type}}</a></li>
+                                        {% empty %}
+                                            {% trans 'Contact with administartor' %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </h3>
+                            <a href="#materials" class="list-group-item cursor-default text-success">
+                                <span style="font-weight: 700;" class="text-success">{% trans 'Title' %} </span><span class="fa fa-sort-alpha-asc text-success"></span>
+                                <span style="font-weight: 700;" class="pull-right text-success">{% trans 'Publication date' %}</span>
+                            </a>
+                            {% for m in serviceTechnicalSupportList %}
+                                <a href="#preview-material" id="material_{{m.id}}" title="{% trans 'Click on it for preview' %}" data-resource="{% url 'private_api:technical_material' m.id%}" data-delete-material="{% url 'service_technical_material' m.id %}" class="list-group-item show-preview-material-form" data-pk="{{m.id}}">
+                                    {% if m.technical_support.alias == "shared_link" %}
+                                        <span class='fa fa-link text-primary fa-lg'></span>
+                                    {% elif m.technical_support.alias == "document"  %}
+                                        {% if m.extension == "pdf" %}
+                                            <span class='fa fa-file-pdf-o text-danger fa-lg'></span>
+                                        {% elif m.extension == "doc" or  m.extension == "docx" %}
+                                            <span class='fa fa-file-word-o text-primary fa-lg'></span>
+                                        {% elif m.extension == "xls" or  m.extension == "xlsx" %}
+                                            <span class='fa fa-file-excel-o text-success fa-lg'></span>
+                                        {% elif m.extension == "ppt" or  m.extension == "pptx" %}
+                                            <span class='fa fa-file-powerpoint-o text-danger fa-lg'></span>
+                                        {% else %}
+                                            <span class='fa fa-question-circle fa-lg'></span>
+                                        {% endif %}
+                                    {% elif m.technical_support.alias == "video"  %}
+                                        {% if m.extension == "mp4" or m.extension == "mp3" %}
+                                            <span class='fa fa-video-camera text-default fa-lg'></span>
+                                        {% endif %}
+                                    {% elif m.technical_support.alias == "youtube_video"  %}
+                                        <span class='fa fa-youtube-play text-danger fa-lg'></span>
+                                    {% elif m.technical_support.alias == "vimeo_video"  %}
+                                        <span class='fa fa-vimeo text-info fa-lg'></span>
+                                    {% endif %}
+                                    <span>{{m.title|safe|capfirst}} {% if m.visible %}<span class="fa fa-eye"></span>{% else %}<span class="fa fa-eye-slash"></span>{% endif %}</span>
+                                    <span class="pull-right">{{ m.created_date }}</span>
+                                </a>
+                            {% empty %}
+                                <ul><li class="list-group-item"> {% trans 'No available materials' %}</li></ul>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <br class="visible-xs">
+
+                    <!--right side: preview material-->
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12 hidden" id="preview-material" style="background-color: white; border-left: 4px solid #ccc !important; border: 1px solid #ccc">
+                    </div>
+                    <!--register material-->
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12 hidden" id="add-material" style="background-color: white; border-left: 4px solid #ccc !important; border: 1px solid #ccc">
+                        <h3><span class="fa fa-file-o"></span> <span id="form-title"></span></h3>
+                        <hr class="service-hr"/>
+                        <form action="{% url 'service_technical_materials' service.id %}" method="POST" enctype="multipart/form-data"  name="RegisterServiceTechnicalMaterial" id="RegisterServiceTechnicalMaterial">
+                            {% csrf_token %}
+                            <div class="alert alert-danger" style="font-size: large"><strong><span class="fa fa-exclamation-triangle"></span> {% trans 'Allowed file formats '%}:</strong> 
+                                <ul>
+                                    <li>PDF {% trans 'documents' %} </li>
+                                    <li>{% trans 'Office documents' %} (.xls, .xlsx, .doc, .docx, .ppt, .pptx)</li>
+                                    <li>{% trans 'Audio/video files' %} (.mp3, .mp4)</li>
+                                </ul>
+                            </div>
+                            <!--title-->
+                            <div class="row form-group">
+                                <div class="col-sm-3 col-xs-12">
+                                    <label class="text-right control-label hidden-xs" for="title" title="{% trans 'Enter the title of the service' %}">{% trans 'Title' %}<span class="highlight-error-message"> *</span></label>
+                                    <label class="text-left control-label visible-xs" for="title" title="{% trans 'Enter the title of the service' %}">{% trans 'Title' %}<span class="highlight-error-message"> *</span></label>
+                                </div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Enter the title of the service' %}">
+                                    <input type="text" class="form-control" name="title" id="title" value="" autocomplete="off" maxlength="128" autofocus required/>
+                                </div>
+                            </div>
+                            <!--description-->
+                            <div class="row form-group">
+                                <div class="col-sm-3 col-xs-12">
+                                    <label class="text-right control-label hidden-xs" for="description" title="{% trans 'Provide a short description' %}">{% trans 'Description' %}</label>
+                                    <label class="text-left control-label visible-xs" for="description" title="{% trans 'Provide a short description' %}">{% trans 'Description' %}</label>
+                                </div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Enter the title of the service' %}">
+                                    <textarea class="form-control" rows="4" id="description"></textarea>
+                                </div>
+                            </div>
+                            <!--dependencies-->
+                            <div class="row form-group">
+                                <div class="col-sm-3 col-xs-12">
+                                    <label class="text-right control-label hidden-xs" for="software_dependencies" title="{% trans 'Enter the potential dependencies' %}">{% trans 'Dependencies' %}</label>
+                                    <label class="text-left control-label visible-xs" for="software_dependencies" title="{% trans 'Enter the potential dependencies' %}">{% trans 'Dependencies' %}</label>
+                                </div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Enter the potential dependencies' %}">
+                                    <textarea class="form-control" rows="4" id="software_dependencies"></textarea>
+                                </div>
+                            </div>
+                            <!--flexible link or path-->
+                            <div class="row form-group">
+                                <div class="col-sm-3 col-xs-12">
+                                    <label class="text-right control-label hidden-xs" for="path" title="{% trans 'Enter the resource' %}">{% trans 'Resource' %} <span class="highlight-error-message"> *</span></label>
+                                    <label class="text-left control-label visible-xs" for="path" title="{% trans 'Enter the resource' %}">{% trans 'Resource' %} <span class="highlight-error-message"> *</span></label>
+                                </div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group" id="material_parent_node" title="{% trans 'Enter the title of the service' %}">
+                                    <!--append input element via JS-->
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-sm-3 col-xs-12">
+                                    <label class="text-right control-label hidden-xs" for="visible" title="{% trans 'Enter the title of the service' %}">{% trans 'Publish material?' %}</label>
+                                    <label class="text-left control-label visible-xs" for="visible" title="{% trans 'Enter the title of the service' %}">{% trans 'Publish material?' %}</label>
+                                </div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Enter the title of the service' %}">
+                                    <input type="checkbox"name="visible" id="visible" checked form="RegisterServiceTechnicalMaterial"/>
+                                </div>
+                            </div>
+                            <div class="hidden">
+                                <input type="hidden" id="technical_support" name="technical_support" value="" form="RegisterServiceTechnicalMaterial" />
+                                <input type="hidden" id="service" name="service" value="{{ service.id }}" form="RegisterServiceTechnicalMaterial" />
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Mandatory fields' %}">
+                                    <h5><strong class="text-center highlight-error-message">* {% trans 'Mandatory fields' %}</strong></h5>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-sm-3 col-xs-12"></div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls">
+                                    <button type="submit" id="create-material" class="btn btn-success"  form="RegisterServiceTechnicalMaterial"> {% trans 'Submit' %}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <br/>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery.validate.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/aod.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/sweetalert/sweetalert.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".list-group-item").click(function () {
+                $(".list-group-item").removeClass('active');
+                $(this).addClass('active');
+                AoD.retrieveServiceTechnicalMaterial($(this).data('resource'), "{{ MEDIA_URL }}", "{{ base_url }}");
+            });
+            //
+            // Display form related to new material
+            //
+            $(".show-insert-material-form").click(function () {
+                $("#add-material").removeClass('hidden');
+                $("#preview-material").addClass('hidden');
+                //
+                // update form based on type of support
+                //
+                $("#form-title").html($(this).data('title'));
+                // get cases: upload file or enter url
+                var type = $(this).data('id');
+                $("#technical_support").val(type);
+                if (type === 1) {
+                    var input = [
+                        '<div class="input-group">',
+                            '<span class="input-group-addon" id="video-prefix">https://www.youtube.com/embed/</span>',
+                            '<input type="text" class="form-control" name="link" id="link" value="" form="RegisterServiceTechnicalMaterial" autocomplete="off" maxlength="12" placeholder="enter the shared link" aria-describedby="video-prefix" required/>',
+                        '</div>'
+                    ].join('');
+                    $("#material_parent_node").html(input);
+                }
+                else if (type === 4) {
+                    $("#material_parent_node").html('<input type="url" class="form-control" name="link" id="link" value="" form="RegisterServiceTechnicalMaterial" autocomplete="off" maxlength="300" placeholder="' + gettext('enter shared link') + '" autofocus required/>');
+                }
+                else {
+                    var input = '<input type="file" id="material" class="form-control" name="material" accept="application/pdf, .xls, .xlsx, .doc, .docx, .ppt, .ppt, .mp3, .mp4" form="RegisterServiceTechnicalMaterial" required">';
+                    $("#material_parent_node").html(input);
+                }
+                var height = parseInt($("#add-material").css("height").replace("px","")) + 350;
+                $(".platform-info-box").css("min-height", height + "px");
+            });
+            //
+            // Display form related to existing material
+            //
+            $(".show-preview-material-form").click(function () {
+                $("#add-material").addClass('hidden');
+                $("#preview-material").removeClass('hidden');
+            })
+            //
+            // Delete a technical material
+            //
+            
+        }).on("click", ".delete-material", function() {
+            var id = $(this).data('material');
+            var url = $("#material_" + id).data("deleteMaterial");
+
+            swal({
+                title: gettext("Remove technical material"),
+                text: gettext("Do you want really to remove this material?"),
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: gettext("Yes, I do!"),
+                cancelButtonText: gettext("No, I do not!"),
+                cancelButtonClass: "btn-danger",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    AoD.deleteServiceTechnicalMaterial(url, "{% url 'service_technical_materials' service.id %}");
+                } 
+                else {
+                    swal({
+                        html: false,
+                        title: gettext("Remove technical material"),
+                        text: gettext("The deletion of the material was skipped!!!"),
+                        type: "warning",
+                        confirmButtonText: gettext("Continue"),
+                        confirmButtonColor: "#d9534f"
+                    });
+                }
+            });
+
+        }).on("click", "#create-material", function(event) {
+            //
+            // Create service - submission
+            //
+            AoD.registerServiceTechnicalMaterial("#RegisterServiceTechnicalMaterial", "{% url 'service_technical_materials' service.id %}");
+            console.log($("#RegisterServiceTechnicalMaterial").valid());
+        }).on('change', "#material", function(){
+            // on file load
+            if ( !!$(this).get(0).files.length ){
+                var file = $(this).get(0).files[0].name.split(".");
+                var extension = file[file.length - 1];
+                var lowerExtension = extension.toLowerCase();
+                if ( $.inArray( lowerExtension, [ "pdf", "xls", "xlsx", "doc", "docx", "ppt", "ppt", "mp3", "mp4" ]) == -1 ){
+                    swal({
+                        html: false,
+                        title: gettext("File upload"),
+                        text: gettext("Invalid file format!!"),
+                        type: "warning",
+                        confirmButtonText: gettext("Try again"),
+                        confirmButtonColor: "#d9534f"
+                    });
+                    $(this).val('');
+                }
+            }
+        }).on('click', '.detect-broken-link', function(){
+            $.ajax({
+                type: "GET",
+                url: "{% url "detect_broken_links" %}",
+                data: {link: $(this).data('link')},
+                success: function (response){
+                    swal({
+                        html: false,
+                        title: gettext("Detect broken link"),
+                        text: gettext("The link is valid!"),
+                        type: "success",
+                        confirmButtonText: gettext("Continue"),
+                        confirmButtonColor: "#d9534f"
+                    });
+                },
+                error: function (error){
+                                        swal({
+                        html: false,
+                        title: gettext("Detect broken link"),
+                        text: gettext("The link is not valid! You need to correct it!"),
+                        type: "error",
+                        confirmButtonText: gettext("Continue"),
+                        confirmButtonColor: "#d9534f"
+                    });
+                },
+                complete: function (response){}
+            });
+        })
+    </script>
+{% endblock %}

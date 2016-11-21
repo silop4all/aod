@@ -1,0 +1,578 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
+
+{% block title %} AoD | {{ service.title }} {% endblock title %}
+
+ {% load staticfiles %}
+
+{% block extraCss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap-table/bootstrap-table.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/jsson-slider/slider.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/fancybox-2.1.5/jquery.fancybox.css' %}" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+{% endblock extraCss %}
+
+
+{% block scripts %}
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    {% with 'https://maps.googleapis.com/maps/api/js?key='|add:google_maps_key as google_map_url %}
+    <script type="text/javascript" src="{{ google_map_url }}" ></script>
+    {% endwith %}
+    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/google_map.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/fancybox-2.1.5/jquery.fancybox.pack.js' %}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            //
+            // Initialize map
+            //
+            if ( "{{ service.location_constraint }}" === "True" ) {
+                var coordinates = {"latitude": "{{ service.latitude|unlocalize }}", "longitude": "{{ service.longitude|unlocalize }}", "radius": "{{ service.coverage|unlocalize }}"};
+                var loadMap = GoogleMap.load(coordinates, "{{ service.title|capfirst }}", "map" )
+                google.maps.event.addDomListener(window, 'load', loadMap);
+            }
+            //
+            // Load fancybox
+            //
+            //$(".fancybox").fancybox();
+            $(".various").fancybox({
+                maxWidth	: 1000,
+                maxHeight	: 600,
+                fitToView	: false,
+                width		: '100%',
+                height		: '75%',
+                autoSize	: false,
+                closeClick	: false,
+                openEffect	: 'none',
+                closeEffect	: 'none'
+            });
+
+            $(".list-group-item").mouseover(function(){
+                $(this).addClass('active');
+            }).mouseleave(function(){
+                $(this).removeClass('active');
+            });
+
+            {% if reviews > 0 %}
+            Morris.Donut({
+                element: 'donut-overall-reviews',
+                data: [
+                        { label: "5 " + gettext("stars"), value: 0 },
+                        { label: "4 " + gettext("stars"), value: 0 },
+                        { label: "3 " + gettext("stars"), value: 0 },
+                        { label: "2 " + gettext("stars"), value: 0 },
+                        { label: "1 " + gettext("star"),  value: 0 },
+                ],
+                resize: true,
+                formatter: function (x) { return x + " " + gettext("votes")}
+            });
+            {% endif %}
+
+        }).on('click', "#btn-add-cart", function(event){
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).data('url'),
+                beforeSend: function (xhr, settings) {
+                    $.ajaxSettings.beforeSend(xhr, settings);
+                },
+                success: function (response) {
+                    if (response.state === 1) {
+                        window.location.href = "{% url 'cart_preview'%}";
+                    }
+                    else {
+                        alert(gettext("An error occured"));
+                    }
+                },
+                error: function (response) {
+                    alert(gettext("An error is occured. The service modification failed"));
+                }
+            });
+            return false;    
+        });
+
+
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                    xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+                }
+            }
+        });
+    </script>
+    
+    {% if service.skype %}
+    <script>
+        Skype.ui({"name": "chat", "element": "SkypeButton_Call_{{service.skype}}_1", "participants": ["{{service.skype}}"], "imageSize": 32});
+    </script>
+    {% endif %}
+{% endblock scripts %}
+
+
+{% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em;">
+
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+            <li>{% trans 'Search' %} - {{ service.title| title }}</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+            <div class="row service-consumer-view-box margin-bottom-25">    
+                <div class="row" style="padding-bottom: 1%">
+                    <div class="col-lg-6 col-xs-12 col-md-6 col-sm-6 ">
+                        {% if service.image %}
+                        <img src="{{ MEDIA_URL }}app/services/images/{{ service.image }}" class="img-responsive" style="width: 100%; border-radius:3px 3px; max-height: 305px; height: 305px" />
+                        {% else %}
+                        <div class="text-center" style="height:305px; min-height:305px; background-color: #ecebeb"><span class="fa fa-image fa-5x text-muted" style="font-size: 125px !important; margin-top:100px"></span></div>
+                        {% endif %}
+                        <hr>
+                        <div class="col-lg-4 col-xs-12 col-md-4 col-sm-4 pull-left">
+                            <abbr title="{% trans 'Creation date of service' %}"><i class="fa fa-calendar fa-fw text-muted"></i> {{ service.created_date|date:"M d, Y" }}</abbr>
+                        </div>
+                        <div class="col-lg-5 col-xs-12 col-md-5 col-sm-5">
+                            <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-1"></span>
+                            <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-2"></span>
+                            <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-3"></span>
+                            <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-4"></span>
+                            <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-5"></span>
+                            <span><abbr title="{% trans 'The count of comments for this service and its average score' %}"> {{ reviews|default:'0' }} {% trans 'reviews' %}</abbr></span>
+                        </div>
+                        <div class="col-lg-3 col-xs-12 col-md-3 col-sm-3 pull-right">
+                            <i class="fa fa-comments-o fa-lg text-primary"></i> {% if service.comments %} {{ service.comments| default_if_none:'0' }} {% else %} 0 {% endif%} {% trans 'comments' %}
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-xs-12 col-md-6 col-sm-6 ">
+                        <div style="padding-left: 4%">
+                            <div class="row">
+                                <header class="col-md-12 col-sm-12 col-lg-12 col-xs-12" title="Service title is {{ service.title }}">
+                                    <h1 id="title">{{ service.title| title }}</h1>
+                                </header>
+                            </div>
+                            <div class="row" title="Usage cost of service">
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
+                                    <h5>{% trans 'Price' %}:</h5>
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
+                                    {% if service.charging_policy_id != 1 %}
+                                    <h5>{{ service.unit }} {{ service.price|unlocalize }}</h5>
+                                    {% else %}
+                                    <h5>{% trans 'Free' %} </h5>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if service.charging_policy_id != 1 %}
+                            <div class="row" title="Usage cost of service">
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
+                                    <h5>{% trans 'Charging policy'%}:</h5>
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
+                                    <h5>{{ model.name|capfirst }}</h5>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="row" title="{% trans 'Declares the type of service' %}">
+                                 <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
+                                    <h5><abbr title="{% trans 'Declares the type of service' %}">{% trans 'Type' %}:</abbr></h5>
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
+                                    <h5>{% if service.type == 'H' %}  {% trans 'Human based' %} {% else %}  {% trans 'Machine based' %} {% endif %}</h5>
+                                </div>
+                            </div>
+                            {% if service.version %}
+                                <div class="row" title="{% trans 'The provider declares the licenses for the service.' %}">
+                                    <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
+                                        <h5><abbr title="{% trans 'The provider declares the licenses for the service.' %}"> {% trans 'Version' %}:</abbr></h5>
+                                    </div>
+                                    <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
+                                        <h5>{{ service.version|default_if_none:"Not available" }}</h5>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if service.license %}
+                                <div class="row" title="{% trans 'The provider declares the licenses for the service.' %}">
+                                    <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
+                                        <h5><abbr title="{% trans 'The provider declares the licenses for the service.' %}"> {% trans 'Licences' %}:</abbr></h5>
+                                    </div>
+                                    <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
+                                        <h5>{{ service.license|default_if_none:"Not available" }}</h5>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="row" title="{% trans 'Service provider information' %}">
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-6">
+                                    <h5>{% trans 'Provider' %}:</h5>
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
+                                    <h5>{% trans 'by' %}<strong> {{ provider.name|title }} {{ provider.lastname | title}}</strong></h5>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row margin-bottom-25">
+                                <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 " >
+                                    {% if service.charging_policy_id != 1 %}
+                                        <button type="button" class="btn btn-md btn-primary disabled"  title="{% trans 'Get the service' %}"> {% trans 'Get the service' %}!</button>
+                                    {% else %}
+                                        <button type="button" class="btn btn-md btn-primary disabled"  title="{% trans 'Use the service' %}"> {% trans 'Use the service' %}!</button>
+                                    {% endif %}
+                                    {% if components.add_to_cart and service.charging_policy_id != 1 %}
+                                        <span style="text-align: center!important; margin-left:20px; margin-right:20px">{% trans 'or' %}</span>
+                                        <button type="button" id="btn-add-cart" class="btn btn-md btn-success" title="{% trans 'Add to cart' %}" data-url="{% url 'add_item_cart' service.id %}" data-id="{{service.id}}" data-name="{{service.title}}"> {% trans 'Add to cart' %} <span class="fa fa-shopping-cart" style="margin-left:5px;"></span></button>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+
+                            <div class="row" title="Service provider information">
+                                <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 " >
+                                    <div class="alert alert-danger">
+                                    <h4> 
+                                        <span style="margin-right:20px">{% trans 'Not satisfied'%}?</span>
+                                        <button type="button" class="btn btn-lg btn-danger" >{% trans 'Try different'%} <span style="margin-left:5px;" class="fa fa-hand-o-up"></span> </button>
+                                    </h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <hr class="service-hr">
+                 {% trans 'Related keywords' %}:
+                {% if keywords %}
+                    {% for i in keywords %}
+                        <span style="margin-right:1%"><span class="fa fa-tag text-success"></span> <span class="label label-success">{{ i.title }}</span> </span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <!--description-->
+            <div class="row  service-consumer-view-box margin-bottom-25">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center center">
+                    <span class="fa-stack fa-3x">
+                        <span class="fa fa-circle fa-stack-2x"></span>
+                        <span class='fa fa-bookmark-o text-default  fa-stack-1x fa-inverse'></span>
+                    </span>
+                </div>
+                <h2 class="text-center"> {% trans 'Brief description' %}</h2>
+                <div class="jumbotron" style="background-color:white;color:#171717;">
+                    <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12">
+                        {{ service.description|capfirst }}
+                    </div>
+
+                </div>
+            </div>
+           <!--constraints-->
+            <div class="row service-consumer-view-box margin-bottom-25">
+                <div class="col-lg-4 col-xs-12 col-md-4 col-sm-4 ">
+                    <div class="text-center">
+                        <span class="fa-stack fa-3x">
+                          <span class="fa fa-circle fa-stack-2x text-info"></span>
+                          <span class="fa fa-th-list fa-stack-1x fa-inverse"></span>
+                        </span>
+                    </div>
+                    <h3 class="text-center">{% trans 'Requirements'%} & {% trans 'Guidelines'%}</h3>
+                    <hr class="service-hr">
+                    {% if service.requirements %}
+                    <article class="margin-bottom-10" style="text-align:justify">
+                        <h4> {% trans 'Requirements'%}</h4> 
+                        <p>{{ service.requirements}}</p>
+                    </article>
+                    {% endif %}
+
+                    {% if service.installation_guide %}
+                    <article class="margin-bottom-10" style="text-align:justify">
+                        <h4> {% trans 'How to install it' %}</h4> 
+                        {{ service.installation_guide}}
+                    </article>
+                    {% endif %}
+
+                    {% if service.usage_guidelines%}
+                    <article style="text-align:justify">
+                        <h4> {% trans 'How to use it' %}.</h4> 
+                        {{ service.usage_guidelines}}
+                    </article>
+                    {% endif %}
+                </div>
+                <!--map-->
+                <div class=" col-lg-4 col-xs-12 col-md-4 col-sm-4">
+                    <div class="text-center center">
+                        <span class="fa-stack fa-3x">
+                            <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                            <i class="fa fa-map-marker fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </div>
+                    <h3 class="text-center">{% trans 'Locational constraints' %}</h3>
+                    <hr class="service-hr">
+                    {% if service.location_constraint %}
+                        <div id="map" style="height:40%; min-height:350px; border:1px solid gray"></div>
+                    {% else %}  
+                        <div class="alert alert-danger"><strong style="font-size: large">{% trans 'No location constraints' %}!</strong></div>
+                    {% endif %}
+                </div>
+                <!--languages et other-->
+                <div class="col-lg-4 col-xs-12 col-md-4 col-sm-4">
+                    <div class="text-center">
+                        <span class="fa-stack fa-3x">
+                          <i class="fa fa-circle fa-stack-2x text-primary " ></i>
+                          <i class="fa fa-language fa-stack-1x fa-inverse text-muted"></i>
+                        </span>
+                    </div>
+                    <h3 class="text-center">{% trans 'Supported languages' %}</h3>
+                    <hr class="service-hr">
+                    {% if service.language_constraint %}
+                        <ul class="list-group margin-bottom-25">
+                        {% for l in availableLanguages %}
+                            <li class="list-group-item"><span>{{ l }}</span></li>
+                        {% empty %}
+                            {% trans 'No language constraints' %}
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <!--other-->
+                    {% if service.constraints %}
+                    <h4 class="text-center">{% trans 'Other constraints' %}</h4>
+                    {{ service.constraints  }}
+                    {% endif %}
+                </div>
+            </div>
+            <!--technical support-->
+            <div class="row service-consumer-view-box">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                    <div class="text-center"><span class="fa fa-universal-access fa-5x"></span></div>
+                    <h3 class="text-center">{% trans 'Technical support' %}</h3>
+                    <hr class="service-hr" />
+                    <div class="clearfix margin-bottom-25">
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"><h4 class="text-center">{% trans 'Links, downloads and materials' %}</h4></div>
+                        <div class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
+                        <ul class="list-group margin-bottom-25">
+                        {% for m in technicalSupportList %}
+                            <li class="list-group-item">
+                                {% if m.extension == "pdf" %}
+                                    <span class="fa-stack fa-2x margin-right-5">
+                                        <span class="fa fa-circle fa-stack-2x text-danger "></span>
+                                        <span class='fa fa-file-pdf-o fa-stack-1x fa-inverse'></span>
+                                    </span>
+                                    <strong>{{m.title|capfirst}}</strong>
+                                    <a class="various btn btn-danger pull-right" data-fancybox-type="iframe"  href="{{m.path}}">{% trans 'Open' %} <span class="fa fa-arrows-alt"></span></a>
+                                {% elif m.extension == "doc" or m.extension == "docx" %}
+                                    <span class="fa-stack fa-2x margin-right-5">
+                                        <span class="fa fa-circle fa-stack-2x text-primary"></span>
+                                        <span class='fa fa-file-word-o fa-stack-1x fa-inverse'></span>
+                                    </span>
+                                    <strong>{{m.title|capfirst}}</strong>
+                                    <a class="various  btn btn-danger pull-right" href="{{m.path}}">{% trans 'Download' %} <span class="fa fa-download"></span></a>
+                                {% elif m.extension == "xls" or m.extension == "xlsx" %}
+                                    <span class="fa-stack fa-2x margin-right-5">
+                                        <span class="fa fa-circle fa-stack-2x text-success"></span>
+                                        <span class='fa fa-file-excel-o fa-stack-1x fa-inverse'></span>
+                                    </span>
+                                    <strong>{{m.title|capfirst}}</strong>
+                                    <a class="various  btn btn-danger pull-right" href="{{m.path}}">{% trans 'Download' %} <span class="fa fa-download"></span></a>
+                                {% elif m.extension == "ppt" or m.extension == "pptx" %}
+                                    <span class="fa-stack fa-2x margin-right-5">
+                                        <span class="fa fa-circle fa-stack-2x text-danger"></span>
+                                        <span class='fa fa-file-powerpoint-o fa-stack-1x fa-inverse'></span>
+                                    </span>
+                                    <strong>{{m.title|capfirst}}</strong>
+                                    <a class="various  btn btn-danger pull-right" href="{{m.path}}">{% trans 'Download' %} <span class="fa fa-download"></span></a>
+                                {% elif m.extension == "mp4" or m.extension == "mp3" %}
+                                    <span class="fa-stack fa-2x margin-right-5">
+                                        <span class="fa fa-circle fa-stack-2x text-info"></span>
+                                        <span class='fa fa-video-camera fa-stack-1x fa-inverse'></span>
+                                    </span>
+                                    <strong>{{m.title|capfirst}}</strong>
+                                    <a class="various btn btn-danger pull-right" data-fancybox-type="iframe" href="{{m.path}}">{% trans 'Attend' %} <span class="fa fa-play-circle-o"></span></a>
+                                {% elif m.extension == "unknown" %}
+                                    {% if m.technical_support.alias == "shared_link" %}
+                                        <span class="fa-stack fa-2x margin-right-5">
+                                            <span class="fa fa-circle fa-stack-2x text-primary"></span>
+                                            <span class='fa fa-link text-primary fa-stack-1x fa-inverse'></span>
+                                        </span>
+                                        <strong>{{m.title|capfirst}}</strong>
+                                        <a target="_blank" class="btn btn-danger pull-right" href="{{m.link}}">{% trans 'Open' %} <span class="fa fa-external-link"></span></a>
+                                    {% elif  m.technical_support.alias == "youtube_video" %}
+                                        <span class="fa-stack fa-2x margin-right-5">
+                                            <span class="fa fa-circle fa-stack-2x text-danger"></span>
+                                            <span class='fa fa-youtube-play text-danger  fa-stack-1x fa-inverse'></span>
+                                        </span>
+                                        <strong>{{m.title|capfirst}}</strong>
+                                        <a class="various fancybox.iframe btn btn-danger pull-right"  href="{{m.link}}">{% trans 'Attend' %} <span class="fa fa-play-circle-o"></span></a>
+                                    {% elif  m.technical_support.alias == "vimeo_video" %}
+                                        <span class="fa-stack fa-2x margin-right-5">
+                                            <span class="fa fa-circle fa-stack-2x text-info"></span>
+                                            <span class='fa fa-vimeo text-danger fa-stack-1x fa-inverse'></span>
+                                        </span>
+                                        <strong>{{m.title|capfirst}}</strong>
+                                        <a class="various fancybox.iframe btn btn-danger pull-right"  href="{{m.link}}">{% trans 'Attend' %} <span class="fa fa-play-circle-o"></span></a>
+                                    {% endif %}
+                                {% endif %}
+                                {% if m.description %}
+                                <div>{{m.description}}</div>
+                                {% endif %}
+                                {% if m.software_dependencies %}
+                                <div>{{m.software_dependencies}}</div>
+                                {% endif %}
+                            </li>
+                        {% empty %}
+                            <div class="alert alert-danger"><strong style="font-size: large">{% trans 'No helpful materials are provided!' %}</strong></div>
+                        {% endfor %}
+                        </ul>
+                        </div>
+                    </div>
+                    <div class="clearfix margin-bottom-25">
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"><h4 class="text-center">{% trans 'Contact with provider' %}</h4></div>
+                        <div class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
+                            {%  if service.skype %}
+                                <div id="SkypeButton_Call_{{service.skype}}_1">
+                                </div>
+                            {% else %}
+                                <div class="alert alert-danger"><strong style="font-size:large">{% trans 'None skype contact is provided!'%}</strong></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="clearfix margin-bottom-25">
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"><h4 class="text-center">{% trans 'Ask a volunteer?' %}</h4></div>
+                        <div class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
+                            {%  for v in volunteers %}
+
+                            {% empty %}
+                                <div class="alert alert-danger"><strong style="font-size:large">{% trans 'There are not available volunteers right now.'%}</strong></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="clearfix margin-bottom-25">
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"><h4 class="text-center">{% trans 'Ask a professional?' %}</h4></div>
+                        <div class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
+                            {%  for p in professionals %}
+
+                            {% empty %}
+                                <div class="alert alert-danger"><strong style="font-size:large">{% trans 'There are not available professional users right now.'%}</strong></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if customization_process %}
+                    <div class="clearfix margin-bottom-25">
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"><h4 class="text-center">{% trans 'Contact us' %}</h4></div>
+                        <div class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
+                            <a href="{% url 'faq_topics' %}">{% trans 'E-Mail contact' %}</a>
+                            <br>
+                            <a href="{% url 'faq_topics' %}">{% trans 'Telephone support' %}</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <!--service rating-->
+            <div class="row service-consumer-view-box">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                    <div class="text-center center">
+                        <span class="fa-stack fa-3x">
+                            <span class="fa fa-circle fa-stack-2x"></span>
+                            <span class='fa fa-star fa-stack-1x fa-inverse'></span>
+                        </span>
+                    </div>
+                    <h3 class="text-center"> {% trans 'Reviews' %}</h3>
+                    <hr class="service-hr" />
+                    <div class="col-lg-4 col-xs-12 col-md-4 col-sm-4" style="border-right: 1px solid #ccc">
+                        <div class="margin-bottom-10">
+                            <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-1"></span>
+                            <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-2"></span>
+                            <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-3"></span>
+                            <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-4"></span>
+                            <span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-5"></span>
+                            <span>{% trans 'from' %} {{ reviews|default:'0' }}  {% trans 'reviews' %}</span>
+                        </div>
+                        <!--depict reviews VS votes-->
+                        <div id="donut-overall-reviews" style="width:75%"></div>
+
+                        <div class="row">
+                            <div class="col-lg-4 col-xs-6 col-md-4 col-sm-4">
+                                <strong style="margin-top:-10px">5  {% trans 'stars' %}</strong>
+                            </div>
+                            <div class="col-lg-8 col-xs-6 col-md-8 col-sm-8">
+                                    <div class="progress" style="height:10px">
+                                    <div class="progress-bar progress-bar-success ui-progressbar-value" role="progressbar" aria-valuenow="{{ reviews|default:'0' }}" aria-valuemin="0" aria-valuemax="0" style="width:5%">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-xs-6 col-md-4 col-sm-4">
+                                <strong style="margin-top:-10px">4  {% trans 'stars' %}</strong>
+                            </div>
+                            <div class="col-lg-8 col-xs-6 col-md-8 col-sm-8">
+                                    <div class="progress"  style="height:10px">
+                                    <div class="progress-bar progress-bar-success ui-progressbar-value" role="progressbar" aria-valuenow="{{ reviews|default:'0' }}" aria-valuemin="0" aria-valuemax="0" style="width:5%">
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-xs-6 col-md-4 col-sm-4">
+                                <strong style="margin-top:-10px">3  {% trans 'stars' %}</strong>
+                            </div>
+                            <div class="col-lg-8 col-xs-6 col-md-8 col-sm-8">
+                                    <div class="progress" style="height:10px">
+                                    <div class="progress-bar progress-bar-success ui-progressbar-value" role="progressbar" aria-valuenow="{{ reviews|default:'0' }}" aria-valuemin="0" aria-valuemax="0" style="width:5%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-xs-6 col-md-4 col-sm-4">
+                                <strong style="margin-top:-10px">2  {% trans 'stars' %}</strong>
+                            </div>
+                            <div class="col-lg-8 col-xs-6 col-md-8 col-sm-8">
+                                    <div class="progress" style="height:10px">
+                                    <div class="progress-bar progress-bar-success ui-progressbar-value" role="progressbar" aria-valuenow="{{ reviews|default:'0' }}" aria-valuemin="0" aria-valuemax="0" style="width:5%">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-xs-6 col-md-4 col-sm-4">
+                                <strong style="margin-top:-10px">1  {% trans 'star' %}</strong>
+                            </div>
+                            <div class="col-lg-8 col-xs-6 col-md-8 col-sm-8">
+                                    <div class="progress" style="height:10px">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ reviews|default:'0' }}" aria-valuemin="0" aria-valuemax="0" style="width:5%">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--reviews-->
+                    <div class="col-lg-8 col-xs-12 col-md-8 col-sm-8">
+                        {% for r in reviewsList %}
+                            
+                        {% empty %}
+                            <div class="alert alert-danger"><strong style="font-size: large">{% trans 'No reviews found' %}!</strong></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!--tips for new users-->
+            <div class="row col-lg-6 col-xs-12 col-md-6 col-sm-6 pull-right service-consumer-view-box hidden" style="height:142px">
+                <h4>{% trans 'Tips for first timers' %}</h4>
+                <hr class="service-hr" />
+            </div>
+
+        </div>
+    </div>
+{% endblock content %}
+
+
+

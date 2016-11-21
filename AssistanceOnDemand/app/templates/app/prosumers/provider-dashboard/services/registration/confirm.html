@@ -1,0 +1,77 @@
+﻿{% load i18n %}
+{% load l10n %}
+<div class="service-basic-info-box">
+    {% if service %}
+    <form  id="ConfirmServiceForm" name="ConfirmServiceForm" action="{% url 'public_service_view' service.id %}" method="put">
+    {% else %}
+    <form  id="ConfirmServiceForm" name="ConfirmServiceForm" action="{% url 'insert_service' %}" method="post">
+    {% endif %}
+        <div class="row form-group">
+            <h3 class="col-lg-offset-1 col-md-offset-1 col-sm-offset-10"> {% trans 'Service Registration' %}</h3>
+        </div>
+        <hr class="service-hr">
+
+        {% if not service %}
+        <div class="row form-group hidden">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="srv_norms">{% trans 'Compliance to norms' %}</label>
+                <label class="text-left control-label visible-xs" for="srv_norms">{% trans 'Compliance to norms' %}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12" title="I have already read the terms of use issues">
+                <textarea rows="3" cols="50" id="srv_norms" name="srv_norms" class="form-control" form="insert-new-service" maxlength="100" placeholder="{% trans 'Enter any information' %}"></textarea>  
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3">
+                <label id="srv_norms_error" class="pull-left danger-tooltip danger-right-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{% trans 'Compliance to norms' %}"></label>
+            </div>
+        </div>
+        {% endif %}
+        <!--publish service-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="is_visible" title="{% trans 'Check the Terms of use' %}">{% trans 'Do you want to publish on users the service?' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="is_visible" title="{% trans 'Check the Terms of use' %}">{% trans 'Do you want to publish on users the service?' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="{% trans 'I have already read the terms of use issues' %}" id="is_visible_div">
+                <fieldset class="clearfix">
+                    {% if service %}
+                    <input type="radio" name="is_visible" form="ConfirmServiceForm" value="1" {% if service.is_visible == '1' %} checked {% endif %}/> {% trans 'YES'%}
+                    <input type="radio" name='is_visible' form="ConfirmServiceForm" value="0" {% if service.is_visible ==  '0' %} checked {% endif %} /> {% trans 'NO' %}
+                    {% else %}
+                    <input type="radio" name="is_visible" form="ConfirmServiceForm" value="1"/> {% trans 'YES'%}
+                    <input type="radio" name='is_visible' form="ConfirmServiceForm" value="0" /> {% trans 'NO' %}
+                    {% endif %}
+                </fieldset>
+            </div>
+        </div>
+        <!--terms-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="terms" title="{% trans 'Check the Terms of use' %}">{% trans 'Terms of use' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="terms" title="{% trans 'Check the Terms of use' %}">{% trans 'Terms of use' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="{% trans 'I have already read the terms of use issues' %}" id="terms_div">
+                <input type="checkbox" id="terms" form="ConfirmServiceForm" {% if service %} checked {% endif %}/>
+                <span for="terms">{% trans 'I agree to the' %}
+                    <a href="#" onclick="openTermsWindow();" style="text-decoration:underline">{% trans 'Terms of usage' %}</a>
+                </span>
+            </div>
+        </div>
+        <!--submit-->
+        <div class="row form-group">
+            <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12"></div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12">
+                {% if service %}
+                    <button type="submit" id="update-btn"  class="btn btn-success btn-block btn-lg disabled" form="ConfirmServiceForm" data-id="{{ service.id }}" data-url="{% url 'public_service_view' service.id %}" data-success-url="{% url 'provider_dashboard' %}" data-media-url="{% url 'upload_service_media' service.id %}"> {% trans 'Submit' %}</button>
+                {% else %}
+                    <button type="submit" id="register-btn"  class="btn btn-success btn-block btn-lg disabled" form="ConfirmServiceForm" data-url="{% url 'insert_service' %}" data-success-url="{% url 'provider_dashboard' %}"> {% trans 'Register' %}</button>
+                {% endif %}
+            </div>
+        </div> 
+        <hr class="service-hr">
+        <div class="row form-group">
+            <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Mandatory fields' %}">
+                <h5><strong class="text-center highlight-error-message">* {% trans 'Mandatory fields' %}</strong></h5>
+            </div>
+        </div>
+    </form>
+</div>

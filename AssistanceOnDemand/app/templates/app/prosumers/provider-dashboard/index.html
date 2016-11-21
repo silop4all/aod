@@ -1,0 +1,252 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} AoD | {% trans 'My offerings'%} {% endblock title %}
+
+ {% load staticfiles %}
+
+{% block extraCss %}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+{% endblock extraCss %}
+
+
+{% block content %}
+<div class="container body-content" style="margin-top: 50px; padding-bottom:2em;">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="{% trans 'Home page' %}"><span class="fa fa-home"></span> {% trans 'Home' %}</a></li>
+        <li class="">{% trans 'My offerings'%}</li>
+    </ol>
+    {% endblock breadcrumb %}
+
+
+    <main role="main">
+        <section class="">
+            <div class="service-consumer-view-box margin-bottom-25">
+                <h1>{% trans 'Services management panel'%}</h1>
+                <hr class="service-hr">
+                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                    <div class="jumbotron">
+                    {% blocktrans %}
+                    Service provider is able to manage the offered in AoD services. That means that provider can register a new service or edit, delete an existing one.
+                    Any service can be associated with multi-modal technical support (technical materials and videos) as well as a set of settings (zero configuration).
+                    {% endblocktrans %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-consumer-view-box margin-bottom-25">
+                <h2>{% trans 'Characteristics of services'%}</h2>
+                <hr class="service-hr">
+                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                        <center>
+                            <div id="donut-services-type" style="max-width:90%; max-height:250px"></div>
+                            <strong>{% trans 'Types of services' %}</strong>
+                        </center>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                        <center>
+                            <div id="donut-charging-models" style="max-width:90%; max-height:250px"></div>
+                            <strong>{% trans 'Charging policies' %}</strong>
+                        </center>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                        <center>
+                            <div id="donut-location-limitations" style="max-width:90%; max-height:250px"></div>
+                            <strong>{% trans 'Location limitations' %}</strong>
+                        </center>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                        <center>
+                            <div id="donut-lingual-limitations" style="max-width:90%; max-height:250px"></div>
+                            <strong>{% trans 'Lingual limitations' %}</strong>
+                        </center>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-consumer-view-box margin-top-25">
+                <h2>{% trans 'Services overview'%}</h2>
+                <hr class="service-hr">
+                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 margin-bottom-25" title="{% trans 'The toolbar provides to users of set of actions such as add,remove or search a service' %}">
+                        <div class="alert alert-danger">
+                            <strong class="margin-right: 5px">{% trans 'Do you want to register a new service?' %}
+                            <a href="{% url 'insert_service' %}" id="new-service" class="btn btn-danger" title="{% trans 'Add a new service'%}" >
+                                {% trans 'Register service'%} <span class="fa fa-hand-o-up"></span>
+                            </a>
+                            </strong>
+                        </div>
+                    </div>
+
+                    {% for i in services %}
+                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12 margin-bottom-25 on-mouseover">
+                            <div class="thumbnail">
+                                {% if i.image %}
+                                    <img src="{{MEDIA_URL}}app/services/images/{{i.image}}" alt="{{ i.title }}" style="width:100%; height:130px !important">
+                                {% else %}
+                                    <div class="text-center" style="height:130px; min-height:130px; background-color: #ecebeb"><span class="fa fa-image fa-5x text-muted" style="font-size: 125px !important"></span></div>
+                                {% endif %}
+                                <div class="caption">
+                                   <a href="{% url 'public_service_view' i.id %}" class="text-center"><h3 class="text-center"> {{i.title|capfirst}}</h3></a>
+                                    <div class="btn-toolbar text-center margin-bottom-10" role="group">
+                                        <a href="{% url 'update_service' i.id %}" class="btn btn-success btn-sm edit-service">
+                                            <span class="fa fa-edit" aria-visible="false"></span> {% trans 'Edit'%}
+                                        </a>
+                                        <button class="btn btn-warning btn-sm delete-service" data-url="{% url 'public_service_view' i.id %}" data-social_network_usage="{{ integrationWithSocialNetwork.state }}" data-social_network_delete_url="{{ integrationWithSocialNetwork.url }}{{ i.id }}" >
+                                            <span class="fa fa-trash-o" aria-visible="false"></span> {% trans 'Delete'%}
+                                        </button>
+                                    </div>
+                                    <div class="margin-bottom-10"></div>
+                                    <div class="margin-bottom-10 text-center">
+                                        <div class="list-group">
+                                            <a href="{% url 'service_technical_materials' i.id %}" class="list-group-item list-group-item-success">
+                                                <h4 class="text-success"><span class="fa fa-universal-access"></span> {% trans 'Technical support' %}</h4>
+                                                <p class="list-group-item-text">{% trans 'Provide documents, videos, youtube videos or shared links.' %}</p>
+                                            </a>
+                                            <a href="#" class="list-group-item list-group-item-info">
+                                                <h4 class="text-danger"><span class="fa fa-sliders"></span> {% trans 'Settings' %}</h4>
+                                                <p class="list-group-item-text">{% trans 'Provide the zero configuration for the service.' %}</p>
+                                            </a>
+                                        </div>
+                                    </div> 
+                                    <hr class="service-hr"/>
+                                    <div class="text-center" style="height:30px;">
+                                        <a href="{% url 'public_service_view' i.id %}" class="btn btn-default">{% trans 'Service preview' %} <span class="fa fa-hand-o-up"></span></a>
+                                    </div>
+                              </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+{% endblock content %}
+
+
+{% block scripts %}    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+    <script type="text/javascript">
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                    xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+                }
+            }
+        });
+
+        $(document).ready(function(){
+            Morris.Donut({
+                element: 'donut-services-type',
+                data: [
+                      { label: gettext("Human based"), value: {{servicesTypes.human}} },
+                      { label: gettext("Machine based"), value: {{servicesTypes.machine}}  },
+                ],
+                //colors: ["#fff", "#000"],
+                resize: true,
+                formatter: function (x) { return x + " " + gettext("services")}
+            });
+
+            Morris.Donut({
+                element: 'donut-charging-models',
+                data: [
+                      { label: gettext("Free"), value: {{chargingModels.free}} },
+                      { label: gettext("Paid"), value: {{chargingModels.paid}}  },
+                ],
+                colors: ["#b122c1", "#685bab"],
+                resize: true,
+                formatter: function (x) { return x + " " + gettext("services")}
+            });
+
+            Morris.Donut({
+                element: 'donut-location-limitations',
+                data: [
+                      { label: gettext("Yes"), value: {{locationLimitations.with}} },
+                      { label: gettext("No"), value: {{locationLimitations.without}} },
+                ],
+                colors: ["red", "orange"],
+                resize: true,
+                formatter: function (x) { return x + " " + gettext("services")}
+            });
+
+            Morris.Donut({
+                element: 'donut-lingual-limitations',
+                data: [
+                      { label: gettext("Yes"), value: {{lingualLimitations.with}} },
+                      { label: gettext("No"), value: {{lingualLimitations.without}} },
+                ],
+                colors: ["forestgreen", "lightgreen"],
+                resize: true,
+                formatter: function (x) { return x + " " + gettext("services")}
+            });
+
+            $(".on-mouseover > div").mouseenter(function () {
+                $(this).addClass("highlight-service-banner");
+            }).mouseleave(function () {
+                $(this).removeClass("highlight-service-banner");
+            });
+
+            $(".delete-service").click(function(){
+                var loading = new AjaxView($(".platform-info-box"));
+                loading.show();
+                var successUrl = "";
+                var auth = ""; 
+                var integrationWithSN = $(this).data('social_network_usage');
+                var deleteSNServiceURL = $(this).data('social_network_delete_url');
+
+                $.ajax({
+                    type: 'DELETE',
+                    url: $(this).data('url'),
+                    async: false,
+                    dataType: "json",
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    success: function (response) {
+                        successUrl = response.redirect;
+                        auth = response.auth_basic;
+                    },
+                    error: function (response) {
+                        alert(gettext('The deletion of this service failed in AOD'));
+                    },
+                    complete: function () {
+                        //
+                        // Remove service from Social network
+                        // 
+                        if (integrationWithSN === "True") {
+                            $.ajax({
+                                type: 'GET',
+                                url: deleteSNServiceURL,
+                                headers: {
+                                    "Authorization": "Basic " + auth
+                                },
+                                success: function (response) {
+                                },
+                                error: function (response) {
+                                    console.error(gettext('The deletion of this service failed in SN'));
+                                },
+                                complete: function () {
+                                    loading.hide();
+                                }
+                            });
+                        }
+                        window.location.href = successUrl;
+                        loading.hide();
+                    }
+                });
+                return true;
+            })
+        });
+    </script>
+{% endblock scripts %}

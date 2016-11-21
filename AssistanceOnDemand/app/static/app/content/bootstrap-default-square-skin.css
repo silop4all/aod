@@ -6500,3 +6500,13 @@ hr.custom-theme-hr {
   border: 1px solid #ddd;
   height: 1px;
 }
+/**/
+.highlight-error-message {
+  color: #ff0f0a;
+}
+/*Example categories*/
+label.tree-items {
+    vertical-align: sub; 
+    font-family:inherit; 
+    font-weight: normal
+}

@@ -1,0 +1,561 @@
+{% extends "app/base.html" %}
+    {% load i18n %}
+    {% load l10n %}
+
+    {% block title %} 
+    {% trans 'AoD | Welcome' %} {% if username %} {{ username }} {% else %} user {% endif %} 
+    {% endblock title %}
+
+    {% load staticfiles %}
+
+    {% block extraCss %}
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-tree/jquery.tree.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
+    {% endblock extraCss %}
+
+    {% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+    
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i> {% trans 'Home' %}</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <section class="row">
+
+            {% block leftcolumn %}
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    {% block searchModule %}
+                        {% include "app/prosumers/dashboard/customizedSearchEngine.html" %}
+                    {% endblock searchModule %}
+
+                    {% block crowdFunding %}
+                        {% if components.crowd_source_banner %}
+                        <div id="crowd-funding-banner">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title text-center"><span class="fa fa-share-alt fa-lg text-success"></span>  {% trans 'Service is not here?' %}</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-sm-12 col-lg-12 col-xs-12 col-md-2 input-group ">
+                                        <span class="fa fa-info-circle text-info fa-lg cursor-pointer" id="publish-crowd-service-info"> </span>
+                                        <a href="{{ crowd_funding_publish_project }}"> {% trans 'Publish it as a crowd funding service' %}</a>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endblock crowdFunding %}
+                </div>
+            {% endblock leftcolumn %}
+            
+            {% block rightcolumn %}
+                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9" style="background-color:whitesmoke; padding-top:15px;">
+                    {% block results %}
+                        <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <h3><span class="fa fa-cubes"></span> {% trans 'Products' %}
+                                <span class="btn-group pull-right services-view" role="group" data-view="m" aria-label="{% trans 'Service results presentation' %}" style="margin-left:15px">
+                                    <a id="multidata_view" class="btn btn-md btn-default" aria-label="{% trans 'Block view of products'%}" data-view="m">
+                                        <span class="fa fa-th-large" aria-label="{% trans 'Block view of products' %}"></span>
+                                    </a>
+                                    <a id="list_view" class="btn btn-md btn-default" aria-label="{% trans 'List view of products'%}" data-view="l">
+                                        <span class="fa fa-th-list" aria-label="{% trans 'List view of products' %}"></span>
+                                    </a>
+                                </span>
+                            </h3>
+                        </div>
+                        <hr class="service-hr"/>
+                        <div class="row margin-bottom-25">
+                            <div id="services-result-multidata" class="service-results-layout" style="min-height: 150px"></div>
+                            <div id="services-result-listview" class="service-results-layout hidden" style="min-height: 150px"></div>
+                        </div>
+                        <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <h3><span class="fa fa-inbox"></span> {% trans 'Relative Articles' %}
+                                <span class="btn-group pull-right services-view" role="group" data-view="m" aria-label="{% trans 'Service results presentation' %}" style="margin-left:15px">
+                                    <a id="article_multidata_view" class="btn btn-md btn-default" aria-label="{% trans 'Block view of articles'%}" data-view="m">
+                                        <span class="fa fa-th-large" aria-label="{% trans 'Block view of articles' %}"></span>
+                                    </a>
+                                    <a id="article_list_view" class="btn btn-md btn-default" aria-label="{% trans 'List view of articles'%}" data-view="l">
+                                        <span class="fa fa-th-list" aria-label="{% trans 'List view of articles' %}"></span>
+                                    </a>
+                                </span>
+                            </h3>
+                        </div>
+                        <hr class="service-hr"/>
+                        <div class="row clearfix">
+                            <div id="articles-result-multidata" class="service-results-layout" style="min-height: 150px"></div>
+                            <div id="articles-result-listview" class="service-results-layout hidden" style="min-height: 150px"></div>
+                        </div>
+                    {% endblock results %}
+                </div>
+            {% endblock rightcolumn %}
+        </section>
+    </div> 
+    {% endblock content %}
+
+
+    {% block scripts %}
+        <script type="text/javascript" src="{% static 'app/scripts/sweetalert/sweetalert.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/jquery-tree/jquery.tree.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/aod.js' %}"></script>
+        <script type="text/javascript"> var limit=15;//"{{limit}}";  var sortby = -1;//"{{ sortby }}"; </script>
+
+        <script type="text/javascript">
+            var form = '#custom-search-engine';
+
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+                    }
+                }
+            });
+
+            $(document).ready(function () {
+                //
+                // Append categories in tree structure
+                //
+                AoD.loadTreeCategories("#tree");
+
+                getResults(form, null);
+
+                $(".panel-toggle-arrows").click(function () {
+                    toggleArrows($(this));
+                });
+
+                $(".rating-stars").click(function () {
+                    swapRatingStarColor($(this).attr("id").match(/\d+/));
+
+                });
+                $(".rating-stars").hover(function () {
+                    swapRatingStarColor($(this).attr("id").match(/\d+/));
+                });
+
+                //
+                // Keep selected the sort_by user choice
+                //
+                //$("#content-top-banner").find("#sortby :selected").prop('selected', false);
+                //$("#sortby option[value='" + sortby + "']").attr('selected', 'selected');
+
+                //
+                //  Keep limit user choice
+                //
+                $("#content-top-banner").find("#items-per-page-id :selected").prop('selected', false);
+                $("#items-per-page-id option[value='" + limit + "']").attr('selected', 'selected');
+
+            }).on('click', "#search-btn", function (event) {
+                event.preventDefault();
+
+                var request = "";
+
+                var search = {
+                    categories: [],
+                    technical_support: [],
+                    topics: [],
+                    services: [],
+                    sortby: $("#sortby").val(),
+                }
+
+                // categories
+                $("div#categories-id").find('input:checked').each(function (i) {
+                    search.categories.push($(this).data().id);
+                });
+                // materials
+                $("div#downloads-filter").find('input:checked').each(function (i) {
+                    search.technical_support.push($(this).data().id);
+                });
+                // topics
+                $("div#help-filter").find('input:checked').each(function (i) {
+                    search.topics.push($(this).data().id);
+                });
+                // services
+                $("div#services-filter").find('input:checked').each(function (i) {
+                    search.services.push($(this).data().id);
+                });
+
+                getResults(form, search);
+
+            }).on("mouseenter", ".on-mouseover > div", function () {
+                //
+                // Highlight service box
+                //
+                $(this).addClass("highlight-service-banner");
+            }).on("mouseleave", ".on-mouseover > div", function () {
+                //
+                // Skip highlight from service box
+                //
+                $(this).removeClass("highlight-service-banner");
+            }).on('click', "#list_view", function () {
+                //
+                // Services in block view
+                // 
+                $("#services-result-listview").removeClass('hidden');
+                $("#services-result-multidata").addClass('hidden');
+            }).on('click', "#multidata_view", function () {
+                //
+                // Services in list view
+                //
+                $("#services-result-listview").addClass('hidden');
+                $("#services-result-multidata").removeClass('hidden');
+            }).on('click', "#article_list_view", function () {
+                //
+                // Articles in block view
+                // 
+                $("#articles-result-listview").removeClass('hidden');
+                $("#articles-result-multidata").addClass('hidden');
+            }).on('click', "#article_multidata_view", function () {
+                //
+                // Articles in list view
+                //
+                $("#articles-result-listview").addClass('hidden');
+                $("#articles-result-multidata").removeClass('hidden');
+            });
+
+
+
+
+            function toggleArrows(element) {
+                //
+                //  Swap the direction of search engine
+                //
+                if (element.find(" .panel-collapse").hasClass("in")) {
+                    element.find("i").removeClass("fa-angle-double-down").addClass("fa-angle-double-up");
+                }
+                else {
+                    element.find("i").addClass("fa-angle-double-down").removeClass("fa-angle-double-up");
+                }
+            }
+
+            function getResults(form, query) {
+                //
+                // Retrieve the search results and append them
+                //
+                payload = parseRequest(query);
+                $.ajax({
+                    type: $(form).attr('method'),
+                    url: $(form).attr('action'),
+                    data: payload,
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    success: function (json) {
+                        var services = json.services;
+                        var articles = json.articles;
+
+                        var multidata = "";
+                        var listview = "";
+
+
+                        if (!!services.length) {
+                            for (var i in services) {
+                                //
+                                // Load service image
+                                //
+                                var image = '';
+                                if (services[i].image !== null) {
+                                    image += [
+                                        '<div style="height:130px; min-height:130px;">',
+                                            '<img class="img-responsive" style="border-bottom: 1px solid #ebebea; height: 130px !important; width: 100%" src="' + services[i].image_path + '" alt="' + gettext("Image relative to the service") + services[i].title + '">',
+                                        '</div>'
+                                    ].join('');
+                                }
+                                else {
+                                    image += '<div style="height:130px; min-height:130px; background-color: #ecebeb"></div>';
+                                }
+                                //
+                                // Load provider logo
+                                // 
+                                var logo = "";
+                                //if (services[i].logo !== null || services[i].logo !== undefined || services[i].logo !== "") {
+                                //    logo += '<img src="/media/app/users/logos/' + services[i].logo + '" alt="' + services[i].logo + '" class="img-circle img-responsive" style="border: 1px solid whitesmoke;  min-height: 126px; max-height: 126px" />';
+                                //}
+                                //else {
+                                logo += [
+                                    '<span class="fa-stack fa-1x" >',
+                                        '<i class="fa fa-circle fa-stack-2x" style="color: #d7d5d5;"></i>',
+                                        '<i class="fa fa-user fa-stack-1x" style="color: #ebebea"></i>',
+                                    '</span>'
+                                ].join('');
+                                //
+                                // Service link
+                                //
+                                var link = "";
+                                var url = "{% url 'service_view_page' 0 %}".replace(0, services[i].id);
+                                if (services[i].charging_model === 1) {
+                                    link = '<a href="' + url + '" class="btn btn-success btn-xs">' + gettext('Access it!') + '</a>';
+                                }
+                                else {
+                                    link = '<a href="' + url + '" class="btn btn-success btn-xs">' + gettext('Get it!') + ' <i class="fa fa-shopping-cart"></i></a>';
+                                }
+                                var price = (services[i].price === 0) ? gettext('FREE') : services[i].unit + " " + services[i].price;
+                                //
+                                // Load service in block view
+                                //
+                                multidata += appendServiceMultidata(services[i], image, logo, link, price);
+
+                                //
+                                // Load services in list view
+                                //
+                                listview += appendServiceListView(services[i], image, logo, link, price);
+                                //
+                                // Set the stars of any service based on its rating value
+                                //
+                                $(".service-banner").each(function () {
+                                    var rating = $(this).find("#srv-rating-" + $(this).attr("id").match(/\d+/)).find("span").first().text();
+                                    if (rating !== "None" && !(isNaN(rating))) {
+                                        for (var j = 1; j <= Math.ceil(rating) ; j++) {
+                                            $(this).find(".star-rating-" + j).removeClass("fa-star-o").addClass("fa-star");
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                        else {
+                            multidata += resultsNotFound();
+                            listview = resultsNotFound();
+                        }
+                        $("#services-result-multidata").html(multidata);
+                        $("#services-result-listview").html(listview);
+
+                        //
+                        // Relative articles
+                        //
+                        multidata = "";
+                        listview = "";
+                        if  ( !!articles.length ) {
+                            for (var i in articles) {
+                                var url = "{% url 'faq_article' 0 %}".replace(0, articles[i].id);
+                                var link = '<a href="' + url + '" class="btn btn-success btn-xs">' + gettext('View it!') + '</a>';
+                                multidata += appendArticlesMultidata(articles[i], link);
+                                listview += appendArticlesListview(articles[i], link);
+                            }
+                        }
+                        else {
+                            multidata = resultsNotFound();
+                            listview = resultsNotFound();
+                        }
+                        $("#articles-result-multidata").html(multidata);
+                        $("#articles-result-listview").html(listview);
+
+                    },
+                    error: function (error) { },
+                    complete: function (response) {
+                    },
+                });
+            }
+
+            function parseRequest(search) {
+                var request = "";
+                if (search !== null) {
+                    request += "filter=true&";
+                    request += (search.categories.length > 0) ? "categories=" + search.categories.toString() + "&" : "";
+                    request += (search.technical_support.length > 0) ? "technical_support=" + search.technical_support.toString() + "&" : "";
+                    request += (search.services.length > 0) ? "services=" + search.services.toString() + "&" : "";
+                    request += (search.topics.length > 0) ? "topics=" + search.topics.toString() + "&" : "";
+                    //request += (search.sortby !== null) ? "sortby=" + search.sortby : "";
+                }
+                return request;
+            }
+
+            function parseStringFilter(name, value) {
+                return (value !== null && value !== "") ? name + "=" + value + "&" : "";
+            }
+
+            function appendServiceMultidata(service, image, logo, link, price) {
+                // return service item for block
+                return [
+                    '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 on-mouseover service-banner" id="srv-' + service.id + '"  style="margin-bottom:25px !important">',
+                        '<div class="thumbnail" style="min-height:380px!important;">',
+                            image,
+                            '<div class="caption">',
+                                '<div style="min-height:200px; max-height:200px">',
+                                    '<span class="fa-stack fa-3x img-responsive img-circle" style="margin-top:-55px">',
+                                        logo,
+                                    '</span>',
+                                    '<div class="row col-lg-12 col-sm-12 col-md-12 col-xs-12">',
+                                        '<h4 class="text-center">' + service.title.toUpperCase() + '</h4>',
+                                    '</div>',
+                                    '<div class="row">',
+                                        '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-justify">',
+                                            '<p class="clearfix">' + ((service.description.length > 0) ? service.description.substring(0, 130) + '...' : "") + '</p>',
+                                            link,
+                                        '</div>',
+                                    '</div>',
+                                '</div>',
+                                '<div style="min-height:50px; max-height:50px">',
+                                    '<div class="row">',
+                                        '<div class="col-sm-7 col-lg-7 col-md-7 col-xs-7" id="srv-rating-' + service.id + '" >',
+                                            '<span><strong>' + ((service.average_rating === null) ? gettext('None') : service.average_rating) + ' </strong></span> ',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-1"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-2"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-3"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-4"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-5"></span>',
+                                        '</div>',
+                                        '<div class="col-sm-5 col-lg-5 col-md-5 col-xs-5">',
+                                            '<strong class="pull-right">',
+                                                price,
+                                            '</strong>',
+                                        '</div>',
+                                    '</div>',
+                                    '<div class="row">',
+                                        '<div class="col-sm-8 col-lg-8 col-md-8 col-xs-8">',
+                                            '<em> ',
+                                                '<span class="fa fa-comments-o fa-1x text-primary"></span> ',
+                                                service.total_reviews + " " + ((service.total_reviews === 1) ? gettext('reviews') : gettext('review')),
+                                            '</em>',
+                                        '</div>',
+                                        '<div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">',
+                                                '<abbr title="' + ((service.type === "M") ? gettext('Machine-based service') : gettext('Human-based service')) + '"><span class="fa fa-laptop pull-right fa-2x" ></span></abbr>',
+                                        '</div>',
+                                    '</div>',
+                                '</div>',
+                            '</div>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+            }
+
+            function appendServiceListView(service, image, logo, link, price) {
+                // return service item for list
+                return [
+                    '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 on-mouseover service-banner" id="srv-' + service.id + '" style="margin-bottom: 3% ;min-height:inherit; margin-left:5px">',
+                        '<div class="row thumbnail">',
+                            '<div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">',
+                                image,
+                            '</div>',
+                            '<div class="caption col-xs-12 col-sm-7 col-md-7 col-lg-7">',
+                                '<div class="row">',
+                                    '<div class="col-sm-3 col-md-3 col-lg-3">',
+                                        '<span class="fa-stack fa-3x img-responsive img-circle">',
+                                            logo,
+                                        '</span>',
+                                    '</div>',
+                                    '<div class="col-sm-9 col-md-9 col-lg-9">',
+                                        '<h4>' + service.title.toUpperCase() + '</h4>',
+                                        '<div class="row">',
+                                            '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">',
+                                                '<p class="clearfix">' + ((service.description.length > 0) ? service.description.substring(0, 120) + '...' : "") + '</p>',
+                                                link,
+                                            '</div>',
+                                        '</div>',
+                                    '<br>',
+                                    '<div class="row">',
+                                        '<div class="col-sm-7 col-lg-7 col-md-7 col-xs-7" id="srv-rating-' + service.id + '" >',
+                                            '<span><b>' + ((service.average_rating === null) ? gettext('None') : service.average_rating) + ' </b></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-1"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-2"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-3"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-4"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-5"></span>',
+                                        '</div>',
+                                        '<div class="col-sm-5 col-lg-5 col-md-5 col-xs-5">',
+                                            '<b class="pull-right">',
+                                            price,
+                                            '</b>',
+                                        '</div>',
+                                    '</div>',
+                                    '<div class="row">',
+                                        '<div class="col-sm-8 col-lg-8 col-md-8 col-xs-8">',
+                                            '<em> ',
+                                                '<span class="fa fa-comments-o fa-1x text-primary"></span> ',
+                                                service.total_reviews + " " + ((service.total_reviews === 1) ? gettext('reviews') : gettext('review')),
+                                            '</em>',
+                                        '</div>',
+                                        '<div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">',
+                                            '<abbr title="' + ((service.type === "M") ? gettext('Machine-based service') : gettext('Human-based service')) + '"><span class="fa fa-laptop pull-right fa-2x" ></span></abbr>',
+                                        '</div>',
+                                    '</div>',
+                                '</div>',
+                            '</div>',
+                        '</div>',
+                    '</div>',
+                '</div>'
+
+                ].join('');
+            }
+
+            
+            function appendArticlesMultidata(article, link) {
+                //
+                //  return article for block view
+                //
+                return [
+                    '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 on-mouseover service-banner" id="article-' + article.id + '"  style="margin-bottom:25px !important">',
+                        '<div class="thumbnail" style="min-height:380px!important;">',
+                            '<div class="caption">',
+                                '<div style="min-height:200px; max-height:200px">',
+                                    '<div class="row col-lg-12 col-sm-12 col-md-12 col-xs-12">',
+                                        '<h4 class="text-center">' + article.title.toUpperCase() + '</h4>',
+                                    '</div>',
+                                    '<div class="row">',
+                                        '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-justify">',
+                                            '<p class="clearfix">' + ((article.content.length > 0) ? article.content.substring(0, 450) + '...' : "") + '</p>',
+                                        '</div>',
+                                    '</div>',
+                                    '<div class="row">',
+                                        '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">',
+                                            link,
+                                        '</div>',
+                                    '</div>',
+                                '</div>',
+                            '</div>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+            }
+
+            function appendArticlesListview(article, link){
+                //
+                //  return article for block view
+                //
+                return [
+                    '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 on-mouseover service-banner" id="article-' + article.id + '"  style="margin-bottom:25px !important">',
+                        '<div class="thumbnail" style="min-height:180px!important;">',
+                            '<div class="caption">',
+                                '<div style="min-height:200px; max-height:200px">',
+                                    '<div class="row col-lg-12 col-sm-12 col-md-12 col-xs-12">',
+                                        '<h4 class="text-center">' + article.title.toUpperCase() + '</h4>',
+                                    '</div>',
+                                    '<div class="row">',
+                                        '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-justify">',
+                                            '<p class="clearfix">' + ((article.content.length > 0) ? article.content.substring(0, 450) + '...' : "") + '</p>',
+                                        '</div>',
+                                    '</div>',
+                                    '<div class="row">',
+                                        '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">',
+                                            link,
+                                        '</div>',
+                                    '</div>',
+                                '</div>',
+                            '</div>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+            }
+
+
+            function resultsNotFound() {
+                return [
+                    '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">',
+                        '<div class="alert alert-danger jumbotron">',
+                            '<h4 style="font-size: x-large" class="text-center">',
+                                gettext("Results not found!"),
+                            '</h4>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+            }
+
+
+
+
+
+        </script>
+    {% endblock scripts %}

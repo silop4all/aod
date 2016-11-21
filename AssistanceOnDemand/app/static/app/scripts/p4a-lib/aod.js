@@ -45,15 +45,6 @@ var AoD = AoD || (function () {
         }
         return true;
     });
-    //$.validator.addMethod("serviceImage", function (value, element, param) {
-    //    if ($("#thumbnail").attr("src") !== param) {
-    //        return true;
-    //    }
-    //    return false;
-    //});
-
-    
-    
     //
     // Serialize form data
     //
@@ -102,7 +93,13 @@ var AoD = AoD || (function () {
         return o;
     };
 
-
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+            }
+        }
+    });
 
     // global scope
     return {
@@ -494,7 +491,7 @@ var AoD = AoD || (function () {
                             // Service media
                             //
                             $.ajax({
-                                type: 'PUT',
+                                type: 'POST',
                                 url: mediaUrl,
                                 data: files,
                                 cache: false,
@@ -553,6 +550,354 @@ var AoD = AoD || (function () {
                             loading.hide();
                         }
                     });
+                }
+            });
+        },
+        //
+        // register new technical material for a service
+        //
+        registerServiceTechnicalMaterial: function (form, successURL) {
+            preRegValidator = $(form).validate({
+                errorClass: errorClass,
+                errorElement: "div",
+                rules: {
+                    title: {
+                        required: true,
+                        maxlength: 128
+                    },
+                },
+                messages: {
+                    title: {
+                        required: gettext("Please enter the title of the material"),
+                    },
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element);
+                    error.addClass(eSettings.highlightTextClass);
+                    element.parent().addClass(eSettings.highlightClass);
+                },
+                success: function (error) {
+                    error.parent().removeClass(eSettings.highlightClass);
+                    error.removeClass(errorClass);
+                    error.parent().find($("div")).remove();
+                },
+                submitHandler: function (form) {
+
+                    $.when(
+                        $.ajax({
+                            url: $(form).attr('action'),
+                            type: $(form).attr('method'),
+                            dataType: "json",
+                            beforeSend: function (xhr, settings) {
+                                $.ajaxSettings.beforeSend(xhr, settings);
+                            },
+                            contentType: 'application/json',
+                            data: JSON.stringify($(form).serializeObject()),
+                            success: function (response) {
+                                console.log(response);
+                            },
+                            error: function (response) {
+                                console.info("error");
+                            },
+                            complete: function (res) {
+                                console.info("Completed");
+                            }
+                        })
+                    ).done(function (response) {
+                        if (!!response.uploadFile === true) {
+                            //
+                            // Upload material
+                            //
+                            var fdata = new FormData();
+                            var file = $("#material").get(0).files[0];
+                            fdata.append("material", file);
+
+                            if (fdata.has("material") === true) {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: response.uploadMediaURL,
+                                    data: fdata,
+                                    cache: false,
+                                    enctype: "multipart/form-data",
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (fileResponse) {
+                                        console.info(gettext("Material has been uploaded"));
+                                    },
+                                    error: function (error) {
+                                        console.log(gettext("Material did not upload to server"));
+                                    },
+                                    complete: function () {
+                                        location.reload();
+                                    }
+                                });
+                            }
+                            else {
+                                location.reload();
+                            }
+                        }
+                        else {
+                            location.reload();
+                        }
+                    });
+                }
+            });
+        },
+        //
+        // retrieve the technical material for a service
+        //
+        retrieveServiceTechnicalMaterial: function (url, media_path, baseURL) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (response) {
+                    //
+                    // Preview material on the right side of page
+                    //
+                    var preview = "";
+                    var resourceUrl = response.path;
+                    
+                    if (response.extension.toLowerCase() === "pdf") {
+                        preview = [
+                            '<object data="' + resourceUrl + '" type="application/pdf" height="380" width="100%">',
+                                '<embed src="' +  resourceUrl + '" type="application/pdf" />',
+                            '</object>'
+                        ].join('');
+
+                    }
+                    else if (response.extension.toLowerCase() === "mp4") {
+                        preview = [
+                            '<div class="embed-responsive embed-responsive-16by9 videoUiWrapper">',
+                                '<span class="padding-bottom-10"></span>',
+                                '<video style="width:100%" controls  title="" class="embed-responsive-item">',
+                                    '<source src="' + resourceUrl + '" type="video/mp4">',
+                                    gettext('Your browser does not support the video tag.'),
+                                '</video>',
+                            '</div>'
+                        ].join('');
+                    }
+                    else {
+                        if (response.technical_support.id === 1) {
+                            // youtube embed
+                            preview = [
+                                '<div class="embed-responsive embed-responsive-4by3">',
+                                    '<iframe title="YouTube video player" class="youtube-player embed-responsive-item" type="text/html" width="100%" height="380" src="' + response.link + '" frameborder="0" allowFullScreen>',
+                                    '</iframe>',
+                                '</div>'
+                            ].join('');
+                        }
+                        else {
+                            preview = [
+                                '<div style="height:380px;background-color: black">',
+                                    '<center><label style="margin-top:190px; font-size: xx-large; color: white">' + gettext("Preview is not supported") + '</label></center>',
+                                '</div>',
+                            ].join('');
+                        }
+                    }
+
+                    var pathAbsence = (response.technical_support.id === 1 || response.technical_support.id === 4 || response.technical_support.id === 5) ? "hidden" : "";
+                    var linkAbsence = (response.technical_support.id === 2 || response.technical_support.id === 3) ? "hidden" : "";
+
+                    var pathElement = "";
+                    if (response.technical_support.alias === "document"){
+                        pathElement = '<a href="' + response.path + '" class="btn btn-primary">' + gettext('Download') + ' <span class="fa fa-download"></span></a>';
+                    }
+                    else if (response.technical_support.alias === "video") {
+                        pathElement = '<a href="' + response.path + '" target="_blank" class="btn btn-danger">' + gettext('Attend') + ' <span class="fa fa-play-circle"></span></a>';
+                    }
+
+                    var linkElement = "";
+                    if (response.technical_support.alias === "youtube_video" || response.technical_support.alias === "vimeo_video" ) {
+                        linkElement = '<a href="' + response.link + '" target="_blank" class="btn btn-danger">' + gettext('Attend') + ' <span class="fa fa-play-circle"></span></a>';
+                    }
+                    else if (response.technical_support.alias === "shared_link" ) {
+                        linkElement = '<a href="' + response.link + '" target="_blank" class="btn btn-success">' + gettext('Follow') + ' <span class="fa fa-hand-o-up"></span></a>';
+                    }
+
+                    var detectBrokenLink = "";
+                    if (pathAbsence === "hidden") {
+                        detectBrokenLink = '<button data-link="' + response.link + '" class="btn btn-info btn-sm detect-broken-link">' + gettext('Validate') + '</button>';
+                    }
+                    else {
+                        detectBrokenLink = '<button data-link="' + baseURL + response.path + '" class="btn btn-info btn-sm detect-broken-link">' + gettext('Validate') + '</button>';
+                    }
+                    
+                    var html = [
+                        '<h3 id="#material_'+ response.id +'">' + response.title + '<span ><small>',
+                                '<div class="btn-group pull-right">',
+                                    '<button data-material="' + response.id + '" class="btn btn-danger delete-material"><span class="fa fa-trash"></span aria-hidden="true"> ' + gettext("Delete") + '  </button>',
+                                '</div>',
+                            '</small><span>',
+                        '</h3>',
+                        '<hr class="service-hr">',
+                        '<div class="row">',
+                            '<div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" style="min-height:250px">',
+                                preview,
+                            '</div>',
+                        '</div>',
+                        '<hr class="service-hr" />',
+                        '<div class="row">',
+                            '<div class="col-sm-4 col-md-4 col-md-4 col-xs-4">',
+                                '<label>' + gettext("Format") + '</label>',
+                            '</div>',    
+                            '<div class="col-sm-8 col-md-8">',
+                                response.extension,
+                            '</div>',
+                        '</div>',
+                        '<div class="row">',
+                            '<div class="col-sm-4 col-md-4 col-md-4 col-xs-4">',
+                                '<label>' + gettext("Description") + '</label>',
+                            '</div>',
+                            '<div class="col-sm-8">',
+                                response.description,
+                            '</div>',
+                        '</div>',
+                        '<div class="row">',
+                            '<div class="col-sm-4 col-md-4 col-md-4 col-xs-4">',
+                                '<label>' + gettext("Dependencies") + '</label>',
+                            '</div>',
+                            '<div class="col-sm-8">',
+                                response.software_dependencies,
+                            '</div>',
+                        '</div>',
+                        '<div class="row">',
+                            '<div class="col-sm-4 col-md-4 col-md-4 col-xs-4">',
+                                '<label>' + gettext("Type of material") + '</label>',
+                            '</div>',
+                            '<div class="col-sm-8">',
+                                response.technical_support.type,
+                            '</div>',
+                        '</div>',
+                        '<div class="row ' + pathAbsence + '">',
+                            '<div class="col-sm-4 col-md-4 col-md-4 col-xs-4">',
+                                '<label>' + gettext("Resource path") + '</label>',
+                            '</div>',
+                            '<div class="col-sm-8">',
+                                pathElement,
+                            '</div>',
+                        '</div>',
+                        '<div class="row ' + linkAbsence + ' ">',
+                            '<div class="col-sm-4 col-md-4 col-md-4 col-xs-4">',
+                                '<label>' + gettext("Shared link") + '</label>',
+                            '</div>',
+                            '<div class="col-sm-8">',
+                                linkElement,
+                            '</div>',
+                        '</div>',
+                        '<div class="row">',
+                            '<div class="col-sm-4 col-md-4 col-md-4 col-xs-4">',
+                                '<label>' + gettext("Is it visible?") + '</label>',
+                            '</div>',
+                            '<div class="col-sm-8">',
+                                (!!response.visible === true) ? gettext('Yes'): gettext('No'),
+                            '</div>',
+                        '</div>',
+                        '<div class="row">',
+                            '<div class="col-sm-4 col-md-4 col-md-4 col-xs-4">',
+                                '<label>' + gettext("Detect broken link") + '</label>',
+                            '</div>',
+                            '<div class="col-sm-8">',
+                                detectBrokenLink,
+                            '</div>',
+                        '</div>'
+                    ].join('');
+                    $("#preview-material").html(html);
+
+                    var height = parseInt($("#preview-material").css("height").replace("px","")) + 350;
+                    $(".platform-info-box").css("min-height", height + "px");
+                },
+                error: function (response) {
+                },
+                complete: function () {
+                }
+            });
+        },
+        //
+        // Delete a technical material of service
+        //
+        deleteServiceTechnicalMaterial: function (url, successURL) {
+            $.ajax({
+                url: url,
+                type: "DELETE",
+                beforeSend: function (xhr, settings) {
+                    $.ajaxSettings.beforeSend(xhr, settings);
+                },
+                success: function (response) {
+                    console.info(gettext("OK"));
+                },
+                error: function (response) {
+                    console.error(gettext("Error"));
+                },
+                complete: function () {
+                    location.href = successURL;
+                }
+            });
+        },
+        //
+        // Load categories as tree
+        //
+        loadTreeCategories: function (targetElement) {
+            $.ajax({
+                type: 'GET',
+                url: $(targetElement).data('resource'),
+                data: { level: 0 },
+                headers: { "accept": "application/json", "content-type": "application/json" },
+                contentType: 'application/json',
+                success: function (response) {
+                    var options = '';
+                    var data = response.results;
+                    var startList = '<ul><li>';
+                    var startListInvisible = '<ul><li class="collapsed">';
+                    var endList = '</li></ul>';
+                    for (var root in data) {
+                        var childs = data[root].children;
+                        options += [
+                            ((childs.length > 0) ? startListInvisible : startList),
+                            '<input type="checkbox" id="category-' + data[root].id + '" name="category-' + data[root].id + '" data-id="' + data[root].id + '" data-name="category-' + data[root].id + '"/>',
+                            '<label for="category-' + data[root].id + '" class="tree-items"> ' + data[root].title + '</label>',
+                        ].join('');
+
+                        for (var i in childs) {
+                            var leafs = childs[i].children;
+                            options += [
+                                ((leafs.length > 0) ? startListInvisible : startList),
+                                '<input type="checkbox" id="category-' + childs[i].id + '" name="category-' + childs[i].id + '" data-id="' + childs[i].id + '" data-name="category-' + childs[i].id + '"/>',
+                                '<label for="category-' + childs[i].id + '" class="tree-items"> ' + childs[i].title + '</label>',
+                            ].join('');
+
+
+                            for (var j in leafs) {
+                                options += [
+                                    startList,
+                                        '<input type="checkbox" id="category-' + leafs[j].id + '" name="category-' + leafs[j].id + '" data-id="' + leafs[j].id + '" data-name="category-' + leafs[j].id + '"/>',
+                                            '<label for="category-' + leafs[j].id + '" class="tree-items"> ' + leafs[j].title + '</label>',
+                                    endList
+                                ].join('');
+                            }
+                            options += endList;
+                        }
+                        options += endList;
+                    }
+                    $(targetElement).append(options);
+                    $(targetElement).tree({
+                        collapsible: true,
+                        dnd: false,
+                        onCheck: {
+                            node: 'expand'
+                        },
+                        onUncheck: {
+                            node: 'collapse'
+                        }
+                    });
+                    $(targetElement).css('border', 'none');
+                    $(".daredevel-tree-anchor").css("margin-top", '4px');
+                },
+                error: function (response) {
+                    console.error(response);
+                },
+                complete: function () {
                 }
             });
         },

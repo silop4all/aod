@@ -1,0 +1,91 @@
+﻿{% load i18n %}
+{% load l10n %}
+
+<article>
+
+    <div class="reviews_container">
+
+        <div class="padding-left-percent-5 padding-right-percent-5" style="border-bottom:1px solid rgba(190, 190, 190, 0.70)">
+            <div class="row">
+                <div id="reviews_overview" class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                    <h3 class="text-center" style="text-decoration:underline">{% trans 'Overview' %}</h3>
+                    <div class="row margin-bottom-10">
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                            <center>
+                                <span class="fa-stack fa-4x">
+                                    <span class="fa fa-circle fa-stack-2x text-success"></span>
+                                    <span class="fa fa-star-o fa-stack-1x" style="color: rgb(255, 216, 0)"></span>
+                                </span>
+
+                            </center>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12  padding-top-20">
+                            <div><span id="reviews_average"> </span> / 5</div>
+                            <div><label class="label label-success"><span id="reviews_number"></span> {% trans 'reviews' %}</label></div> 
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+                            <label style="margin-top:-10px">5 {% trans 'stars' %} <span class="badge" id="5_star_bg"></span></label>
+                        </div>
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+                                <div class="progress" style="height:10px">
+                                <div class="progress-bar progress-bar-success" id="5_star" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="0" style="width:0%">
+                                    <span class="show">1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+                            <label style="margin-top:-10px">4 {% trans 'stars' %} <span class="badge" id="4_star_bg"></span></label>
+                        </div>
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+                                <div class="progress"  style="height:10px">
+                                <div class="progress-bar progress-bar-success ui-progressbar-value" id="4_star" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+                            <label style="margin-top:-10px">3 {% trans 'stars' %} <span class="badge" id="3_star_bg"></span></label>
+                        </div>
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+                                <div class="progress" style="height:10px">
+                                <div class="progress-bar progress-bar-success ui-progressbar-value" id="3_star" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="0" style="width:0%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+                            <label style="margin-top:-10px">2 {% trans 'stars' %} <span class="badge" id="2_star_bg"></span></label>
+                        </div>
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+                                <div class="progress" style="height:10px">
+                                <div class="progress-bar progress-bar-success ui-progressbar-value" id="2_star" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="0" style="width:0%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+                            <label style="margin-top:-10px">1 {% trans 'star' %} <span class="badge" id="1_star_bg"></span></label>
+                        </div>
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+                                <div class="progress" style="height:10px">
+                                <div class="progress-bar progress-bar-success" role="progressbar" id="1_star" aria-valuenow="0" aria-valuemin="0" aria-valuemax="0" style="width:0%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="reviews_column" class="col-sm-9 col-md-9 col-lg-9 col-xs-12 margin-bottom-25" style="border-left:1px solid rgba(190, 190, 190, 0.70)">
+                    <!--append content-->
+                </div>
+            </div>
+        </div>
+    </div>
+</article>

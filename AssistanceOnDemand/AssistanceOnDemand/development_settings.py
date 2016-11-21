@@ -91,6 +91,7 @@ INSTALLED_APPS = (
     'import_export',
     'rest_framework',
     'rest_framework_swagger',
+    'drf_multiple_model',
     'analytical',
     'corsheaders',
     'ckeditor',

@@ -4,14 +4,14 @@
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">      
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Drop down menu for mobile view">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
                 <a href="{% url 'home_page' %}" class="navbar-brand" title="{{ logo.title }} - {% trans 'Home page' %}">
-                    <img src="{{ logo.logo.url }}" alt="{{ logo.title }}">
-                    <strong> {{ logo.title }}</strong>
+                    <img src="{{ logo.logo.url }}" alt="{% trans 'Logo of application' %}">
+                    <strong id="brand_name"> {{ logo.title }}</strong>
                 </a>
             </div>
             <div class="navbar-collapse collapse">

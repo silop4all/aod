@@ -1,0 +1,94 @@
+{% load i18n %}
+{% load l10n %}
+<div class="contact-info-box">
+
+    <!--header-->
+    <div class="form-group">
+        <div class="col-sm-12 col-xs-12" role="heading">
+            <h4>{% trans 'Contact information' %}</h4>
+        </div>
+    </div>
+    <!--preview-->
+    <div class="preview-contact-info">
+        <!-- Non editable mode -->
+        {% if error %}
+        <div class="form-group">
+            <h6 class="label label-danger">{{ error| safe }}</h6>
+        </div>
+        {% endif %}
+
+        <!-- email -->
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right">{% trans 'Email account' %}</label>
+            </div>
+            <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12" title="{% trans 'Your registered email account' %}">
+                <span>{{ object.email }}</span>
+            </div>
+        </div>
+        <!-- mobile -->
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right">{% trans 'Mobile phone' %}</label>
+            </div>
+            <div class="col-md-9 col-sm-5 col-lg-5 col-xs-12" title="{% trans 'Your registered mobile phone' %}">
+                <span>{{ object.mobile }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="editable-contact-info hidden">
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right control-label" for="rg_email">{% trans 'Email account' %}<small>*</small></label>
+            </div>
+            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group controls" title="{% trans 'Update your email account' %}">
+                <span class="input-group-addon">
+                    <span class="fa fa-envelope fa-fw" role="img"></span>
+                </span>
+                <input type="text" class="form-control" name="rg_email" id="rg_email" data-url="{% url 'validate_profile_field' object.id %}" value="{{ object.email }}"  autocomplete="off" maxlength="255" placeholder="{% trans 'your email account' %}" />
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3">
+                <label class="label control-label label-danger pull-left hidden" id="rg_email_info">{% trans 'No valid email account' %}</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right control-label" for="rg_mobile">{% trans 'Mobile phone' %}</label>
+            </div> 
+            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 input-group">
+                <span class="input-group-addon">
+                    <span class="fa fa-mobile-phone fa-fw"></span>
+                </span>
+                <input type="tel" class="form-control form-control-static" value="{{ object.mobile }}" name="rg_mobile" id="rg_mobile" autocomplete="off" maxlength="15" placeholder="{% trans 'your mobile phone number' %}" />
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3">
+                <label class="label control-label label-danger pull-left hidden" id="rg_mobile_info">{% trans 'Type at least 10 digits' %}</label>
+            </div>
+        </div> 
+    </div>
+    <!--edit area-->
+    {% if readonly %}
+
+    {% else %}
+    <hr class="profile-hr">
+    <div id="contact-toolbar">
+        <div class="row" id="edit">
+            <div class="col-md-12 col-sm-12 text-center">
+                <button type="button" class="btn btn-default btn-sm" id="edit-contact-btn" name="edit-contact-btn" role="button"><i class="fa fa-pencil"></i> {% trans 'Edit' %}</button>
+            </div>
+        </div>
+        <div class="row hidden" id="save">
+            <div class="col-md-6 col-sm-6 text-center">
+                <button type="reset" class="btn btn-default btn-sm" id="reset-contact-btn" name="reset-contact-info" role="button"> {% trans 'Cancel' %}</button>
+            </div>
+            <div class="col-md-6 col-sm-6 text-center">
+                <button type="button" class="btn btn-primary btn-sm" id="save-contact-btn" data-url="{% url 'contact_profile_update' object.id %}" name="save-contact-info-btn" role="button"> {% trans 'Save' %}</button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+

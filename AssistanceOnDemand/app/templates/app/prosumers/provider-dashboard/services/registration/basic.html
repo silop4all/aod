@@ -1,0 +1,134 @@
+﻿{% load i18n %}
+{% load l10n %}
+<div class="service-basic-info-box">
+    <form  id="BasicServiceForm" name="BasicServiceForm" action="#basic">
+        <div class="row form-group">
+            <h3 class="col-lg-offset-1 col-xs-offset-1 col-md-offset-1 col-sm-offset-10"> {% trans 'Basic information' %}</h3>
+        </div>
+        <hr class="service-hr">
+        <!--title-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="title" title="{% trans 'Enter the title of the service' %}">{% trans 'Title' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="title" title="{% trans 'Enter the title of the service' %}">{% trans 'Title' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Enter the title of the service' %}">
+                <input type="text" class="form-control" name="title" id="title" value="{{ service.title |safe}}" autocomplete="off" maxlength="128" placeholder="{% trans 'The title of the service' %}" autofocus required/>    
+            </div>
+        </div>
+        <!--description-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="description" title="{% trans 'Description of the service' %}">{% trans 'Description' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="description" title="{% trans 'Description of the service' %}">{% trans 'Description' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Description of the service' %}" id="description_node">
+                <textarea rows="6" cols="50" id="description" name="description" class="form-control" form="BasicServiceForm" maxlength="500" placeholder="{% trans 'Provide a brief description of the service (500 characters)' %}" required>{{ service.description |safe}}</textarea>
+            </div>
+        </div>
+        <!--service type-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="type" title="{% trans 'Type of the service' %}">{% trans 'Type' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="type" title="{% trans 'Type of the service' %}">{% trans 'Type' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12 input-group controls clearfix" title="{% trans 'Type of the service' %}" id="type_node">
+                <select class="selectpicker form-control show-tick"  name="type" id="type" form="BasicServiceForm"  data-max-options="1" data-size="3"  data-header="{% trans 'Select the type of the service' %}" data-live-search="false" title="-- {% trans 'Select the type' %} --" required>
+                    <option value="-1" disabled selected>-- {% trans 'Select the type' %} --</option> 
+                        {% for i in types %}
+                            <option value="{{ i.0 }}" {% if service.type == i.0 %} selected {% endif %}>{{ i.1 }}</option>
+                        {% empty %}
+                        {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-5 col-md-5 col-lg-5"></div>
+        </div>
+        <!--categories list-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="categories" title="{% trans 'Clarify the service in categories' %}">{% trans 'Category' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="categories" title="{% trans 'Clarify the service in categories' %}">{% trans 'Category' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12 input-group controls clearfix" title="{% trans 'Clarify the service in categories' %}" id="category_node">
+                <select class="form-control"  name="categories" id="categories" form="BasicServiceForm"  data-size="6" data-resource="{% url 'private_api:categories_tree' %}" data-header="{% trans 'Clarify your service' %}" data-live-search="true" role="list" title="-- {% trans 'Clarify your service' %} --" data-selected-text-format="count>3" multiple required>
+                    <!--append categories-->
+                </select>
+            </div>
+            <div class="col-sm-5 col-md-5 col-lg-5"></div>
+        </div>
+       <!--image-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="image" title="{% trans 'The image of the service' %}">{% trans 'Image'%}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="image" title="{% trans 'The image of the service' %}">{% trans 'Image'%}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'The logo of the service' %}">
+                {% if service %}
+                    <input type="file" id="image" name="image"  accept="image/*" size="1" value="{% if service.image %}{{ MEDIA_URL}}app/services/images/{{ service.image }}{% else %}{% endif %}" style="display:none" form="BasicServiceForm"/>
+                {% else %}
+                    <input type="file" id="image" name="image" accept="image/*" size="1" style="display:none" form="BasicServiceForm"/>
+                {% endif %}
+                <div class="row col-md-12 col-sm-12 col-lg-12 col-xs-12">
+                    {% if service %}
+                    <img id="thumbnail" class="img-thumbnail img-responsive" src="{% if service.image %}{{ MEDIA_URL}}app/services/images/{{ service.image }}{% else %}{% endif %}" style="border:1px solid #D8D8D8; max-width:100%" alt={% trans 'Service image' %}/>
+                    {% else %}
+                    <img id="thumbnail" class="img-thumbnail img-responsive hidden" src="#" style="border:1px solid #D8D8D8; max-width:100%" alt="{% trans 'Service image' %}"/>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12"></div>
+            <div class=" row col-md-8 col-sm-8 col-lg-8 col-xs-12 input-group controls">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" >
+                    <a href="#" class="btn btn-default btn-sm pull-left" id="load_image" title="{% trans 'Add the image of the service' %}">
+                        <i class="fa fa-plus fa-fw text-primary"></i> {% trans 'Load image' %}
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 input-group controls {% if not service.image %} hidden {% endif %}" id="clear_thumbnail">
+                    <a href="#" class="btn btn-default btn-sm pull-right" onclick="return removeLogo();" title="{% trans 'Remove the image of the service' %}">
+                        <i class="fa fa-remove fa-fw text-danger"></i> {% trans 'Clear image' %}
+                    </a>
+                </div>
+            </div>
+        </div>
+       <!--keyword-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="keywords" title="{% trans 'Keyword related to the service'%}">{% trans 'Related Keywords'%}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="keywords" title="{% trans 'Keyword related to the service'%}">{% trans 'Related Keywords'%}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Keyword related to the service' %}">
+                <textarea class="form-control" rows="3" form="BasicServiceForm" maxlength="100" id="keywords" name="keywords" placeholder="{% trans 'Enter keywords related to your using the space character among them' %}">{% if service %}{% for k in service.keywords.all %}{{ k.title }},{% empty %}{% endfor %}{% endif %}</textarea>
+            </div>
+        </div>
+       <!--version-->
+        <div class="row form-group hidden" id="version_input">
+            <div class="col-sm-3 col-xs-12" title="{% trans 'The version and licenses of the service' %}">
+                <label class="text-right control-label hidden-xs" for="version">{% trans 'Version' %}</label>
+                <label class="text-left control-label visible-xs" for="version">{% trans 'Version' %}</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'The version of the service' %}">
+                <input type="text" class="form-control" name="version" id="version" value="{% if service.version%}{{ service.version|safe }}{% endif %}" autocomplete="off" maxlength="10" placeholder="{% trans 'Current version' %}" autofocus />    
+            </div>
+        </div>
+       <!--license-->
+        <div class="row form-group hidden" id="license_input">
+            <div class="col-sm-3 col-xs-12" title="{% trans 'Define the licenses of the service, if any' %}">
+                <label class="text-right control-label hidden-xs" for="license">{% trans 'Licenses' %}</label>
+                <label class="text-left control-label visible-xs" for="license">{% trans 'Licenses' %}</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'The license of the service' %}">
+                <input type="text" class="form-control" name="license" id="license"  value="{% if service.license%}{{ service.license }}{% endif %}" autocomplete="off" maxlength="25" placeholder="{% trans 'License'%}" autofocus />    
+            </div>
+        </div>
+        <!--info-->
+        <hr class="service-hr">
+        <div class="row form-group">
+            <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Mandatory fields' %}">
+                <h5><strong class="text-center highlight-error-message">* {% trans 'Mandatory fields' %}</strong></h5>
+            </div>
+        </div>
+        <!--end of fields-->
+    </form>
+</div>

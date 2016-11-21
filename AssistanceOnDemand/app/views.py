@@ -64,12 +64,13 @@ from app.openamAuth import *
 from app.socialNetwork import *
 from restapi.serializers import (
     UserThemeSerializer, 
-    SimpleServiceSerializer
+    SimpleServiceSerializer,
+    SimpleServiceTechnicalSupportSerializer
 )
 
-
+import os
 from functools import wraps
-from datetime import datetime, timedelta  
+from datetime import datetime, timedelta, date
 import pytz
 import json
 
@@ -80,11 +81,15 @@ from base64 import b64decode, b64encode
 import httplib
 import urllib
 import hashlib
+import logging
+
+# Logger instance
+logger = logging.getLogger(__name__)
 
 
-#################################
-##      Translations
-#################################
+#==============================
+#   Translations
+#==============================
 def changeLanguage(request):
     if request.method == "POST":
         try:
@@ -117,9 +122,10 @@ def changeLanguage(request):
             print_exc()
             raise Http404
 
-#################################
-##          Themes
-#################################
+
+#==============================
+#   Presentation Themes
+#==============================
 class PresentationThemesView(View):
     def get(self, request):
         """
@@ -177,9 +183,10 @@ class PresentationTheme(View):
                 print_exc()
             raise Http404
 
-#################################
-##      Social Network
-#################################
+
+#==============================
+#   Social Network
+#==============================
 @loginRequiredView
 class AccessSocialNetwork(View):
     
@@ -208,9 +215,9 @@ class AccessSocialNetwork(View):
             return Http404
 
 
-#################################
-##      Visitor home page
-#################################
+#==============================
+#   Visitor area
+#==============================
 def home(request):
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
@@ -240,7 +247,7 @@ def home(request):
             'app/visitors/home.html',
             context_instance = RequestContext(request,
             {
-                'title':'Home Page',
+                'title': _('Home Page'),
                 'year':datetime.now().year,
                 'popularService': popularService[0],
                 'latestService': latestService[0],
@@ -250,15 +257,12 @@ def home(request):
             'app/visitors/home.html',
             context_instance = RequestContext(request,
             {
-                'title':'Home Page',
+                'title': _('Home Page'),
                 'year':datetime.now().year,
                 'popularService': None,
                 'latestService': None
             }))
 
-#################################
-##      Registration 
-#################################
 class RegistrationView(View):
     """ 
     Handle the HTTP requests related to registration 
@@ -286,7 +290,7 @@ class RegistrationView(View):
                 'app/visitors/registration.html',
                 context_instance = RequestContext(request,
                 {
-                    'title':'Registration page',
+                    'title': _('Registration page'),
                     'year':datetime.now().year,
                     'title': "AoD | Registration",
                     'experience': ItExperience.objects.all().order_by('id'),
@@ -390,7 +394,7 @@ def registrationSuccess(request,):
         context_instance = RequestContext(request,
         {
             'year':datetime.now().year,
-            'username': "user",
+            'username': _("user"),
             'title': _("AoD Registration")
         })) 
 
@@ -411,10 +415,6 @@ def checkPassword(hashedPassword, typedPassword):
     password, salt = hashedPassword.split(':')
     return password == hashlib.sha256(salt.encode() + typedPassword.encode()).hexdigest()
 
-
-#################################
-##      Account activation 
-#################################
 def accountActivation(request):
     """
     Activate an new account using email, value and checking the registration datetime 
@@ -441,11 +441,11 @@ def accountActivation(request):
                 'app/visitors/login.html',
                 context_instance = RequestContext(request,
                 {
-                    'title':'About',
-                    'message':"<center><span class='label label-primary' role='contentinfo'><i class='fa fa-info-circle fa-fw'></i> Your account was activated.</span></center>",
+                    'title':_('About'),
+                    'message':"<center><span class='label label-primary' role='contentinfo'><i class='fa fa-info-circle fa-fw'></i>" + _("Your account was activated.") + "</span></center>",
                     'year': "" + datetime.now().year,
                 }))
-        raise Exception("Activation was expired.") 
+        raise Exception(_("Activation was expired.")) 
        
     except Exception as e:
         # handle any exception
@@ -453,17 +453,14 @@ def accountActivation(request):
             'app/visitors/login.html',
             context_instance = RequestContext(request,
             {
-                'title':'About',
+                'title': _('About'),
                 'message': "<center>"+str(e.args[0])+"</center>",
                 'year': datetime.now().year,
             }))
 
     except:
-        raise Exception("Activation was expired.")
+        raise Exception(_("Activation was expired."))
 
-#################################
-##  Forgot password
-#################################
 class ForgotPasswordView(View):
     def get(self, request):
         """ Enter the email account """
@@ -474,15 +471,16 @@ class ForgotPasswordView(View):
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
-                    'title':'Forgot password',
+                    'title':_('Forgot password'),
                     'year':datetime.now().year,
                 }))                
         except:
             raise Http404
 
-#################################
-##      Log in 
-#################################
+
+#==============================
+#   Authentication 
+#==============================
 def login(request):
     """Renders the login page."""
 
@@ -496,7 +494,7 @@ def login(request):
                 'app/visitors/login.html',
                 context_instance = RequestContext(request,
                 {
-                    'title':'About',
+                    'title': _('About'),
                     'message':None,
                     'year':datetime.now().year,
                 }))
@@ -555,9 +553,9 @@ def loginAuth(request):
         raise Exception("server error")  
 
 
-#################################
-##      Handle Profile 
-#################################
+#==============================
+#   User profile  & roles
+#==============================
 @loginRequiredView
 class UploadUserMedia(View):
     def post(self, request, pk=None):
@@ -609,7 +607,7 @@ class UserUpdatePersonalInfo(View):
     """
     
     # properties
-    template = 'app/consumers/profile/personal-info.html'
+    template = 'app/prosumers/profile/personal-info.html'
 
     # methods
     def post(self, request, pk=None):
@@ -662,7 +660,7 @@ class UserUpdateContactInfo(View):
     """
     
     # properties
-    template = 'app/consumers/profile/contact-info.html'
+    template = 'app/prosumers/profile/contact-info.html'
 
     # methods
     def post(self, request, pk=None):
@@ -692,7 +690,7 @@ class UserUpdateContactInfo(View):
                 {
                     'object': user,
                     'error': error,
-                    'images': {'cover': {'exist': False, 'path': ''}, 'profile': {'exist': True, 'path': '../../../static/app/images/home/users/128.jpg'}}
+                    #'images': {'cover': {'exist': False, 'path': ''}, 'profile': {'exist': True, 'path': '../../../static/app/images/home/users/128.jpg'}}
                 }))
         else:
             # reload the page
@@ -704,7 +702,7 @@ class UserUpdatePlatformInfo(View):
     Update user fields related to the platform settings
     """
     # properties
-    template = 'app/consumers/profile/platform-info.html'
+    template = 'app/prosumers/profile/platform-info.html'
     
     # methods
     def post(self, request, pk=None):
@@ -773,7 +771,7 @@ class UserUpdatePlatformInfo(View):
                     'experience': ItExperience.objects.all().order_by('id'),
                     'categories': Categories.objects.all().order_by('id'),
                     'roles': roles,
-                    'images': {'cover': {'exist': False, 'path': ''}, 'profile': {'exist': True, 'path': '../../../static/app/images/home/users/128.jpg'}}
+                    #'images': {'cover': {'exist': False, 'path': ''}, 'profile': {'exist': True, 'path': '../../../static/app/images/home/users/128.jpg'}}
                 }))
         else:
             # reload the page
@@ -801,11 +799,107 @@ def checkEmail(request, pk=None):
     except:
         return JsonResponse({"result": emailLen})
 
+@loginRequired
+def index():
+    """ Index page: initial page for registered users """
+    pass
+
+@loginRequired
+def profile(request, username=None):
+    """Renders the home page."""
+    try:
+        assert isinstance(request, HttpRequest)
+
+        if username != request.session['username']:
+             return render(request, 'app/errors/401.html',
+                context_instance = RequestContext(request,
+                {
+                    'year':datetime.now().year,
+                    'object':customer,
+                    'title': _('Bad request!'),
+                }))
+
+        template = 'app/prosumers/profile/index.html'
+        pk = request.session['id']
+
+        try:
+            customer = Users.objects.get(username=username)
+        except ValueError:
+            raise Http404("Invalid URL")
+
+        # TODO: call corresponding view
+        import pycountry
+        list = pycountry.countries
+        countries = []
+        for i in list:
+            countries.append(i.name)
+        # TODO: call corresponding view
+        exp = ItExperience.objects.all().order_by('id')
+
+        # retrieve roles
+        roles = []
+        carer = Carers.objects.get(user_id=pk)
+        roles.append({"role": "Carer", "exist":carer.is_active})
+        consumer = Consumers.objects.get(user_id=pk)
+        roles.append({"role": "Consumer", "exist":consumer.is_active, "crowd_fund_participation": consumer.crowd_fund_participation,"crowd_fund_notification": consumer.crowd_fund_notification})
+        provider = Providers.objects.get(user_id=pk)
+        roles.append({"role": "Provider", "exist":provider.is_active, "crowd_fund_participation": provider.crowd_fund_participation,"crowd_fund_notification": provider.crowd_fund_notification, "brand_name": provider.company})
 
 
-#################################
-##  User IT experience (R)
-#################################
+        return render(request, template,
+            context_instance = RequestContext(request,
+            {
+                'year':datetime.now().year,
+                'object':customer,
+                'countryList': countries,
+                'experience': exp,
+                'categories': Categories.objects.all().order_by('id'),
+                'roles': roles,
+                'media_url': "/profile/media/" + str(pk),
+                'error': False,
+                'cover': settings.MEDIA_URL + "app/users/covers/" + str(customer.cover),
+                'logo': settings.MEDIA_URL + "app/users/logos/" + str(customer.logo),   
+                'readonly': settings.OPENAM_INTEGRATION
+            }))
+    except:
+        raise Http404
+
+def getConsumerInfo(request, userID=None):
+    try:
+        user        = Users.objects.get(pk = request.session['id'])
+        if (userID != None):
+            user    = Users.objects.get(pk = userID)
+        role        = Consumers.objects.get(user_id = user.id)  
+        return True, user, role
+    except:
+        from traceback import print_exc
+        print_exc()
+        return False, -1, -1 
+
+def getProviderInfo(request, userID=None):
+    try:
+        user        = Users.objects.get(pk = request.session['id'])
+        if (userID != None):
+            user    = Users.objects.get(pk = userID)
+        role        = Providers.objects.get(user_id = user.id)  
+        return True, user, role
+    except:
+        from traceback import print_exc
+        print_exc()
+        return False, -1, -1 
+
+def getCarerInfo(request, userID=None):
+    try:
+        user        = Users.objects.get(pk = request.session['id'])
+        if (userID != None):
+            user    = Users.objects.get(pk = userID)
+        role        = Carers.objects.get(user_id = user.id)  
+        return True, user, role
+    except:
+        from traceback import print_exc
+        print_exc()
+        return False, -1, -1 
+
 class ItExperienceView(View):
     """ Handle the HTTP GET request: retrieve a list of available options """
 
@@ -821,9 +915,6 @@ class ItExperienceView(View):
         except:
             return JsonResponse({"results": "", "code": 404})
 
-#################################
-##  Countries (R)
-#################################
 class CountriesView(View):
     """ Handle the HTTP GET request: retrieve a list of countries """
 
@@ -880,156 +971,9 @@ def categories(request):
         return JsonResponse({"results": "", "code": 404})
 
 
-#################################
-## Users: Consumer/Provider/Carer
-#################################
-@loginRequired
-def index():
-    """ Index page: initial page for registered users """
-    pass
-
-@loginRequired
-def profile(request, username=None):
-    """Renders the home page."""
-    try:
-        assert isinstance(request, HttpRequest)
-
-        if username != request.session['username']:
-             return render(request, 'app/errors/401.html',
-                context_instance = RequestContext(request,
-                {
-                    'year':datetime.now().year,
-                    'object':customer,
-                    'title': 'Bad request!',
-                }))
-
-        template = 'app/consumers/profile.html'
-        pk = request.session['id']
-
-        try:
-            customer = Users.objects.get(username=username)
-        except ValueError:
-            raise Http404("Invalid URL")
-
-        # TODO: call corresponding view
-        import pycountry
-        list = pycountry.countries
-        countries = []
-        for i in list:
-            countries.append(i.name)
-        # TODO: call corresponding view
-        exp = ItExperience.objects.all().order_by('id')
-
-        # retrieve roles
-        roles = []
-        carer = Carers.objects.get(user_id=pk)
-        roles.append({"role": "Carer", "exist":carer.is_active})
-        consumer = Consumers.objects.get(user_id=pk)
-        roles.append({"role": "Consumer", "exist":consumer.is_active, "crowd_fund_participation": consumer.crowd_fund_participation,"crowd_fund_notification": consumer.crowd_fund_notification})
-        provider = Providers.objects.get(user_id=pk)
-        roles.append({"role": "Provider", "exist":provider.is_active, "crowd_fund_participation": provider.crowd_fund_participation,"crowd_fund_notification": provider.crowd_fund_notification, "brand_name": provider.company})
-
-
-        return render(request, template,
-            context_instance = RequestContext(request,
-            {
-                'year':datetime.now().year,
-                'object':customer,
-                'countryList': countries,
-                'experience': exp,
-                'categories': Categories.objects.all().order_by('id'),
-                'links': navbarLinks(request),
-                'breadcrumb': breadcrumbLinks(request),
-                'username': username,
-                'roles': roles,
-                'media_url': "/profile/media/" + str(pk),
-                'error': False,
-                'cover': settings.MEDIA_URL + "app/users/covers/" + str(customer.cover),
-                'logo': settings.MEDIA_URL + "app/users/logos/" + str(customer.logo),   
-                'readonly': settings.OPENAM_INTEGRATION
-            }))
-    except:
-        raise Http404
-
-def navbarLinks(request):
-    """
-    Return the links of navigation-bar in case of registered user
-    """
-    links = dict()
-    links['index']          = "/index"
-    links['profile']        = "/profile/"+str(request.session['username'])
-    links['collection']     = "/provider"
-    links['stats']          = "/my-statistics/preview"
-    links['setup_network']  = "#"
-    links['help']           = "/support"
-    links['cart']           = "/cart/preview"
-    links['cart_items']     = 0
-    if 'cart' in request.session:
-        links['cart_items'] = len(request.session['cart'])
-
-    links['notifications']  = "#"
-
-    # Network of assistance services
-    nasExistance = Components.objects.get(name='network_of_assistance_services')
-    links['is_nas_active']  = nasExistance.is_enabled
-    links['nas_requests']   = "/assistance/requests"
-    links['nas_configuration']    = "/assistance/configuration"
-    return links
-
-def breadcrumbLinks(request):
-    """
-    Return the breadcrumb' links in case of registered user
-    """
-    links = dict()
-    links['home']           = "/index"
-    links['collection']     = "/offerings"
-    links['services']       = "/offerings/services"
-    links['nas_requests']   = "/assistance/requests"
-    links['create_nas_request']= "/assistance/requests/create-new"
-    return links
-
-def getConsumerInfo(request, userID=None):
-    try:
-        user        = Users.objects.get(pk = request.session['id'])
-        if (userID != None):
-            user    = Users.objects.get(pk = userID)
-        role        = Consumers.objects.get(user_id = user.id)  
-        return True, user, role
-    except:
-        from traceback import print_exc
-        print_exc()
-        return False, -1, -1 
-
-
-def getProviderInfo(request, userID=None):
-    try:
-        user        = Users.objects.get(pk = request.session['id'])
-        if (userID != None):
-            user    = Users.objects.get(pk = userID)
-        role        = Providers.objects.get(user_id = user.id)  
-        return True, user, role
-    except:
-        from traceback import print_exc
-        print_exc()
-        return False, -1, -1 
-
-
-def getCarerInfo(request, userID=None):
-    try:
-        user        = Users.objects.get(pk = request.session['id'])
-        if (userID != None):
-            user    = Users.objects.get(pk = userID)
-        role        = Carers.objects.get(user_id = user.id)  
-        return True, user, role
-    except:
-        from traceback import print_exc
-        print_exc()
-        return False, -1, -1 
-
-
-#################################
-## Services - providers
-#################################
+#==============================
+#   Generic dashboard
+#==============================
 @loginRequiredView
 class ServiceSearch(View):
 
@@ -1037,104 +981,50 @@ class ServiceSearch(View):
         """ Loads the page related to the service listing and searching"""
         try :
             assert isinstance(request, HttpRequest)
-            template = 'app/consumers/dashboard.html'    
             pk = request.session['id']
 
-            # view
-            view = 'm'
-            if request.GET.get('view') != None:
-                view = request.GET.get('view')
+            # Clarify cases regarding the customization status
+            if settings.CUSTOMIZATION_PROCESS:
+                template = "app/prosumers/dashboard/customizedIndex.html"
 
-            # Sort services by user choice
-            sortby = "title"
-            if request.GET.get('sortby') != None:
-                sortby = sortByMap(request.GET.get('sortby'))  
-
-            # Filter services per page
-            limit = 30
-            if request.GET.get('limit') != None:
-                limit = sortByMap(request.GET.get('limit')) 
-
-            # Filter services by charging model 
-            chModel = ChargingPolicies.objects.all().values_list('id', flat=True)
-            if request.GET.get('model') not in [0, None] and int(request.GET.get('model')):
-                chModel = []
-                chModel.append(request.GET.get('model')) 
- 
-            # customer-user info        
-            user = Users.objects.get(pk=pk)
-
-            # providers
-            providers = []
-            for i in Providers.objects.all():
-                if i.is_active:
-                    u =  Users.objects.get(id=i.user_id)
-                    providers.append({"id": i.id, "name": u.name + " "+u.lastname, "servNo": Services.objects.filter(owner_id=i.id).count()})
-
-            # categories
-            categories = []
-            #categories.append({"id":all, "title": "All", "servNo": Services.objects.count() })
-            for category in Categories.objects.all().order_by("title"):
-                categories.append({"id":category.id, "title": category.title, "servNo": Services.objects.filter(categories__id=category.id).count() })   
-
-            # charging models
-            chModels = []
-            for model in ChargingPolicies.objects.all().order_by("id"):
-                chModels.append({"id": model.id, "name":model.name, "servNo": Services.objects.filter(charging_policy_id=model.id).count() })
-
-            # services
-            servicesInfo = []
-
-            if request.GET.get('type') not in [None, "A"]:
-                for service in Services.objects.filter(type=request.GET.get('type')).filter(charging_policy_id__in=chModel).order_by(sortby)[:limit]:
-                    servicesInfo.append(
+                return render(request, template,
+                    context_instance = RequestContext(request,
                     {
-                        "id": service.id, 
-                        "title":service.title, 
-                        "description": service.description, 
-                        "price":service.price, 
-                        "unit":service.unit, 
-                        "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
-                        "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], 
-                        "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), 
-                        "type": service.type,
-                        "logo": Users.objects.get(pk=service.owner_id).logo.name,
-                        "image": settings.MEDIA_URL + settings.SERVICES_IMAGE_PATH + str(service.image)
+                        'year': datetime.now().year,
+                        'userID': request.session['id'],
+                        'sortby': request.GET.get('sortby'),
+                        'technicalSupport': TechnicalSupport.objects.all().order_by('type'),
+                        'help': Topic.objects.filter(visible=True).order_by('title'),
+                        'services': Services.objects.filter(is_visible=True)
                     })
+                )
             else:
-                for service in Services.objects.filter(charging_policy_id__in=chModel).order_by(sortby)[:limit]:
-                    servicesInfo.append({
-                        "id": service.id, 
-                        "title":service.title, 
-                        "description": service.description, 
-                        "price":service.price, 
-                        "unit":service.unit, 
-                        "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
-                        "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], 
-                        "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), "type": service.type,
-                        "logo": Users.objects.get(pk=service.owner_id).logo.name, 
-                        "image": settings.MEDIA_URL + settings.SERVICES_IMAGE_PATH + str(service.image)
-                    })
+                template = "app/prosumers/dashboard/index.html"
 
-            return render(request, template,
-                context_instance = RequestContext(request,
-                {
-                    'year': datetime.now().year,
-                    'userID': request.session['id'],
-                    'providers': providers,
-                    'categories': categories,
-                    'servicesTypes': {
-                        'all': Services.objects.all().count(), 
-                        'human': Services.objects.filter(type='H').count(), 
-                        'machine': Services.objects.filter(type='M').count()
-                    },
-                    'chargingModels': chModels,
-                    'services': servicesInfo,
-                    'sortby': request.GET.get('sortby'),
-                    'view': view,
-                    'publish_crowd_fund_project': settings.CROWD_FUNDING['base'] + settings.CROWD_FUNDING['projects']['insert'],
-                })
-            )
+                providers = []
+                for i in Providers.objects.filter(is_active=True):
+                    user =  Users.objects.get(id=i.user_id)
+                    providers.append({"id": i.id, "name": user.name, "lastname": user.lastname, "count": Services.objects.filter(owner_id=i.id).count()})
+
+                types = list()
+                for i in list(TYPE_CHOICES):
+                    types.append({ "type" : str((i[1].split(" ")[0]).lower()), "alias": str(i[0].lower()), "count": Services.objects.filter(type=i[0]).count() })
+
+                chargingModels = []
+                for model in ChargingPolicies.objects.all().order_by("id"):
+                    chargingModels.append({"id": model.id, "name":model.name, "servNo": Services.objects.filter(charging_policy_id=model.id).count() })
+
+                return render(request, template,
+                    context_instance = RequestContext(request,
+                    {
+                        'year': datetime.now().year,
+                        'userID': request.session['id'],
+                        'providers': providers,
+                        'types': types,
+                        'chargingModels': chargingModels,
+                        'sortby': request.GET.get('sortby'),
+                    })
+                )
         except: 
             if settings.DEBUG:
                 print_exc()
@@ -1146,7 +1036,7 @@ class ServiceSearchResults(View):
         """ Return the result of search """
 
         try :
-            template = 'app/consumers/services/services.html'
+            template = 'app/prosumers/provider-dashboard/services/services.html'
 
             if request.is_ajax():
                 assert isinstance(request, HttpRequest)
@@ -1156,8 +1046,6 @@ class ServiceSearchResults(View):
 
                 # search options
                 payload = json.loads(request.body)
-                #if settings.DEBUG:
-                #    print payload
 
                 ####################################
                 ##  Searching
@@ -1318,7 +1206,7 @@ class ServiceSearchResults(View):
                     }
                 return render(request, template, response_dic)
             else:
-                return redirect(reverse('home_page'))
+                return JsonResponse({}, status=status.HTTP_200_OK)
 
         except AttributeError as at:
             raise Http404
@@ -1337,36 +1225,21 @@ def sortByMap(parameter):
         if v["parameter"] == parameter:
             return v["sortby"]
 
-
+#==============================
+#   Provider dashboard
+#==============================
 @loginRequiredView
-class ServicesIndex(View):
+class ProviderServices(View):
     def get(self, request):
         """
         Get the list of offering services per provider
         """
 
         try:
-            template = 'app/consumers/services/list/index.html'
+            template = 'app//prosumers/provider-dashboard/index.html'
 
             user = Users.objects.get(pk=request.session['id'])
             _owner = Providers.objects.get(user_id=user.id)
-            servicesInfo = []
-            for service in Services.objects.filter(owner=_owner.id):
-                servicesInfo.append({
-                    "id": service.id, 
-                    "title":service.title, 
-                    "description": service.description, 
-                    "price":service.price, 
-                    "unit":service.unit, 
-                    "type": service.type,
-                    "is_public": service.is_public, 
-                    "is_visible": service.is_visible,
-                    "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
-                    "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], 
-                    "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), 
-                    "created_date": service.created_date, 
-                    "modified_date": service.modified_date
-                })
 
             # Check if Social network integration
             integrationWithSocialNetwork = {
@@ -1374,22 +1247,34 @@ class ServicesIndex(View):
                 "url": settings.SOCIAL_NETWORK_WEB_SERVICES['base'] + settings.SOCIAL_NETWORK_WEB_SERVICES['services']['delete']
             }
 
+
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
                     'year':datetime.now().year,
-                    'username': request.session['username'],
                     'servicesTypes': {
-                        'all': Services.objects.all().count(), 
                         'human': Services.objects.filter(type='H').count(), 
                         'machine': Services.objects.filter(type='M').count()
                     },
-                    'services': servicesInfo,
+                    'chargingModels': {
+                        'free': Services.objects.filter(charging_policy=1).count(),
+                        'paid': Services.objects.exclude(charging_policy=1).count()
+                    },
+                  'locationLimitations': {
+                        'with': Services.objects.filter(location_constraint=True).count(),
+                        'without': Services.objects.filter(location_constraint=False).count()
+                    },
+                  'lingualLimitations': {
+                        'with': Services.objects.filter(language_constraint=True).count(),
+                        'without': Services.objects.filter(language_constraint=False).count()
+                    },
+                    'services': Services.objects.filter(owner=_owner.id),
                     "integrationWithSocialNetwork": integrationWithSocialNetwork
-                }))
-
+                })
+            )
         except:
-            print_exc()
+            if settings.DEBUG:
+                print_exc()
             raise HttpResponseServerError
 
 @loginRequiredView
@@ -1402,7 +1287,7 @@ class ServiceCreate(View):
         try:
             import pycountry
 
-            template = 'app/consumers/services/registration/index.html'
+            template = 'app/prosumers/provider-dashboard/services/registration/index.html'
             pk=request.session['id']
             user = Users.objects.get(pk=pk)
 
@@ -1503,7 +1388,7 @@ class ServiceView(View):
         """
 
         try:
-            template = 'app/consumers/services/item/preview/index.html'
+            template = 'app/prosumers/provider-dashboard/services/item/preview/index.html'
             
             # service and provider info
             user = Users.objects.get(pk=request.session['id'])
@@ -1667,7 +1552,7 @@ class ServiceUpdateView(View):
         """
         try:
             import pycountry
-            template = 'app/consumers/services/item/update/index.html'
+            template = 'app/prosumers/provider-dashboard/services/item/update/index.html'
 
             # service and provider info
             user_id = request.session['id']
@@ -1696,7 +1581,7 @@ class ServiceUpdateView(View):
 @loginRequiredView
 class UploadServiceMedia(View):
 
-    def put(self, request, pk=None):
+    def post(self, request, pk=None):
         """
         Upload files related to a service such as:
         the cover image, the logo and the software package
@@ -1742,56 +1627,6 @@ class UploadServiceMedia(View):
             if settings.DEBUG:
                 print_exc()
             return JsonResponse(data={"status": status.HTTP_500_INTERNAL_SERVER_ERROR}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-@loginRequiredView
-class ServiceTechnicalSupport(View):
-
-    def get(self, request, pk):
-        try:
-            template = "app/consumers/services/technicalSupport/index.html"
-            service = Services.objects.get(pk=pk)
-            technicalSupportList = ServicesToTechnicalSupport.objects.filter(service_id=pk).order_by('id')
-
-            return render(request, template,
-                context_instance = RequestContext(request,
-                {
-                    'year':datetime.now().year,
-                    'service': service,
-                    'technicalSupportList': technicalSupportList,
-                }))
-        except:
-            print_exc()
-            raise Http404
-
-    def post(self, request):
-        pass
-
-    def put(self, request):
-        pass
-
-    def patch(self, request):
-        pass
-
-    def delete(self, request):
-        pass
-
-
-def storeFile(path, filename):
-    try:
-        with open(path, 'wb+') as destination:
-            for chunk in filename.chunks():
-                destination.write(chunk)
-    except:
-        pass
-
-def removeFileInExistance(filepath):
-    try:
-        import os
-        os.remove(filepath)
-    except OSError:
-        pass
-
 
 def associateServiceCategories(categories, service):
     """
@@ -1846,14 +1681,196 @@ def insertServiceLanguages(languages, service_id):
     except:
         print_exc()
 
-#################################
-## Services - consumers
-#################################
+@loginRequiredView
+class ServiceTechnicalMaterialListView(View):
+
+    def get(self, request, pk):
+        """Retrieve list of technical materials for a service
+
+           pk: service ID
+        """
+        try:
+            template = "app/prosumers/provider-dashboard/services/technical-support/index.html"
+            service = Services.objects.get(pk=pk)
+            serviceTechnicalSupportList = ServicesToTechnicalSupport.objects.filter(service_id=pk).order_by('id')
+            technicalSupportList = TechnicalSupport.objects.all()
+
+            return render(request, template,
+                context_instance = RequestContext(request,
+                {
+                    'year':datetime.now().year,
+                    'service': service,
+                    'technicalSupportList': technicalSupportList,
+                    'serviceTechnicalSupportList': serviceTechnicalSupportList,
+                }))
+        except:
+            print_exc()
+            raise Http404
+
+    def post(self, request, pk):
+        """Register a technical material for a service
+           
+           pk: service ID
+        """
+        try:
+            if request.is_ajax():
+                payload = json.loads(request.body)
+                # Check if upload file or insert link
+                uploadFile = False if int(payload['technical_support']) in [1, 4] else True
+                payload['visible'] = True if "visible" in payload and payload['visible'] == "on" else False
+                if int(payload['technical_support']) == 1:
+                    payload['link'] = "https://www.youtube.com/embed/" + payload['link']
+
+                serializer = SimpleServiceTechnicalSupportSerializer(data=payload)
+                if serializer.is_valid():
+                    material = serializer.save()
+                    return JsonResponse({"id": material.id, "uploadFile": uploadFile, "uploadMediaURL": reverse('upload_service_technical_material', kwargs={'pk': pk, 'material':material.id})}, status=status.HTTP_201_CREATED)
+                else:
+                    print serializer.errors
+                    return JsonResponse({"reason": str(serializer.errors), "status": status.HTTP_400_BAD_REQUEST}, status=status.HTTP_400_BAD_REQUEST)
+            return redirect(reverse('service_technical_materials', kwargs={'pk':pk}))
+        except:
+            print_exc()
+            return JsonResponse({}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@loginRequiredView
+class UploadServiceTechnicalMaterialView(View):
+        
+    def post(self, request, pk, material):
+        """Upload the file of a service's technical material"""
+        try:
+            if request.is_ajax():
+                if settings.DEBUG:
+                    print request.FILES
+
+                if 'material' in request.FILES:
+                    file = request.FILES['material']
+                    extension = file.name.split(".")[-1]
+                    lowerExtension = extension.lower()
+                    filename = file.name.replace(" ", "_")
+
+                    # File system path
+                    TODAY_PATH = str(date.today().strftime("%Y/%m/%d/"))
+                    FS_PATH_PREFIX = settings.MEDIA_ROOT + "/" + settings.SERVICES_TECHNICAL_SUPPORT + TODAY_PATH 
+                    FS_PATH = FS_PATH_PREFIX + filename
+
+                    # Overwrite if file exists
+                    mkdir(FS_PATH_PREFIX)
+                    removeFileInExistance(FS_PATH)
+                    storeFile(FS_PATH, request.FILES['material'])
+
+                    # URL path
+                    path = settings.MEDIA_URL + settings.SERVICES_TECHNICAL_SUPPORT + TODAY_PATH + filename
+                    ServicesToTechnicalSupport.objects.filter(pk=material).update(path=path, extension=extension)
+                    return JsonResponse({}, status=status.HTTP_200_OK)
+                else:
+                    return JsonResponse({"reason": "File with name material not found!", "status":status.HTTP_400_BAD_REQUEST}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                # Skip it and reload list of materials
+                return redirect(reverse('service_technical_materials', kwargs={"pk": int(pk)}))
+        except:
+            if settings.DEBUG:
+                print_exc()
+            return JsonResponse({"status": status.HTTP_500_INTERNAL_SERVER_ERROR}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@loginRequiredView
+class ServiceTechnicalMaterialObjectView(View):
+
+    def delete(self, request, pk):
+        """Delete a technical material of a service"""
+        try:
+            material = ServicesToTechnicalSupport.objects.get(pk=pk)
+            FS_PATH = FS_PATH_PREFIX = settings.MEDIA_ROOT + material.path.replace('/media', '')
+            removeFileInExistance(FS_PATH)
+            material.delete()
+            return JsonResponse({}, status=status.HTTP_204_NO_CONTENT)
+        except:     
+            print_exc()
+            return JsonResponse({}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+def mkdir(path):
+    """Create directory if not exists"""
+    try:
+        if not os.path.exists(path):
+            os.makedirs(path)
+    except OSError, e:
+        print e
+
+def storeFile(path, filename):
+    """Create file in specific directory"""
+    try:
+        with open(path, 'wb+') as destination:
+            for chunk in filename.chunks():
+                destination.write(chunk)
+
+        destination.close()
+    except EnvironmentError, env:
+        print env
+        logger.error(env)
+    except:
+        logger.error("File not found")
+        print_exc()
+
+def removeFileInExistance(filepath):
+    """Remove a file in specific path (if exist)"""
+    try:
+        os.remove(filepath)
+    except OSError as e:
+        print e
+    except: 
+        print_exc()
+
+@loginRequiredView
+class DetectBrokenLinks(View):
+
+    def get(self, request):
+        """Validate or not a registered link"""
+        try:
+            import requests
+            if request.is_ajax():
+                link = request.GET.get('link')
+                if settings.DEBUG:
+                    print link
+                
+                connection = requests.head(link)
+                if int(connection.status_code) < 400:
+                   return JsonResponse({}, status=status.HTTP_200_OK)
+            return JsonResponse({}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception, ex:
+            print_exc()
+            return JsonResponse({}, status=status.HTTP_400_BAD_REQUEST)
+
+#===================================
+#   Consumer dashboard
+#===================================
+@loginRequiredView
+class ConsumerDashboard(View):
+    def get(self, request):
+        """
+        Retrieve your personal cart 
+        """
+        
+        template = "app/prosumers/consumer-dashboard/index.html" 
+        try:
+            # get ConsumerID
+            state, user, consumer = getConsumerInfo(request)
+
+            return render(request, template,
+                context_instance = RequestContext(request,
+                {
+                    'title': _('My collection'),
+                    'year':datetime.now().year,
+                    'consumer': {"id": consumer.id, "info": user.name + " " + user.lastname}
+                })
+            )
+        except:
+            raise Http404
+
 class ServiceConsumerView(View):
     def get(self, request, pk=None):
         try:
             # define template
-            template = 'app/consumers/search/services/preview.html'
+            template = 'app/prosumers/search/services/preview.html'
             # languages
             import pycountry
 
@@ -1870,11 +1887,9 @@ class ServiceConsumerView(View):
             if not keywords:
                 keywords = None
 
-            
             availableLanguages = ServiceLanguages.objects.filter(service_id=service.id).values_list('alias', flat=True)
             langList = compareLanguages(availableLanguages)
 
-            # load template
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
@@ -1887,16 +1902,13 @@ class ServiceConsumerView(View):
                     'model': ChargingPolicies.objects.get(pk=service.charging_policy_id),
                     'rating': ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0],
                     'reviews': ConsumersToServices.objects.filter(service_id=service.id).count(),
-                    'currencies': pycountry.currencies
+                    'currencies': pycountry.currencies,
+                    'technicalSupportList': ServicesToTechnicalSupport.objects.filter(service_id=pk, visible=True),
                 }))
         except: 
             print_exc()
             return Http404
 
-
-#################################
-##      Add to cart
-#################################
 @loginRequiredView
 class CartView(View):
     def get(self, request):
@@ -1904,7 +1916,7 @@ class CartView(View):
         Retrieve your personal cart 
         """
         
-        template = "app/consumers/cart/index.html" 
+        template = "app/prosumers/consumer-dashboard/cart/index.html" 
         try:
             services = None
             providers = []
@@ -1914,17 +1926,12 @@ class CartView(View):
                 for s in services:
                     u = Users.objects.get(pk=s.owner_id)
                     providers.append({'service': s.id, "owner": u.name + " " + u.lastname })
-            
-            print providers
 
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
-                    'title':'My cart',
+                    'title': _('My cart'),
                     'year':datetime.now().year,
-                    'username': request.session["username"],
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request),
                     'services': services,
                     'providers': providers,
                     'total': services.aggregate(Sum('price'))["price__sum"]
@@ -1977,48 +1984,16 @@ class CartView(View):
             return JsonResponse({"state" : 0})
 
 
-#################################
-##      Consumer stats
-#################################
-@loginRequiredView
-class MyStats(View):
-    def get(self, request):
-        """
-        Retrieve your personal cart 
-        """
-        
-        template = "app/consumers/statistics/index.html" 
-        try:
-            # get ConsumerID
-            state, user, consumer = getConsumerInfo(request)
-            print state
-            #user = Users.objects.get(pk = request.session['id'])
-            #consumer = Consumers.objects.get(user_id = user.id)
-
-            return render(request, template,
-                context_instance = RequestContext(request,
-                {
-                    'title':'My collection',
-                    'year':datetime.now().year,
-                    'username': request.session["username"],
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request),
-                    'consumer': {"id": consumer.id, "info": user.name + " " + user.lastname}
-                })
-            )
-        except:
-            raise Http404
-
-
-###############################################
-## Network of assistance services - requests
-###############################################
+#===================================
+#   Network of assistance services
+#   Carer dashboard
+#===================================
 @loginRequiredView
 class NetworkAssistanceServicesRequests(View):
     def get(self, request):
         """Load the page that includes the NAS requests"""
 
-        template = "app/nas/requests/index.html" 
+        template = "app/carer-dashboard/index.html" 
 
         try:
             #load user ID
@@ -2065,15 +2040,11 @@ class NetworkAssistanceServicesRequests(View):
                         "updated_at": obj.updated_at
                     })
 
-
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
-                    'title':'Network of assistance services',
+                    'title': _('Network of assistance services'),
                     'year': str(datetime.now().year),
-                    'username': request.session["username"],
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request),
                     'is_carer': request.session['is_carer'],
                     'carer_requests': carerRequestData,
                     'is_consumer': request.session['is_consumer'],
@@ -2090,7 +2061,7 @@ class NetworkAssistanceServicesCreateRequest(View):
         Load the web page to send a new request to assist a consumer with disability
         """
 
-        template = "app/nas/requests/create-new.html" 
+        template = "app/carer-dashboard/requests/create-new.html" 
         try:
             #load user
             pk = request.session['id']            
@@ -2098,11 +2069,8 @@ class NetworkAssistanceServicesCreateRequest(View):
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
-                    'title':'Network of assistance services',
+                    'title': _('Network of assistance services'),
                     'year': str(datetime.now().year),
-                    'username': request.session["username"],
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request)
                 }))
         except:
             raise Http404
@@ -2204,7 +2172,6 @@ class NetworkAssistanceServicesReplyRequest(View):
             print_exc()
             return Http404
 
-
 @loginRequiredView
 class NetworkAssistanceServicesInviteCarers(View):
 
@@ -2213,7 +2180,7 @@ class NetworkAssistanceServicesInviteCarers(View):
         Load the web page to send a new invitation on a carer
         """
 
-        template = "app/nas/invitations/index.html" 
+        template = "app/carer-dashboard/invitations/index.html" 
         try:
             #load user
             pk = request.session['id']            
@@ -2221,11 +2188,9 @@ class NetworkAssistanceServicesInviteCarers(View):
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
-                    'title':'Invite carers',
+                    'title': _('Invite carers'),
                     'year': str(datetime.now().year),
                     'username': request.session["username"],
-                    #'links': navbarLinks(request),
-                    #'breadcrumb': breadcrumbLinks(request)
                 }))
         except:
             if settings.DEBUG:
@@ -2323,7 +2288,6 @@ class NetworkAssistanceServicesCarerReply(View):
         except:
             return Http404
 
-
 @loginRequiredView
 class NetworkAssistanceServicesFindUsers(View):
     def get(self, request):
@@ -2416,11 +2380,6 @@ class NetworkAssistanceServices(View):
                 print_exc()
             return JsonResponse({"state" : 0})        
 
-
-
-###############################################
-## Setup Network of assistance services
-###############################################
 @loginRequiredView
 class NetworkAssistanceServicesConfiguration(View):
     
@@ -2429,7 +2388,7 @@ class NetworkAssistanceServicesConfiguration(View):
         Load the web page to send a new request to assist a consumer with disability
         """
 
-        template = "app/nas/configuration/index.html" 
+        template = "app/carer-dashboard/configuration/index.html" 
         try:
             #load user
             pk = request.session['id']  
@@ -2446,11 +2405,7 @@ class NetworkAssistanceServicesConfiguration(View):
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
-                    'title':'Network of assistance services',
-                    'year': str(datetime.now().year),
-                    'username': request.session["username"],
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request), 
+                    'title': _('Network of assistance services'),
                     'categories': catList,
                     'services': Services.objects.all(),
                     'consumer': consumerData
@@ -2779,7 +2734,7 @@ class PreviewNetworkAssistanceServices(View):
             #carer = Carers.objects.get(pk = pk)
             carer = Carers.objects.get(user_id = pk)
 
-            template = "app/nas/preview/index.html"
+            template = "app/carer-dashboard/preview/index.html"
             
             targetUser  = Consumers.objects.get(user_id=consumer)
             targetProfile     = Users.objects.get(pk=consumer)
@@ -2793,11 +2748,8 @@ class PreviewNetworkAssistanceServices(View):
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
-                    'title':'Network of assistance services preview',
+                    'title': _('Network of assistance services preview'),
                     'year': str(datetime.now().year),
-                    'username': request.session["username"],
-                    'links': navbarLinks(request),
-                    'breadcrumb': breadcrumbLinks(request), 
                     'selectedServices': selectedServicesList,
                     'purchasedServices': purchasedServicesList,
                     'consumer': {'id': consumer, 'info': targetProfile.name + " " + targetProfile.lastname}
@@ -2805,7 +2757,6 @@ class PreviewNetworkAssistanceServices(View):
         except Exception as ex:
             print_exc()        
             print str(ex)
-
 
 @loginRequiredView
 class ServiceConfigurationView(View):
@@ -2867,18 +2818,16 @@ class ServiceInstance(View):
             return JsonResponse({"state": -1, "data": []})
 
 
-
-#################################
-##      TO fix them
-#################################
-
+#==============================
+#   Handle template errors
+#==============================
 def forgetPassword(request):
     assert isinstance(request, HttpRequest)
     return render(request,
         'app/errors/404.html',
         context_instance = RequestContext(request,
         {
-            'title':'Page no Found',
+            'title': _('Page no Found'),
             'year':datetime.now().year,
         }))
 
@@ -2919,9 +2868,9 @@ def server_error(request):
         }))
 
 
-##############################################
-##  Integration with OpenAM OAuth 2.0 server
-##############################################
+#==============================
+#   Integration with OpenAM
+#==============================
 class Oauth2Login(View):
     """
     Integrate the AoD platform with the IAM/OPENAM services with respect to the login process.
@@ -3249,10 +3198,9 @@ def setSessionValues(request, user_id, username):
         pass
 
 
-
-##############################
-##  FAQ - Technical Support ##
-##############################
+#==============================
+#  AoD Technical Support 
+#==============================
 class FAQTopicListView(View):
 
     def get(self, request):
@@ -3260,7 +3208,7 @@ class FAQTopicListView(View):
         Retrieve a list of available FAQ topics with their related articles
         """
         try:
-            template = "app/faq/index.html" 
+            template = "app/technical-support/index.html" 
 
             return render(request, template,
                 context_instance = RequestContext(request,
@@ -3282,7 +3230,7 @@ class FAQTopicView(View):
         Retrieve a specific FAQ topic with the related articles
         """
         try:
-            template = "app/faq/topics/index.html" 
+            template = "app/technical-support/topics/index.html" 
             topic = Topic.objects.get(pk=pk)
 
             if topic.protected and "id" not in request.session.keys():
@@ -3311,7 +3259,7 @@ class FAQArticleView(View):
         Retrieve a specific FAQ article 
         """
         try:
-            template = "app/faq/topics/articles/index.html" 
+            template = "app/technical-support/topics/articles/index.html" 
             article = Article.objects.get(pk=pk)
 
             if article.protected and "id" not in request.session.keys():
@@ -3336,7 +3284,9 @@ class FAQArticleView(View):
             raise Http404
 
 
-
+#==============================
+#   Calendar
+#==============================
 class CalendarView(View):
 
     def get(self, request, username):
@@ -3344,7 +3294,7 @@ class CalendarView(View):
         Retrieve the list of events
         """
         try:
-            template = "app/consumers/calendar/index.html" 
+            template = "app/prosumers/calendar/index.html" 
 
             return render(request, template,
                 context_instance = RequestContext(request,
@@ -3380,3 +3330,8 @@ class CookiePolicyView(View):
         except:
             print_exc()
             raise Http404
+
+
+
+
+

@@ -1,5 +1,13 @@
+
+from django.conf import settings
 from rest_framework import serializers
 from app.models import *
+from django.db.models import (
+    Avg, 
+    Sum, 
+    Q
+)
+
 
 
 class ItExperienceSerializer(serializers.ModelSerializer):
@@ -15,7 +23,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = Users
         fields = ('name', 'lastname', 'username', 'pwd', 'email', 'mobile', 'country', 'experience')
 
-
 class UserRoleSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -24,12 +31,10 @@ class UserRoleSerializer(serializers.ModelSerializer):
         depth = 2
 
 
-
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tags
         fields = '__all__'
-
 
 class CategorySerializer(serializers.ModelSerializer):
     tags = TagSerializer(read_only=True, many=True)
@@ -65,13 +70,11 @@ class ServiceLanguagesSerializer(serializers.ModelSerializer):
         model = ServiceLanguages
         fields = '__all__'
 
-
 class ServiceKeywordsSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ServiceKeywords
         fields = '__all__'
-
 
 class ConfigurationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -84,46 +87,80 @@ class TechnicalSupportSerializer(serializers.ModelSerializer):
         model = TechnicalSupport
         fields = '__all__'
 
+class SimpleServiceTechnicalSupportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServicesToTechnicalSupport
+        fields = ('id', 'title', 'service','technical_support', 'path', 'link', 
+            'description', 'software_dependencies', 'extension', 'visible',
+            'created_date', 'modified_date', 
+        )
+
 class ServiceTechnicalSupportSerializer(serializers.ModelSerializer):
     technical_support_type = TechnicalSupportSerializer(read_only=True, many=True)
     class Meta:
         model = ServicesToTechnicalSupport
-        fields = ('id', 'title', 'service','technical_support','path', 'software_dependencies',
-            'format', 'technical_support_type', 'created_date', 'modified_date', 'visible'
+        fields = ('id', 'title', 'service','technical_support', 'path', 'link', 
+            'description', 'software_dependencies', 'extension', 'visible',
+            'technical_support_type', 'created_date', 'modified_date', 
         )
         depth=1
 
+class ServiceConsumerSerializer(serializers.ModelSerializer):
+    """Fetch the consumers of service as well as consumer rating and review"""
+
+    class Meta:
+        model = ConsumersToServices
+        fields = '__all__'
+
 class ServiceSerializer(serializers.ModelSerializer):
-    
+    """
+    Fetch the major fields of service as well as a few derived ones (relationships) such as:
+    - Service consumers object: JSON
+    - Number of consumers' reviews per service: None or integer
+    - Average value of consumers' ratings per service: None or Float
+    """
+
+    service_consumers = ServiceConsumerSerializer(many=True, read_only=True)
+    total_reviews = serializers.SerializerMethodField()
+    average_rating = serializers.SerializerMethodField()
+    image_path = serializers.SerializerMethodField()
+
+
+    def get_total_reviews(self, obj):
+        """Count the number of consumer reviews per service"""
+        return obj.service_consumers.count()
+
+    def get_average_rating(self, obj):
+        """Fetch the average rating of consumer reviews per service"""
+        return ConsumersToServices.objects.filter(service_id=obj.id).aggregate(Avg('rating')).values()[0]
+
+    def get_image_path(self, obj):
+        """Fix the URL of image"""
+        try:
+            image = Services.objects.get(pk=obj.id).image
+            if image not in ['', None]:
+                return image.url.replace(settings.MEDIA_URL, settings.MEDIA_URL + 'app/services/images/')
+            return None
+        except:
+            return None
+
     class Meta:
         model = Services
         fields = ('id', 'title', 'description', 'categories', 'type', 'charging_policy', 'owner', 
             'price', 'unit', 'version', 'license','requirements', 'installation_guide', 
             'usage_guidelines', 'is_public', 'constraints', 'coverage', 'skype',
             'language_constraint', 'location_constraint', 'latitude', 'longitude',  
-            'created_date', 'modified_date',
-            'languages', 'keywords', 'configuration', 'technical_support'
+            'created_date', 'modified_date', 'image_path', 'image',
+            'languages', 'keywords', 'configuration', 'technical_support',
+            'service_consumers', 'total_reviews', 'average_rating',
         )
 
-class DetailedServiceSerializer(serializers.ModelSerializer):
-    categories      = CategorySerializer(read_only=True, many=True)
-    #type            = ChoicesField(choices=Services.MY_CHOICES)
-    charging_policy = ChargingPolicySerializer(read_only=True, many=False)
-    languages       = ServiceLanguagesSerializer(read_only=True, many=True)
-    keywords        = ServiceKeywordsSerializer(read_only=True, many=True)
-    configuration   = ConfigurationSerializer(read_only=True, many=True)
-    technical_support = ServiceTechnicalSupportSerializer(read_only=True, many=True)
-    
+class SimpleServiceSerializer(serializers.ModelSerializer):
+    """Fetch all fields of service"""
     class Meta:
         model = Services
-        fields = ('id', 'title', 'description', 'categories', 'type', 'charging_policy', 'owner', 
-            'price', 'unit', 'version', 'license','requirements', 'installation_guide', 
-            'usage_guidelines', 'is_public', 'constraints', 
-            'language_constraint', 'location_constraint', 'latitude', 'longitude',  
-            'created_date', 'modified_date', 'image', 'coverage', 'skype',
-            'languages', 'keywords', 'configuration', 'technical_support',
-        )
-        depth = 1
+        fields = '__all__'
+
 
 class ServiceConfigurationsSerializer(serializers.ModelSerializer):
     configuration   = ConfigurationSerializer(read_only=True, many=True)
@@ -153,13 +190,11 @@ class ServiceKeywordsSerializer(serializers.ModelSerializer):
         model = Services
         fields = ('id', 'title', 'description', 'keywords',)
 
-
 class ServiceReviewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ConsumersToServices
         fields = ('id', 'consumer', 'rating', 'rating_rationale', 'purchased_date', )
         depth = 2
-
 
 class ConsumerServicesSerializer(serializers.ModelSerializer):
     """Fetch services information that a consumer has purchased"""
@@ -169,10 +204,29 @@ class ConsumerServicesSerializer(serializers.ModelSerializer):
         fields = ('pk', 'service',)
         depth = 1
 
+class DetailedServiceSerializer(serializers.ModelSerializer):
+    """Fetch the fields of services and the ones of the relevant models"""
+
+    categories      = CategorySerializer(read_only=True, many=True)
+    #type            = ChoicesField(choices=Services.MY_CHOICES)
+    charging_policy = ChargingPolicySerializer(read_only=True, many=False)
+    languages       = ServiceLanguagesSerializer(read_only=True, many=True)
+    keywords        = ServiceKeywordsSerializer(read_only=True, many=True)
+    configuration   = ConfigurationSerializer(read_only=True, many=True)
+    technical_support = ServiceTechnicalSupportSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Services
+        fields = ('id', 'title', 'description', 'categories', 'type', 'charging_policy', 'owner', 
+            'price', 'unit', 'version', 'license','requirements', 'installation_guide', 
+            'usage_guidelines', 'is_public', 'constraints', 
+            'language_constraint', 'location_constraint', 'latitude', 'longitude',  
+            'created_date', 'modified_date', 'image', 'coverage', 'skype',
+            'languages', 'keywords', 'configuration', 'technical_support', 
+        )
+        depth = 1
 
 
-
-# Assistance serializers
 class ConsumerAssistServicesSerializer(serializers.ModelSerializer):
     """Services information that carers have purchased on behalf a consumer"""
     service = ServiceSerializer(read_only=True, many=False)
@@ -197,7 +251,6 @@ class ConsumerAssistServicesConfigurationSerializer(serializers.ModelSerializer)
         depth = 1
 
 
-
 class UserThemeSerializer(serializers.ModelSerializer):
     
     
@@ -205,6 +258,14 @@ class UserThemeSerializer(serializers.ModelSerializer):
         model = UserTheme
         fields = '__all__'
 
+
+class ArticleSerializer(serializers.ModelSerializer):
+    """
+    Serialize the FAQ articles
+    """
+    class Meta:
+        model = Article
+        fields = '__all__'
 
 class PublishQuestionSerializer(serializers.ModelSerializer):
     """Serialize the incoming questions"""
@@ -215,8 +276,3 @@ class PublishQuestionSerializer(serializers.ModelSerializer):
 
 
 
-class SimpleServiceSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Services
-        fields = '__all__'

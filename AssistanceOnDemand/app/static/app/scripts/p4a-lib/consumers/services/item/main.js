@@ -20,6 +20,18 @@ $(document).ready(function () {
         editService(url);
     });
 
+    $(".various").fancybox({
+        maxWidth: 1000,
+        maxHeight: 600,
+        fitToView: false,
+        width: '100%',
+        height: '75%',
+        autoSize: false,
+        closeClick: false,
+        openEffect: 'none',
+        closeEffect: 'none'
+    });
+
     
     $.ajax({
         type: 'GET',
@@ -80,12 +92,14 @@ $(document).ready(function () {
     //$('.fixed-table-body').css('height', 'auto');
 
 }).on('click', '#support_tab', function () {
+    //
+    // Load technical support for service
+    //
     var loading = new AjaxView($("#support_container"));
     loading.show();
-
-    var videos = gettext('Service owner does not provide videos');
-    var docs = gettext('Service owner does not provide further documents (pdf, office documents, images, etc..)');
     var skype = "";
+    var materialsList = "";
+
     $.ajax({
         type: 'GET',
         url: $(this).data('resource'),
@@ -93,59 +107,79 @@ $(document).ready(function () {
             $.ajaxSettings.beforeSend(xhr, settings);
         },
         success: function (response) {
-            console.log(response);
             skype = response.skype;
             if (response.technical_support.length) {
-                videos = '';
-                docs = '';
+
                 for (i in response.technical_support) {
-                    if ($.inArray(response.technical_support[i].format, ["mp4", "mp3"]) > -1) {
-                        videos += [
-                            '<div data-support-id="' + response.technical_support[i].id + '">',
-                                '<span class="fa fa-video-camera text-muted fa-lg" role="img" alt="' + gettext("Video presentation") + '"></span> ',
-                                '<a href="#vd' + response.technical_support[i].id + '" class="access-resource text-primary">' + response.technical_support[i].title + '</a><br>',
-                                '<video style="display:none; width:80%" controls  title="' + response.technical_support[i].title + '" id="vd' + response.technical_support[i].id + '">',
-                                    '<source src="' + response.technical_support[i].path + '" type="video/mp4">',
-                                    '<source src="movie.ogg" type="video/ogg">',
-                                    gettext('Your browser does not support the video tag.'),
-                                '</video>',
-                            '</div>'
-                        ].join('');
-                    }
-                    else if ($.inArray(response.technical_support[i].format, ["doc", "docx"]) > -1) {
-                        docs += "<div data-support-id='" + response.technical_support[i].id + "' style=' min-height: 80px; min-width: 45%; background: #E6E6E6; padding: 30px; float: left; margin: 10px' >";
-                        docs += "<span style='vertical-align: middle;' class='fa fa-file-word-o text-primary fa-2x' role='img' alt='" + gettext("Office word document") +"'></span> <a href='#wd" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
-                        docs += "<iframe style='display:none' title='" + response.technical_support[i].title + "' width='540' id='wd" + response.technical_support[i].id + "' height='360' frameborder='0' src='" + response.technical_support[i].path + "' ebkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
-                        docs += "</div>";
-                    }
-                    else if ($.inArray(response.technical_support[i].format, ["xls", "xlsx"]) > -1) {
-                        docs += "<div data-support-id='" + response.technical_support[i].id + "' style=' min-height: 80px; min-width: 45%; background: #E6E6E6; padding: 30px; float: left; margin: 10px' >";
-                        docs += "<span style='vertical-align: middle;' class='fa fa-file-excel-o text-success fa-2x' role='img' alt='" + gettext("Office Excel document") + "'></span> <a href='#wd" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
-                        docs += "<iframe style='display:none' title='" + response.technical_support[i].title + "' width='540' id='wd" + response.technical_support[i].id + "' height='360' frameborder='0' src='" + response.technical_support[i].path + "' ebkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
-                        docs += "</div>";
-                    }
-                    else if ($.inArray(response.technical_support[i].format, ["pdf"]) > -1) {
-                        docs += "<span data-support-id='" + response.technical_support[i].id + "' style=' min-height: 80px; min-width: 45%; background: #E6E6E6; padding: 30px; float: left; margin: 10px'>";
-                        docs += "<span style='vertical-align: middle;' class='fa fa-file-pdf-o text-danger fa-2x' role='img' alt='" + gettext("Pdf document") + "'></span> <a href='#pdf" + response.technical_support[i].id + "' class='access-resource text-primary'>" + response.technical_support[i].title + "</a><br>";
-                        docs += "<iframe style='display:none; width: 100%; min-height:100%' title='" + response.technical_support[i].title + "' width='540' id='pdf" + response.technical_support[i].id + "' height='360' frameborder='0' src='" + response.technical_support[i].path + "' ebkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
-                        docs += "</span>";
-                    }
-                    else if ($.inArray(response.technical_support[i].format, ["png", "gif", "jpeg", "jpg"]) > -1) {
-                        docs += "<div data-support-id='" + response.technical_support[i].id + "'  style=' min-height: 80px; min-width: 45%; background: #E6E6E6; padding: 30px; float: left; margin: 10px'>";
-                        docs += "<span style='vertical-align: middle;' class='fa fa-file-picture-o text-primary fa-2x' role='img' alt='" + gettext("Image file") + "'></span> <a href='#img" + response.technical_support[i].id + "' class='access-resource'>" + response.technical_support[i].title + "</a><br>";
-                        docs += "<iframe style='display:none' title='" + response.technical_support[i].title + "' width='540' id='img" + response.technical_support[i].id + "' height='360' frameborder='0' src='" + response.technical_support[i].path + "' ebkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
-                        docs += "</div>";
+                    //
+                    // Clarify cases considering the type of the technical material
+                    //
+                    switch (response.technical_support[i].technical_support.alias) {
+                        case "shared_link":
+                            var icon = { "level1": { "color": " text-primary" }, "level2": { "icon": " fa-link" } };
+                            var hrefAction = '<a target="_blank" class="btn btn-danger pull-right" href="' + response.technical_support[i].link + '">' + gettext('Open') + ' <span class="fa fa-external-link"></span></a>';
+                            materialsList += formatListItem(response.technical_support[i], icon, hrefAction);
+                            break;
+
+                        case "youtube_video":
+                            var icon = { "level1": { "color": " text-danger" }, "level2": { "icon": " fa-youtube-play" } };
+                            var hrefAction = '<a class="various fancybox.iframe btn btn-danger pull-right"  href="' + response.technical_support[i].link + '">' + gettext('Attend') + ' <span class="fa fa-play-circle-o"></span></a>';
+                            materialsList += formatListItem(response.technical_support[i], icon, hrefAction);
+                            break;
+
+                        case "vimeo_video":
+                            var icon = { "level1": { "color": " text-info" }, "level2": { "icon": " fa-vimeo" } };
+                            var hrefAction = '<a class="various fancybox.iframe btn btn-danger pull-right"  href="' + response.technical_support[i].link + '">' + gettext('Attend') + ' <span class="fa fa-play-circle-o"></span></a>';
+                            materialsList += formatListItem(response.technical_support[i], icon, hrefAction);
+                            break;
+
+                        case "video":
+                            if ($.inArray(response.technical_support[i].extension, ["mp4", "mp3"]) > -1) {
+                                var icon = { "level1": { "color": "text-info" }, "level2": { "icon": " fa-video-camera" } };
+                                var hrefAction = '<a class="various btn btn-danger pull-right" data-fancybox-type="iframe" href="' + response.technical_support[i].path + '">' + gettext('Open') + ' <span class="fa fa-play-circle-o"></span></a>';
+                                materialsList += formatListItem(response.technical_support[i], icon, hrefAction);
+                            }
+                            break;
+
+                        case "document":
+                            if ($.inArray(response.technical_support[i].extension, ["doc", "docx"]) > -1) {
+                                var icon = { "level1": { "color": " text-primary" }, "level2": { "icon": " fa-file-word-o" } };
+                                var hrefAction = '<a class="various btn btn-danger pull-right" href="' + response.technical_support[i].path + '">' + gettext('Download') + ' <span class="fa fa-download"></span></a>';
+                                materialsList += formatListItem(response.technical_support[i], icon, hrefAction);
+                            }
+                            else if ($.inArray(response.technical_support[i].extension, ["xls", "xlsx"]) > -1) {
+                                var icon = { "level1": { "color": " text-success" }, "level2": { "icon": " fa-file-excel-o" } };
+                                var hrefAction = '<a class="various btn btn-danger pull-right" href="' + response.technical_support[i].path + '">' + gettext('Download') + ' <span class="fa fa-download"></span></a>';
+                                materialsList += formatListItem(response.technical_support[i], icon, hrefAction);
+                            }
+                            else if ($.inArray(response.technical_support[i].extension, ["ppt", "pptx"]) > -1) {
+                                var icon = { "level1": { "color": " text-danger" }, "level2": { "icon": " fa-file-powerpoint-o" } };
+                                var hrefAction = '<a class="various btn btn-danger pull-right" href="' + response.technical_support[i].path + '">' + gettext('Download') + ' <span class="fa fa-download"></span></a>';
+                                materialsList += formatListItem(response.technical_support[i], icon, hrefAction);
+                            }
+                            else if ($.inArray(response.technical_support[i].extension, ["pdf"]) > -1) {
+                                var icon = { "level1": { "color": " text-danger" }, "level2": { "icon": " fa-file-pdf-o" } };
+                                var hrefAction = '<a class="various btn btn-danger pull-right" data-fancybox-type="iframe" href="' + response.technical_support[i].path + '">' + gettext('Open') + ' <span class="fa fa-arrows-alt"></span></a>';
+                                materialsList += formatListItem(response.technical_support[i], icon, hrefAction);
+                            }
+                            //else if ($.inArray(response.technical_support[i].extension, ["png", "gif", "jpeg", "jpg"]) > -1) {
+                            //}
+                            break;
+                        default:
+                            console.log(response.technical_support[i].extension + " extension is not supported");
+                            break;
                     }
                 }
             }
-            $("#service-support-videos").html(videos);
-            $("#service-support-docs").html(docs);
-
+            // Append list items
+            $("#materials-list").html(materialsList);
+            // Append Skype details
             var skypeID = 'Not available';
             if (skype != '' && skype != null) {
+                $("#service-provider-skype-parent").removeClass('hidden');
                 skypeID = [
                     '<div style="clear: both" class="padding-left-20">',
-                        '<span>' + gettext("ID") +': </span>',
+                        '<span>' + gettext("ID") + ': </span>',
                         skype,
                     '<div>',
 
@@ -156,7 +190,10 @@ $(document).ready(function () {
                    '</div>'
                 ].join('');
             }
-            $("#service-provider-skype").empty().append(skypeID);
+            else {
+                skypeID = "<div class='alert alert-danger'><strong style='font-size: large'>" + gettext("Skype account not available") + "</strong></div>"
+            }
+            $("#service-provider-skype").html(skypeID);
         },
         error: function (response) {
             console.error('error');
@@ -242,6 +279,10 @@ $(document).ready(function () {
             loading.hide();
         }
     });
+}).on('mouseover', ".list-group-item", function () {
+    $(this).addClass('active');
+}).on('mouseleave', ".list-group-item", function () {
+    $(this).removeClass('active');
 });
 
 
@@ -328,3 +369,24 @@ function deleteService(service) {
     });
     return true;
 }
+
+
+function formatListItem(material, icon, action) {
+    //
+    // Prepare the technical material layout in order to be appended in list
+    //
+    return [
+        '<li class="list-group-item">',
+            '<span class="fa-stack fa-2x margin-right-5">',
+                '<span class="fa fa-circle fa-stack-2x ' + icon.level1.color + '"></span>',
+                '<span class="fa ' + icon.level2.icon + ' fa-stack-1x fa-inverse"></span>',
+            '</span>',
+            '<strong>' + material["title"] + '</strong>',
+            action,
+            (material.description !== null) ? '<div>' + material.description + '</div>' : "",
+            (material.software_dependencies !== null) ? '<div>' + material.software_dependencies + '</div>' : "",
+        '</li>',
+    ].join('');
+}
+
+

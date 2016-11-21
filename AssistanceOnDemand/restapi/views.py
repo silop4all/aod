@@ -1,12 +1,6 @@
-#import AoD models (inherit them from app application)
-from app.models import *
-# import AoD model serializers
-from restapi.serializers import *
 
 import sys
-
 from django.views.decorators.csrf import csrf_exempt
-
 from rest_framework import generics, filters, status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
@@ -15,10 +9,13 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
-
 from rest_framework_xml.parsers import XMLParser
 from rest_framework_xml.renderers import XMLRenderer
 
+from drf_multiple_model.views import MultipleModelAPIView
+
+from app.models import *
+from restapi.serializers import *
 
 
 @api_view(('GET',))
@@ -777,7 +774,6 @@ class ServiceLanguagesList(generics.RetrieveAPIView):
     queryset = Services.objects.all()
     lookup_field = ('pk')
 
-
 class ServiceMaterialsList(generics.RetrieveAPIView):
     """
        Provided technical support per service
@@ -861,7 +857,6 @@ class ServiceMaterialResource(generics.RetrieveAPIView):
     serializer_class = ServiceTechnicalSupportSerializer
     queryset = ServicesToTechnicalSupport.objects.all()
     lookup_field = ('pk')
-
 
 class ServiceKeywordsList(generics.RetrieveAPIView):
     """
@@ -1089,8 +1084,6 @@ class ConsumerServicesList(generics.ListAPIView):
         return queryset
 
 
-
-# Assistance
 class ConsumerAssistServicesList(generics.ListAPIView):
     """
     Service details for specific consumer
@@ -1242,6 +1235,52 @@ class AssistanceConfigurationList(generics.CreateAPIView):
     lookup_field = ('pk')
 
 
+class ArticlesList(generics.ListAPIView):
+    """
+        Retrieve public articles in topic
+        ---
+        GET:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: topic
+                description: The ID of the target topic
+                type: string
+                paramType: url
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 500
+                message: Interval Server Error
+
+            consumes:
+              - application/json
+            produces:
+              - application/json
+              - application/xml
+    """
+
+    serializer_class = ArticleSerializer
+
+    def get_queryset(self):
+        topic_id = self.kwargs['topic']
+        queryset = Article.objects.filter(topic_id=topic_id, visible=True)
+        return queryset
+
 class PublishQuestionList(generics.CreateAPIView):
     """
         Publish user question to application's admin
@@ -1282,3 +1321,284 @@ class PublishQuestionList(generics.CreateAPIView):
     """
     serializer_class = PublishQuestionSerializer
     queryset = IncomingQuestions.objects.all()
+
+class SearchEngine(generics.ListAPIView):
+    """
+        Default AoD seaech engine
+        ---
+        GET:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: owners
+                description: Filter services based on providers
+                type: string
+                paramType: query
+              - name: categories
+                description: Filter services based on categories
+                type: string
+                paramType: query
+              - name: types
+                description: Filter services based on the type (H or M)
+                type: string
+                paramType: query
+              - name: models
+                description: Filter services based on the free (1) or paid policy (0)
+                type: integer
+                paramType: query
+              - name: distance
+                description: Filter services based on distance from lat and lon
+                type: float
+                paramType: query
+              - name: lat
+                description: Current latitude 
+                type: float
+                paramType: query
+              - name: lon
+                description: Current longitude 
+                type: float
+                paramType: query
+              - name: minQoS
+                description: Filter services based on minimum QoS
+                type: float
+                paramType: query
+              - name: maxQoS
+                description: Filter services based on maximum QoS
+                type: float
+                paramType: query
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 500
+                message: Interval Server Error
+
+            consumes:
+              - application/json
+            produces:
+              - application/json
+              - application/xml
+    """
+
+    serializer_class = ServiceSerializer
+
+    def get_queryset(self):
+        from app import utilities
+        from django.db.models import Avg
+
+        query = self.request.query_params
+        servicesList = Services.objects.all()
+
+        #  Filter services based on their providers
+        if 'owners' in query:
+            if query.get('owners', None) not in ["", "null", None]:
+                owners = str(query.get('owners', None)).split(',')
+                owners = map(int, owners)
+                if  type(owners) is list and len(owners):
+                    servicesList = servicesList.filter(owner_id__in=owners)
+
+        # Filter services based on categories
+        if 'categories' in query:
+            categories = str(query.get('categories', None)).split(',')
+            categories = map(int, categories)
+            if  type(categories) is list and len(categories):
+                servicesList = servicesList.filter(categories__pk__in=categories)
+
+        # Filter services based on types
+        if 'types' in query:
+            types = str(query.get('types', None)).split(',')
+            if  type(types) is list and len(types):
+                servicesList = servicesList.filter(type__in=types)
+
+        # Filter services based on charging models
+        if 'models' in query:
+            models = str(query.get('models', None)).split(',')
+            models = map(int, models)
+
+            # Map: free->1, paid->0
+            if type(models) is list and len(models):
+                if models == [1]:
+                    servicesList = servicesList.filter(charging_policy_id=1)
+                elif models == [0]:
+                    servicesList = servicesList.exclude(charging_policy_id=1)
+                    if 'minPrice' in query and query.get("minPrice") not in ["", None]:
+                        servicesList = servicesList.filter(price__gte=float(query.get("minPrice")))
+                    if 'maxPrice' in query and query.get("maxPrice") not in ["", None]:
+                        servicesList = servicesList.filter(price__lte=float(query.get("maxPrice")))
+
+        servicesList = servicesList.values_list('id', flat=True)
+        uniqueServiceList = set(list(servicesList))
+        print uniqueServiceList
+        services = Services.objects.filter(pk__in=set(list(servicesList)))
+
+        if query.get("distance") not in ["", None] and  query.get("lat") not in ["", None] and query.get("lon") not in ["", None]:
+            for service in services:
+                # check location
+                if service.location_constraint == True:
+                    distance = utilities.getDistance(float(query.get("lat")), float(query.get("lon")), service.latitude, service.longitude) 
+                    print distance                       
+
+                    if 0 <= float(distance) <= float(query.get("distance")): 
+                        # check QoS
+                        rating = ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0]
+                        reviews = ConsumersToServices.objects.filter(service_id=service.id).count()
+
+                        if query.get("minQoS") != None and query.get("maxQoS") != None:
+                            if int(reviews) > 0 and float(query.get("minQoS")) <= float(rating) <= float(query.get("maxQoS")):
+                                pass
+                            else:
+                                uniqueServiceList.remove(service.id)
+                    else:
+                        uniqueServiceList.remove(service.id)
+        else:
+            for service in services:
+                # check QoS
+                rating = ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0]
+                reviews = ConsumersToServices.objects.filter(service_id=service.id).count()
+                                
+                if query.get("minQoS") != None and query.get("maxQoS") != None:
+                    if int(reviews) > 0 and float(query.get("minQoS")) <= float(rating) <= float(query.get("maxQoS")):
+                        print service.id, "OK"
+                    else:
+                        uniqueServiceList.remove(service.id)
+        
+        order_by = query.get("sortby") if "sortby" in query else "id"
+        queryset = Services.objects.filter(pk__in=uniqueServiceList).order_by(order_by)
+        return queryset
+
+class SearchArticlesList(generics.ListAPIView):
+    """
+        Retrieve public articles in topic
+        ---
+        GET:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: topics
+                description: Topics ID (comma delimiter)
+                type: string
+                paramType: query
+                required: true
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 500
+                message: Interval Server Error
+
+            consumes:
+              - application/json
+            produces:
+              - application/json
+              - application/xml
+    """
+
+    serializer_class = ArticleSerializer
+
+    def get_queryset(self):
+        """Override method"""
+
+        articles = Article.objects.all()
+
+        if 'topics' in self.request.query_params:
+            topics = self.request.query_params.get('topics', None)
+            if topics not in [u'', None]:
+                topicsList = list()
+                for i in str(topics).split(','):
+                    if i.isdigit():
+                        topicsList.append(i)
+                if  type(topicsList) is list and len(topicsList):
+                    return articles.filter(topic_id__in=topicsList)
+            return Article.objects.filter(topic_id__in=[])
+        return articles
+
+class CustomSearchEngine(MultipleModelAPIView):
+    """
+    Retrieve a list of services based on filters and a list of relevant help articles
+    """
+    objectify = True
+
+    def get_queryList(self):
+        """Override method"""
+
+        servicesList = Services.objects.all()
+        articlesList = Article.objects.all()
+
+        # Filter services based on categories
+        if 'categories' in self.request.query_params:
+            categories = self.request.query_params.get('categories', None)
+            categoriesList = list()
+            if categories not in [u'', '', None]:
+                for i in str(categories).split(','):
+                    if i.isdigit():
+                        categoriesList.append(i)
+            if  type(categoriesList) is list and len(categoriesList):
+                servicesList = servicesList.filter(categories__pk__in=categoriesList)
+
+        # Find out where services provide the incoming type of technical support
+        if 'technical_support' in self.request.query_params:
+            technicalSupport = self.request.query_params.get('technical_support', None)
+            technicalSupportList = list()
+            if technicalSupport not in [u'', '', None]:
+                for i in str(technicalSupport).split(','):
+                    if i.isdigit():
+                        technicalSupportList.append(i)
+                if type(technicalSupportList) is list and len(technicalSupportList):
+                    available = set(list(ServicesToTechnicalSupport.objects.\
+                        filter(technical_support_id__in=technicalSupportList).values_list('service_id', flat=True)))
+                    servicesList = servicesList.filter(pk__in=available)
+
+        # Filter based on service IDs
+        if 'services' in self.request.query_params:
+            services = self.request.query_params.get('services', None)
+            tempList = list()
+            if services not in [u'', '', None]:
+                for i in str(services).split(','):
+                    if i.isdigit():
+                        tempList.append(i)
+                if type(tempList) is list and len(tempList):
+                    servicesList = servicesList.filter(pk__in=tempList)
+
+        if 'topics' in self.request.query_params:
+            topics = self.request.query_params.get('topics', None)
+            if topics not in [u'', None]:
+                topicsList = list()
+                for i in str(topics).split(','):
+                    if i.isdigit():
+                        topicsList.append(i)
+                if  type(topicsList) is list and len(topicsList):
+                    articlesList = articlesList.filter(topic_id__in=topicsList)
+        
+        servicesList = servicesList.values_list('id', flat=True)
+        uniqueServiceList = set(list(servicesList))
+        
+        return [
+            (Services.objects.filter(pk__in=uniqueServiceList),ServiceSerializer,'services'),
+            (articlesList.filter(service_id__in=uniqueServiceList),ArticleSerializer,'articles')
+        ]

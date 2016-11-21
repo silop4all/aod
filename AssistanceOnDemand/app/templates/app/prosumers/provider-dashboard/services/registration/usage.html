@@ -1,0 +1,132 @@
+﻿{% load i18n %}
+{% load l10n %}
+<div class="service-basic-info-box">
+    <form  id="UsageServiceForm" name="BasicServiceForm" action="#usage">
+
+        <div class="row form-group">
+            <h3 class="col-lg-offset-1 col-md-offset-1 col-sm-offset-10"> {% trans 'General guidelines' %}</h3>
+        </div>
+        <hr class="service-hr">
+
+        <div class="row form-group">
+            <div class="col-sm-3 col-md-3  col-lg-3  col-xs-12">
+                <label class="text-right control-label hidden-xs" for="requirements">{% trans 'Technical requirements' %}</label>
+                <label class="text-left control-label visible-xs" for="requirements">{% trans 'Technical requirements' %}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="{% trans 'Basic requirements to use the service' %}" id="requirements_node">
+                <textarea rows="5" cols="50" id="requirements" name="requirements" class="form-control" form="UsageServiceForm" maxlength="1000" placeholder="{% trans 'Specify any requirements if needed (ie use headset inluded microphone)' %}">{% if service.requirements %}{{ service.requirements }}{% endif %}</textarea>  
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-sm-3 col-md-3  col-lg-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="installation_guide">{% trans 'Installation guidelines' %}</label>
+                <label class="text-left control-label visible-xs" for="installation_guide">{% trans 'Installation guidelines' %}</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Installation guidelines' %}" id="installation_guide_node">
+                <textarea rows="5" cols="50" id="installation_guide" name="installation_guide" class="form-control" form="UsageServiceForm" maxlength="1000" placeholder="{% trans 'Explain step-by-step how a user could install the service, if needed' %} ">{% if service.installation_guide %}{{ service.installation_guide }}{% endif %}</textarea>  
+            </div>
+        </div>
+
+        <!--
+        <div class="row form-group">
+            <div class="col-sm-3 col-md-3  col-lg-3 col-xs-12">
+                <label class="pull-right control-label" for="srv_link">{% trans 'Link' %}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="{% trans 'URL/Link/API' %}">
+                <input type="url" id="srv_link" name="srv_link" value="{{ service.link }}" class="form-control" form="insert-new-service" placeholder="{% trans 'Enter any link, if needed' %}" />
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-sm-3 col-md-3  col-lg-3 col-xs-12">
+                <label class="pull-right control-label" for="srv_software">{% trans 'Software/Package' %}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="{% trans 'Upload the software packages, if needed' %}">
+                <input type="file" id="srv_software" accept="*/*" name="srv_software" class="form-control" form="insert-new-service" size="1" style="display:none"/>
+                <div class="button-group">
+                    <div class="row col-md-12 col-sm-12 col-lg-12 col-xs-12 hidden" title="{% trans 'Filename of the software package' %}">
+                        <a href="#" onclick="return false;" id="srv_software_info" class="active">{{ service.software }}</a>
+                    </div>
+                    <div class="row col-md-6 col-sm-6 col-lg-6 col-xs-6">
+                        <a href="#" class="btn btn-default btn-sm" onclick="return addPackage();" title="{% trans 'Add the provided package for the service' %}">
+                            <i class="fa fa-plus fa-fw text-primary"></i> {% trans 'Add package' %}
+                        </a>
+                    </div>
+                    <div class="row col-md-6 col-sm-6 col-lg-6 col-xs-6 hidden" id="clear_srv_software">
+                        <a href="#" class="btn btn-default btn-sm" onclick="return removePackage();" title="{% trans 'Remove the provided package for the service' %}">
+                            <i class="fa fa-remove fa-fw text-danger"></i> {% trans 'Remove package' %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
+
+        <div class="row form-group">
+            <div class="col-sm-3 col-md-3  col-lg-3 col-xs-12">
+                <label class="pull-right control-label hidden-xs" for="usage_guidelines">{% trans 'Usage guidelines' %}</label>
+                <label class="pull-left control-label visible-xs" for="usage_guidelines">{% trans 'Usage guidelines' %}</label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Usage guidelines' %}" id="usage_guidelines_node">
+                <textarea rows="5" id="usage_guidelines" name="usage_guidelines" class="form-control" form="UsageServiceForm" maxlength="1000" placeholder="{% trans 'Provide instructions related to the usage of the service (ie follow a link, book a meeting etc)' %}'">{% if service.usage_guidelines %}{{ service.usage_guidelines }}{% endif %}</textarea>
+            </div>
+        </div>
+
+        <!--is_public-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-md-3 col-xs-12">
+                <label class="pull-right control-label hidden-xs" for="is_public">{% trans 'Accessibility' %}<span class="highlight-error-message"> *</span></label>
+                <label class="pull-left control-label visible-xs" for="is_public">{% trans 'Accessibility' %}<span class="highlight-error-message"> *</span></label>
+            </div> 
+
+            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" >
+                <div class="btn-group  btn-block" data-toggle="buttons-radio" id="is_public">
+                    <a class="btn btn-primary" href="#" name="is_public" id="availability_pb" role="button" title="{% trans 'Offer the service to anyone interested' %}">
+                        <i class="fa fa-check-square-o"></i> {% trans 'Public' %}
+                    </a>
+                    <a class="btn btn-default" href="#" name="is_public" id="availability_pr" role="button" title="{% trans 'Offer the service to a group of users' %}">
+                        <i class="fa fa-square-o"></i> {% trans 'Private' %}
+                    </a>
+                </div>
+            </div>
+        </div> 
+        <!--wish email-list-->
+        <div class="row form-group hidden" id="set_target_users">
+            <div class="col-sm-3 col-xs-12">
+                <label class="pull-right control-label" for="srv_wish_list">{% trans 'Email list' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12 input-group controls" title="{% trans 'List of all registered users' %}">
+                <select class="form-control"  id="srv_email_list" name="srv_email_list" size="5" multiple>
+                    <option value="-1" disabled> {% trans 'List of all users' %} </option>
+                    {% if users %}
+                        {% for i in users %}
+                            <option value="{{ i.id }}"> {{ i.email|safe }} </option>
+                        {%endfor %}
+                    {% endif %}
+                </select>
+            </div>
+            <div class="col-sm-1 col-xs-12">
+                <button type="button" class="btn btn-default" id="send_to_wish_list" role="option" title="{% trans 'Add email to target list' %}"> 
+                    <i class="fa fa-chevron-right fa-fw"></i>
+                </button>
+                <hr>
+                <button type="button" class="btn btn-default" id="send_to_email_list" role="option" title="{% trans 'Remove email from target list' %}"> 
+                    <i class="fa fa-chevron-left fa-fw"></i>
+                </button>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12 input-group controls" title="{% trans 'List of target users' %}" id="srv_wish_list_node">
+                <select class="form-control"  id="srv_wish_list" name="srv_wish_list" size="5" multiple form="insert-new-service">
+                    <option value="-1" disabled> {% trans 'Target users' %} </option>
+                </select>
+            </div>
+        </div>
+        <hr class="service-hr">
+        <!--info-->
+        <div class="row form-group">
+            <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Mandotory fields' %}">
+                 <h5><strong class="text-center highlight-error-message">* {% trans 'Mandatory fields' %}</strong></h5>
+            </div>
+        </div>
+    </form>
+</div>

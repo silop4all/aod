@@ -78,11 +78,12 @@ INSERT INTO `app_components` (`id`, `name`, `description`, `description_el`, `de
 
 
 
-INSERT INTO `app_technical_support_types` (`id`, `type`, `type_el`, `type_en`, `type_it`, `type_es`, `type_fr`, `type_de`, `description`, `description_el`, `description_en`, `description_it`, `description_es`, `description_fr`, `description_de`) VALUES
-(1, 'video (youtube)', 'video (youtube)', 'video (youtube)', 'video (youtube)', 'video (youtube)', 'video (youtube)', 'video (youtube)', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL'),
-(2, 'video (other server)', 'video (other server)', 'video (other server)', 'video (other server)', 'video (other server)', 'video (other server)', 'video (other server)', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL'),
-(3, 'document', 'document', 'document', 'document', 'document', 'document', 'document', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL'),
-(4, 'shared link', 'shared link', 'shared link', 'shared link', 'shared link', 'shared link', 'shared link', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL');
+INSERT INTO `app_technical_support_types` (`id`, `type`, `type_el`, `type_en`, `type_it`, `type_es`, `type_fr`, `type_de`, `description`, `description_el`, `description_en`, `description_it`, `description_es`, `description_fr`, `description_de`, `alias`) VALUES
+(1, 'video (youtube)', 'video (youtube)', 'video (youtube)', 'video (youtube)', 'video (youtube)', 'video (youtube)', 'video (youtube)', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'youtube_video'),
+(2, 'video (other server)', 'video (other server)', 'video (other server)', 'video (other server)', 'video (other server)', 'video (other server)', 'video (other server)', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'video'),
+(3, 'document', 'document', 'document', 'document', 'document', 'document', 'document', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'document'),
+(4, 'shared link', 'shared link', 'shared link', 'shared link', 'shared link', 'shared link', 'shared link', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'shared_link'),
+(5, 'video (vimeo)', 'video (vimeo)', 'video (vimeo)', 'video (vimeo)', 'video (vimeo)', 'video (vimeo)', 'video (vimeo)', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'URL', 'vimeo_video');
 
 
 

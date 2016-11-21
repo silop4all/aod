@@ -31,16 +31,15 @@
         {% endblock breadcrumb %}
 
         <section  class="col-lg-12 col-md-12 col-sm-12 highlight-service-banner platform-info-box">
-            <h2>{{ title }}</h2>
-            <hr />
-    
+            <h1>{{ title }}</h1>
+            <hr class="service-hr" />
             <div class="row col-sm-12 col-xs-12 col-md-12 col-lg-12">
             {% for t in themesList%}
                 {% if t.is_visible %}
                 <div class="col-lg-4 col-xs-12 col-md-4 col-sm-4">
                     <div class="panel theme-panel {% if t.is_default %}panel-warning{% else %}panel-success{% endif %}" id="theme_{{ t.id}}" style="height: 580px; min-height: 580px">
                         <div class="panel-heading">
-                            {{ t.title|title }}
+                            <strong>{{ t.title|title }}</strong>
                             {% if t.is_default %}
                             <span class="fa fa-star"></span>  {% trans 'Default' %}
                             {% endif %}

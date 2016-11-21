@@ -204,6 +204,14 @@ STATICFILES_FINDERS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -214,11 +222,31 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'file_debug': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': str(PROJECT_ROOT) + '/debug.log',
+        },
+        'file_error': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': str(PROJECT_ROOT) + '/error.log',
+        },
     },
     'loggers': {
         'django.request': {
             'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['file_debug'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['file_error'],
             'level': 'ERROR',
             'propagate': True,
         },
@@ -244,6 +272,7 @@ EMAIL_USE_TLS = True
 #   UPLOADED SERVICES SETTINGS
 #==================================
 SERVICES_IMAGE_PATH = "app/services/images/"
+SERVICES_TECHNICAL_SUPPORT = "app/services/technical-support/"
 
 #==================================
 #   PRESENTATION THEME COOKIE
@@ -530,3 +559,7 @@ CROWD_FUNDING = {
     }
 }
 
+#==================================
+#   CUSTOMIZATION STATE
+#==================================
+CUSTOMIZATION_PROCESS = True

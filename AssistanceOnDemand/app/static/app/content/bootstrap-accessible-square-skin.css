@@ -6502,3 +6502,9 @@ hr.custom-theme-hr {
 .highlight-error-message {
   color: #ff0f0a;
 }
+/*Example categories*/
+label.tree-items {
+    vertical-align: sub; 
+    font-family:inherit; 
+    font-weight: normal
+}

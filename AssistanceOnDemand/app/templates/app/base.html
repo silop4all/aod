@@ -1,4 +1,4 @@
-{% load analytical %}
+﻿{% load analytical %}
 <!DOCTYPE html>
 
 <html lang="{{LANGUAGE_CODE}}">
@@ -100,7 +100,7 @@
         {% block goTop %}
         <div class="pull-right clearfix container relative" style="clear:both">
             <span id="top-link-block" class="hidden">
-                <a href="javascript:void(0)" style="font-size:18pt;" title="{% trans 'Go on top' %}" onclick="javascript: return goTop();">
+                <a role="navigation" style="font-size:18pt;" title="{% trans 'Go on top' %}" onclick="return goTop();" aria-label="{% trans 'Go on top' %}">
                     <span class="fa-stack fa-lg">
                         <span id="go-top-cicle" class="fa fa-circle fa-stack-2x"></span>
                         <span class="fa fa-arrow-up fa-stack-1x" style="color: white"></span>
@@ -112,12 +112,12 @@
 
         <!-- Subscribe banner -->
         {% block subscribeBanner %}
-        <div id="newsletter-div" style="margin-top:20px; clear:both; padding-top:15px;padding-bottom:15px;">
+        <div id="newsletter-div" style="margin-top:20px; clear:both; padding-top:15px;padding-bottom:15px;"  role="banner">
             <div class="container">
                 <div class="row">
                     {% if components.newsletter_banner %}
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left" style="color:white">
-                        <label style="font-size:18px" for="subscription-form" role="banner">{%  trans 'SUBSCRIBE TO OUR NEWSLETTER' %}</label>
+                        <label style="font-size:18px" for="subscription-form">{%  trans 'SUBSCRIBE TO OUR NEWSLETTER' %}</label>
                     </div>
                     <form class="form-inline" role="form" action="." method="post">
                         <div class="col-xs-12 col-md-6 col-sm-6 col-lg-6 text-right">
@@ -137,7 +137,7 @@
 
         <!-- Footer base -->
         {% block footer %}
-        <footer role="contentinfo">
+        <footer role="presentation" aria-label="Footer area">
             <div class="container">
                 <div class="row ">
                     <div class="col-sm-3 col-md-3 col-xs-12 pull-left">
@@ -154,7 +154,7 @@
                         {% for t in topics %}
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
-                                    <a href="{% url 'faq_topic' t.id %}" target="_parent" style="color: white" title="{{ t.title }}">{{ t.title }}</a>
+                                    <a href="{% url 'faq_topic' t.id %}" target="_parent" style="color: white">{{ t.title }}</a>
                                 </div>
                             </div>
                         {% empty %}
@@ -172,7 +172,7 @@
                         {% for sn in social_networks %}
                             <div class="row">
                                 <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
-                                    <a href="{{ sn.url|safe }}" target="_blank" title="{{ sn.title }}">
+                                    <a href="{{ sn.url|safe }}" target="_blank" title="{{ sn.title }}" aria-label="{%  trans 'Visit' %} {{ sn.title }}">
                                         <span class="fa-stack fa-lg fa-li" style="position: initial">
                                             <span class="fa fa-circle fa-stack-2x text-success"></span>
                                             {% if sn.title == "Twitter" %}
@@ -187,7 +187,7 @@
                                         </span>
                                     </a>
                                 </div>
-                                <div class="col-sm-9 col-md-9 col-lg-9 col-xs-9"> {{ sn.title }}</div>
+                                <div class="col-sm-9 col-md-9 col-lg-9 col-xs-9" id="sn{{s.id}}"> {{ sn.title }}</div>
                             </div>
                         {% empty %}
                             <div class="row">   

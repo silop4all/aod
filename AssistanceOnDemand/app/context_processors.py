@@ -64,6 +64,9 @@ def app_processor(request):
     except:     
        print_exc()
 
+    base_url = str(settings.AOD_HOST["PROTOCOL"]) + "://" + str(settings.AOD_HOST["IP"]) + ":" + str(settings.AOD_HOST["PORT"]) + str(settings.AOD_HOST["PATH"])
+
+
     return {
         'logo': logo,
         'favicon': favicon,
@@ -76,6 +79,9 @@ def app_processor(request):
         'bootstrap_table_locale_url': bootstrap_table_locale_url[str(translation.get_language())],
         'username': request.session["username"] if "username" in request.session else None,
         "google_maps_key": settings.GOOGLE_MAPS_KEY,
+        "base_url": base_url,
+        "customization_process": settings.CUSTOMIZATION_PROCESS,
+        "crowd_funding_publish_project": settings.CROWD_FUNDING['base'] + settings.CROWD_FUNDING['projects']['insert']
     }
 
 
