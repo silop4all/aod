@@ -24,18 +24,15 @@
         <link rel="stylesheet" type="text/css" href="{% static 'app/content/footer.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'app/content/multiselect-bootstrap/bootstrap-select.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" />
-
-        {% if components.ui_options_banner == False %}
-        <link rel="stylesheet" type="text/css" href="{% static 'app/content/preloader.css' %}" />
-        {% endif %}
-
         <!--ui options-->
-        {% if components.ui_options_banner %}
-        <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/lib/normalize/css/normalize.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/framework/core/css/fluid.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/framework/preferences/css/Enactors.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/framework/preferences/css/PrefsEditor.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/framework/preferences/css/SeparatedPanelPrefsEditor.css' %}" />
+        {% if components.ui_options_banner == True %}
+            <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/lib/normalize/css/normalize.css' %}" />
+            <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/framework/core/css/fluid.css' %}" />
+            <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/framework/preferences/css/Enactors.css' %}" />
+            <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/framework/preferences/css/PrefsEditor.css' %}" />
+            <link rel="stylesheet" type="text/css" href="{% static 'app/content/ui_options/framework/preferences/css/SeparatedPanelPrefsEditor.css' %}" />
+        {% else %}
+            <link rel="stylesheet" type="text/css" href="{% static 'app/content/preloader.css' %}" />
         {% endif %}
         <!--cookies agreement-->
         <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.2/cookieconsent.min.css" />

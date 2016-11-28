@@ -28,11 +28,7 @@
             {% block leftcolumn %}
                 <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     {% block searchModule %}
-                        {% if customization_process %}
-                            {% include "app/prosumers/dashboard/customizedSearchEngine.html" %}
-                        {% else %}
-                            {% include "app/prosumers/dashboard/searchEngine.html" %}
-                        {% endif %}
+                        {% include "app/prosumers/dashboard/searchEngine.html" %}
                     {% endblock searchModule %}
 
                     {% block crowdFunding %}
@@ -46,7 +42,6 @@
                                     <div class="col-sm-12 col-lg-12 col-xs-12 col-md-2 input-group ">
                                         <span class="fa fa-info-circle text-info fa-lg cursor-pointer" id="publish-crowd-service-info"> </span>
                                         <a href="{{ crowd_funding_publish_project }}"> {% trans 'Publish it as a crowd funding service' %}</a>
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -116,6 +111,7 @@
     {% block scripts %}
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
         <script type="text/javascript" src="{% static 'app/scripts/sweetalert/sweetalert.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/jquery.validate.js' %}"></script>
         <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
         <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
         <script type="text/javascript" src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
@@ -123,10 +119,6 @@
         <script type="text/javascript" src="{% static 'app/scripts/jquery-tree/jquery.tree.min.js' %}"></script>
         <script type="text/javascript"> var limit=15;//"{{limit}}";  var sortby = -1;//"{{ sortby }}"; </script>
 
-
-        {% if customization_process %}
-
-        {% else %}
         <script type="text/javascript">
             var form = '#service-search-form';
 
@@ -653,7 +645,5 @@
                 ].join('');
             }
 
-
         </script>
-        {% endif %}
     {% endblock scripts %}
