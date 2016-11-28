@@ -70,11 +70,26 @@ class ServiceLanguagesSerializer(serializers.ModelSerializer):
         model = ServiceLanguages
         fields = '__all__'
 
+class ServiceLanguagesListSerializer(serializers.ModelSerializer):
+    languages = ServiceLanguagesSerializer(read_only=True, many=True)
+    
+    class Meta:
+        model = Services
+        fields = ('id', 'title', 'description', 'languages')
+
+
 class ServiceKeywordsSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ServiceKeywords
         fields = '__all__'
+
+class ServiceKeywordsListSerializer(serializers.ModelSerializer):
+    keywords        = ServiceKeywordsSerializer(read_only=True, many=True)
+    
+    class Meta:
+        model = Services
+        fields = ('id', 'title', 'description', 'keywords',)
 
 class ConfigurationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -161,7 +176,6 @@ class SimpleServiceSerializer(serializers.ModelSerializer):
         model = Services
         fields = '__all__'
 
-
 class ServiceConfigurationsSerializer(serializers.ModelSerializer):
     configuration   = ConfigurationSerializer(read_only=True, many=True)
     
@@ -169,26 +183,12 @@ class ServiceConfigurationsSerializer(serializers.ModelSerializer):
         model = Services
         fields = ('id', 'title', 'description', 'configuration')
 
-class ServiceLanguagesSerializer(serializers.ModelSerializer):
-    languages       = ServiceLanguagesSerializer(read_only=True, many=True)
-    
-    class Meta:
-        model = Services
-        fields = ('id', 'title', 'description', 'languages')
-
 class ServiceTechicalSupportSerializer(serializers.ModelSerializer):
     technical_support = ServiceTechnicalSupportSerializer(read_only=True, many=True)
     
     class Meta:
         model = Services
         fields = ('id', 'title', 'description', 'skype', 'technical_support')
-
-class ServiceKeywordsSerializer(serializers.ModelSerializer):
-    keywords        = ServiceKeywordsSerializer(read_only=True, many=True)
-    
-    class Meta:
-        model = Services
-        fields = ('id', 'title', 'description', 'keywords',)
 
 class ServiceReviewsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -206,7 +206,8 @@ class ConsumerServicesSerializer(serializers.ModelSerializer):
 
 class DetailedServiceSerializer(serializers.ModelSerializer):
     """Fetch the fields of services and the ones of the relevant models"""
-
+    
+    image_path = serializers.SerializerMethodField()
     categories      = CategorySerializer(read_only=True, many=True)
     #type            = ChoicesField(choices=Services.MY_CHOICES)
     charging_policy = ChargingPolicySerializer(read_only=True, many=False)
@@ -215,13 +216,23 @@ class DetailedServiceSerializer(serializers.ModelSerializer):
     configuration   = ConfigurationSerializer(read_only=True, many=True)
     technical_support = ServiceTechnicalSupportSerializer(read_only=True, many=True)
 
+    def get_image_path(self, obj):
+        """Fix the URL of image"""
+        try:
+            image = Services.objects.get(pk=obj.id).image
+            if image not in ['', None]:
+                return image.url.replace(settings.MEDIA_URL, settings.MEDIA_URL + 'app/services/images/')
+            return None
+        except:
+            return None
+
     class Meta:
         model = Services
         fields = ('id', 'title', 'description', 'categories', 'type', 'charging_policy', 'owner', 
             'price', 'unit', 'version', 'license','requirements', 'installation_guide', 
             'usage_guidelines', 'is_public', 'constraints', 
             'language_constraint', 'location_constraint', 'latitude', 'longitude',  
-            'created_date', 'modified_date', 'image', 'coverage', 'skype',
+            'created_date', 'modified_date', 'image', 'image_path', 'coverage', 'skype',
             'languages', 'keywords', 'configuration', 'technical_support', 
         )
         depth = 1
