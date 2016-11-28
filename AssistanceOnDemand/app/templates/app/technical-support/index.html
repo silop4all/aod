@@ -37,7 +37,7 @@
             </form>
 
             <div class="panel-group margin-bottom-25" id="accordion">
-                {% for topic in topics%}
+                {% for topic in topic_list %}
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <h3 class="panel-title">
@@ -49,22 +49,24 @@
                     </div>
                     <div id="collapse-{{topic.id}}" class="panel-collapse collapse {% if forloop.first %}in{% endif %}">
                         <div class="panel-body">
-                            <div class="col-sm-12 col-md-23 col-lg-23 col-xs-12">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
                                 <ul class="list-unstyled">
-                                    {% for i in topic.articles.all %}
-                                        {% if i.visible %}
-                                        {% if forloop.first %} <i class="fa fa-list-alt"></i>  {{ topic.articles.all|length  }} {% if topic.articles.all|length == 1 %} {% trans 'Article' %} {% else %} {% trans 'Articles' %}{% endif %} {% endif %}
+                                    {% for i in topic.articles %}
+                                        {% if forloop.first %}
+                                            <i class="fa fa-list-alt"></i>  {{ topic.articles_num }} 
+                                            {% if topic.articles_num == 1 %} {% trans 'Article' %} {% else %} {% trans 'Articles' %}{% endif %} 
+                                        {% endif %}
                                         <li class="list-group-item">
-                                            <a href="{% url 'faq_article' i.id %}">
+                                            <a href="{{ i.link }}">
                                                 <h5 class="list-group-item-heading"><span class="text-muted">{% trans 'Q'%}:</span> {{ i.title|capfirst }}
                                                     <span class="fa fa-chevron-right pull-right"></span>
                                                 </h5>
                                             </a>
                                         </li>
-                                        {% endif %}
                                     {% empty %}
                                         <li>{% trans 'Sorry, there are not available articles'%}</li>
                                     {% endfor %}
+
                                 </ul>
                             </div>
                         </div>

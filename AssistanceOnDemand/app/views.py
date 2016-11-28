@@ -3210,13 +3210,22 @@ class FAQTopicListView(View):
         try:
             template = "app/technical-support/index.html" 
 
+            topicList = list()
+            for i in Topic.objects.filter(visible=True):
+                articlesList = list()
+                q = i.articles.filter(visible=True)
+                for j in q:
+                    articlesList.append({"id": j.id, "title": j.title, "link": reverse('faq_article', kwargs={"pk": j.id}) } )
+                topicList.append({"id": i.id, "title": i.title, 'articles_num': q.count(), "articles": articlesList })
+            print topicList
+
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
                     'title': _('Frequently Asked Questions'),
                     'year': str(datetime.now().year),
-                    'username': request.session["username"] if "username" in request.session else None,
-                    'topics': Topic.objects.filter(visible=True),
+                    #'topics': Topic.objects.all(),
+                    'topic_list': topicList,
                 }))
         except:
             if settings.DEBUG:
