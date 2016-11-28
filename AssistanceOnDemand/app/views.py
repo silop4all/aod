@@ -1236,7 +1236,7 @@ class ProviderServices(View):
         """
 
         try:
-            template = 'app//prosumers/provider-dashboard/index.html'
+            template = 'app/prosumers/provider-dashboard/index.html'
 
             user = Users.objects.get(pk=request.session['id'])
             _owner = Providers.objects.get(user_id=user.id)
@@ -1247,26 +1247,25 @@ class ProviderServices(View):
                 "url": settings.SOCIAL_NETWORK_WEB_SERVICES['base'] + settings.SOCIAL_NETWORK_WEB_SERVICES['services']['delete']
             }
 
-
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
                     'year':datetime.now().year,
                     'servicesTypes': {
-                        'human': Services.objects.filter(type='H').count(), 
-                        'machine': Services.objects.filter(type='M').count()
+                        'human': Services.objects.filter(type='H', owner=_owner.id).count(), 
+                        'machine': Services.objects.filter(type='M', owner=_owner.id).count()
                     },
                     'chargingModels': {
-                        'free': Services.objects.filter(charging_policy=1).count(),
-                        'paid': Services.objects.exclude(charging_policy=1).count()
+                        'free': Services.objects.filter(charging_policy=1, owner=_owner.id).count(),
+                        'paid': Services.objects.exclude(charging_policy=1,  owner=_owner.id).count()
                     },
-                  'locationLimitations': {
-                        'with': Services.objects.filter(location_constraint=True).count(),
-                        'without': Services.objects.filter(location_constraint=False).count()
+                    'locationLimitations': {
+                        'with': Services.objects.filter(location_constraint=True,  owner=_owner.id).count(),
+                        'without': Services.objects.filter(location_constraint=False,  owner=_owner.id).count()
                     },
-                  'lingualLimitations': {
-                        'with': Services.objects.filter(language_constraint=True).count(),
-                        'without': Services.objects.filter(language_constraint=False).count()
+                    'lingualLimitations': {
+                        'with': Services.objects.filter(language_constraint=True,  owner=_owner.id).count(),
+                        'without': Services.objects.filter(language_constraint=False,  owner=_owner.id).count()
                     },
                     'services': Services.objects.filter(owner=_owner.id),
                     "integrationWithSocialNetwork": integrationWithSocialNetwork
@@ -1877,8 +1876,9 @@ class ServiceConsumerView(View):
             # service and provider info
             _pk = request.session['id']
             user = Users.objects.get(pk=_pk)
-            provider = Providers.objects.get(user_id=user.id)
             service = Services.objects.get(pk=pk)
+            provider = Providers.objects.get(pk=service.owner_id)
+            owner = Users.objects.get(pk=provider.user_id)
 
             # Available types
             types = TYPE_CHOICES
@@ -1895,7 +1895,7 @@ class ServiceConsumerView(View):
                 {
                     'year':datetime.now().year,
                     'service': service,
-                    'provider': Users.objects.get(pk=service.owner_id),
+                    'provider': owner, 
                     'keywords': keywords,
                     'availableLanguages': langList,
                     'categories': Categories.objects.all().order_by('id'),

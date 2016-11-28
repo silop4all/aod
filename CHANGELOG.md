@@ -1,5 +1,12 @@
 # Change Log
 
+## 2016-11-28
+- Update REST API
+- Fixes:
+    + filter services per provider in provider dashboard
+    + diplay provider full name in service display
+
+
 ## 2016-11-21
 - Capability to associate a service with one or more FAQ articles (admin panel)
 - Implement the customized search engine
