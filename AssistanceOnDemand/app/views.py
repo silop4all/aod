@@ -218,50 +218,81 @@ class AccessSocialNetwork(View):
 #==============================
 #   Visitor area
 #==============================
-def home(request):
-    """Renders the home page."""
-    assert isinstance(request, HttpRequest)
+class IndexView(View):
+    """Manage index page
+    """
 
-    try:
-        # most popular service
-        popularity, popularService = [], []
-        for i in Services.objects.all():
-            popularity.append({"id":i.id, "count": ConsumersToServices.objects.filter(service_id=i.id).count()})
-        sortedlist = sorted(popularity, key=lambda k: k['count'], reverse=True)
-        service = Services.objects.get(id=sortedlist[0]["id"])
-        popularService.append({"id": service.id, "title":service.title, "description": service.description, 
-            "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
-            "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], 
-            "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), "type": service.type
-            }
-        )
+    def get(self, request):
+        """Load AoD index page 
+        """
+        try:
+            assert isinstance(request, HttpRequest)
 
-        # most recently service
-        latestService = []
-        service = Services.objects.all().order_by("-created_date")[0]
-        latestService.append({"id": service.id, "title":service.title, "description": service.description, 
+            popularity, popularService = list(), list()
+            for i in Services.objects.all():
+                popularity.append({"id":i.id, "count": ConsumersToServices.objects.filter(service_id=i.id).count()})
+            sortedlist = sorted(popularity, key=lambda k: k['count'], reverse=True)
+            service = Services.objects.get(id=sortedlist[0]["id"])
+            popularService.append({"id": service.id, "title":service.title, "description": service.description, 
                 "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
-                "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), "type": service.type})
+                "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], 
+                "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), "type": service.type
+                }
+            )
 
-        return render(request,
-            'app/visitors/home.html',
-            context_instance = RequestContext(request,
-            {
-                'title': _('Home Page'),
-                'year':datetime.now().year,
-                'popularService': popularService[0],
-                'latestService': latestService[0],
-            }))
-    except:
-        return render(request,
-            'app/visitors/home.html',
-            context_instance = RequestContext(request,
-            {
-                'title': _('Home Page'),
-                'year':datetime.now().year,
-                'popularService': None,
-                'latestService': None
-            }))
+            latestService = []
+            service = Services.objects.all().order_by("-created_date")[0]
+            latestService.append({"id": service.id, "title":service.title, "description": service.description, 
+                    "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
+                    "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), "type": service.type})
+
+
+            if settings.CUSTOMIZATION_PROCESS:
+                template = "app/home/customizedIndex.html"
+                return render(request, template,
+                    context_instance = RequestContext(request,
+                    {
+                        'year': datetime.now().year,
+                        'sortby': request.GET.get('sortby'),
+                        'technicalSupport': TechnicalSupport.objects.all().order_by('type'),
+                        'help': Topic.objects.filter(visible=True).order_by('title'),
+                        'services': Services.objects.filter(is_visible=True),
+                        'popularService': popularService[0],
+                        'latestService': latestService[0],
+                    })
+                )
+            else:
+                template = "app/home/index.html"
+                providers, types, chargingModels = list(), list(), list()
+
+                for i in Providers.objects.filter(is_active=True):
+                    user =  Users.objects.get(id=i.user_id)
+                    providers.append({"id": i.id, "name": user.name, "lastname": user.lastname, 
+                        "count": Services.objects.filter(owner_id=i.id).count()})
+
+                for i in list(TYPE_CHOICES):
+                    types.append({ "type" : str((i[1].split(" ")[0]).lower()), "alias": str(i[0].lower()), 
+                        "count": Services.objects.filter(type=i[0]).count() })
+
+                for model in ChargingPolicies.objects.all().order_by("id"):
+                    chargingModels.append({"id": model.id, "name":model.name, 
+                        "servNo": Services.objects.filter(charging_policy_id=model.id).count() })
+
+                return render(request, template,
+                    context_instance = RequestContext(request,
+                    {
+                        'year': datetime.now().year,
+                        'providers': providers,
+                        'types': types,
+                        'chargingModels': chargingModels,
+                        'sortby': request.GET.get('sortby'),
+                        'popularService': popularService[0],
+                        'latestService': latestService[0],
+                    })
+                )
+        except:
+            print_exc()
+            raise Http404
 
 class RegistrationView(View):
     """ 
@@ -292,15 +323,15 @@ class RegistrationView(View):
                 {
                     'title': _('Registration page'),
                     'year':datetime.now().year,
-                    'title': "AoD | Registration",
+                    'title': "AoD | " + _("Registration"),
                     'experience': ItExperience.objects.all().order_by('id'),
                     'CountriesList': result,
                     'categories': Categories.objects.all().order_by('id'),
                     'literal': literal
                 }))
         except:
-            # response: 404 not found
-            pass
+            print_exc()
+            return server_error(request)
 
     def post(self, request):
         """ Submit and store the information of new user """
@@ -488,16 +519,18 @@ def login(request):
         assert isinstance(request, HttpRequest)
     
         if 'id' in request.session.keys() and 'username' in request.session.keys():
+            #return redirect(reverse('landing_page'))
             return redirect(reverse('home_page'))
-        else:
-            return render(request,
-                'app/visitors/login.html',
-                context_instance = RequestContext(request,
-                {
-                    'title': _('About'),
-                    'message':None,
-                    'year':datetime.now().year,
-                }))
+
+        return render(request,
+            'app/visitors/login.html',
+            context_instance = RequestContext(request,
+            {
+                'title': _('Login'),
+                'message':None,
+                'year':datetime.now().year,
+            })
+        )
     except:
         if settings.DEBUG:
             print_exc()
@@ -535,11 +568,13 @@ def loginAuth(request):
         request.session['is_carer']     = Carers.objects.get(user_id=user.id).is_active
         
         # move to his dashboard
+        #return redirect(reverse('landing_page'))
         return redirect(reverse('home_page'))
 
     except Exception as e:
         # preview the following message on user
-        details = '<center><span class="label label-danger" role="contentinfo"><i class="fa fa-exclamation-circle fa-lg fa-fw"></i> Wrong combination of your credentials and your role. Try again.</span></center><br>'        
+        message = "%s %s" % (_("Wrong combination of your credentials and your role"), _("Try again."))
+        details = '<center><span class="label label-danger" role="contentinfo"><i class="fa fa-exclamation-circle fa-lg fa-fw"></i> ' + message + '</span></center><br>'
         
         return render(request,
             'app/visitors/login.html',
@@ -547,8 +582,8 @@ def loginAuth(request):
             {
                 'message': details,
                 'year':datetime.now().year,
-            }))
-        
+            })
+        )
     except:
         raise Exception("server error")  
 
@@ -1868,19 +1903,14 @@ class ConsumerDashboard(View):
 class ServiceConsumerView(View):
     def get(self, request, pk=None):
         try:
-            # define template
             template = 'app/prosumers/search/services/preview.html'
-            # languages
             import pycountry
 
             # service and provider info
-            _pk = request.session['id']
-            user = Users.objects.get(pk=_pk)
             service = Services.objects.get(pk=pk)
             provider = Providers.objects.get(pk=service.owner_id)
             owner = Users.objects.get(pk=provider.user_id)
-
-            # Available types
+            # service types
             types = TYPE_CHOICES
 
             keywords = ServiceKeywords.objects.filter(service_id=service.id)
@@ -2378,7 +2408,7 @@ class NetworkAssistanceServices(View):
         except:
             if settings.DEBUG:
                 print_exc()
-            return JsonResponse({"state" : 0})        
+            return JsonResponse({"state" : 0})
 
 @loginRequiredView
 class NetworkAssistanceServicesConfiguration(View):
@@ -3024,7 +3054,8 @@ class Callback(viewsets.ViewSet):
                 response = redirect(reverse('home_page'), permanent=True)
                 return response
             else: 
-                return redirect(reverse('landing_page'), permanent=True)
+                #return redirect(reverse('landing_page'), permanent=True)
+                return redirect(reverse('home_page'), permanent=True)
 
         except Exception, e:
             print_exc()
@@ -3043,14 +3074,17 @@ class Logout(View):
                 if settings.DEBUG:
                     print state, response
 
-            # Logout from AoD
+            # Clear session values
+            for i in request.session.keys():
+                del request.session[i]
             request.session.flush()
-            response = redirect(reverse('landing_page'), permanent=True)
+
+            #response = redirect(reverse('landing_page'), permanent=False)
+            response = redirect(reverse('home_page'), permanent=False)
             return response
-            #return home(request)
         except:
-            if settings.DEBUG:
-                print_exc()
+            #if settings.DEBUG:
+            print_exc()
             return Http404
 
 def insertUserProfile(payload):
@@ -3224,7 +3258,6 @@ class FAQTopicListView(View):
                 {
                     'title': _('Frequently Asked Questions'),
                     'year': str(datetime.now().year),
-                    #'topics': Topic.objects.all(),
                     'topic_list': topicList,
                 }))
         except:
@@ -3296,6 +3329,7 @@ class FAQArticleView(View):
 #==============================
 #   Calendar
 #==============================
+@loginRequiredView
 class CalendarView(View):
 
     def get(self, request, username):

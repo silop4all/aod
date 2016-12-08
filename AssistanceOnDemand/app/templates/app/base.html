@@ -1,4 +1,4 @@
-﻿{% load analytical %}
+{% load analytical %}
 <!DOCTYPE html>
 
 <html lang="{{LANGUAGE_CODE}}">
@@ -58,7 +58,7 @@
          
         {% block UIoptions %}
         {% if components.ui_options_banner %}
-        <div class="">
+        <!--div class="" style="background-color: whitesmoke">-->
             <div class="flc-prefsEditor-separatedPanel fl-prefsEditor-separatedPanel margin-top-38">
                 <!-- This is the div that will contain the Preference Editor component -->
                 <div class="flc-slidingPanel-panel flc-prefsEditor-iframe"></div>
@@ -70,7 +70,7 @@
                     </span>
                 </div>
             </div>
-        </div>
+        <!--div-->
         {% endif %}
         {% endblock %}
 
@@ -85,7 +85,7 @@
 
         <!-- content -->
         {% if components.ui_options_banner %}
-            <div class="container">
+            <div class="cleafix success-bg-color" >
                 <div class="flc-toc-tocContainer"> </div>
             </div>
         {% endif %}
@@ -286,6 +286,18 @@
                     }
                 });
                 {% endif %}
+
+                /*
+                $("#show-hide").click(function(){
+                    console.log($(this).attr('aria-pressed'));
+                    if ( $(this).attr('aria-pressed') === false) {
+                        $("iframe").css("height", "300px");
+                    }
+                    else {
+                        $("iframe").css("height", "200px");
+                    }
+                });
+                */
 
                 $(".nav.navbar-nav li.dropdown").mouseover(function () {
                     $(this).addClass('open');

@@ -62,7 +62,7 @@ cart = patterns('',
 )
 
 patterns = patterns('',
-    url(r'^$',                                                      'app.views.home',                                   name='landing_page'),
+    url(r'^$',                                                      IndexView.as_view(),                                name='home_page'),
     url('^change_language/$',                                       'app.views.changeLanguage',                         name='change_lang_custom'),
     url(r'^logout/$',                                               Logout.as_view(),                                   name='logout'),
     url(r'^it-experience/$',                                        ItExperienceView.as_view(),                         name="it_familiarity"),
@@ -78,7 +78,6 @@ patterns = patterns('',
     #=========================================
     ## Dashboard - index
     #=========================================
-    url(r'^index/$',                                                ServiceSearch.as_view(),                            name='home_page'),
     url(r'^services/search/$',                                      ServiceSearchResults.as_view(),                     name="search_services"),
     #=========================================
     ## Services - consumers views

@@ -35,40 +35,9 @@
 @brand-danger: rgb(217, 83, 79);
 @border-radius-base: 0px;
 */
-/*  bootstrap-default-square-skin.css #2 */
-/*  theme 3 
-@brand-success: #008080;
-@brand-primary: rgb(55, 90, 127);
-@brand-info: rgb(52, 152, 219);
-@brand-warning: rgb(243, 156, 18);
-@brand-danger: rgb(231, 76, 60);
-@border-radius-base: 0px;
-*/
-/*  theme 4 
-@brand-success: #26211f;
-@brand-primary: rgb(55, 90, 127);
-@brand-info: rgb(52, 152, 219);
-@brand-warning: rgb(243, 156, 18);
-@brand-danger: rgb(231, 76, 60);
-@border-radius-base: 0px;
-*/
-/*  theme 4 
-@brand-success: #008744;
-@brand-primary: #0057e7;
-@brand-info: #8b9dc3;
-@brand-warning: #ffa700;
-@brand-danger: #d62d20;
-@border-radius-base: 0px;
-*/
-/*  theme 5
-@brand-success:#885159;
-@brand-primary: #989898;
-@brand-info: #838996;
-@brand-warning: #979aaa;
-@brand-danger: #4c516d;
-@border-radius-base: 0px;
-*/
-/* theme 6 -lolipop
+/*  bootstrap-default-circle-skin.css #2 */
+/* bootstrap-lolipop-square-skin.css #3 */
+/*
 @brand-success: #009688 ;
 @brand-primary: #35a79c;
 @brand-info: #54b2a9;
@@ -76,11 +45,40 @@
 @brand-danger: #83d0c9;
 @border-radius-base: 0px;
 */
+/* bootstrap-facebook-square-skin.css  */
+/*
+@brand-success: #3b5998 ;
+@brand-primary: #8b9dc3;
+@brand-info: #54b2a9;
+@brand-warning: #f7f7f7;
+@brand-danger: #ffffff;
+@border-radius-base: 0px;
+*/
+/* bootstrap-facebook-square-skin.css  */
+/*
+@brand-success: #00b159 ;
+@brand-primary: #d11141;
+@brand-info: #00aedb;
+@brand-warning: #ffc425;
+@brand-danger: #f37735;
+@border-radius-base: 0px;
+*/
+/* bootstrap-accessible-square-skin.css  */
+/*
+@brand-success: #2D2D2D ;
+@brand-primary: #275C84;
+@brand-info: #554A8A;
+@brand-warning: #B00B00;
+@brand-danger: #771111;
+@border-radius-base: 0px;
+*/
+/*inset 0 1px 1px rgba(0, 0, 0, 0.075)*/
 /*darken(@btn-primary-border, 10%)*/
 /*darken(@btn-success-border, 10%)*/
 /*darken(@btn-info-border, 10%)*/
 /*darken(@btn-warning-border, 10%)*/
 /*darken(@btn-danger-border, 10%)*/
+/*2px 5px 3px rgba(205, 208, 200, 0.82);*/
 /*0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #81c25e*/
 /* start css */
 .brand_primary {
@@ -1767,22 +1765,22 @@ textarea.input-lg {
 }
 .has-error .help-block,
 .has-error .control-label {
-  color: #b94a48;
+  color: #ff0f0a;
 }
 .has-error .form-control {
-  border-color: #b94a48;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  border-color: #ff0f0a;
+  -webkit-box-shadow: 0px;
+  box-shadow: 0px;
 }
 .has-error .form-control:focus {
-  border-color: #953b39;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+  border-color: #ff0f0a;
+  -webkit-box-shadow: 0px;
+  box-shadow: 0px;
 }
 .has-error .input-group-addon {
-  color: #b94a48;
+  color: #ff0f0a;
   background-color: #f2dede;
-  border-color: #b94a48;
+  border-color: #ff0f0a;
 }
 .has-success .help-block,
 .has-success .control-label {
@@ -3517,7 +3515,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   border: 1px solid transparent;
   border-bottom-color: forestgreen !important;
   border-top: 6px solid #186218 !important;
-  box-shadow: 2px 5px 3px rgba(205, 208, 200, 0.82);
+  box-shadow: none;
 }
 .navbar:before,
 .navbar:after {
@@ -6507,7 +6505,10 @@ hr.custom-theme-hr {
 }
 /*Example categories*/
 label.tree-items {
-    vertical-align: sub; 
-    font-family:inherit; 
-    font-weight: normal
+  vertical-align: sub;
+  font-family: inherit;
+  font-weight: normal;
+}
+.success-bg-color {
+  background-color: #279f27;
 }

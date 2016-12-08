@@ -93,24 +93,25 @@
 @border-radius-base: 0px;
 */
 
-/* bootstrap-facebook-square-skin.css  */
-/*
+/* bootstrap-metro-ui-square-skin.css  */
+
 @brand-success: #00b159 ;
 @brand-primary: #d11141;
 @brand-info: #00aedb;
 @brand-warning: #ffc425;
 @brand-danger: #f37735;
 @border-radius-base: 0px;
-*/
+
 
 /* bootstrap-accessible-square-skin.css  */
+/*
 @brand-success: #2D2D2D ;
 @brand-primary: #275C84;
 @brand-info: #554A8A;
 @brand-warning: #B00B00;
 @brand-danger: #771111;
 @border-radius-base: 0px;
-
+*/
 
 
 @has-error-color: #ff0f0a;
@@ -158,7 +159,7 @@
 @panel-radius: @border-radius-base;
 @input-border-focus: @brand-success;
 
-@navbar-box-shadow: 2px 5px 3px rgba(205, 208, 200, 0.82);
+@navbar-box-shadow: none; /*2px 5px 3px rgba(205, 208, 200, 0.82);*/
 @navbar-height: 50px;
 @navbar-margin-bottom: 20px;
 @navbar-border-radius: @border-radius-base;
@@ -5761,4 +5762,8 @@ label.tree-items {
     vertical-align: sub; 
     font-family:inherit; 
     font-weight: normal
+}
+
+.success-bg-color {
+    background-color: lighten(@brand-success, 5%);
 }

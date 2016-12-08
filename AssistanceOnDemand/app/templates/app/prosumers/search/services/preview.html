@@ -111,23 +111,25 @@
             }
         });
     </script>
-    
-    {% if service.skype %}
-    <script>
-        Skype.ui({"name": "chat", "element": "SkypeButton_Call_{{service.skype}}_1", "participants": ["{{service.skype}}"], "imageSize": 32});
-    </script>
+    {% if username %}
+        {% if service.skype %}
+        <script>
+            Skype.ui({"name": "chat", "element": "SkypeButton_Call_{{service.skype}}_1", "participants": ["{{service.skype}}"], "imageSize": 32});
+        </script>
+        {% endif %}
     {% endif %}
 {% endblock scripts %}
 
 
 {% block content %}
     <div class="container body-content" style="margin-top: 50px; padding-bottom:2em;">
-
         {% block breadcrumb %}
-        <ol class="breadcrumb">
-            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
-            <li>{% trans 'Search' %} - {{ service.title| title }}</li>
-        </ol>
+            {% if username %}
+            <ol class="breadcrumb">
+                <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+                <li>{% trans 'Search' %} - {{ service.title| title }}</li>
+            </ol>
+            {% endif %}
         {% endblock breadcrumb %}
 
         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
@@ -221,32 +223,36 @@
                                 </div>
                             </div>
                             <br>
-                            <div class="row margin-bottom-25">
-                                <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 " >
-                                    {% if service.charging_policy_id != 1 %}
-                                        <button type="button" class="btn btn-md btn-primary disabled"  title="{% trans 'Get the service' %}"> {% trans 'Get the service' %}!</button>
-                                    {% else %}
-                                        <button type="button" class="btn btn-md btn-primary disabled"  title="{% trans 'Use the service' %}"> {% trans 'Use the service' %}!</button>
-                                    {% endif %}
-                                    {% if components.add_to_cart and service.charging_policy_id != 1 %}
-                                        <span style="text-align: center!important; margin-left:20px; margin-right:20px">{% trans 'or' %}</span>
-                                        <button type="button" id="btn-add-cart" class="btn btn-md btn-success" title="{% trans 'Add to cart' %}" data-url="{% url 'add_item_cart' service.id %}" data-id="{{service.id}}" data-name="{{service.title}}"> {% trans 'Add to cart' %} <span class="fa fa-shopping-cart" style="margin-left:5px;"></span></button>
-                                    {% endif %}
-                                </div>
-                            </div>
-
-
-                            <div class="row" title="Service provider information">
-                                <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 " >
-                                    <div class="alert alert-danger">
-                                    <h4> 
-                                        <span style="margin-right:20px">{% trans 'Not satisfied'%}?</span>
-                                        <button type="button" class="btn btn-lg btn-danger" >{% trans 'Try different'%} <span style="margin-left:5px;" class="fa fa-hand-o-up"></span> </button>
-                                    </h4>
+                            {% if username %}
+                                <div class="row margin-bottom-25">
+                                    <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 " >
+                                        {% if service.charging_policy_id != 1 %}
+                                            <button type="button" class="btn btn-md btn-primary disabled"  title="{% trans 'Get the service' %}"> {% trans 'Get the service' %}!</button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-md btn-primary disabled"  title="{% trans 'Use the service' %}"> {% trans 'Use the service' %}!</button>
+                                        {% endif %}
+                                        {% if components.add_to_cart and service.charging_policy_id != 1 %}
+                                            <span style="text-align: center!important; margin-left:20px; margin-right:20px">{% trans 'or' %}</span>
+                                            <button type="button" id="btn-add-cart" class="btn btn-md btn-success" title="{% trans 'Add to cart' %}" data-url="{% url 'add_item_cart' service.id %}" data-id="{{service.id}}" data-name="{{service.title}}"> 
+                                                {% trans 'Add to cart' %} <span class="fa fa-shopping-cart" style="margin-left:5px;"></span>
+                                            </button>
+                                        {% endif %}
                                     </div>
                                 </div>
-                            </div>
 
+                                <div class="row" title="Service provider information">
+                                    <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 " >
+                                        <div class="alert alert-danger">
+                                        <h4> 
+                                            <span style="margin-right:20px">{% trans 'Not satisfied'%}?</span>
+                                            <button type="button" class="btn btn-lg btn-danger" >{% trans 'Try different'%} <span style="margin-left:5px;" class="fa fa-hand-o-up"></span> </button>
+                                        </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                 <a href="{% url 'login_page' %}" class="btn btn-md btn-primary">{% trans 'Get the service' %}</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -432,44 +438,61 @@
                         </ul>
                         </div>
                     </div>
+
                     <div class="clearfix margin-bottom-25">
                         <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"><h4 class="text-center">{% trans 'Contact with provider' %}</h4></div>
                         <div class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
-                            {%  if service.skype %}
-                                <div id="SkypeButton_Call_{{service.skype}}_1">
-                                </div>
+                            {% if username %}
+                                {%  if service.skype %}
+                                    <div id="SkypeButton_Call_{{service.skype}}_1">
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-danger"><strong style="font-size:large">{% trans 'None skype contact is provided!'%}</strong></div>
+                                {% endif %}
                             {% else %}
-                                <div class="alert alert-danger"><strong style="font-size:large">{% trans 'None skype contact is provided!'%}</strong></div>
+                                <a href="{% url 'login_page' %}">{% trans 'Action is allowed only on members' %}</a>
                             {% endif %}
                         </div>
                     </div>
                     <div class="clearfix margin-bottom-25">
                         <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"><h4 class="text-center">{% trans 'Ask a volunteer?' %}</h4></div>
                         <div class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
-                            {%  for v in volunteers %}
+                            {% if username %}
+                                {%  for v in volunteers %}
 
-                            {% empty %}
-                                <div class="alert alert-danger"><strong style="font-size:large">{% trans 'There are not available volunteers right now.'%}</strong></div>
-                            {% endfor %}
+                                {% empty %}
+                                    <div class="alert alert-danger"><strong style="font-size:large">{% trans 'There are not available volunteers right now.'%}</strong></div>
+                                {% endfor %}
+                            {% else %}
+                                <a href="{% url 'login_page' %}">{% trans 'Action is allowed only on members' %}</a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="clearfix margin-bottom-25">
                         <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"><h4 class="text-center">{% trans 'Ask a professional?' %}</h4></div>
                         <div class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
-                            {%  for p in professionals %}
+                            {% if username %}
+                                {%  for p in professionals %}
 
-                            {% empty %}
-                                <div class="alert alert-danger"><strong style="font-size:large">{% trans 'There are not available professional users right now.'%}</strong></div>
-                            {% endfor %}
+                                {% empty %}
+                                    <div class="alert alert-danger"><strong style="font-size:large">{% trans 'There are not available professional users right now.'%}</strong></div>
+                                {% endfor %}
+                            {% else %}
+                                <a href="{% url 'login_page' %}">{% trans 'Action is allowed only on members' %}</a>
+                            {% endif %}
                         </div>
                     </div>
                     {% if customization_process %}
                     <div class="clearfix margin-bottom-25">
                         <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"><h4 class="text-center">{% trans 'Contact us' %}</h4></div>
                         <div class="col-sm-9 col-md-9 col-lg-9 col-xs-12">
-                            <a href="{% url 'faq_topics' %}">{% trans 'E-Mail contact' %}</a>
-                            <br>
-                            <a href="{% url 'faq_topics' %}">{% trans 'Telephone support' %}</a>
+                            {% if username %}
+                                <a href="{% url 'faq_topics' %}">{% trans 'E-Mail contact' %}</a>
+                                <br>
+                                <a href="{% url 'faq_topics' %}">{% trans 'Telephone support' %}</a>
+                            {% else %}
+                                <a href="{% url 'login_page' %}">{% trans 'Access is allowed only on members' %}</a>
+                            {% endif %}
                         </div>
                     </div>
                     {% endif %}
@@ -569,7 +592,6 @@
                 <h4>{% trans 'Tips for first timers' %}</h4>
                 <hr class="service-hr" />
             </div>
-
         </div>
     </div>
 {% endblock content %}

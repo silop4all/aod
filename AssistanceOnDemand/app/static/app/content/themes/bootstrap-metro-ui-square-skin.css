@@ -62,12 +62,23 @@
 @brand-danger: #ffffff;
 @border-radius-base: 0px;
 */
-/* bootstrap-facebook-square-skin.css  */
+/* bootstrap-metro-ui-square-skin.css  */
+/* bootstrap-accessible-square-skin.css  */
+/*
+@brand-success: #2D2D2D ;
+@brand-primary: #275C84;
+@brand-info: #554A8A;
+@brand-warning: #B00B00;
+@brand-danger: #771111;
+@border-radius-base: 0px;
+*/
+/*inset 0 1px 1px rgba(0, 0, 0, 0.075)*/
 /*darken(@btn-primary-border, 10%)*/
 /*darken(@btn-success-border, 10%)*/
 /*darken(@btn-info-border, 10%)*/
 /*darken(@btn-warning-border, 10%)*/
 /*darken(@btn-danger-border, 10%)*/
+/*2px 5px 3px rgba(205, 208, 200, 0.82);*/
 /*0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #81c25e*/
 /* start css */
 .brand_primary {
@@ -1754,22 +1765,22 @@ textarea.input-lg {
 }
 .has-error .help-block,
 .has-error .control-label {
-  color: #b94a48;
+  color: #ff0f0a;
 }
 .has-error .form-control {
-  border-color: #b94a48;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  border-color: #ff0f0a;
+  -webkit-box-shadow: 0px;
+  box-shadow: 0px;
 }
 .has-error .form-control:focus {
-  border-color: #953b39;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+  border-color: #ff0f0a;
+  -webkit-box-shadow: 0px;
+  box-shadow: 0px;
 }
 .has-error .input-group-addon {
-  color: #b94a48;
+  color: #ff0f0a;
   background-color: #f2dede;
-  border-color: #b94a48;
+  border-color: #ff0f0a;
 }
 .has-success .help-block,
 .has-success .control-label {
@@ -3504,7 +3515,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   border: 1px solid transparent;
   border-bottom-color: #00b159 !important;
   border-top: 6px solid #007e3f !important;
-  box-shadow: 2px 5px 3px rgba(205, 208, 200, 0.82);
+  box-shadow: none;
 }
 .navbar:before,
 .navbar:after {
@@ -6004,8 +6015,8 @@ td.visible-print {
 .margin-top-10 {
   margin-top: 10px;
 }
-.margin-top-38 { 
-    margin-top: 38px; 
+.margin-top-38 {
+  margin-top: 38px;
 }
 .margin-top-50 {
   margin-top: 50px;
@@ -6487,4 +6498,17 @@ hr.custom-theme-hr {
   color: gray;
   border: 1px solid #ddd;
   height: 1px;
+}
+/**/
+.highlight-error-message {
+  color: #ff0f0a;
+}
+/*Example categories*/
+label.tree-items {
+  vertical-align: sub;
+  font-family: inherit;
+  font-weight: normal;
+}
+.success-bg-color {
+  background-color: #00cb66;
 }

@@ -1,0 +1,143 @@
+{% load i18n %}
+{% load l10n %}
+
+<section id="search_services_module" class="panel" style="padding-left: 5px; padding-right: 5px">
+    <form action="{% url 'private_api:custom_search_engine' %}" method="GET" data-search-articles="{% url 'private_api:search_articles' %}" id="custom-search-engine" name="custom-search-engine">
+        <h4 class="text-center bg-primary"  role="heading">
+            <span class="fa fa-search fa-lg text-success"></span> {% trans 'Find your services' %}
+        </h4>
+        <hr>
+        <!--Products/categories-->
+        <div class="form-group" id="categories-panel">
+            <div class="panel-group panel-toggle-arrows" id="categories-id" role="tablist" aria-multiselectable="true" >
+                <div class="panel  panel-custom-success">
+                    <div class="panel-heading" role="tab" id="categories-title">
+                        <h4 class="panel-title" title="{% trans 'Products' %}">
+                            <a data-toggle="collapse" data-parent="#categories-id" href="#categories-list" aria-expanded="true" aria-controls="categories-list">
+                                {% trans 'Products' %}
+                                <i class="fa fa-angle-double-up pull-right"></i>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="categories-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="categories-title">
+                        <div class="panel-body" style="background-color:whitesmoke">
+                            <div id="tree" data-resource="{% url 'private_api:categories_tree' %}" style="margin-left: -40px">
+                            <!--append categories tree-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Downloads-->
+        <div class="form-group" id="categories-panel">
+            <div class="panel-group panel-toggle-arrows" id="downloads-filter" role="tablist" aria-multiselectable="true" >
+                <div class="panel  panel-custom-success">
+                    <div class="panel-heading" role="tab" id="categories-title">
+                        <h4 class="panel-title" title="{% trans 'Downloads' %}">
+                            <a data-toggle="collapse" data-parent="#downloads-filter" href="#downloads-list" aria-expanded="true" aria-controls="downloads-list">
+                                {% trans 'Downloads' %}
+                                <i class="fa fa-angle-double-up pull-right"></i>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="downloads-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="downloads-title">
+                        <div class="panel-body" style="background-color:whitesmoke">
+                            {% for i in technicalSupport %}
+                                <div class="checkbox">
+                                    <input type="checkbox" id="technicalSupport-{{ i.id }}" name="technicalSupport" data-id="{{ i.id }}" data-name="technicalSupport-{{ i.id }}"/> 
+                                    <label for="technicalSupport-{{ i.id }}" style="line-height:initial; vertical-align: super">{{ i.type|capfirst }}</label>
+                                </div>
+                            {% empty %}
+                                {% trans 'Downloads topics not found' %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Information-->
+        <div class="form-group" id="info-panel">
+            <div class="panel-group panel-toggle-arrows" id="info-filter" role="tablist" aria-multiselectable="true" >
+                <div class="panel  panel-custom-success">
+                    <div class="panel-heading" role="tab" id="info-title">
+                        <h4 class="panel-title" title="{% trans 'Information' %}">
+                            <a data-toggle="collapse" data-parent="#info-filter" href="#info-list" aria-expanded="true" aria-controls="info-list">
+                                {% trans 'Information' %}
+                                <i class="fa fa-angle-double-up pull-right"></i>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="info-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="info-title">
+                        <div class="panel-body" style="background-color:whitesmoke">
+                            {% trans 'Information resources not found' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Help-->
+        <div class="form-group" id="help-panel">
+            <div class="panel-group panel-toggle-arrows" id="help-filter" role="tablist" aria-multiselectable="true" >
+                <div class="panel panel-custom-success">
+                    <div class="panel-heading" role="tab" id="help-title">
+                        <h4 class="panel-title" title="{% trans 'Help' %}">
+                            <a data-toggle="collapse" data-parent="#help-filter" href="#help-list" aria-expanded="true" aria-controls="help-list">
+                                {% trans 'Help' %}
+                                <span class="fa fa-angle-double-up pull-right"></span>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="help-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="help-title">
+                        <div class="panel-body" style="background-color:whitesmoke">
+                            {% for i in help %}
+                                <div class="checkbox">
+                                    <input type="checkbox" id="topic-{{ i.id }}" name="topic" data-id="{{ i.id }}" data-name="topic-{{ i.id }}"/> 
+                                    <label for="topic-{{ i.id }}" style="line-height:initial; vertical-align: super">{{ i.title|capfirst }}</label>
+                                </div>
+                            {% empty %}
+                                {% trans 'Help topics not found' %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Programs/apps-->
+        <div class="form-group" id="services-panel">
+            <div class="panel-group panel-toggle-arrows" id="services-filter" role="tablist" aria-multiselectable="true" >
+                <div class="panel panel-custom-success">
+                    <div class="panel-heading" role="tab" id="services-title">
+                        <h4 class="panel-title" title="{% trans 'Programs/Apps' %}">
+                            <a data-toggle="collapse" data-parent="#services-filter" href="#services-list" aria-expanded="true" aria-controls="services-list">
+                                {% trans 'Programs/Apps' %}
+                                <span class="fa fa-angle-double-up pull-right"></span>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="services-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="services-title">
+                        <div class="panel-body" style="background-color:whitesmoke">
+                            {% for i in services %}
+                                <div class="checkbox">
+                                    <input type="checkbox" id="service-{{ i.id }}" name="service" data-id="{{ i.id }}" data-name="service-{{ i.title }}"/> 
+                                    <label for="service-{{ i.id }}" style="line-height:initial; vertical-align: super">{{ i.title|capfirst }}</label>
+                                </div>
+                            {% empty %}
+                                {% trans 'Programs not found' %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Actions-->
+        <div class="row form-group">
+            <div class="col-xs-6 col-lg-6 col-sm-6 col-md-6">
+                <button type="reset" class="btn btn-default btn-block">{% trans 'Clear' %}</button>
+            </div>
+                <div class="col-xs-6 col-lg-6 col-sm-6 col-md-6">
+                <button type="button" id="search-btn" class="btn btn-success btn-block">{% trans 'Apply' %}</button>
+            </div>
+        </div>
+    </form>
+</section>

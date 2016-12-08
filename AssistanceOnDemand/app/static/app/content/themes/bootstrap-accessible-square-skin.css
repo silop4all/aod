@@ -78,6 +78,7 @@
 /*darken(@btn-info-border, 10%)*/
 /*darken(@btn-warning-border, 10%)*/
 /*darken(@btn-danger-border, 10%)*/
+/*2px 5px 3px rgba(205, 208, 200, 0.82);*/
 /*0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #81c25e*/
 /* start css */
 .brand_primary {
@@ -3514,7 +3515,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   border: 1px solid transparent;
   border-bottom-color: #2D2D2D !important;
   border-top: 6px solid #141414 !important;
-  box-shadow: 2px 5px 3px rgba(205, 208, 200, 0.82);
+  box-shadow: none;
 }
 .navbar:before,
 .navbar:after {
@@ -6014,8 +6015,8 @@ td.visible-print {
 .margin-top-10 {
   margin-top: 10px;
 }
-.margin-top-38 { 
-    margin-top: 38px; 
+.margin-top-38 {
+  margin-top: 38px;
 }
 .margin-top-50 {
   margin-top: 50px;
@@ -6501,4 +6502,13 @@ hr.custom-theme-hr {
 /**/
 .highlight-error-message {
   color: #ff0f0a;
+}
+/*Example categories*/
+label.tree-items {
+  vertical-align: sub;
+  font-family: inherit;
+  font-weight: normal;
+}
+.success-bg-color {
+  background-color: #3a3a3a;
 }

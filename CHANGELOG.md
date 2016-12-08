@@ -1,5 +1,9 @@
 # Change Log
 
+## 2016-12-08
+- Browse services without login
+
+
 ## 2016-11-28
 - Update REST API
 - Fixes:

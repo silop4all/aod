@@ -13,7 +13,7 @@
         {% if username %}
             <a href="{% url 'home_page' %}" title="{% trans 'Browse on the home page' %}">{% trans 'Browse on the home page' %}</a>
         {% else %}
-            <a href="{% url 'landing_page' %}" title="{% trans 'Browse on the landing page' %}">{% trans 'Browse on the landing page' %}</a>
+            <a href="{% url 'home_page' %}" title="{% trans 'Browse on the landing page' %}">{% trans 'Browse on the landing page' %}</a>
         {% endif %}
     </div>
 {% endblock %}
