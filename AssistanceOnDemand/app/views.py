@@ -228,37 +228,16 @@ class IndexView(View):
         try:
             assert isinstance(request, HttpRequest)
 
-            popularity, popularService = list(), list()
-            for i in Services.objects.all():
-                popularity.append({"id":i.id, "count": ConsumersToServices.objects.filter(service_id=i.id).count()})
-            sortedlist = sorted(popularity, key=lambda k: k['count'], reverse=True)
-            service = Services.objects.get(id=sortedlist[0]["id"])
-            popularService.append({"id": service.id, "title":service.title, "description": service.description, 
-                "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
-                "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], 
-                "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), "type": service.type
-                }
-            )
-
-            latestService = []
-            service = Services.objects.all().order_by("-created_date")[0]
-            latestService.append({"id": service.id, "title":service.title, "description": service.description, 
-                    "price":service.price, "unit":service.unit, "charge_model": ChargingPolicies.objects.get(id=service.charging_policy_id),
-                    "rating": ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0], "reviews": ConsumersToServices.objects.filter(service_id=service.id).count(), "type": service.type})
-
-
             if settings.CUSTOMIZATION_PROCESS:
                 template = "app/home/customizedIndex.html"
                 return render(request, template,
                     context_instance = RequestContext(request,
                     {
                         'year': datetime.now().year,
-                        'sortby': request.GET.get('sortby'),
+                        'sortby': request.GET.get('sortby', None),
                         'technicalSupport': TechnicalSupport.objects.all().order_by('type'),
                         'help': Topic.objects.filter(visible=True).order_by('title'),
                         'services': Services.objects.filter(is_visible=True),
-                        'popularService': popularService[0],
-                        'latestService': latestService[0],
                     })
                 )
             else:
@@ -285,9 +264,7 @@ class IndexView(View):
                         'providers': providers,
                         'types': types,
                         'chargingModels': chargingModels,
-                        'sortby': request.GET.get('sortby'),
-                        'popularService': popularService[0],
-                        'latestService': latestService[0],
+                        'sortby': request.GET.get('sortby', None),
                     })
                 )
         except:
@@ -1398,6 +1375,22 @@ class ServiceCreate(View):
             # languages
             if payload['language_constraint'] == True:
                 insertServiceLanguages(payload["languages"], service.id)
+
+            # if payment (sale/authorize/sale)
+            if service.charging_policy_id in [2,3]:
+                servicePayment = ServicePayment(
+                    service=Services.objects.get(pk=service.id), 
+                    tax = 0.01,
+                    handling_fee = 0.01,
+                    shipping = 2,
+                    shipping_discount = -2,
+                    insurance = 0.01
+                )
+                servicePayment.save()
+
+
+            
+
 
             response = {"id": _service, "success_url": reverse('provider_dashboard'), "media_url": reverse("upload_service_media", kwargs={'pk':_service}), "sn_integration": False}        
             # check social network integration status

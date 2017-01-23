@@ -709,3 +709,40 @@ class CookiePolicy(models.Model):
         db_table            = "app_cookie_policy"
         verbose_name        = _("Cookie Policy")
         verbose_name_plural = _("Cookie Policy")
+
+
+
+#===============
+# payment dev
+#===============
+class PaypalCredentials(models.Model):
+    """Keep the app credentials in paypal per provider
+    """
+    provider = models.ForeignKey(Providers)
+    username = models.CharField(max_length=512, null=False, blank=False)
+    password = models.CharField(max_length=512, null=False, blank=False)
+    token = models.CharField(max_length=512, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.provider
+
+
+class ServicePayment(models.Model):
+    """Keep payment metadata per service (no recurring payments)"""
+    service = models.ForeignKey(Services)
+    tax = models.DecimalField(max_digits=10, decimal_places=2)
+    handling_fee = models.DecimalField(max_digits=10, decimal_places=2)
+    shipping = models.DecimalField(max_digits=10, decimal_places=2)
+    shipping_discount = models.DecimalField(max_digits=10, decimal_places=2)
+    insurance = models.DecimalField(max_digits=10, decimal_places=2)
+    updated_date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.service.title
+
+    class Meta:
+        db_table            = "app_service_payment_details"
+        verbose_name        = _("Service payment details")
+        verbose_name_plural = verbose_name        
