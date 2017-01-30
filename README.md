@@ -1,8 +1,10 @@
-![Prosperity4All logo](P4A.png "")
 
-# Prosperity4All project (EU)
+# Assistance On Demand service Infrastructure (AoD)
 
-## Assistance On Demand service Infrastructure (AoD)
+The Assistance on Demand (AoD) is a generic open-source web platform that enables the rapid deployment of machine/human/crowd-based assistance services on demand by allowing service suppliers to easily register their assistance service and individuals to seek assistance in an organized fashion from a set of predefined (i.e. already registered) service sources based on type of need, quality of service desired, and other personal preferences. 
+The AoD platform particularly focuses on solving accessibility challenges for people with disabilities and enables matching service providers to service consumers.  
+
+## Installation
 
 - [Minumum hardware requirements](#minumum-hardware-requirements)
 - [Step 1: Install dependencies and AoD project](#step-1-install-dependencies-and-aod)
@@ -606,3 +608,28 @@ Alias /prosperity/assistance-on-demand/phpmyadmin /usr/share/phpmyadmin
 $ sudo service apache2 restart
 ```
 
+
+## Usage
+
+Type the URL `http://<host_ip>:<host_port>/<language_code>/` from your browser to access the AoD platform (i.e. http://127.0.0.1:80/en/). 
+
+Type the URL `http://<host_ip>:<host_port>/<language_code>/docs` from your browser to access the web services that AoD provides.
+
+Type the URL `http://<host_ip>:<host_port>/<language_code>/admin/` from your browser to access the management panel of the AoD platform.
+
+
+## Developers
+
+- Athanasoulis Panagiotis
+
+
+## Acknowledgements
+
+This project has received funding from the European Union’s Seventh Framework Programme for research, technological development and demonstration under grant agreement no 610510. Visit [developerspace.gpii.net](http://developerspace.gpii.net/) to find more useful resources.
+
+![Prosperity4All logo](P4A.png "")
+
+
+## License
+
+[Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
