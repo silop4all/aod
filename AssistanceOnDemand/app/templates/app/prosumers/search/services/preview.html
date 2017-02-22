@@ -282,7 +282,11 @@
             </div>
            <!--constraints-->
             <div class="row service-consumer-view-box margin-bottom-25">
+                {% if service.location_constraint %}
                 <div class="col-lg-4 col-xs-12 col-md-4 col-sm-4 ">
+                {% else %}
+                <div class="col-lg-6 col-xs-12 col-md-6 col-sm-6 ">
+                {% endif %}
                     <div class="text-center">
                         <span class="fa-stack fa-3x">
                           <span class="fa fa-circle fa-stack-2x text-info"></span>
@@ -313,6 +317,7 @@
                     {% endif %}
                 </div>
                 <!--map-->
+                {% if service.location_constraint %}
                 <div class=" col-lg-4 col-xs-12 col-md-4 col-sm-4">
                     <div class="text-center center">
                         <span class="fa-stack fa-3x">
@@ -328,8 +333,13 @@
                         <div class="alert alert-danger"><strong style="font-size: large">{% trans 'No location constraints' %}!</strong></div>
                     {% endif %}
                 </div>
+                {% endif %}
                 <!--languages et other-->
-                <div class="col-lg-4 col-xs-12 col-md-4 col-sm-4">
+                {% if service.location_constraint %}
+                <div class="col-lg-4 col-xs-12 col-md-4 col-sm-4 ">
+                {% else %}
+                <div class="col-lg-6 col-xs-12 col-md-6 col-sm-6 ">
+                {% endif %}
                     <div class="text-center">
                         <span class="fa-stack fa-3x">
                           <i class="fa fa-circle fa-stack-2x text-primary " ></i>
