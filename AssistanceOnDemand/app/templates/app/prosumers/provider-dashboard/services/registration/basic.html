@@ -23,7 +23,7 @@
                 <label class="text-left control-label visible-xs" for="description" title="{% trans 'Description of the service' %}">{% trans 'Description' %}<span class="highlight-error-message"> *</span></label>
             </div>
             <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Description of the service' %}" id="description_node">
-                <textarea rows="6" cols="50" id="description" name="description" class="form-control" form="BasicServiceForm" maxlength="500" placeholder="{% trans 'Provide a brief description of the service (500 characters)' %}" required>{{ service.description |safe}}</textarea>
+                <textarea rows="10" cols="50" id="description" name="description" class="form-control" form="BasicServiceForm" maxlength="4000" placeholder="{% trans 'Provide a brief description of the service (4000 characters)' %}" required>{{ service.description |safe}}</textarea>
             </div>
         </div>
         <!--service type-->
