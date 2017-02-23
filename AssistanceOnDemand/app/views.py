@@ -870,7 +870,7 @@ def profile(request, username=None):
                 'media_url': "/profile/media/" + str(pk),
                 'error': False,
                 'cover': settings.MEDIA_URL + "app/users/covers/" + str(customer.cover),
-                'logo': settings.MEDIA_URL + "app/users/logos/" + str(customer.logo),   
+                'user_logo': settings.MEDIA_URL + "app/users/logos/" + str(customer.logo),   
                 'readonly': settings.OPENAM_INTEGRATION
             }))
     except:
