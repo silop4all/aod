@@ -373,6 +373,17 @@
                         }
                         $("#articles-result-multidata").html(multidata);
                         $("#articles-result-listview").html(listview);
+
+                        // force responsive images
+                        $(".ckeditor-div > p ").find($("img")).addClass('img-responsive');
+                        
+                        // keep link name if length is small. otherwise add static title
+                        $(".ckeditor-div > p ").find($("a")).each(function(){ 
+                            var title = $(this).text().split('/'); 
+                            var updTitle = (title[title.length-1] > 25) ? gettext('Follow link'): title[title.length-1]; 
+                            $(this).html(updTitle);  
+                            $(this).addClass('btn btn-sm btn-link');
+                        })
                     },
                     error: function (error) { },
                     complete: function (response) {
@@ -520,11 +531,11 @@
                         '<div class="thumbnail" style="min-height:480px!important;">',
                             '<div class="caption">',
                                 '<div style="min-height:300px; max-height:300px">',
-                                    '<div class="row col-lg-12 col-sm-12 col-md-12 col-xs-12">',
+                                    '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">',
                                         '<h5 class="text-center">' + article.title.toUpperCase() + '</h5>',
                                     '</div>',
                                     '<div class="row">',
-                                        '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-justify">',
+                                        '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-justify ckeditor-div">',
                                             '<p class="clearfix">' + ((article.content.length > 350) ? article.content.substring(0, 350) + '...' : article.content) + '</p>',
                                         '</div>',
                                     '</div>',
@@ -553,7 +564,7 @@
                                         '<h5 class="text-center">' + article.title.toUpperCase() + '</h5>',
                                     '</div>',
                                     '<div class="row">',
-                                        '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-justify">',
+                                        '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-justify ckeditor-div">',
                                             '<p class="clearfix">' + ((article.content.length > 350) ? article.content.substring(0, 350) + '...' : article.content) + '</p>',
                                         '</div>',
                                     '</div>',
