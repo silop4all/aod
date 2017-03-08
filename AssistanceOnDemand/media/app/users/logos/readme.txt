@@ -1,0 +1,1 @@
+This folder includes the logo of AoD users.
