@@ -43,7 +43,7 @@ $ python ../../manage.py collectstatic --noinput
 
 Afterwards, fill in the AoD database with the required data. Import the sql file located in path `/path-to-project/AssistanceOnDemand/AssistanceOnDemand/sql/aod_data.sql`.
 
-Execute the command and  detect if the installation of AoD project has been performed successfully or not by tyeping in your browser the url `http://localhost:8080/en/`:
+Execute the command and  detect if the installation of AoD project has been performed successfully or not by typing in your browser the url `http://localhost:8080/en/`:
 ```bash
 $ cd /path-to-project/AssistanceOnDemand/AssistanceOnDemand/path-to-env-scripts/
 $ python ../../manage.py runserver 0.0.0.0:8080
