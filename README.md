@@ -51,11 +51,7 @@ $ sudo apt-get upgrade
 
 #### Install basic packages
 ```shell
-$ sudo apt-get install python-pip
-$ sudo apt-get install git
-$ sudo apt-get install unzip
-$ sudo apt-get install vim
-$ sudo apt-get install git
+$ sudo apt-get install python-pip git unzip vim
 ```
 
 #### Install MySQL server and create a database
