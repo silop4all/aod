@@ -47,7 +47,7 @@
 
         <section class="row">
             {% block leftcolumn %}
-                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
                     {% block searchModule %}
                         {% include "app/home/customizedSearchEngine.html" %}
                     {% endblock searchModule %}
@@ -76,7 +76,7 @@
             {% endblock leftcolumn %}
 
             {% block rightcolumn %}
-                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9" >
+                <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" >
                     {% block services %}
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
@@ -411,7 +411,7 @@
             function appendServiceMultidata(service, image, logo, link, price) {
                 // return service item for block
                 return [
-                    '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 on-mouseover service-banner" id="srv-' + service.id + '"  style="margin-bottom:25px !important">',
+                    '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 on-mouseover service-banner" id="srv-' + service.id + '"  style="margin-bottom:25px !important">',
                         '<div class="thumbnail" style="min-height:380px!important;">',
                             image,
                             '<div class="caption">',
@@ -527,7 +527,7 @@
                 //  return article for block view
                 //
                 return [
-                    '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 on-mouseover service-banner" id="article-' + article.id + '"  style="margin-bottom:25px !important">',
+                    '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 on-mouseover service-banner" id="article-' + article.id + '"  style="margin-bottom:25px !important">',
                         '<div class="thumbnail" style="min-height:480px!important;">',
                             '<div class="caption">',
                                 '<div style="min-height:300px; max-height:300px">',
