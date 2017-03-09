@@ -20,7 +20,7 @@ The AoD platform particularly focuses on solving accessibility challenges for pe
 - `CPU cores`: > 1
 - `Disk space`: > 20 GB
 
-The AoD project has been deployed and tested in both linux environment (`Ubuntu 14.04`) and `Windows 8/10`.
+The AoD project has been deployed and tested in both linux environment (`Ubuntu 14.04 or 16.04`) and `Windows 8/10`.
 
 
 ### Step 1: Install dependencies and AoD
