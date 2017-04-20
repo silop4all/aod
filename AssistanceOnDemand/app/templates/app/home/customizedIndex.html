@@ -319,16 +319,17 @@
                                 // Load provider logo
                                 // 
                                 var logo = "";
-                                //if (services[i].logo !== null || services[i].logo !== undefined || services[i].logo !== "") {
-                                //    logo += '<img src="/media/app/users/logos/' + services[i].logo + '" alt="' + services[i].logo + '" class="img-circle img-responsive" style="border: 1px solid whitesmoke;  min-height: 126px; max-height: 126px" />';
-                                //}
-                                //else {
-                                logo += [
-                                    '<span class="fa-stack fa-1x" >',
-                                        '<i class="fa fa-circle fa-stack-2x" style="color: #d7d5d5;"></i>',
-                                        '<i class="fa fa-user fa-stack-1x" style="color: #ebebea"></i>',
-                                    '</span>'
-                                ].join('');
+                                if (services[i].owner_logo !== "") {
+                                    logo += '<img src="' + services[i].owner_logo + '" alt="' + services[i].owner_logo + '" class="img-circle img-responsive" style="border: 1px solid #fff;" />';
+                                }
+                                else {
+                                    logo += [
+                                        '<span class="fa-stack fa-1x" >',
+                                            '<i class="fa fa-circle fa-stack-2x" style="color: #d7d5d5;"></i>',
+                                            '<i class="fa fa-user fa-stack-1x" style="color: #ebebea"></i>',
+                                        '</span>'
+                                    ].join('');
+                                }
                                 //
                                 // Service link
                                 //

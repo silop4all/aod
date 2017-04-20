@@ -139,7 +139,7 @@ class ServiceSerializer(serializers.ModelSerializer):
     total_reviews = serializers.SerializerMethodField()
     average_rating = serializers.SerializerMethodField()
     image_path = serializers.SerializerMethodField()
-
+    owner_logo = serializers.SerializerMethodField()
 
     def get_total_reviews(self, obj):
         """Count the number of consumer reviews per service"""
@@ -159,6 +159,14 @@ class ServiceSerializer(serializers.ModelSerializer):
         except:
             return None
 
+    def get_owner_logo(self, obj):
+        """Get the logo of service owner if any"""
+        user_logo = obj.owner.user.logo
+        if user_logo not in ["", None]:
+            return settings.MEDIA_URL + "app/users/logos/" + str(user_logo)
+        else:
+            return ""
+
     class Meta:
         model = Services
         fields = ('id', 'title', 'description', 'categories', 'type', 'charging_policy', 'owner', 
@@ -167,7 +175,7 @@ class ServiceSerializer(serializers.ModelSerializer):
             'language_constraint', 'location_constraint', 'latitude', 'longitude',  
             'created_date', 'modified_date', 'image_path', 'image',
             'languages', 'keywords', 'configuration', 'technical_support',
-            'service_consumers', 'total_reviews', 'average_rating',
+            'service_consumers', 'total_reviews', 'average_rating', 'owner_logo',
         )
 
 class SimpleServiceSerializer(serializers.ModelSerializer):

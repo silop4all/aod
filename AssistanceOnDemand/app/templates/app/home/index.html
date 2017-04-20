@@ -584,16 +584,17 @@
                             // Load provider logo
                             // 
                             var logo = "";
-                            //if (response[i].logo !== null || response[i].logo !== undefined || response[i].logo !== "") {
-                            //    logo += '<img src="/media/app/users/logos/' + response[i].logo + '" alt="' + response[i].logo + '" class="img-circle img-responsive" style="border: 1px solid whitesmoke;  min-height: 126px; max-height: 126px" />';
-                            //}
-                            //else {
-                            logo += [
-                                '<span class="fa-stack fa-1x" >',
-                                    '<i class="fa fa-circle fa-stack-2x" style="color: #d7d5d5;"></i>',
-                                    '<i class="fa fa-user fa-stack-1x" style="color: #ebebea"></i>',
-                                '</span>'
-                            ].join('');
+                            if (response[i].owner_logo !== "") {
+                                logo += '<img src="' + response[i].owner_logo + '" alt="' + response[i].owner_logo + '" class="img-circle img-responsive" style="border: 1px solid #fff;" />';
+                            }
+                            else {
+                                logo += [
+                                    '<span class="fa-stack fa-1x" >',
+                                        '<i class="fa fa-circle fa-stack-2x" style="color: #d7d5d5;"></i>',
+                                        '<i class="fa fa-user fa-stack-1x" style="color: #ebebea"></i>',
+                                    '</span>'
+                                ].join('');
+                            }
                             //
                             // Service link
                             //
@@ -789,7 +790,7 @@
             if ( type === "M" ) {
                 return '<abbr title="' + gettext('Machine-based service') + '"><span class="fa fa-laptop pull-right fa-2x" ></span></abbr>';
             }
-            return '<abbr title="' + gettext('Human-based service') + '"><span class="fa fa-users pull-right fa-2x" ></span></abbr>';
+            return '<abbr title="' + gettext('Human-based service') + '"><span class="fa fa-user pull-right fa-2x" ></span></abbr>';
         }
 
         function resultsNotFound() {
