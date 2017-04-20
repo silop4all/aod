@@ -1568,7 +1568,12 @@ class CustomSearchEngine(MultipleModelAPIView):
             if technicalSupport not in [u'', '', None]:
                 for i in str(technicalSupport).split(','):
                     if i.isdigit():
-                        technicalSupportList.append(i)
+                        # 0 value maps to video resources
+                        if int(i) == 0:
+                            for t_id in TechnicalSupport.objects.filter(alias__icontains="video").values_list('id', flat=True):
+                                technicalSupportList.append(t_id)
+                        else:
+                            technicalSupportList.append(i)
                 if type(technicalSupportList) is list and len(technicalSupportList):
                     available = set(list(ServicesToTechnicalSupport.objects.\
                         filter(technical_support_id__in=technicalSupportList).values_list('service_id', flat=True)))

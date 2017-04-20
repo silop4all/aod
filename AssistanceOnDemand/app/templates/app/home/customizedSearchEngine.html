@@ -44,13 +44,21 @@
                     <div id="downloads-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="downloads-title">
                         <div class="panel-body" style="background-color:whitesmoke">
                             {% for i in technicalSupport %}
+                                {% if i.alias == "document" or i.alias == "shared_link" %}
                                 <div class="checkbox">
                                     <input type="checkbox" id="technicalSupport-{{ i.id }}" name="technicalSupport" data-id="{{ i.id }}" data-name="technicalSupport-{{ i.id }}"/> 
                                     <label for="technicalSupport-{{ i.id }}" style="line-height:initial; vertical-align: super">{{ i.type|capfirst }}</label>
                                 </div>
+                                {% endif %}
                             {% empty %}
                                 {% trans 'Downloads topics not found' %}
                             {% endfor %}
+                            {% if technicalSupport %}
+                            <div class="checkbox">
+                                <input type="checkbox" id="technicalSupport-0" name="technicalSupport" data-id="0" data-name="technicalSupport-0"/> 
+                                <label for="technicalSupport-0" style="line-height:initial; vertical-align: super">{% trans 'Video' %}</label>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
