@@ -47,6 +47,9 @@ endpoints = patterns(
     #   Search engine   
     #==================================
     url(r'^services/search$',                       rviews.SearchEngine.as_view(),                      name="search_engine"),
+    # url(r'^services/refine-search$',                rviews.RecommendationEngine.as_view(),              name="refine_search_engine"),
     url(r'^custom/search$',                         rviews.CustomSearchEngine.as_view(),                name="custom_search_engine"),
+    url(r'^services/search/keywords$',              rviews.KeywordsEngine.as_view(),                    name="keywords_search_engine"),
+    url(r'^custom/services/search/keywords$',       rviews.CustomKeywordsEngine.as_view(),              name="custom_keywords_search_engine"),
 
 )

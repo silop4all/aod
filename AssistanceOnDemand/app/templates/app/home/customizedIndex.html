@@ -26,10 +26,11 @@
                 <div class="col-sm-2 col-md-2 col-lg-2"></div>
                 <div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
                     <div class="">
-                        <input type="text" class="form-search form-control" placeholder="{% trans 'e.g.' %} {% trans 'sign language' %}" style="max-width: 1025px !important; display:initial !important; width: 75%;">
-                        <span class="">
-                        <button class="btn btn-default form-inline disabled" type="button">{% trans 'Search' %}</button>
-                        </span>
+                        <form name="KeywordSearchEngine" id="KeywordSearchEngine" method="GET" action="{% url 'private_api:custom_keywords_search_engine' %}">
+                            <input type="text" class="form-search form-control" id='alter-text-search' placeholder="{% trans 'e.g.' %} {% trans 'sign language' %}" style="max-width: 1025px !important; display:initial !important; width: 75%;">
+                            <span class="">
+                            <button class="btn btn-default form-inline" id="alter-text-search-btn" type="button">{% trans 'Search' %}</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -154,7 +155,7 @@
                 //
                 AoD.loadTreeCategories("#tree");
 
-                getResults(form, null);
+                getResults(form, "{% url 'private_api:custom_search_engine' %}", null);
 
                 $(".panel-toggle-arrows").click(function () {
                     toggleArrows($(this));
@@ -210,7 +211,8 @@
                     search.services.push($(this).data().id);
                 });
 
-                getResults(form, search);
+                var query = parseRequest(search);
+                getResults(form, "{% url 'private_api:custom_search_engine' %}", query);
 
             }).on("mouseenter", ".on-mouseover > div", function () {
                 //
@@ -246,6 +248,21 @@
                 //
                 $("#articles-result-listview").addClass('hidden');
                 $("#articles-result-multidata").removeClass('hidden');
+
+            }).on('click', "#alter-text-search-btn", function(event){
+                var form = "#KeywordSearchEngine";
+                var query = $("#alter-text-search").val();
+                getResults(form, $(form).attr('action'), {'q': query});
+            }).on('keypress', "#alter-text-search", function(event){ 
+                //
+                // On Enter press, force form submission
+                //
+                if(event.which == 13) {
+                    $("#alter-text-search-btn").click();
+                }
+            }).on('submit', "#KeywordSearchEngine", function(event){
+                event.preventDefault();
+                $("#alter-text-search-btn").click();
             });
 
 
@@ -263,14 +280,13 @@
                 }
             }
 
-            function getResults(form, query) {
+            function getResults(form, url, payload) {
                 //
                 // Retrieve the search results and append them
                 //
-                payload = parseRequest(query);
                 $.ajax({
                     type: $(form).attr('method'),
-                    url: $(form).attr('action'),
+                    url: url,
                     data: payload,
                     beforeSend: function (xhr, settings) {
                         $.ajaxSettings.beforeSend(xhr, settings);

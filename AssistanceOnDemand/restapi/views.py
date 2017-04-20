@@ -1,4 +1,4 @@
-
+import re
 import sys
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics, filters, status, viewsets
@@ -1602,3 +1602,141 @@ class CustomSearchEngine(MultipleModelAPIView):
             (Services.objects.filter(pk__in=uniqueServiceList),ServiceSerializer,'services'),
             (articlesList.filter(service_id__in=uniqueServiceList),ArticleSerializer,'articles')
         ]
+
+
+class KeywordsEngine(generics.ListAPIView):
+    """
+        Retrieve services based on user keywords
+        ---
+        GET:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: q
+                description: Keywords (delimeters ,;| and space)
+                type: string
+                paramType: query
+                required: true
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 500
+                message: Interval Server Error
+
+            consumes:
+              - application/json
+            produces:
+              - application/json
+              - application/xml
+    """
+
+    serializer_class = ServiceSerializer
+
+    def get_queryset(self):
+        """Filter services based on user keywords"""
+
+        # ignore terms with less than 3 characters
+        user_input = self.request.GET.get('q', None)
+
+        if user_input not in ["", None]:
+          user_input = user_input.lower()
+          keywords = re.split('[,;| ]+', user_input)
+          keyword_list = [str(term) for term in keywords if len(term) > 2]
+
+          services_list = list()
+          for keyword in keyword_list:
+              ids_list = Services.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword)).exclude(is_visible=False).values_list('id', flat=True)
+              services_list += ids_list
+
+          return Services.objects.filter(pk__in=services_list).distinct().order_by('title')
+
+        else:
+          return Services.objects.exclude(is_visible=False).order_by('title')
+
+
+class CustomKeywordsEngine(MultipleModelAPIView):
+    """
+        Retrieve services based on user keywords
+        ---
+        GET:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: q
+                description: Keywords (delimeters ,;| and space)
+                type: string
+                paramType: query
+                required: true
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 500
+                message: Interval Server Error
+
+            consumes:
+              - application/json
+            produces:
+              - application/json
+              - application/xml
+    """
+
+    objectify = True
+
+    def get_queryList(self):
+        """Filter services based on user keywords"""
+
+        # ignore terms with less than 3 characters
+        user_input = self.request.GET.get('q', None)
+
+        if user_input not in ["", None]:
+            user_input = user_input.lower()
+            keywords = re.split('[,;| ]+', user_input)
+            keyword_list = [str(term) for term in keywords if len(term) > 2]
+
+            services_list = list()
+            articles_list = list()
+            for keyword in keyword_list:
+                ids_list = Services.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword)).exclude(is_visible=False).values_list('id', flat=True)
+                services_list += ids_list
+                article_ids_list = Article.objects.filter(Q(title__icontains=keyword) | Q(content__icontains=keyword)).exclude(visible=False).values_list('id', flat=True)
+                articles_list += article_ids_list
+
+            return [
+                (Services.objects.filter(pk__in=services_list).distinct().order_by('title'), ServiceSerializer,'services'),
+                (Article.objects.filter(pk__in=articles_list).distinct().order_by('title'), ArticleSerializer,'articles')
+            ]
+
+        else:
+
+            return [
+                (Services.objects.exclude(is_visible=False).order_by('title'), ServiceSerializer,'services'),
+                (Article.objects.exclude(visible=False).order_by('title'), ArticleSerializer,'articles')
+            ]
