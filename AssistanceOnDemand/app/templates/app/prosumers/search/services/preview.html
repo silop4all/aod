@@ -191,7 +191,21 @@
                                     <h5><abbr title="{% trans 'Declares the type of service' %}">{% trans 'Type' %}:</abbr></h5>
                                 </div>
                                 <div class="col-md-7 col-sm-7 col-lg-7 col-xs-6" >
-                                    <h5>{% if service.type == 'H' %}  {% trans 'Human based' %} {% else %}  {% trans 'Machine based' %} {% endif %}</h5>
+                                    <h5>
+                                        {% if service.type == 'H' %}  
+                                            <span class="fa fa-user" ></span> {% trans 'Human based' %} 
+                                        {% elif service.type == 'M' %}  
+                                            <span class="fa fa-laptop" ></span> {% trans 'Machine based' %} 
+                                        {% elif service.type == 'C' %}  
+                                            <span class="fa fa-users" ></span> {% trans 'Community based' %}                                             
+                                        {% elif service.type == 'I' %}  
+                                            <span class="fa fa-apple" ></span> {% trans 'iOS app' %} 
+                                        {% elif service.type == 'W' %}  
+                                            <span class="fa fa-windows" ></span> {% trans 'Windows app' %} 
+                                        {% elif service.type == 'A' %}  
+                                            <span class="fa fa-android" ></span> {% trans 'Android app' %} 
+                                        {% endif %}
+                                    </h5>
                                 </div>
                             </div>
                             {% if service.version %}

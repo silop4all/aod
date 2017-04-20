@@ -28,7 +28,7 @@
                     <div class="">
                         <form name="KeywordSearchEngine" id="KeywordSearchEngine" method="GET" action="{% url 'private_api:custom_keywords_search_engine' %}">
                             <input type="text" class="form-search form-control" id='alter-text-search' placeholder="{% trans 'e.g.' %} {% trans 'sign language' %}" style="max-width: 1025px !important; display:initial !important; width: 75%;">
-                            <span class="">
+                            <span class=""></span>
                             <button class="btn btn-default form-inline" id="alter-text-search-btn" type="button">{% trans 'Search' %}</button>
                         </form>
                     </div>
@@ -602,7 +602,21 @@
                 if ( type === "M" ) {
                     return '<abbr title="' + gettext('Machine-based service') + '"><span class="fa fa-laptop pull-right fa-2x" ></span></abbr>';
                 }
-                return '<abbr title="' + gettext('Human-based service') + '"><span class="fa fa-users pull-right fa-2x" ></span></abbr>';
+                else if ( type === "H" ) {
+                    return '<abbr title="' + gettext('Human-based service') + '"><span class="fa fa-user pull-right fa-2x" ></span></abbr>';
+                }
+                else if ( type === "C" ) {
+                    return '<abbr title="' + gettext('Community-based service') + '"><span class="fa fa-users pull-right fa-2x" ></span></abbr>';
+                }
+                else if ( type === "I" ) {
+                    return '<abbr title="' + gettext('iOS service') + '"><span class="fa fa-apple pull-right fa-2x" ></span></abbr>';
+                }
+                else if ( type === "W" ) {
+                    return '<abbr title="' + gettext('Windows service') + '"><span class="fa fa-windows pull-right fa-2x" ></span></abbr>';
+                }
+                else if ( type === "A" ) {
+                    return '<abbr title="' + gettext('Android service') + '"><span class="fa fa-android pull-right fa-2x" ></span></abbr>';
+                }
             }
 
             function resultsNotFound() {

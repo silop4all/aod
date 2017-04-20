@@ -147,13 +147,24 @@
         });
 
         $(document).ready(function(){
+            var customizedVersion = "{{customizedVersion}}";
+            var services_type_list = [];
+            if (customizedVersion === "False"){
+                services_type_list = [
+                    { label: gettext("Human based"), value: {{servicesTypes.human}} },
+                    { label: gettext("Machine based"), value: {{servicesTypes.machine}}  },
+                ];
+            }
+            else {
+                services_type_list = [
+                    { label: gettext("iOS"), value: {{servicesTypes.ios}} },
+                    { label: gettext("Android"), value: {{servicesTypes.android}}  },
+                    { label: gettext("Windows"), value: {{servicesTypes.windows}}  },
+                ];
+            }
             Morris.Donut({
                 element: 'donut-services-type',
-                data: [
-                      { label: gettext("Human based"), value: {{servicesTypes.human}} },
-                      { label: gettext("Machine based"), value: {{servicesTypes.machine}}  },
-                ],
-                //colors: ["#fff", "#000"],
+                data: services_type_list,
                 resize: true,
                 formatter: function (x) { return x + " " + gettext("services")}
             });

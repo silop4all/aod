@@ -870,7 +870,7 @@ def profile(request, username=None):
                 'media_url': "/profile/media/" + str(pk),
                 'error': False,
                 'cover': settings.MEDIA_URL + "app/users/covers/" + str(customer.cover),
-                'user_logo': settings.MEDIA_URL + "app/users/logos/" + str(customer.logo),   
+                'user_logo': settings.MEDIA_URL + "app/users/logos/" + str(customer.logo),
                 'readonly': settings.OPENAM_INTEGRATION
             }))
     except:
@@ -1259,28 +1259,34 @@ class ProviderServices(View):
                 "url": settings.SOCIAL_NETWORK_WEB_SERVICES['base'] + settings.SOCIAL_NETWORK_WEB_SERVICES['services']['delete']
             }
 
+            services = Services.objects.exclude(type='C')
+
             return render(request, template,
                 context_instance = RequestContext(request,
                 {
                     'year':datetime.now().year,
                     'servicesTypes': {
                         'human': Services.objects.filter(type='H', owner=_owner.id).count(), 
-                        'machine': Services.objects.filter(type='M', owner=_owner.id).count()
+                        'machine': Services.objects.filter(type='M', owner=_owner.id).count(),
+                        'android': Services.objects.filter(type='A', owner=_owner.id).count(), 
+                        'windows': Services.objects.filter(type='W', owner=_owner.id).count(), 
+                        'ios': Services.objects.filter(type='I', owner=_owner.id).count()
                     },
                     'chargingModels': {
-                        'free': Services.objects.filter(charging_policy=1, owner=_owner.id).count(),
-                        'paid': Services.objects.exclude(charging_policy=1,  owner=_owner.id).count()
+                        'free': services.exclude(type='C').filter(charging_policy=1, owner=_owner.id).count(),
+                        'paid': services.exclude(type='C').exclude(charging_policy=1).filter(owner=_owner.id).count()
                     },
                     'locationLimitations': {
-                        'with': Services.objects.filter(location_constraint=True,  owner=_owner.id).count(),
-                        'without': Services.objects.filter(location_constraint=False,  owner=_owner.id).count()
+                        'with': services.exclude(type='C').filter(location_constraint=True,  owner=_owner.id).count(),
+                        'without': services.exclude(type='C').filter(location_constraint=False,  owner=_owner.id).count()
                     },
                     'lingualLimitations': {
-                        'with': Services.objects.filter(language_constraint=True,  owner=_owner.id).count(),
-                        'without': Services.objects.filter(language_constraint=False,  owner=_owner.id).count()
+                        'with': services.exclude(type='C').filter(language_constraint=True,  owner=_owner.id).count(),
+                        'without':services.exclude(type='C').filter(language_constraint=False,  owner=_owner.id).count()
                     },
                     'services': Services.objects.filter(owner=_owner.id),
-                    "integrationWithSocialNetwork": integrationWithSocialNetwork
+                    "integrationWithSocialNetwork": integrationWithSocialNetwork,
+                    "customizedVersion": settings.CUSTOMIZATION_PROCESS
                 })
             )
         except:

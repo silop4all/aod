@@ -72,10 +72,30 @@ $(document).on('click', '.nas-select-btn', function () {
                 $("#bought-service-type").html("<span class='fa fa-users fa-lg'></span>" + gettext("Human-based"));
                 $("#bought-service-installation").text(response.installation_guide);
             }
-            else {
+            else if (response.type == "M") {
                 $(".bought-machine-service").removeClass('hidden');
                 $("#bought-service-type").html("<span class='fa fa-laptop fa-lg'></span>" + gettext("Machine-based"));
                 $("#bought-service-license").html(response.license + " (version: " + response.version + ")");
+                $("#bought-service-installation").text(response.installation_guide);
+            }
+            else if (response.type == "C") {
+                $(".bought-machine-service").removeClass('hidden');
+                $("#bought-service-type").html("<span class='fa fa-users fa-lg'></span>" + gettext("Community-based"));
+                $("#bought-service-installation").text(response.installation_guide);
+            }
+            else if (response.type == "I") {
+                $(".bought-machine-service").removeClass('hidden');
+                $("#bought-service-type").html("<span class='fa fa-apple fa-lg'></span>" + gettext("iOS app"));
+                $("#bought-service-installation").text(response.installation_guide);
+            }
+            else if (response.type == "W") {
+                $(".bought-machine-service").removeClass('hidden');
+                $("#bought-service-type").html("<span class='fa fa-windows fa-lg'></span>" + gettext("Windows app"));
+                $("#bought-service-installation").text(response.installation_guide);
+            }
+            else if (response.type == "A") {
+                $(".bought-machine-service").removeClass('hidden');
+                $("#bought-service-type").html("<span class='fa fa-android fa-lg'></span>" + gettext("Android app"));
                 $("#bought-service-installation").text(response.installation_guide);
             }
 
@@ -300,10 +320,24 @@ var getMap = function getMap(obj, elemID) {
 
 
 function setTypeFormatter(value, row, index) {
-    if (value == "H") {
-        return '<span class="fa fa-users fa-lg"></span>' + gettext('Human-based');
+    if (value === "M") {
+        return '<span class="fa fa-laptop pull-right fa-2x" ></span>' + gettext('Machine-based');
     }
-    return '<span class="fa fa-laptop fa-lg"></span>' + gettext('Machine-based');
+    else if (value === "H") {
+        return '<span class="fa fa-user pull-right fa-2x" ></span>' + gettext('Human-based');
+    }
+    else if (value === "C") {
+        return '<span class="fa fa-users pull-right fa-2x" ></span>' + gettext('Community-based');
+    }
+    else if (value === "I") {
+        return '<span class="fa fa-apple pull-right fa-2x" ></span>' + gettext('iOS service');
+    }
+    else if (value === "W") {
+        return '<span class="fa fa-windows pull-right fa-2x" ></span>' + gettext('Windows service');
+    }
+    else if (value === "A") {
+        return '<span class="fa fa-android pull-right fa-2x" ></span>' + gettext('Android service');
+    }
 }
 
 function setRemoveFormatter(value, row, index) {

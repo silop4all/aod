@@ -18,10 +18,24 @@ from filebrowser.fields import FileBrowseField
 from colorful.fields import RGBColorField
 
 
-TYPE_CHOICES = (
-    ('H', _('Human Based')),
-    ("M", _("Machine Based"))
+if settings.CUSTOMIZATION_PROCESS:
+    TYPE_CHOICES = (
+        ('I', _('iOS')),
+        ("A", _("Android")),
+        ("W", _("Windows"))
+    )
+else:
+    TYPE_CHOICES = (
+        ('H', _('Human Based')),
+        ("M", _("Machine Based"))
+    )
+
+COMMUNITY_CHOICES = (
+    ("C", _("Community Based")),
 )
+
+ALL_CHOICES = TYPE_CHOICES + COMMUNITY_CHOICES
+
 
 class Logo(models.Model):
     """

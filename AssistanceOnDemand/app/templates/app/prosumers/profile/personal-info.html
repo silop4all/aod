@@ -7,7 +7,7 @@
             <a href="#" class="img-responsive" title="{% trans 'Update logo' %}" id="edit-logo" onclick="return addLogo();" style="position:relative;" >
                 
                 {% if object.logo %}
-                    <img src="{{ user_logo }}" alt="{{ object.name}}_{{ object.lastname}}_logo" class="img-rounded personal-info-profile-img" style="height:150px;width:150px; cursor: pointer" />                                  
+                    <img src="{{ user_logo }}" alt="{{ object.name}}_{{ object.lastname}}_logo" class="img-rounded personal-info-profile-img" style="height:150px;width:150px; cursor: pointer" />
                     <label id="text" class="hidden"><i class="fa fa-camera fa-lg"></i> {% trans 'Upload logo' %}</label>
                 {% else %}
                 <div style="cursor: pointer">
