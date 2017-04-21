@@ -134,7 +134,7 @@ body {
   min-height: 100%;
   padding-top: 50px;
   padding-bottom: 20px;
-  line-height: 2em !important;
+  /*line-height: 2em !important;*/
 }
 a:focus {
   outline: thin dotted;
@@ -352,8 +352,8 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-size: 14px;
-  line-height: 1.428571429;
+  /*font-size: 14px;*/
+  /*line-height: 1.428571429;*/
   color: #333;
   background-color: rgba(223, 225, 225, 0.721569) !important;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
