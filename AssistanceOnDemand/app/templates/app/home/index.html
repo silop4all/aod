@@ -44,7 +44,7 @@
 
         <section class="row">
             {% block leftcolumn %}
-                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
                     {% block searchModule %}
                         {% include "app/home/searchEngine.html" %}
                     {% endblock searchModule %}
@@ -72,7 +72,7 @@
             {% endblock leftcolumn %}
             
             {% block rightcolumn %}
-                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9">
                     <div class="row">
                         <div class=" col-sm-6 col-md-6 col-lg-6 col-xs-12 form-group">
                             <label for="sortby" class="pull-left" style="padding-right:3px">{% trans 'Sort by' %} </label>
@@ -102,7 +102,7 @@
                     <hr class="service-hr"/>
                     {% block results %}
                         <div class="row clearfix">
-                            <div class="col-lg-12 col-md-12 col-sm-12 margin-bottom-10">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 margin-bottom-10">
                                 <strong><span id="results_set"></span></strong>
                             </div>
                         </div>
@@ -610,12 +610,12 @@
                             //
                             // Load service in block view
                             //
-                            multidata += appendServiceMultidata(response[i], image, logo, link, price);
+                            multidata += appendServiceMultidata(response[i], image, logo, url, link, price);
                             $("#services-result-multidata").html(multidata);
                             //
                             // Load services in list view
                             //
-                            listview += appendServiceListView(response[i], image, logo, link, price);
+                            listview += appendServiceListView(response[i], image, logo, url, link, price);
                             $("#services-result-listview").html(listview);
                             //
                             // Set the stars of any service based on its rating value
@@ -672,10 +672,10 @@
             return (value !== null && value !== "") ? name + "=" + value + "&" : "";
         }
 
-        function appendServiceMultidata(service, image, logo, link, price) {
+        function appendServiceMultidata(service, image, logo, url, link, price) {
             // return service item for block
             return [
-                '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 on-mouseover service-banner" id="srv-' + service.id + '"  style="margin-bottom:25px !important">',
+                '<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 on-mouseover service-banner" id="srv-' + service.id + '"  style="margin-bottom:25px !important">',
                     '<div class="thumbnail" style="min-height:380px!important;">',
                         image,
                         '<div class="caption">',
@@ -683,8 +683,10 @@
                                 '<span class="fa-stack fa-3x img-responsive img-circle" style="margin-top:-55px">',
                                     logo,
                                 '</span>',
-                                    '<div class="row col-lg-12 col-sm-12 col-md-12 col-xs-12">',
-                                        '<h6 class="text-center" title="'+ service.title +'">' + ((service.title.length > 28) ?  service.title.substring(0, 28) + '...' : service.title.substring(0, 28)) + '</h6>',
+                                    '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">',
+                                        '<a href="'+url+'" >',
+                                            '<h5 class="text-center" title="'+ service.title +'">' + ((service.title.length > 28) ?  service.title.substring(0, 28) + '...' : service.title.substring(0, 28)) + '</h5>',
+                                        '</a>',
                                     '</div>',
                                 '<div class="row">',
                                     '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-justify">',
@@ -726,7 +728,7 @@
             ].join('');
         }
 
-        function appendServiceListView(service, image, logo, link, price) {
+        function appendServiceListView(service, image, logo, url, link, price) {
             // return service item for list
             return [
                 '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 on-mouseover service-banner" id="srv-' + service.id + '" style="margin-bottom: 3% ;min-height:inherit; margin-left:5px">',
@@ -742,7 +744,9 @@
                                     '</span>',
                                 '</div>',
                                 '<div class="col-sm-9 col-md-9 col-lg-9">',
-                                    '<h4>' + service.title + '</h4>',
+                                    '<a href="' + url +'" >',
+                                        '<h4>' + service.title + '</h4>',
+                                    '</a>',
                                     '<div class="row">',
                                         '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">',
                                             '<p class="clearfix">' + ((service.description.length > 0) ? service.description.substring(0, 120) + '...' : "") + '</p>',
