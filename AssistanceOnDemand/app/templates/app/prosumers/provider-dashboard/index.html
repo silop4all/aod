@@ -90,7 +90,7 @@
                                     <div class="text-center" style="height:130px; min-height:130px; background-color: #ecebeb"><span class="fa fa-image fa-5x text-muted" style="font-size: 125px !important"></span></div>
                                 {% endif %}
                                 <div class="caption">
-                                   <a href="{% url 'public_service_view' i.id %}" class="text-center"><h3 class="text-center"> {{i.title|capfirst}}</h3></a>
+                                   <a href="{% url 'public_service_view' i.id %}" class="text-center"><h3 class="text-center"> {{i.title}}</h3></a>
                                     <div class="btn-toolbar text-center margin-bottom-10" role="group">
                                         <a href="{% url 'update_service' i.id %}" class="btn btn-success btn-sm edit-service">
                                             <span class="fa fa-edit" aria-visible="false"></span> {% trans 'Edit'%}

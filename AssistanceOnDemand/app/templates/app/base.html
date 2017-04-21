@@ -1,4 +1,4 @@
-{% load analytical %}
+﻿{% load analytical %}
 <!DOCTYPE html>
 
 <html lang="{{LANGUAGE_CODE}}">
@@ -287,18 +287,6 @@
                 });
                 {% endif %}
 
-                /*
-                $("#show-hide").click(function(){
-                    console.log($(this).attr('aria-pressed'));
-                    if ( $(this).attr('aria-pressed') === false) {
-                        $("iframe").css("height", "300px");
-                    }
-                    else {
-                        $("iframe").css("height", "200px");
-                    }
-                });
-                */
-
                 $(".nav.navbar-nav li.dropdown").mouseover(function () {
                     $(this).addClass('open');
                 }).mouseleave(function () {
@@ -318,7 +306,30 @@
                     $("#current_language_code").attr('value', $(this).attr('id'));
                     $('#submit_language_code').submit();
                 });
-            })
+
+
+                $('iframe').ready(function() {
+                    frameContents = $("iframe").contents();
+                    /*
+                    $("iframe#show-hide").change(function(){
+                        alert('show-hide');
+                        frameContents.find("#show-hide").css("height", "500px");
+                        console.log($(this).attr('aria-pressed'));
+
+                        if ( $(this).attr('aria-pressed') === false) {
+                            $("iframe").css("height", "300px");
+                        }
+                        else {
+                            $("iframe").css("height", "200px");
+                        }
+                    });
+                    */
+                }).on('click', "#reset", function(){
+                    alert('paizei');
+                });
+
+
+            });
         </script>
 
         {% block scripts %}
