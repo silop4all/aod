@@ -61,8 +61,16 @@
                         {% if service %}
                             {% if service.type == 'M'%}
                                 {% trans 'The operation of this service is machine-based' %}.
-                            {% else %}
+                            {% elif service.type == 'H' %}
                                 {% trans 'The operation of this service is human-based' %}.
+                            {% elif service.type == 'C' %}
+                                {% trans 'The operation of this service is community-based' %}.	
+                            {% elif service.type == 'I' %}
+                                {% trans 'It is an iOS app' %}.	
+                            {% elif service.type == 'A' %}
+                                {% trans 'It is an android app' %}.	
+                            {% elif service.type == 'W' %}
+                                {% trans 'It is a windows app' %}.									
                             {% endif %}
                         {% endif %}
                     </p>
