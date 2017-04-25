@@ -856,7 +856,7 @@ var AoD = AoD || (function () {
                         options += [
                             ((childs.length > 0) ? startListInvisible : startList),
                             '<input type="checkbox" id="category-' + data[root].id + '" name="category-' + data[root].id + '" data-id="' + data[root].id + '" data-name="category-' + data[root].id + '"/>',
-                            '<label for="category-' + data[root].id + '" class="tree-items"> ' + data[root].title + '</label>',
+                            '<label for="category-' + data[root].id + '" class="tree-items padding-left-5"> ' + data[root].title + '</label>',
                         ].join('');
 
                         for (var i in childs) {
@@ -864,7 +864,7 @@ var AoD = AoD || (function () {
                             options += [
                                 ((leafs.length > 0) ? startListInvisible : startList),
                                 '<input type="checkbox" id="category-' + childs[i].id + '" name="category-' + childs[i].id + '" data-id="' + childs[i].id + '" data-name="category-' + childs[i].id + '"/>',
-                                '<label for="category-' + childs[i].id + '" class="tree-items"> ' + childs[i].title + '</label>',
+                                '<label for="category-' + childs[i].id + '" class="tree-items padding-left-5"> ' + childs[i].title + '</label>',
                             ].join('');
 
 
@@ -872,7 +872,7 @@ var AoD = AoD || (function () {
                                 options += [
                                     startList,
                                         '<input type="checkbox" id="category-' + leafs[j].id + '" name="category-' + leafs[j].id + '" data-id="' + leafs[j].id + '" data-name="category-' + leafs[j].id + '"/>',
-                                            '<label for="category-' + leafs[j].id + '" class="tree-items"> ' + leafs[j].title + '</label>',
+                                            '<label for="category-' + leafs[j].id + '" class="tree-items padding-left-5"> ' + leafs[j].title + '</label>',
                                     endList
                                 ].join('');
                             }
