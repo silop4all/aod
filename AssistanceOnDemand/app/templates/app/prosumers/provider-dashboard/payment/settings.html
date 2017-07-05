@@ -1,0 +1,131 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} AoD | {% trans 'My offerings'%} {% endblock title %}
+
+ {% load staticfiles %}
+
+{% block extraCss %}
+{% endblock extraCss %}
+
+
+{% block content %}
+<div class="container body-content" style="margin-top: 50px; padding-bottom:2em;">
+
+    {% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb" title="{% trans 'Home page' %}"><span class="fa fa-home"></span> {% trans 'Home' %}</a></li>
+        <li class="">{% trans 'Payment settings'%}</li>
+    </ol>
+    {% endblock breadcrumb %}
+
+
+    <main role="main">
+        <section class="">
+            <div class="margin-bottom-25 col-lg-12 col-md-12 col-sm-12 highlight-service-banner platform-info-box">
+                <h1>{% trans 'Instructions for service providers'%}</h1>
+                <hr class="service-hr">
+                <p >
+                    {% blocktrans %}
+                    Assistance on Demand platform uses the Paypal as a payment gateway. If you want to provide services to other users including a fee, you have to enter here the credentials
+                    of your Paypal app and grant with permissions the platform to use your credentials for the interconnection with the Paypal services.
+                    {% endblocktrans %} 
+                </p>
+                <p>
+                    {% trans 'Each provider should follow the next steps in order to sell services:' %}
+                    <ol>
+                        <li>
+                            {% trans 'Create a bussiness account in Paypal' %} (<a href="https://www.sandbox.paypal.com/us/webapps/mpp/home" target="_blank">{% trans 'here' %}</a>)
+                        </li>
+                        <li>
+                            {% trans 'Create a application in Paypal and retrieve the client id and client secret of it' %}
+                        </li>
+                        <li>
+                            {% trans 'Enter the client id and client secret of the application below' %}
+                        </li>                        
+                        <li>
+                            {% trans 'Overview the list of your services and offer one service with a fee' %} (<a href="{% url 'provider_dashboard' %}" target="_blank">{% trans 'here' %}</a>)
+                        </li>                        
+                    </ol>    
+                </p>    
+                <p class="well">
+                    <span class="fa fa-exclamation-circle fa-lg text-info"></span> {% trans 'Skip the above procedure in case that you offer services for free.' %}
+                </p>        
+            </div>
+
+            <div class="margin-bottom-10 padding-bottom-20 col-lg-12 col-md-12 col-sm-12 highlight-service-banner platform-info-box" style="min-height: 400px">
+                <h1>{% trans 'Paypal/Payment settings'%}</h1>
+                <hr class="service-hr">
+                <form id="PaymentCredentials" name="PaymentCredentials" method="post" action="{% url 'payment_settings' %}">
+                    {% csrf_token %}
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{message.tags}} alert-styled-left alert-bordered text-white">
+                            <button type="button" class="close" data-dismiss="alert"><span>&times;</span><span class="sr-only">{% trans 'Close' %}</span></button>
+                            <span style="color: white">{{message|safe}}</span>
+                        </div>
+                        {% endfor %}
+                    {% endif %}                    
+                    <div class="row form-group">
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
+                            <label class="control-label">{% trans 'Paypal mode' %}</label>
+                        </div>
+                        <div class="col-sm-12 col-md-8 col-lg-8 col-xs-12">
+                           <span class="label label-success" title="{% trans 'Sandbox Paypal mode is available' %}"> <span class="fa fa-check-circle"></span> {% trans 'Sandbox' %}</span>
+                           <span class="label label-danger" title="{% trans 'Live Paypal mode is not available' %}""> <span class="fa fa-times-circle"></span> {% trans 'Live' %}</span>
+                        </div>                        
+                    </div> 
+                    <div class="row form-group">
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
+                            <label class="control-label" for="username">{% trans 'Paypal client ID' %}<span class="highlight-error-message"> *</span></label>
+                        </div>
+                        <div class="col-sm-12 col-md-8 col-lg-8 col-xs-12">
+                            <input type="text" id="username" name="username" class="form-control" form="PaymentCredentials" autocomplete="false" maxlength="128" value="{{ payment_settings.username }}" placeholder="{% trans 'confidential information' %}" required/>
+                        </div>                        
+                    </div>    
+                    <div class="row form-group">
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
+                            <label class="control-label" for="password">{% trans 'Paypal client secret' %}<span class="highlight-error-message"> *</span></label>
+                        </div>
+                        <div class="col-sm-12 col-md-8 col-lg-8 col-xs-12">
+                            <input type="text" id="password" name="password" class="form-control" form="PaymentCredentials" autocomplete="false" maxlength="128" value="{{ payment_settings.password }}" placeholder="{% trans 'confidential information' %}" required/>
+                        </div>                        
+                    </div>   
+
+                    <div class="row margin-top-10 clearfix center padding-bottom-20">
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12"><h5 class="highlight-error-message">* {% trans 'Required fields' %}</h5></div>
+                        <div class="col-sm-12 col-md-8 col-lg-8 col-xs-12">
+                            <a href="{% url 'home_page' %}" class="btn btn-default">{% trans 'Cancel' %}</a>
+                            <button type="submit" form="PaymentCredentials" class="btn btn-success">{% trans 'Submit' %}</button>
+                        </div>
+                    </div>                                     
+                </form>
+            </div>
+    </main>
+</div>
+{% endblock content %}
+
+
+{% block scripts %}    
+    <script type="text/javascript" src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery.blockUI.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery.validate.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/aod.js' %}"></script>    
+    <script type="text/javascript">
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                    xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+                }
+            }
+        });
+
+        $(document).ready(function(){
+            AoD.validatePaymentSettings("#PaymentCredentials");
+        });
+    </script>
+{% endblock scripts %}

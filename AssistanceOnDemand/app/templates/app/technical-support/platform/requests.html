@@ -1,0 +1,153 @@
+﻿{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} AoD | {{ title }} {% endblock title %}
+
+{% load staticfiles %}
+
+{% block extraCss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap-table/bootstrap-table.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
+{% endblock extraCss %}
+
+
+{% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+            <li><a href="" class="custom-inactive-breadcrumb">{% trans 'AoD community' %}</a></li>
+            <li class="active">{% trans 'Join to AoD community' %}</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <section style="padding-top:1%; padding-bottom:1%; border-radius:5px 5px;" class="col-lg-12 col-md-12 col-sm-12 highlight-service-banner platform-info-box min-height-700-px">
+            <h2>{% trans 'Join to ' %} {{ community.service.title }} {% trans 'community' %} <br /><small>{% trans 'Require access'%}</small></h2>
+            <hr class="service-hr">
+
+            <div class="col-sm-12 col-xs-12 col-md-4 col-lg-4">
+                <div class="">
+                    <div class="">
+                        <span class="fa fa-info-circle fa-lg text-info"></span> 
+                        {% blocktrans %}
+                       Terms..
+                        {% endblocktrans %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-xs-12 col-md-8 col-lg-8" style="border-left: 1px dashed #c1c1c1">
+                <form id="CommunityMemberRequest" name="CommunityMemberRequest" action="{% url 'join_aod_support_community' %}" method="post">
+                    {% csrf_token %}
+                    <div class="">
+                        <div class="row form-group margin-bottom-25">
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                                <label class="text-left control-label" for="role" title="{% trans 'Declare you expertise in the supported service' %}">{% trans 'Act as' %}<span class="highlight-error-message"> *</span></label>
+                            </div>
+                            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 s" title="{% trans 'Declare you expertise in the supported service' %}">
+                                <fieldset class="clearfix">
+                                    <input type="radio" name="role" form="CommunityMemberRequest" value="1" autofocus checked/> {% trans 'Volunteer'%}
+                                    <input type="radio" name='role' form="CommunityMemberRequest" value="0" /> {% trans 'Professional' %}
+                                </fieldset>
+                            </div>
+                        </div>
+                        <!--fee-->
+                        <div class="row form-group margin-bottom-25">
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                                <label class="text-left control-label" for="fee" title="{% trans 'Enter the fee for your support' %}">{% trans 'Fee' %}</label>
+                            </div>
+                            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="{% trans 'Enter the fee for your support' %}">
+                                <input type="text" class="form-control" min="0" name="fee" id="fee" autocomplete="off"  maxlength="10"  autofocus placeholder="empty for free support" readonly/>    
+                            </div>
+                        </div>
+                        <!--currency-->
+                        <div class="row form-group">
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                                <label class="text-left control-label" for="currency" title="{% trans 'Clarify the currency for the fee' %}">{% trans 'Currency' %}</label>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" title="{% trans 'Clarify the currency for the fee' %}">
+                                <select class="selectpicker form-control show-tick"  name="currency" id="currency" data-max-options="1" data-size="5"  data-header="{% trans 'Clarify the currency for the fee' %}" data-live-search="true" role="list" title="-- {% trans 'Select the currency' %} --" disabled>
+                                    <option value="-1" disabled selected>-- {% trans 'Clarify the currency for the fee' %} --</option> 
+                                    {% for i in currency_list %}
+                                        <option value="{{ i.letter }}">{{ i.name }}</option> 
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <!--skype-->
+                        <div class="row form-group margin-bottom-25">
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                                <label class="text-left control-label" for="skype" title="{% trans 'Enter your skype account id' %}">{% trans 'Skype id' %}<span class="highlight-error-message"> *</span></label>
+                            </div>
+                            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="{% trans 'Enter your skype account id' %}">
+                                <input type="text" class="form-control" name="skype" id="skype" autocomplete="off"  maxlength="128"  autofocus required/>    
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                                <label class="text-left control-label" for="message" >{% trans 'Free text' %}</label>
+                            </div>
+                            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12">
+                                <textarea class="form-control" rows="6"  maxlength="500" id="message" placeholder="{% trans 'type your thoughts (maximum 500 characters)' %}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row margin-top-38">
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                            <h5><span class="highlight-error-message">* {% trans 'Required fields' %}</span></h5>
+                        </div>
+                        <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12">
+                            <a href="{% url 'communities_list' %}" class="btn btn-default" form="CommunityMemberRequest" > {% trans 'Cancel' %}</a>
+                            <button type="submit" class="btn btn-success" form="CommunityMemberRequest" > {% trans 'Submit' %}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+{% endblock content %}
+
+
+
+{% block scripts %}
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script> 
+    <script type="text/javascript" src="{% static 'app/scripts/jquery.validate.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script src="{% static 'app/scripts/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+    {% with 'app/scripts/bootstrap-table/dist/locale/'|add:bootstrap_table_locale_url as bootstrap_table_locale %}
+        <script type="text/javascript" src="{% static bootstrap_table_locale %}"></script>
+    {% endwith %}
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/aod.js' %}"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            AoD.validateCommunityMember("#CommunityMemberRequest");
+
+            $("input[name='role']").change(function(){
+                var role = $("input[name='role']:checked").val();
+                console.log(role);
+                if (role == 0) {
+                    $("#fee").removeAttr("readonly");
+                    $("#currency").removeAttr("disabled");
+                    $(".selectpicker").removeClass("disabled");
+                    $("ul.selectpicker > li").removeClass("disabled");
+                }
+                else {
+                    $("#fee").attr("readonly", "readonly");
+                    $("#fee").val("");
+                    $("#currency").attr("disabled", "disabled");
+                    $("#currency").val("");
+                }
+            })
+        })
+            
+
+    </script>
+
+{% endblock %}

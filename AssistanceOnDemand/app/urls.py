@@ -83,6 +83,10 @@ patterns = patterns('',
     ## Services - consumers views
     #=========================================
     url(r'^services/(?P<pk>\d+)/$',                                 ServiceConsumerView.as_view(),                      name="service_view_page"),
+    url(r'^services/(?P<pk>\d+)/reviews/$',                         ServiceRatingView.as_view(),                        name="set_service_review"),
+    url(r'^services/(?P<pk>\d+)/usage/$',                           ServiceUsageView.as_view(),                         name="use_service"),    
+    url(r'^services/(?P<pk>\d+)/resources/download/$',              ServiceDownloadResourceView.as_view(),              name="download_service_resource"),
+    
     #=========================================
     ## Provider dashboard
     #=========================================
@@ -113,7 +117,7 @@ patterns = patterns('',
     url(r'^guided-assistance/services/temporal-setup$',             NetworkAssistanceServicesQueue.as_view(),           name="guided_assistance_temp_services"),
     url(r'^guided-assistance/services/submit$',                     NetworkAssistanceServicesSubmit.as_view(),          name="guided_assistance_submit_services"),
     url(r'^guided-assistance/services/search/keywords$',            SearchKwdNetworkAssistanceServices.as_view(),       name="guided_assistance_search_by_keywords"),
-    url(r'^guided-assistance/services/preview/(?P<consumer>\d+)/$', PreviewNetworkAssistanceServices.as_view(),         name="guided_assistance_network_preview"),
+    url(r'^guided-assistance/services/preview/(?P<user>\d+)/$',     PreviewNetworkAssistanceServices.as_view(),         name="guided_assistance_network_preview"),
     url(r'^assistance/services/(?P<pk>\d+)/configuration$',         ServiceConfigurationView.as_view()),
     #=========================================
     # AoD technical support
@@ -121,6 +125,15 @@ patterns = patterns('',
     url(r'^support/topics/$',                                       FAQTopicListView.as_view(),                         name='faq_topics'),
     url(r'^support/topics/(?P<pk>\d+)/$',                           FAQTopicView.as_view(),                             name='faq_topic'),
     url(r'^support/articles/(?P<pk>\d+)/$',                         FAQArticleView.as_view(),                           name='faq_article'),
+    url(r'^support/communities/$',                                  CommunitiesListView.as_view(),                      name='communities_list'),
+    url(r'^support/communities/services/$',                         CommunitiesView.as_view(),                          name='community'),
+    url(r'^support/communities/(?P<pk>\d+)/requests/$',             JoinCommunityView.as_view(),                        name='join_in_community'),
+    url(r'^support/communities/(?P<pk>\d+)/unjoin/$',               LeaveCommunityView.as_view(),                       name='unjoin_from_community'),
+    url(r'^support/communities/(?P<pk>\d+)/members/$',              CommunityMembersView.as_view(),                     name='community_members'),
+    url(r'^support/communities/(?P<community>\d+)/members/(?P<member>\d+)/$',  SetCommunityMemberView.as_view(),        name='manage_community_member'),
+
+    url(r'^support/aod-community/requests/$',                       PlatformCommunityRequestView.as_view(),             name='join_aod_support_community'),
+
     #=========================================
     # Presentation themes
     #=========================================
@@ -138,4 +151,25 @@ patterns = patterns('',
     # Broken links
     #=========================================
     url(r'^detect-broken-links$',                                   DetectBrokenLinks.as_view(),                        name="detect_broken_links"),
+    #=========================================
+    # try different
+    #=========================================
+    url(r'^history/users/preferences$',                             UserSearchPreferences.as_view(),                    name="track_user_search_preferences"),
+    #=========================================
+    # ML
+    #=========================================
+    url(r'^microlabora/tasks/publish$',                             PublishMLTask.as_view(),                            name="publish_ml_task"),
+    #=========================================
+    # Payment
+    #=========================================
+    url(r'^payment/settings/$',                                     PaymentSettings.as_view(),                          name="payment_settings"),
+    url(r'^services/(?P<pk>\d+)/payment/create$',                   PaymentCreateView.as_view(),                        name="create_paypal_payment"),
+    url(r'^services/(?P<pk>\d+)/payment/execute$',                  PaymentExecuteView.as_view(),                       name="execute_paypal_payment"),  
+    url(r'^services/(?P<pk>\d+)/payment/cancel$',                   PaymentCancelView.as_view(),                        name="cancel_paypal_payment"),  
+    url(r'^services/(?P<pk>\d+)/billing-agreement/create$',         BillingAgreementCreateView.as_view(),               name="create_paypal_billing_agreement"),
+    url(r'^services/(?P<pk>\d+)/billing-agreement/execute$',        BillingAgreementExecuteView.as_view(),              name="execute_paypal_billing_agreement"),
+    url(r'^services/(?P<pk>\d+)/billing-agreement/skip$',           BillingAgreementSkipView.as_view(),                 name="skip_paypal_billing_agreement"),
+    url(r'^services/(?P<pk>\d+)/billing-agreement/cancel$',         BillingAgreementCancelView.as_view(),               name="cancel_paypal_billing_agreement"),
+    
+
 ) + access + social_network + cart

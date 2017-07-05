@@ -6,6 +6,7 @@ Definition of models.
 
 from django.db import models
 from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from datetime import datetime
@@ -33,8 +34,26 @@ else:
 COMMUNITY_CHOICES = (
     ("C", _("Community Based")),
 )
-
 ALL_CHOICES = TYPE_CHOICES + COMMUNITY_CHOICES
+
+
+RECURRING_PAYMENT_TYPE_CHOICES = (
+    ("Fixed", "Fixed cycles"),
+    ("Infinite", "Infirit or zero cycles")
+)
+RECURRING_PAYMENT_DEF_TYPE_CHOICES = (
+    ("Regular", "Regular payment"),
+    ("Trial", "Trial payment")
+)
+RECURRING_PAYMENT_FREQUENCY_CHOICES = (
+    ("MONTH", _("Month")), 
+    ("DAY", _("Day")), 
+    ("WEEK", _("week")), 
+    ("YEAR", _("Year"))
+)
+FREQUENCY_INTERVAL_CHOICES = zip(range(0,13), range(0,13)) 
+CYCLES_CHOICES = zip(range(1,13), range(1,13)) 
+
 
 
 class Logo(models.Model):
@@ -248,6 +267,7 @@ class Users(models.Model):
     experience = models.ForeignKey(ItExperience)
     categories = models.ManyToManyField(Categories)
     registration = models.DateTimeField('registration date', null=False, default=timezone.now)
+    community_participation = models.BooleanField(null=False, blank=False, default=False)
     last_login = models.DateTimeField('last login', default=timezone.now)
     is_active = models.BooleanField(default=False, blank=False, null=False)
 
@@ -386,6 +406,9 @@ class Services(models.Model):
     constraints = models.TextField(null=True, blank=True, help_text=_("Free text to enter other constraints"))
     skype = models.CharField(max_length=63, null=True, blank=True)
     is_visible = models.BooleanField(max_length=1, default=True, blank=False, null=False, help_text=_('Click the checkbox if the provider wants to publish it in the platform'))
+    community_support = models.BooleanField(null=False, blank=False, default=False)
+    review_score = models.FloatField(blank=False, null=False, default=0.0)
+    reviews_count = models.IntegerField(blank=False, null=False, default=0)    
     created_date = models.DateTimeField(blank=False, null=True, default=timezone.now)
     modified_date = models.DateTimeField(blank=False, null=False, default=timezone.now) 
 
@@ -524,28 +547,24 @@ class ConsumersToServices(models.Model):
 
     consumer = models.ForeignKey(Consumers)
     service = models.ForeignKey(Services, related_name='service_consumers')
+    payment_id = models.CharField(max_length=96, null=True, blank=False)
+    agreement_id = models.CharField(max_length=96, null=True, blank=False)
+    paypal_user = models.CharField(max_length=64, null=True, blank=False)
     cost = models.FloatField(blank=False, null=True)   # null cost means FREE
-    purchased_date = models.DateTimeField()
     rating = models.FloatField(blank=False, null=True)
+    advantages = models.TextField(max_length=350, blank=False, null=True)
+    disadvantages = models.TextField(max_length=350, blank=False, null=True)
     rating_rationale = models.TextField(blank=False, null=True)
+    nas_aware = models.BooleanField(blank=False, null=False, default=False, help_text="Flag that action is comning from NAS or not")
+    review_date = models.DateTimeField(blank=False, null=True)
     is_completed = models.BooleanField(default=False, blank=False, null=False)
+    access_resource = models.BooleanField(default=False, blank=False, null=False)
+    download = models.IntegerField(default=0, blank=False, null=False)
+    purchased_date = models.DateTimeField(help_text="Date that user starts to use service")
+    end_date  = models.DateTimeField(null=True, default=None, help_text="Date that user stops to use service")
 
     class Meta:
         db_table = "app_consumers_services"
-        ordering = ["consumer", "service"]
-
-
-class NasConsumersToServices(models.Model):
-    consumer        = models.ForeignKey(Consumers)
-    service         = models.ForeignKey(Services)
-    cost            = models.FloatField(blank=False, null=True)   # null cost means FREE
-    purchased_date  = models.DateTimeField()
-    rating          = models.FloatField(blank=False, null=True)
-    rating_rationale= models.TextField(blank=False, null=True)
-    is_completed    = models.BooleanField(default=False, blank=False, null=False)
-
-    class Meta:
-        db_table = "app_nas_consumers_services"
         ordering = ["consumer", "service"]
 
 
@@ -553,11 +572,11 @@ class NasConfiguration(models.Model):
     """
     The configuration of a service that the carer selects (carer can overwrite the provider default settings)
     """
-    nas         = models.ForeignKey(NasConsumersToServices, related_name='configuration')
+    nas         = models.ForeignKey(ConsumersToServices, related_name='configuration')
     parameter   = models.CharField(max_length=512, null=False, blank=False)
     value       = models.CharField(max_length=255, null=False, blank=False)
     is_default  = models.BooleanField(default=True, blank=False, null=False)
-    updated     = models.DateTimeField(null=False, default=datetime.now()) 
+    updated     = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = "app_network_services_configuration"
@@ -725,6 +744,133 @@ class CookiePolicy(models.Model):
         verbose_name_plural = _("Cookie Policy")
 
 
+class TaskCategory(models.Model):
+    """Keep the categories of Microlabora task
+    """
+    title = models.CharField(max_length=255, blank=False, null=False, help_text=_("Microlabora categories"))
+
+    def __unicode__(self):
+        """The title of ML category
+        """
+        return self.title
+
+    class Meta:
+        db_table = "ml_categories"
+        verbose_name = _("Task categories")
+        verbose_name_plural = verbose_name
+
+
+class Community(models.Model):
+    """Community per service"""
+
+    title = models.CharField(max_length=128, null=False, blank=False)
+    service = models.ForeignKey(Services, related_name="community_services")
+    ref_service = models.ForeignKey(Services, related_name="services", null=True, on_delete=models.SET_NULL)
+    is_active = models.BooleanField(null=False, blank=False, default=False)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "app_services_communities"
+        verbose_name = _("Community")
+        verbose_name_plural = _("Communities")
+
+
+class CommunityMember(models.Model):
+    """Keep the members per community"""
+
+    community = models.ForeignKey(Community)
+    user = models.ForeignKey(Users)
+    is_owner = models.BooleanField(null=False, blank=False, default=False)
+    message = models.TextField(max_length=1000, null=True, blank=True)
+    fee = models.FloatField(null=True, blank=True)
+    currency = models.CharField(max_length=10,  null=True, blank=True)
+    is_professional = models.BooleanField(null=False, blank=False, default=False)
+    is_volunteer = models.BooleanField(null=False, blank=False, default=True)
+    skype = models.CharField(max_length=128, blank=True, null=True)
+    is_active = models.NullBooleanField()
+    joined_date = models.DateTimeField(auto_now=True)
+    updated_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "app_communities_members"
+        verbose_name = _("CommunityMember")
+        verbose_name_plural = _("CommunityMembers")
+
+
+class PlatformCommunityMember(models.Model):
+    """Keep the members per AoD community"""
+
+    user = models.ForeignKey(Users)
+    message = models.TextField(max_length=1000, null=True, blank=True)
+    fee = models.FloatField(null=True, blank=True)
+    currency = models.CharField(max_length=10,  null=True, blank=True)
+    is_professional = models.BooleanField(null=False, blank=False, default=False)
+    is_volunteer = models.BooleanField(null=False, blank=False, default=True)
+    skype = models.CharField(max_length=128, blank=True, null=True)
+    is_active = models.NullBooleanField()
+    joined_date = models.DateTimeField(auto_now=True)
+    updated_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "app_platform_communities_members"
+        verbose_name = _("PlatformCommunityMember")
+        verbose_name_plural = _("PlatformCommunityMembers")
+
+
+#===============
+#   Rating
+#===============
+class EvaluationMetric(models.Model):
+    """Keep the available evaluation metrics
+    """
+    name = models.CharField(max_length=96, blank=False, null=False, unique=True)
+    description = models.CharField(max_length=512, blank=True, null=True)
+    weight = models.FloatField(null=False, blank=False, default=1.0, validators=[MinValueValidator(1.0), MaxValueValidator(2.0)])
+    min_score = models.SmallIntegerField(null=False, blank=False, default=0, validators=[MinValueValidator(0), MinValueValidator(0)], help_text=_("Note: Set minimum score as 0"))
+    max_score = models.SmallIntegerField(null=False, blank=False, default=5, validators=[MinValueValidator(5), MaxValueValidator(5)], help_text=_("Note: Set maximum score as 5"))
+    is_active = models.BooleanField(null=False, blank=False, default=True)
+
+    class Meta:
+        db_table = "app_evaluation_metrics"
+        verbose_name = _("Evaluation Metric")
+        verbose_name_plural = _("Evaluation Metrics")
+
+    def __unicode__(self):
+        return self.name
+
+   
+class ConsumerServiceEvaluation(models.Model):
+    """Keep consumer metric's score per service
+    """
+    consumer = models.ForeignKey(Consumers, null=True, on_delete=models.SET_NULL)
+    service = models.ForeignKey(Services, null=True)
+    evaluation_metric = models.ForeignKey(EvaluationMetric, null=True, on_delete=models.SET_NULL)
+    score = models.SmallIntegerField(null=False, blank=False, default=0.0)
+    updated_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "app_consumer_service_evaluation"
+        verbose_name = _("Consumer Service Evaluation")
+        verbose_name_plural = _("Consumer Service Evaluations")
+
+#===============
+# payment dev
+#===============
+class TrackUserSearch(models.Model):
+    """Track the user input during the latest search"""
+    user = models.ForeignKey(Users)
+    preferences = models.TextField(null=True, blank=False)
+    created_at = models.DateTimeField(auto_now=True)    
+
+    class Meta:
+        db_table = "app_track_user_search"
+        verbose_name = _("TrackUserSearch")
+        verbose_name_plural = verbose_name    
+
+    def __unicode__(self):
+        return self.id
+
 
 #===============
 # payment dev
@@ -740,12 +886,13 @@ class PaypalCredentials(models.Model):
     updated_date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.provider
+        return self.id
 
 
 class ServicePayment(models.Model):
     """Keep payment metadata per service (no recurring payments)"""
     service = models.ForeignKey(Services)
+    payment_type = models.CharField(max_length=36, blank=False, null=False, help_text="sale or authorize")
     tax = models.DecimalField(max_digits=10, decimal_places=2)
     handling_fee = models.DecimalField(max_digits=10, decimal_places=2)
     shipping = models.DecimalField(max_digits=10, decimal_places=2)
@@ -760,3 +907,27 @@ class ServicePayment(models.Model):
         db_table            = "app_service_payment_details"
         verbose_name        = _("Service payment details")
         verbose_name_plural = verbose_name        
+
+
+class ServiceRecurringPayment(models.Model):
+    """Keep recurring payment metadata per service"""
+
+    service = models.ForeignKey(Services)
+    plan_id = models.CharField(max_length=128, blank=False, null=True)
+    rec_payment_type = models.CharField(max_length=20, choices = RECURRING_PAYMENT_TYPE_CHOICES)
+    rec_payment_def_type = models.CharField(max_length=20, choices = RECURRING_PAYMENT_DEF_TYPE_CHOICES)
+    frequency = models.CharField(max_length=10, choices = RECURRING_PAYMENT_FREQUENCY_CHOICES)
+    frequency_interval = models.SmallIntegerField(choices=FREQUENCY_INTERVAL_CHOICES)
+    cycles = models.SmallIntegerField(choices=CYCLES_CHOICES)
+    tax = models.DecimalField(max_digits=10, decimal_places=2)
+    shipping = models.DecimalField(max_digits=10, decimal_places=2)
+    merchant_setup_fee = models.DecimalField(max_digits=10, decimal_places=2)
+    updated_date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.service.title
+
+    class Meta:
+        db_table = "app_service_recurring_payment_details"
+        verbose_name = _("Service recurring payment details")
+        verbose_name_plural = verbose_name           

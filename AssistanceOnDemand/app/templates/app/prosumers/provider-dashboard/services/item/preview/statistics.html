@@ -13,8 +13,8 @@
                 data-toolbar="#custom-toolbar"
                 data-pagination="true"
                 data-query-params="queryParams"
-                data-page-list="[5, 10, 15, 20, 30]"
-                data-sort-name="purchased_date" data-sort-order="desc"
+                data-page-list="[5, 10, 20, 30, 50]"
+                data-sort-name="consumer" data-sort-order="asc"
                data-pagination-first-text="First"
                data-pagination-pre-text="Previous"
                data-pagination-next-text="Next"
@@ -22,9 +22,9 @@
             <thead>
             <tr>
                 <th data-field="state" data-checkbox="true"></th>
-                <th data-field="user" data-sortable="true" data-switchable="false" data-align="center">{% trans 'User details' %}</th>
+                <th data-field="consumer" data-sortable="true" data-switchable="false" data-align="center">{% trans 'Consumer' %}</th>
+                <th data-field="price" data-sortable="true" data-align="center">{% trans 'Charge' %}</th>
                 <th data-field="purchased_date" data-sortable="true" data-align="center">{% trans 'Purchased date' %}</th>
-                <th data-field="price" data-sortable="true" data-align="center">{% trans 'Charging' %}</th>
                 <th data-field="payment_status" data-sortable="true" data-formatter="editFormatter" data-align="center">{% trans 'Payment status' %}</th>
                 <th data-field="payment_date" data-sortable="true" data-align="center">{% trans 'Payment date' %}</th>        
             </tr>

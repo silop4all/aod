@@ -7,12 +7,13 @@ from django.conf import settings
 from datetime import datetime
 
 from app.models import Users, Tokens, Providers, Consumers, Carers, ItExperience
-from app.openamAuth import *
+from app.openam import openam
+
 
 def loginRequired(function):
     """
     Check if the user is connected
-    Decorator for function-based  views 
+    Decorator for function-based views
     """
     def wrap(request, *args, **kwargs):
         # If logout
@@ -21,10 +22,10 @@ def loginRequired(function):
             return redirect(reverse('login_page'), permanent=True)
 
         if settings.OPENAM_INTEGRATION:
-            ows             = OpenamAuth()
-            url             = ows.getAuthorizeURL()
-            username        = request.session['username']
-            tokenInstance   = Tokens.objects.get(user_id=request.session['id'])
+            ows = openam.OpenamAuth()
+            url = ows.getAuthorizeURL()
+            username = request.session['username']
+            tokenInstance = Tokens.objects.get(user_id=request.session['id'])
 
             if not tokenInstance:
                 if settings.DEBUG:

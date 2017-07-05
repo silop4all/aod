@@ -6,6 +6,7 @@ from django import forms
 from django.db.models import *
 from django.core.urlresolvers import reverse
 from django.contrib.admin.models import LogEntry
+from django.utils.translation import ugettext as _
 
 from modeltranslation.admin import TranslationAdmin, TabbedTranslationAdmin
 from ckeditor.widgets import CKEditorWidget
@@ -28,7 +29,6 @@ from app.models import (
     TechnicalSupport,
     ServicesToTechnicalSupport,
     ConsumersToServices,
-    NasConsumersToServices,
     NasConfiguration,
     Tokens,
     Topic,
@@ -43,8 +43,11 @@ from app.models import (
     UserTheme,
     Metadata,
     ContactUs,
-    CookiePolicy
+    CookiePolicy,
+    PlatformCommunityMember,
+    EvaluationMetric,
 )
+from app.utilities import sendEmail
 
 
 class LogEntryAdmin(admin.ModelAdmin):
@@ -233,6 +236,16 @@ class ServiceAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False     
+
+    def get_actions(self, request):
+        actions = super(ServiceAdmin, self).get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions        
+
 admin.site.register(Services, ServiceAdmin)
 
 class ServiceKeywordAdmin(admin.ModelAdmin):
@@ -356,6 +369,7 @@ admin.site.register(ServicesToTechnicalSupport, ServicesToTechnicalSupportAdmin)
 
 class ConsumersToServicesAdmin(admin.ModelAdmin):
     fields          = ['service', 'cost', 'purchased_date', 'rating', 'is_completed']
+    readonly_fields = fields
     list_display    = ['id', '_consumer', 'service', 'purchased_date', 'rating', 'is_completed']
     ordering        = ['consumer']
     list_per_page   = 20
@@ -364,19 +378,14 @@ class ConsumersToServicesAdmin(admin.ModelAdmin):
 
     def _consumer(self, obj):
         return (" %s %s") % (obj.consumer.user.name, obj.consumer.user.lastname)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False        
 admin.site.register(ConsumersToServices, ConsumersToServicesAdmin)
 
-class NasConsumersToServicesAdmin(admin.ModelAdmin):
-    fields          = ['service', 'cost', 'purchased_date', 'rating', 'is_completed']
-    list_display    = ['id', '_consumer', 'service', 'purchased_date', 'rating', 'is_completed']
-    ordering        = ['consumer']
-    list_per_page   = 20
-    date_hierarchy  = 'purchased_date'
-    list_filter     = ['rating', 'is_completed']
-
-    def _consumer(self, obj):
-        return (" %s %s") % (obj.consumer.user.name, obj.consumer.user.lastname)
-admin.site.register(NasConsumersToServices, NasConsumersToServicesAdmin)
 
 class NasConfigurationAdmin(admin.ModelAdmin):
     fields          = ['id', 'nas', 'parameter', 'value', 'is_default']
@@ -392,12 +401,21 @@ admin.site.register(NasConfiguration, NasConfigurationAdmin)
 class TokensAdmin(admin.ModelAdmin):
     list_display    = ['id', 'user',  'access_token', 'refresh_token', 'scope']
     fields          = ['user', 'access_token', 'refresh_token', 'expires_in', 'scope', 'token_type']
-    readonly_fields = ['user','access_token', 'refresh_token']
+    readonly_fields = fields
     search_fields   = ['access_token', 'refresh_token', ]
     list_per_page   = 20
 
     def has_add_permission(self, request):
         return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def get_actions(self, request):
+        actions = super(TokensAdmin, self).get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions            
 admin.site.register(Tokens, TokensAdmin)
 
 class ArticleInline(admin.StackedInline):
@@ -508,6 +526,44 @@ class CookiePolicyAdmin(admin.ModelAdmin):
 admin.site.register(CookiePolicy, CookiePolicyAdmin)
 
 
+class PlatformCommunityMemberAdmin(admin.ModelAdmin): 
+    """Manage the requests from authenticated users to join in platform community for support purposes"""
+
+    list_display = ['user', 'fee', 'currency', 'is_professional', 'is_volunteer', 'skype', 'is_active']
+    list_filter = ['is_professional', 'is_volunteer', 'is_active', 'joined_date', ]
+    fields = ['user', ('fee', 'currency'), ('is_professional', 'is_volunteer'), 'skype', 'is_active']
+    readonly_fields = ['user', 'fee', 'currency', 'is_professional', 'is_volunteer', 'skype']
+    ordering = ['user', ]
+
+    def save_model(self, request, object, form, change):
+        # Accept or reject the user request and inform him/her with email
+        if object.is_active == True:
+            content = _("Dear %s,\n\nI would like to inform you that your request has been accepted. From now, you are member of the our platform community that is aiming to provide support in other users.\n\nSincerely,\nThe administration team")\
+                % (object.user.username)
+            messages.add_message(request, messages.SUCCESS, 'The request of the ' + object.user.username + " has been accepted!")
+        else:
+            content = _("Dear %s,\n\nI would like to inform you that your request has been rejected. \n\nSincerely,\nThe administration team")\
+                % (object.user.username)
+            messages.add_message(request, messages.WARNING, 'The request of the ' + object.user.username + " has been rejected!")
+        sendEmail([str(object.user.email)], _("[P4ALL] Platform Community: request progress"), content, False)
+        object.save()
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+admin.site.register(PlatformCommunityMember, PlatformCommunityMemberAdmin)
+
+
+class EvaluationMetricAdmin(admin.ModelAdmin): 
+    """Manage evaluation metrics of a service"""
+
+    list_display = ['name', 'weight', 'min_score', 'max_score', 'is_active', ]
+    list_filter = ['weight', 'min_score', 'max_score', 'is_active', ]
+    fields = ['name', 'description', ('weight', 'min_score', 'max_score'), 'is_active', ]
+    search_fields = ['name',]
+    ordering = ['weight', 'is_active',]
+    list_per_page = 10
+
+admin.site.register(EvaluationMetric, EvaluationMetricAdmin)
 
 
 ##########################
@@ -592,3 +648,8 @@ class TranslatedCookiePolicyAdmin(CookiePolicyAdmin, TranslationAdmin):
     pass
 admin.site.unregister(CookiePolicy)
 admin.site.register(CookiePolicy, TranslatedCookiePolicyAdmin)
+
+class TranslatedEvaluationMetricAdmin(EvaluationMetricAdmin, TranslationAdmin):
+    pass
+admin.site.unregister(EvaluationMetric)
+admin.site.register(EvaluationMetric, TranslatedEvaluationMetricAdmin)

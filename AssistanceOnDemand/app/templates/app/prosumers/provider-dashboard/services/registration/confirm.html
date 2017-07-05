@@ -34,12 +34,31 @@
             <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="{% trans 'I have already read the terms of use issues' %}" id="is_visible_div">
                 <fieldset class="clearfix">
                     {% if service %}
-                    <input type="radio" name="is_visible" form="ConfirmServiceForm" value="1" {% if service.is_visible == '1' %} checked {% endif %}/> {% trans 'YES'%}
-                    <input type="radio" name='is_visible' form="ConfirmServiceForm" value="0" {% if service.is_visible ==  '0' %} checked {% endif %} /> {% trans 'NO' %}
+                    <input type="radio" name="is_visible" form="ConfirmServiceForm" value="1" {% if service.is_visible == True %} checked {% endif %}/> {% trans 'YES'%}
+                    <input type="radio" name='is_visible' form="ConfirmServiceForm" value="0" {% if service.is_visible ==  False %} checked {% endif %} /> {% trans 'NO' %}
                     {% else %}
                     <input type="radio" name="is_visible" form="ConfirmServiceForm" value="1"/> {% trans 'YES'%}
                     <input type="radio" name='is_visible' form="ConfirmServiceForm" value="0" /> {% trans 'NO' %}
                     {% endif %}
+                </fieldset>
+            </div>
+        </div>
+        <!--allow community-->
+        <div class="row form-group">
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                <label class="text-right control-label hidden-xs" for="community_support" title="{% trans 'Initiate community' %}">{% trans 'Do you allow community formation for the service?' %}<span class="highlight-error-message"> *</span></label>
+                <label class="text-left control-label visible-xs" for="community_support" title="{% trans 'Initiate community' %}">{% trans 'Do you allow community formation for the service?' %}<span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12" title="{% trans 'I have already read the terms of use issues' %}" id="community_support_div"> 
+                <fieldset class="clearfix">
+                    {% if service %}
+                    <input type="radio" name="community_support" form="ConfirmServiceForm" value="1" {% if service.community_support == True %} checked {% endif %}/> {% trans 'YES'%}
+                    <input type="radio" name='community_support' form="ConfirmServiceForm" value="0" {% if service.community_support == False %} checked {% endif %} /> {% trans 'NO' %}
+                    {% else %}
+                    <input type="radio" name="community_support" form="ConfirmServiceForm" value="1"/> {% trans 'YES'%}
+                    <input type="radio" name='community_support' form="ConfirmServiceForm" value="0" /> {% trans 'NO' %}
+                    {% endif %}
+                    {{ervice.community_support}}
                 </fieldset>
             </div>
         </div>

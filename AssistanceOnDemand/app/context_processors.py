@@ -81,7 +81,8 @@ def app_processor(request):
         "google_maps_key": settings.GOOGLE_MAPS_KEY,
         "base_url": base_url,
         "customization_process": settings.CUSTOMIZATION_PROCESS,
-        "crowd_funding_publish_project": settings.CROWD_FUNDING['base'] + settings.CROWD_FUNDING['projects']['insert']
+        "crowd_funding_publish_project": settings.CROWD_FUNDING['base'] + settings.CROWD_FUNDING['projects']['insert'],
+        'paypal_integration': settings.PAYPAL_INTEGRATION,
     }
 
 

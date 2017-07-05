@@ -1,0 +1,147 @@
+﻿{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} AoD | {{ title }} {% endblock title %}
+
+{% load staticfiles %}
+
+{% block extraCss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap-table/bootstrap-table.min.css' %}" />
+{% endblock extraCss %}
+
+
+{% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            {% if username %}
+                <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+            {% endif %}
+            <li class="active">{% trans 'Communities' %}</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <section style="padding-top:1%; padding-bottom:1%; border-radius:5px 5px;" class="col-lg-12 col-md-12 col-sm-12 highlight-service-banner platform-info-box">
+            <h2>{% trans 'Community support for existing services'%}</h2>
+            <hr class="service-hr">
+            <div class="table-responsive">
+                <div id="community-services" class="btn-group" title="{% trans 'The toolbar provides to users of set of actions such as add,remove or search a service' %}">
+                    <a id="carer-new-request" role="navigation" href="{% url 'community' %}" class="btn btn-default btn-md" data-placement="top" title="{% trans 'Search users to provide assistance' %}">
+                        <span class="fa fa-plus-square fa-fw text-success"></span> {% trans 'Initiate community based service' %}
+                    </a>
+                </div>
+                <table id="community-table" 
+                        data-classes="table text-nowrap table-striped table-hover"
+                        data-search="true"
+                        data-show-toggle="false"
+                        data-show-columns="true"
+                        data-card-view="false"
+                        data-click-to-select="false"
+                        data-toolbar="#community-services"
+                        data-pagination="true"
+                        data-page-list="10, 20, 30, 50]" 
+                        data-sort-name="title" data-sort-order="asc">
+                    <thead class="custom-aod-table-thead">
+                    <tr>
+                        <th data-field="title" data-align="center" data-sortable="true" data-formatter="setTitleFormatter">{% trans 'Community name' %}</th>
+                        <th data-field="ref_service_title" data-align="center" data-sortable="true" data-formatter="setServiceFormatter">{% trans 'Support service' %}</th>
+                        <th data-field="created_date" data-align="center" data-sortable="true" data-formatter="setCreationFormatter">{% trans 'Creation date' %}</th>
+                        <th data-field="actions" data-align="center" data-sortable="true" data-visible="true" data-formatter="setActionsFormatter">{% trans 'Actions' %}</th>
+                    </tr>
+                    </thead>
+                </table>                
+            </div>
+        </section>
+    
+        {% if components.aod_community_support %}
+        <section style="padding-top:1%; padding-bottom:1%; border-radius:5px 5px;" class="col-lg-12 col-md-12 col-sm-12 highlight-service-banner contact-info-box margin-top-percent-5">
+            <h2>{% trans 'Community support for our platform' %}</h2>
+            <hr class="service-hr">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                    <p>
+                    {% blocktrans %}
+                    You are able to become member of our community in order to provide support in authenticated users by declaring your skype ID. You can assist them for free (volunteer) or with fee (professional).
+                    Send a request to our administrator.
+                    {% endblocktrans %}
+                    <br />
+                    {% if not aod_community_member %}
+                        <a href="{% url 'join_aod_support_community' %}" class="btn btn-success btn-md" ><span class="fa fa-sign-in"></span> {% trans 'Join now' %}</a>
+                    {% else %}
+                        {% if aod_community_member.is_active == True %}
+                            <label class="label label-success">{% trans 'You are member of the community!' %}</label>
+                        {% elif aod_community_member.is_active == False %}
+                            <label class="label label-danger"><span class="fa fa-question-exclamation"></span> {% trans 'Your request has been rejected!' %}</label>
+                        {% else%}
+                            <label class="label label-info"><span class="fa fa-question-circle-o"></span> {% trans 'Your request is under review!' %}</label>
+                        {% endif %}
+                    {% endif %}
+                    </p>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+    </div>
+{% endblock content %}
+
+
+
+{% block scripts %}
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script src="{% static 'app/scripts/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+    {% with 'app/scripts/bootstrap-table/dist/locale/'|add:bootstrap_table_locale_url as bootstrap_table_locale %}
+        <script type="text/javascript" src="{% static bootstrap_table_locale %}"></script>
+    {% endwith %}
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var communities_list = [];
+            {% for c in communities_list %}
+                communities_list.push({
+                    'title': "{{ c.title|capfirst }}",
+                    'created_date': "{{ c.created_at|date }}",
+                    'is_owner': "{{ c.is_owner }}",
+                    'is_member': "{{ c.is_active_member }}",
+                    'ref_service_title': '{% if c.ref_service %}<a href="{% url 'service_view_page' c.ref_service.id %}"> {{ c.ref_service.title|capfirst }}</a>{% else %} <span class="fa fa-exclamation-circle text-danger"></span> {% trans 'Service has left' %} {% endif %}',
+                    'ref_service_id': "{{ c.ref_service.id }}",
+                    'manage_link': "{% url 'community_members' c.id %}",
+                    'join_link': "{% url 'join_in_community' c.id %}",
+                    'leave_link': "{% url 'unjoin_from_community' c.id %}"
+                });
+            {% endfor %}
+
+            $('#community-table').bootstrapTable({data: communities_list});
+            $('.fixed-table-body').css('height', 'auto').css('border-top-right-radius', '3px');
+
+        })
+
+        function setActionsFormatter(value, row, index) {
+               
+            var actions = "";
+            if (row['is_owner'] === "True") {
+                actions = '<a href="' + row['manage_link'] +'"><span class="fa fa-cog"></span> {% trans 'Manage members' %}</a>';
+            }
+            else {
+                if (row['is_member'] === "")
+                    actions = '<a href="' + row['join_link'] +'" class="text-success"><span class="fa fa-sign-in"></span> {% trans 'Join' %}</a>';
+                else if (row['is_member'] === "True")
+                    actions = '<a href="' + row['leave_link'] +'" class="text-danger"><span class="fa fa-sign-out"></span> {% trans 'Leave' %}</a>';
+                else if (row['is_member'] === "None")
+                    actions = '<span class="text-warning"><span class="fa fa-exclamation-circle "></span> {% trans 'Pending access' %}</span>';
+            }
+
+            return [
+                '<div class="btn-group">',
+                    actions,
+                '</div>'
+            ].join('');
+        }
+
+
+    </script>
+
+{% endblock %}

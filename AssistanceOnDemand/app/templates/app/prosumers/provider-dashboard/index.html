@@ -37,8 +37,9 @@
             </div>
 
             <div class="service-consumer-view-box margin-bottom-25">
-                <h2>{% trans 'Characteristics of services'%}</h2>
+                <h2>{% trans 'Services overview'%}</h2>
                 <hr class="service-hr">
+                 {% if services %}
                 <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
                     <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
                         <center>
@@ -65,15 +66,19 @@
                         </center>
                     </div>
                 </div>
-            </div>
+                {% endif %}
 
-            <div class="service-consumer-view-box margin-top-25">
-                <h2>{% trans 'Services overview'%}</h2>
-                <hr class="service-hr">
-                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12 {% if services %}margin-top-percent-5{% endif%}">
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 margin-bottom-25" title="{% trans 'The toolbar provides to users of set of actions such as add,remove or search a service' %}">
                         <div class="alert alert-danger">
-                            <strong class="margin-right: 5px">{% trans 'Do you want to register a new service?' %}
+                            <strong class="margin-right: 5px">
+                            {% if settings_existance == False %}
+                                {% trans 'You need to enter your Paypal credentials into the platform in order to sell your services on other users.' %} 
+                                <a href="{% url 'payment_settings' %}" class="btn btn-danger">{% trans ' Read more' %}</a>
+                            <br><br>
+                            {% endif %}
+                    
+                            {% trans 'Do you want to register a new service?' %}
                             <a href="{% url 'insert_service' %}" id="new-service" class="btn btn-danger" title="{% trans 'Add a new service'%}" >
                                 {% trans 'Register service'%} <span class="fa fa-hand-o-up"></span>
                             </a>
@@ -147,6 +152,9 @@
         });
 
         $(document).ready(function(){
+
+            {% if services %}
+            
             var customizedVersion = "{{customizedVersion}}";
             var services_type_list = [];
             if (customizedVersion === "False"){
@@ -172,8 +180,8 @@
             Morris.Donut({
                 element: 'donut-charging-models',
                 data: [
-                      { label: gettext("Free"), value: {{chargingModels.free}} },
-                      { label: gettext("Paid"), value: {{chargingModels.paid}}  },
+                    { label: gettext("Free"), value: {{chargingModels.free}} },
+                    { label: gettext("With fee"), value: {{chargingModels.paid}}  },
                 ],
                 colors: ["#b122c1", "#685bab"],
                 resize: true,
@@ -183,8 +191,8 @@
             Morris.Donut({
                 element: 'donut-location-limitations',
                 data: [
-                      { label: gettext("Yes"), value: {{locationLimitations.with}} },
-                      { label: gettext("No"), value: {{locationLimitations.without}} },
+                    { label: gettext("Yes"), value: {{locationLimitations.with}} },
+                    { label: gettext("No"), value: {{locationLimitations.without}} },
                 ],
                 colors: ["red", "orange"],
                 resize: true,
@@ -194,13 +202,14 @@
             Morris.Donut({
                 element: 'donut-lingual-limitations',
                 data: [
-                      { label: gettext("Yes"), value: {{lingualLimitations.with}} },
-                      { label: gettext("No"), value: {{lingualLimitations.without}} },
+                    { label: gettext("Yes"), value: {{lingualLimitations.with}} },
+                    { label: gettext("No"), value: {{lingualLimitations.without}} },
                 ],
                 colors: ["forestgreen", "lightgreen"],
                 resize: true,
                 formatter: function (x) { return x + " " + gettext("services")}
             });
+            {% endif %}
 
             $(".on-mouseover > div").mouseenter(function () {
                 $(this).addClass("highlight-service-banner");

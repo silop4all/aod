@@ -334,8 +334,9 @@
         {% with 'app/scripts/bootstrap-table/dist/locale/'|add:bootstrap_table_locale_url as bootstrap_table_locale %}
             <script type="text/javascript" src="{% static bootstrap_table_locale %}"></script>
         {% endwith %}
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM"></script>
-
+        {% with 'https://maps.googleapis.com/maps/api/js?key='|add:google_maps_key as google_map_url %}
+        <script type="text/javascript" src="{{ google_map_url }}" ></script>
+        {% endwith %}
         <script type="text/javascript">
             var consumerID = -1;
 
@@ -705,7 +706,18 @@
             }
 
             function setServiceTypeFormatter(value, row, index) {
-                return (value === 'H') ? "<span class='fa fa-users'></span>" +gettext("Human-based") : "<span class='fa fa-laptop'></span>" + gettext("Machine-based");
+                // return (value === 'H') ? "<span class='fa fa-users'></span>" +gettext("Human-based") : "<span class='fa fa-laptop'></span>" + gettext("Machine-based");
+
+                if ( value === "M" ) {
+                    return "<span class='fa fa-user'></span> " +gettext("Human-based");
+                }
+                else if ( value === "H" ){
+                    return "<span class='fa fa-laptop'></span> " + gettext("Machine-based");
+                }
+                else {
+                    return "<span class='fa fa-users'></span> " + gettext("Community-based");
+                }
+
             }
 
             function setServicePriceFormatter(value, row, index) {

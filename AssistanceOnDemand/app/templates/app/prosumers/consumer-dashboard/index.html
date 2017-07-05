@@ -118,13 +118,13 @@
                             </div>
                                     
                             <!--description-->
-                            <div class=" margin-top-10 padding-top-20 info-block" style="clear:both" >
+                            <div class=" margin-top-10 padding-top-20" style="clear:both" >
                                 <h3><span class="fa fa-caret-square-o-right"></span> {% trans 'What the service offers' %}</h3>
                                 <p id="bought-service-descr" class="padding-left-5"><i class="fa fa-quote-left text-muted"></i><i class="fa fa-quote-right text-muted"></i></p>
                             </div>
 
                             <!--instructions-->
-                            <div class="margin-top-10 padding-bottom-percent-1 info-block">
+                            <div class="margin-top-10 padding-bottom-percent-1">
                                 <h3 title="Show service instructions"><span class="fa fa-book"></span> {% trans 'Instructions' %}</h3>
                                 <div class="margin-top-10 margin-bottom-10 padding-left-5">
                                     <h4>{% trans 'Requirements' %}</h4>
@@ -148,7 +148,7 @@
                             </div>
                                     
                             <!--Restrictions-->
-                            <div class="margin-top-10 padding-bottom-percent-1 info-block" >
+                            <div class="margin-top-10 padding-bottom-percent-1" >
                                 <h3><span class="fa fa-filter"></span> {% trans 'Restrictions' %}</h3>
                                 <div class="margin-top-10 margin-bottom-10 hidden padding-left-5" id="bought-service-map">
                                     <h4>{% trans 'Spatial coverage' %}</h4>
@@ -168,14 +168,14 @@
                             </div>
 
                             <!--configuration-->
-                            <div class="margin-top-10 padding-bottom-percent-1 hidden info-block">
+                            <div class="margin-top-10 padding-bottom-percent-1 hidden">
                                 <h3><span class="fa fa-bell-o"></span> {% trans 'Service configuration' %}</h3>
                                 <div id="bought-service-configuration" class="padding-left-5"></div>
                             </div>
 
                             <!--technical support-->
-                            <div class="margin-top-10 padding-bottom-percent-1 info-block" >
-                                <h3><span class="fa fa-support"></span> {% trans 'Troubleshooting' %}</h3>
+                            <div class="margin-top-10 padding-bottom-percent-1 " >
+                                <h3><span class="fa fa-support"></span> {% trans 'Technical support' %}</h3>
                                 <div class="padding-left-5">
                                     <h4>{% trans 'Videos' %}</h4>
                                     <div id="bought-service-support-videos"></div>
@@ -189,6 +189,12 @@
                                     <div id="bought-service-provider-skype"></div>
                                 </div>
                             </div>
+
+                            <!--reviews-->
+                            <div class="margin-top-10 padding-bottom-percent-1 ">
+                                <h3><span class="fa fa-star"></span> {% trans 'Reviews' %}</h3>
+                                <div id="bought-service-reviews" class="padding-left-5"></div>
+                            </div>                            
                         </div>
                     </section>
                 </div>  
@@ -209,7 +215,9 @@
         <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
         <script src="{% static 'app/scripts/p4a-lib/scroll-top.js' %}"></script>
         <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM"></script>
+        {% with 'https://maps.googleapis.com/maps/api/js?key='|add:google_maps_key as google_map_url %}
+            <script type="text/javascript" src="{{ google_map_url }}" ></script>
+        {% endwith %}        
         <script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
         <script src="{% static 'app/scripts/p4a-lib/consumers/statistics/statistics.js' %}"></script>
         <script src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>

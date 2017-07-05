@@ -18,31 +18,16 @@
                     <option value="-1" disabled selected>-- {% trans 'Choose the charging model' %} --</option> 
                         {% for i in charging_models %}
                             {% if service %}
-                            <option value="{{ i.id }}" title="{{ i.name }}" {% if service.charging_policy_id == i.id %} selected  {% endif %}>{{ i.description }}</option> 
+                                <option value="{{ i.id }}" title="{{ i.name }}" {% if service.charging_policy_id == i.id %} selected  {% endif %}>{{ i.description }}</option> 
                             {% else %}
-                            <option value="{{ i.id }}" title="{{ i.name }}">{{ i.description }}</option> 
+                                <option value="{{ i.id }}" title="{{ i.name }}">{{ i.description }}</option> 
                              {% endif %}
-                        {% empty%}
+                        {% empty %}
+
                         {% endfor %}
                 </select>
             </div>
         </div>
-
-        <!--cost-->
-        <div class="row form-group">
-            <div class="col-sm-3 col-xs-12">
-                <label class="text-right control-label hidden-xs" for="price" title="Cost of the service usage">{% trans 'Price' %}<span class="highlight-error-message"> *</span></label>
-                <label class="text-left control-label visible-xs" for="price" title="Cost of the service usage">{% trans 'Price' %}<span class="highlight-error-message"> *</span></label>
-            </div>
-            <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Cost of the service usage' %}">
-                {% if service %}
-                <input type="number" step="0.01" min="0.00" class="form-control"  value="{% if service.price %}{{ service.price|unlocalize }}{% else %}0.00{% endif %}" name="price" id="price" autocomplete="off" placeholder="{% trans 'The price of the service' %}" required />    
-                {% else %}
-                <input type="number" step="0.01" min="0.00" class="form-control"  name="price" id="price" autocomplete="off" placeholder="{% trans 'The price of the service' %}" required />
-                {% endif %}
-            </div>
-        </div>
-
         <!--currency-->
         <div class="row form-group">
             <div class="col-sm-3 col-xs-12">
@@ -73,6 +58,204 @@
             <div class="col-lg-5 col-sm-5 col-md-5">
             </div>
         </div>
+        <div id="common-payment-fields" class="hidden">
+            <!--cost-->
+            <div class="row form-group">
+                <div class="col-sm-3 col-xs-12">
+                    <label class="text-right control-label hidden-xs" for="price" title="Cost of the service usage">{% trans 'Price' %}<span class="highlight-error-message"> *</span></label>
+                    <label class="text-left control-label visible-xs" for="price" title="Cost of the service usage">{% trans 'Price' %}<span class="highlight-error-message"> *</span></label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Cost of the service usage' %}">
+                    {% if service %}
+                    <input type="number" step="0.01" min="0.00" class="form-control"  value="{% if service.price %}{{ service.price|unlocalize }}{% else %}0.00{% endif %}" name="price" id="price" autocomplete="off" placeholder="{% trans 'The price of the service' %}" required />    
+                    {% else %}
+                    <input type="number" step="0.01" min="0.00" class="form-control"  name="price" id="price" autocomplete="off" placeholder="{% trans 'The price of the service' %}" required />
+                    {% endif %}
+                </div>
+            </div>
+            <!--tax-->
+            <div class="row form-group">
+                <div class="col-sm-3 col-xs-12">
+                    <label class="text-right control-label hidden-xs" for="tax" title="Tax of the service usage">{% trans 'Tax' %}<span class="highlight-error-message"> *</span></label>
+                    <label class="text-left control-label visible-xs" for="tax" title="Tax of the service usage">{% trans 'Tax' %}<span class="highlight-error-message"> *</span></label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Tax for the service usage' %}">
+                    {% if payment %}
+                    <input type="number" step="0.01" min="0.00" class="form-control"  value="{% if payment.tax %}{{ payment.tax|unlocalize }}{% else %}0.00{% endif %}" name="tax" id="tax" autocomplete="off" placeholder="{% trans 'The tax of the service' %}" required />    
+                    {% else %}
+                    <input type="number" step="0.01" min="0.00" class="form-control" value="0.00"  name="tax" id="tax" autocomplete="off" placeholder="{% trans 'The tax of the service' %}" required />
+                    {% endif %}
+                </div>
+            </div>
+            <!--shipping-->
+            <div class="row form-group">
+                <div class="col-sm-3 col-xs-12">
+                    <label class="text-right control-label hidden-xs" for="shipping">{% trans 'Shipping fee' %}<span class="highlight-error-message"> *</span></label>
+                    <label class="text-left control-label visible-xs" for="shipping">{% trans 'Shipping fee' %}<span class="highlight-error-message"> *</span></label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Shipping fee for the service' %}">
+                    {% if payment %}
+                    <input type="number" step="0.01" min="0.00" class="form-control"  value="{% if payment.shipping %}{{ payment.shipping|unlocalize }}{% else %}0.00{% endif %}" name="shipping" id="shipping" autocomplete="off" placeholder="{% trans 'The shipping fee of the service' %}" required />    
+                    {% else %}
+                    <input type="number" step="0.01" min="0.00" class="form-control" value="0.00"  name="shipping" id="shipping" autocomplete="off" placeholder="{% trans 'The shipping fee of the service' %}" required />
+                    {% endif %}
+                </div>
+            </div>  
+        </div>  
+        <!--payment fields-->
+        <div id="payment-policy" class="hidden">
+            <div class="row form-group">
+                <div class="col-sm-3 col-xs-12">
+                    <label class="text-right control-label hidden-xs" for="payment_type">{% trans 'Payment type' %}<span class="highlight-error-message"> *</span></label>
+                    <label class="text-left control-label visible-xs" for="payment_type">{% trans 'Payment type' %}<span class="highlight-error-message"> *</span></label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Define the type of payment' %}">
+                    {% if not payment %}
+                    <select name="payment_type" id="payment_type" class="form-control">
+                        <option value="" disabled selected>{% trans 'Define the type of payment' %}</option>
+                        <option value="sale" >{% trans 'Instant sale' %}</option>
+                        <option value="authorize" >{% trans 'Future sale (Fee capture is required until 30 days)' %}</option>
+                    </select>
+                    {% else %}
+                    <select name="payment_type" id="payment_type" class="form-control">
+                        <option value="" disabled>{% trans 'Define the type of payment' %}</option>
+                        <option value="sale" {% if payment.payment_type == "sale" %}selected{% endif %}>{% trans 'Instant sale' %}</option>
+                        <option value="authorize" {% if payment.payment_type == "authorize" %}selected{% endif %}>{% trans 'Future sale (Fee capture is required until 30 days)' %}</option>
+                    </select>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-3 col-xs-12">
+                    <label class="text-right control-label hidden-xs" for="handling_fee">{% trans 'Handling fee' %}<span class="highlight-error-message"> *</span></label>
+                    <label class="text-left control-label visible-xs" for="handling_fee">{% trans 'Handling fee' %}<span class="highlight-error-message"> *</span></label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Handling fee for the service usage' %}">
+                    {% if payment %}
+                    <input type="number" step="0.01" min="0.00" class="form-control"  value="{% if payment.handling_fee %}{{ payment.handling_fee|unlocalize }}{% else %}0.00{% endif %}" name="handling_fee" id="handling_fee" autocomplete="off" placeholder="{% trans 'The handling fee of the service' %}" required />    
+                    {% else %}
+                    <input type="number" step="0.01" min="0.00" class="form-control" value="0.00"  name="handling_fee" id="handling_fee" autocomplete="off" placeholder="{% trans 'The handling fee of the service' %}" required />
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-3 col-xs-12">
+                    <label class="text-right control-label hidden-xs" for="insurance">{% trans 'Insurance' %}<span class="highlight-error-message"> *</span></label>
+                    <label class="text-left control-label visible-xs" for="insurance">{% trans 'Insurance' %}<span class="highlight-error-message"> *</span></label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Insurance fee for the service usage' %}">
+                    {% if payment %}
+                    <input type="number" step="0.01" min="0.00" class="form-control"  value="{% if payment.insurance %}{{ payment.insurance|unlocalize }}{% else %}0.00{% endif %}" name="insurance" id="insurance" autocomplete="off" placeholder="{% trans 'The insurance fee for the service' %}" required />    
+                    {% else %}
+                    <input type="number" step="0.01" min="0.00" class="form-control" value="0.00"  name="insurance" id="insurance" autocomplete="off" placeholder="{% trans 'The insurance fee of the service' %}" required />
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-3 col-xs-12">
+                    <label class="text-right control-label hidden-xs" for="shipping_discount">{% trans 'Shipping discount' %}<span class="highlight-error-message"> *</span></label>
+                    <label class="text-left control-label visible-xs" for="shipping_discount">{% trans 'Shipping discount' %}<span class="highlight-error-message"> *</span></label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Shipping discount for the service' %}">
+                    {% if payment %}
+                    <input type="number" step="0.01" min="0.00" class="form-control"  value="{% if payment.shipping_discount %}{{ payment.shipping_discount|unlocalize }}{% else %}0.00{% endif %}" name="shipping_discount" id="shipping_discount" autocomplete="off" placeholder="{% trans 'The shipping discount of the service' %}" required />    
+                    {% else %}
+                    <input type="number" step="0.01" min="0.00" class="form-control" value="0.00"  name="shipping_discount" id="shipping_discount" autocomplete="off" placeholder="{% trans 'The shipping discount of the service' %}" required />
+                    {% endif %}
+                </div>
+            </div> 
+        </div>        
+        <!--plan-->
+        <div id="subscription-policy" class="hidden">
+            <!--merchant_preferences-->
+            <div class="row form-group">
+                <div class="col-sm-3 col-xs-12">
+                    <label class="text-right control-label hidden-xs" for="merchant_preferences">{% trans 'Provider preferences' %}<span class="highlight-error-message"> *</span></label>
+                    <label class="text-left control-label visible-xs" for="merchant_preferences">{% trans 'Provider preferences' %}<span class="highlight-error-message"> *</span></label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Provider preferences for the service' %}">
+                    {% if payment %}
+                    <input type="number" step="0.01" min="0.00" class="form-control"  value="{% if payment.merchant_preferences %}{{ payment.merchant_preferences|unlocalize }}{% else %}0.00{% endif %}" name="merchant_preferences" id="merchant_preferences" autocomplete="off" placeholder="{% trans 'The merchant references fee of the service' %}" required />    
+                    {% else %}
+                    <input type="number" step="0.01" min="0.00" class="form-control" value="0.00"  name="merchant_preferences" id="merchant_preferences" autocomplete="off" placeholder="{% trans 'The  merchant references fee of the service' %}" required />
+                    {% endif %}
+                </div>
+            </div>    
+            <!--recurring payment type-->
+            <div class="row form-group">
+                <div class="col-sm-3 col-xs-12">
+                    <label class="text-right control-label hidden-xs" for="rec_payment_type">{% trans 'Recurring payment type' %}<span class="highlight-error-message"> *</span></label>
+                    <label class="text-left control-label visible-xs" for="rec_payment_type">{% trans 'Recurring payment type' %}<span class="highlight-error-message"> *</span></label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Provider preferences for the service' %}">
+                    <select name="rec_payment_type" id="rec_payment_type" class="form-control">
+                        <option value="Fixed" selected>{% trans 'Fixed' %}</option>
+                        <option value="Infinite" disabled>{% trans 'Infinite' %}</option>
+                    </select>  
+                </div>
+            </div>    
+            <!--recurring payment def type-->
+            <div class="row form-group">
+                <div class="col-sm-3 col-xs-12">
+                    <label class="text-right control-label hidden-xs" for="rec_payment_def_type">{% trans 'Payment definition type' %}<span class="highlight-error-message"> *</span></label>
+                    <label class="text-left control-label visible-xs" for="rec_payment_def_type">{% trans 'Payment definition type' %}<span class="highlight-error-message"> *</span></label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Provider preferences for the service' %}">
+                    <select name="rec_payment_def_type" id="rec_payment_def_type" class="form-control">
+                        <option value="Regular" selected>{% trans 'Regular' %}</option>
+                        <option value="Trial">{% trans 'Trial' %}</option>
+                    </select>  
+                </div>
+            </div>   
+            <!--frequency-->
+            <div class="row form-group hidden">
+                <div class="col-sm-3 col-xs-12">
+                    <label class="text-right control-label hidden-xs" for="frequency">{% trans 'Frequency' %}<span class="highlight-error-message"> *</span></label>
+                    <label class="text-left control-label visible-xs" for="frequency">{% trans 'Frequency' %}<span class="highlight-error-message"> *</span></label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Frequency' %}">
+                    <select name="frequency" id="frequency" class="form-control">
+                        {% for i in recurring_payment_frequency_choices %}
+                        <option value="{{ i.0 }}">{{ i.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <!--frequency_interval-->
+            <div class="row form-group">
+                <div class="col-sm-3 col-xs-12">
+                    <label class="text-right control-label hidden-xs" for="frequency_interval">{% trans 'Frequency interval' %}<span class="highlight-error-message"> *</span></label>
+                    <label class="text-left control-label visible-xs" for="frequency_interval">{% trans 'Frequency interval' %}<span class="highlight-error-message"> *</span></label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Frequency interval' %}">
+                    <select name="frequency_interval" id="frequency_interval" class="form-control">
+                        {% for i in frequency_interval_choices %}
+                        <option value="{{ i.0 }}">{{ i.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <!--cycles-->
+            <div class="row form-group">
+                <div class="col-sm-3 col-xs-12">
+                    <label class="text-right control-label hidden-xs" for="cycles">{% trans 'Cycles' %}<span class="highlight-error-message"> *</span></label>
+                    <label class="text-left control-label visible-xs" for="cycles">{% trans 'Cycles' %}<span class="highlight-error-message"> *</span></label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Cycles' %}">
+                    <select name="cycles" id="cycles" class="form-control">
+                        {% for i in cycles_choices %}
+                        <option value="{{ i.0 }}">{{ i.1 }}</option>
+                        {% endfor %}
+                    </select>    
+                </div>
+            </div>
+        </div>
+
+
+        <!--end of fields-->
+
+
+
         <hr class="service-hr" />
         <!--info-->
         <div class="row form-group">
@@ -80,6 +263,5 @@
                 <h5><strong class="text-center highlight-error-message">* {% trans 'Mandatory fields' %}</strong></h5>
             </div>
         </div>
-        <!--end of fields-->
     </form>
 </div>

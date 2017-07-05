@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-tree/jquery.tree.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap-datepicker/bootstrap-datepicker3.standalone.css' %}" />
 {% endblock extraCss %}
 
 
@@ -23,9 +24,11 @@
                 <div class="col-sm-2 col-md-2 col-lg-2"></div>
                 <div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
                     <div class="">
-                        <input type="text" class="form-search form-control" placeholder="{% trans 'e.g.' %} {% trans 'sign language' %}" style="max-width: 1025px !important; display:initial !important; width: 75%;">
-                        <span class="">
-                        <button class="btn btn-default form-inline disabled" type="button">{% trans 'Search' %}</button>
+                        <form name="KeywordSearchEngine" id="KeywordSearchEngine" method="GET" action="{% url 'private_api:keywords_search_engine' %}">
+                            <input type="text" class="form-search form-control" id='alter-text-search' placeholder="{% trans 'e.g.' %} {% trans 'sign language' %}" style="max-width: 1025px !important; display:initial !important; width: 75%;">
+                            <span class="">
+                            <button class="btn btn-default form-inline" id="alter-text-search-btn" type="button">{% trans 'Search' %}</button>
+                        </form>
                         </span>
                     </div>
                 </div>
@@ -42,6 +45,15 @@
             {% endif %}
         {% endblock breadcrumb %}
 
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{message.tags}} alert-styled-left alert-bordered">
+                <button type="button" class="close" data-dismiss="alert"><span>&times;</span><span class="sr-only">{% trans 'Close' %}</span></button>
+                <span style="color: white">{{message|safe}}</span>
+            </div>
+            {% endfor %}
+        {% endif %}         
+
         <section class="row">
             {% block leftcolumn %}
                 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
@@ -49,25 +61,35 @@
                         {% include "app/home/searchEngine.html" %}
                     {% endblock searchModule %}
 
-                    {% block crowdFunding %}
+                    {% block integratedPlatforms %}
                         {% if username %}
-                            {% if components.crowd_source_banner %}
+                            {% if components.crowd_source_banner or components.microlabora_tasks_banner %}
                             <div id="crowd-funding-banner">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title text-center"><span class="fa fa-share-alt fa-lg text-success"></span>  {% trans 'Service is not here?' %}</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="col-sm-12 col-lg-12 col-xs-12 col-md-2 input-group ">
-                                        <span class="fa fa-info-circle text-info fa-lg cursor-pointer" id="publish-crowd-service-info"> </span>
-                                        <a href="{{ crowd_funding_publish_project }}"> {% trans 'Publish a crowd funding service' %}</a>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title text-center"> {% trans 'Service is not here?' %}</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="col-sm-12 col-lg-12 col-xs-12 col-md-12 input-group text-justify">
+                                        <ul>
+                                        {% if components.crowd_source_banner %}
+                                            <li>
+                                                <a href="{{ crowd_funding_publish_project }}"> {% trans 'Initiate or contribute to a crowd funding process' %}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if components.microlabora_tasks_banner %}
+                                            <li>
+                                                <a href="#modal-task" data-toggle="modal" data-target="#modal-task">{% trans 'Are you looking for somebody to perform a task for you?' %} </a>
+                                            </li>
+                                        {% endif %}
+                                        </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                             {% endif %}
                         {% endif %}
-                    {% endblock crowdFunding %}
+                    {% endblock integratedPlatforms %}
                 </div>
             {% endblock leftcolumn %}
             
@@ -87,7 +109,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12 hidden-xs">
                             <div class="btn-group pull-right services-view" role="group" data-view="m" aria-label="{% trans 'Service results presentation' %}" style="margin-left:15px">
                                 <a id="multidata_view" class="btn btn-md btn-default" aria-label="{% trans 'Block view of services'%}" data-view="m">
                                     <span class="fa fa-th-large" aria-label="{% trans 'Block view of services' %}"></span>
@@ -102,7 +124,7 @@
                     <hr class="service-hr"/>
                     {% block results %}
                         <div class="row clearfix">
-                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 margin-bottom-10">
+                            <div class="col-lg-12 col-md-12 col-sm-12 margin-bottom-10">
                                 <strong><span id="results_set"></span></strong>
                             </div>
                         </div>
@@ -118,7 +140,7 @@
         {% if False %}
         <div class="row margin-top-50">
             {% if popularService %}
-            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 on-mouseover service-banner" id="srv-{{ popularService.id }}" style="min-height:400px!important">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 on-mouseover service-banner" id="srv-{{ popularService.id }}" style="min-height:400px!important">
                 <div class="thumbnail">
                     <img src="{% static 'app/images/home/popular.png' %}" alt="{% trans 'Most popular service' %}">
                     <div class="caption">
@@ -256,6 +278,139 @@
             </div>
         </div>
         {% endif %}
+
+        <div id="modal-task" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">{% trans 'Publish your task in Microlabora' %}<button type="button" id="close-modal-btn" class="close" data-dismiss="modal">&times;</button></h3>
+                    </div>
+                    <div class="modal-body">
+                        <div id="task-error"  class="alert alert-danger hidden"><span class="fa fa-times-circle fa-lg"></span> <strong>{% trans 'Error' %}: <span id="task-error-msg"></span></strong></div>
+                        <form class="form-horizontal" action="{% url "publish_ml_task" %}" id="PublishTaskForm" name="PublishTaskForm" method="POST">
+                            <div class="form-group">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                    <label class="control-label" for="ServiceName">{% trans 'Title' %} <span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                                    <input type="text" class="form-control" name="ServiceName" id="ServiceName" autocomplete="off" maxlength="64" required/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                    <label class="control-label" for="Description">{% trans 'Description' %} <span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                                    <input type="text" class="form-control" name="Description" id="Description" autocomplete="off" maxlength="255" required/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                    <label class="control-label" for="EstimatedTime">{% trans 'Estimated time' %} <span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                                    <select class="form-control" id="EstimatedTime" name="EstimatedTime" required>
+                                        <option value="" disabled selected>{% trans '-- Define the estimated time --' %}</option>
+                                        <option value="1">{% trans 'Half an hour' %}</option>
+                                        <option value="2">{% trans 'One hour' %}</option>
+                                        <option value="3">{% trans 'One and a half hours' %}</option>
+                                        <option value="4">{% trans 'Two hours' %}</option>
+                                        <option value="5">{% trans 'Two and a half hours' %}</option>
+                                        <option value="6">{% trans 'Three hours' %}</option>
+                                        <option value="7">{% trans 'Three and a half hours' %}</option>
+                                        <option value="8">{% trans 'About 4 and a half hours' %}</option>
+                                        <option value="9">{% trans 'About 6 hours' %}</option>
+                                        <option value="10">{% trans 'About 8 and a half hours' %}</option>
+                                        <option value="11">{% trans 'Over 10 hours' %}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                    <label class="control-label" for="Category">{% trans 'Category' %} <span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                                    <select class="form-control" id="Category" name="Category" required>
+                                        <option value="" disabled selected>{% trans '-- Define the category of task --' %}</option>
+                                        {% for mc in ml_categories %}
+                                            <option value="{{mc.id}}">{{ mc.title}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                    <label class="control-label" for="DueDate">{% trans 'Due date' %} <span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                                    <input type="text" class="form-control" name="DueDate" id="DueDate" autocomplete="off" maxlength="30" placeholder="{% trans "dd/mm/yyyy"%}" required/>
+                                </div>
+                            </div>
+                            <!--difficulty level-->
+                            <div class="form-group">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                    <label class="control-label" for="DifficultyLevel">{% trans 'Diffuculty level' %} <span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                                    <select class="form-control" id="DifficultyLevel" name="DifficultyLevel" required>
+                                        <option value="" disabled selected>{% trans '-- Define the difficulty level --' %}</option>
+                                        <option value="1">{% trans 'Lame easy' %}</option>
+                                        <option value="2">{% trans 'Easy' %}</option>
+                                        <option value="3">{% trans 'Fair' %}</option>
+                                        <option value="4">{% trans 'Hard' %}</option>
+                                        <option value="5">{% trans 'Hardest' %}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--payment amount-->
+                            <div class="form-group">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                    <label class="control-label" for="PayAmount">{% trans 'Payment amount (&euro;)' %} <span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                                    <input type="number" min="0.00" step="0.01" class="form-control" name="PayAmount" id="PayAmount" autocomplete="off" maxlength="10" required/>
+                                </div>
+                            </div>
+                            <!--payment method-->
+                            <div class="form-group">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                    <label class="control-label" for="PayMethod">{% trans 'Payment method' %} <span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                                    <select class="form-control" id="PayMethod" name="PayMethod" required>
+                                        <option value="" disabled selected>{% trans '-- Define the payment method --' %}</option>
+                                        <option value="1">{% trans 'Immediate' %}</option>
+                                        <option value="2">{% trans 'Under 15 days' %}</option>
+                                        <option value="3">{% trans 'Under 30 days' %}</option>
+                                        <option value="4">{% trans 'Under 45 days' %}</option>
+                                        <option value="5">{% trans 'Under 60 days' %}</option>
+                                        <option value="5">{% trans 'Under 75 days' %}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--comment-->
+                            <div class="form-group">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                    <label class="control-label" for="Comments">{% trans 'Comments' %}</label>
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12">
+                                    <textarea type="text" class="form-control" rows="4" name="Comments" id="Comments" autocomplete="off" maxlength="200" placeholder="{% trans 'Up to 200 characters' %}"></textarea>
+                                </div>
+                            </div>
+                            <div>
+                                <h6 class="text-justify">{% trans 'Your task will be automatically published in Microlabora. It can only be performed by a human' %}.</h6>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- dialog buttons -->
+                    <div class="modal-footer">
+                        <strong style="color:red" class="pull-left">* {% trans 'Mandatory fields' %}</strong>
+                        <button type="button" class="btn btn-default" id="close-reset-btn" data-dismiss="modal">{% trans 'No, thanks' %}</button>
+                        <button type="submit" class="btn btn-success" id="publish-task-btn">{% trans 'I agree, publish it' %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -268,6 +423,13 @@
     <script type="text/javascript" src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/aod.js' %}"></script>
     <script type="text/javascript" src="{% static 'app/scripts/jquery-tree/jquery.tree.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+    {% if LANGUAGE_CODE != "en"%}
+        {% with 'app/scripts/bootstrap-datepicker/locales/bootstrap-datepicker.'|add:LANGUAGE_CODE|add:".min.js" as datepicker_locale %}
+        <script type="text/javascript" src="{% static datepicker_locale %}" ></script>
+        {% endwith %}
+    {% endif %}
+
     <script type="text/javascript">
         var form = '#service-search-form';
 
@@ -282,17 +444,24 @@
         $(document).ready(function () {
             // get categories as a tree
             AoD.loadTreeCategories("#tree");
-            getResults(form, null);
+
+            {% if preferences %}
+                var prefers = "{{ preferences }}";
+                query = prefers.replace(/&amp;/g, '&')
+                console.log(query);
+                getResults(form, "{% url 'private_api:refine_search_engine' %}", query);
+            {% else %}
+                getResults(form, "{% url 'private_api:search_engine' %}", null);
+            {% endif %}
 
             $(".panel-toggle-arrows").click(function () {
                 toggleArrows($(this));
             });
 
-
             $(".rating-stars").click(function () {
                 swapRatingStarColor($(this).attr("id").match(/\d+/));
-
             });
+
             $(".rating-stars").hover(function () {
                 swapRatingStarColor($(this).attr("id").match(/\d+/));
             });
@@ -310,6 +479,43 @@
             $("#content-top-banner").find("#items-per-page-id :selected").prop('selected', false);
             //$("#items-per-page-id option[value='{{ limit }}']").attr('selected', 'selected');
             //$("#items-per-page-id option[value='" + limit + "']").attr('selected', 'selected');
+
+            // datepicker
+            $('#DueDate').datepicker({
+                language: "{{LANGUAGE_CODE}}",
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            // Suggest user to participate in communities (if authenticated, cookie does not exist, component is enabled)
+            {% if username and not participate_in_communities and components.community_technical_support and not community_cookie_existence %}
+            var community_notification = function(){
+                swal({
+                    html: false,
+                    title: gettext("Do you want to participate in communities offering services?"),
+                    text: gettext("You will be able to become member in AoD communities of your interest either as professional or as volunteer aiming to assist other users. Visit your account settings and update your preferences!"),
+                    type: "info",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-primary",
+                    confirmButtonText: gettext("Yes, I am interested in"),
+                    cancelButtonText: gettext("Ask me later"),
+                    cancelButtonClass: "btn-danger",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        AoD.createCookie('aod_community', 'ok', 7);
+                        window.location = "{% url 'user_profile' username %}";
+                    } else {
+                        AoD.createCookie('aod_community', 'no', 4);
+                    }
+                });
+            };
+            //setTimeout(community_notification, 3000);
+            {% endif %}
 
         }).on('click', "#search-btn", function (event) {
             event.preventDefault();
@@ -477,7 +683,25 @@
                     search.lon = parseFloat(position.coords.longitude);  
                 })
             }
-            getResults(form, search);
+            query = parseRequest(search);
+            getResults(form, "{% url 'private_api:search_engine' %}", query);
+
+            {% if username %}
+                $.ajax({
+                    type: "post",
+                    url: "{% url 'track_user_search_preferences' %}",
+                    data: parseRequest(search),
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    success: function (response) {
+
+                    },
+                    error: function (error) { },
+                    complete: function (response) {
+                    },
+                });
+            {% endif %}
 
         }).on("click", "#charging-model-1", function () {
             if ($(this).is(':checked')) {
@@ -532,6 +756,62 @@
             //
             $("#services-result-listview").addClass('hidden');
             $("#services-result-multidata").removeClass('hidden');
+
+        }).on('click', "#publish-task-btn", function(event) {
+            var form = "#PublishTaskForm";
+            AoD.validateMLTaskForm(form);
+            if ($(form).valid()) {
+                var payload = $(form).serializeObject();
+                $.ajax({
+                    url: $(form).attr('action'),
+                    type: $(form).attr('method'),
+                    headers: {"accept": 'application/json'},
+                    contentType: 'application/json',
+                    data: JSON.stringify(payload),
+                    success: function(response) {
+                        if (response.ServiceId > 0){
+                            setTimeout(function(){ 
+                                $("#task-error").addClass('hidden');
+                                $("#close-modal-btn").click();
+                                $("#PublishTaskForm")[0].reset();
+                            }, 1000);
+                        }                        
+                        else {
+                            $("#task-error-msg").html(response.ErrorMessage);
+                            $("#task-error").removeClass('hidden');
+                        }
+                    },
+                    error: function(jqXHR, exception) {
+                        $("#task-error-msg").html(JSON.parse(jqXHR.responseText).error);
+                        $("#task-error").removeClass('hidden');
+                    }
+                });
+            }
+        }).on('click', "#close-reset-btn", function(event){
+            $("#task-error").addClass('hidden');
+            $("#task-window-close").click();
+            $("#PublishTaskForm")[0].reset();
+
+        }).on('click', "#close-modal-btn", function(event){
+            $("#task-error").addClass('hidden');
+            $("#task-window-close").click();
+            $("#PublishTaskForm")[0].reset();
+
+        }).on('click', "#alter-text-search-btn", function(event){
+            var form = "#KeywordSearchEngine";
+            var query = $("#alter-text-search").val();
+            getResults(form, $(form).attr('action'), {'q': query});
+                    
+        }).on('keypress', "#alter-text-search", function(event){ 
+            //
+            // On Enter press, force form submission
+            //
+            if(event.which == 13) {
+                $("#alter-text-search-btn").click();
+            }
+        }).on('submit', "#KeywordSearchEngine", function(event){
+            event.preventDefault();
+            $("#alter-text-search-btn").click();
         });
 
 
@@ -548,14 +828,13 @@
         }
 
 
-        function getResults(form, payload) {
+        function getResults(form, url, payload) {
             //
             // Retrieve the search results and append them
             //
-            payload = parseRequest(payload);
             $.ajax({
                 type: $(form).attr('method'),
-                url: $(form).attr('action'),
+                url: url,
                 data: payload,
                 beforeSend: function (xhr, settings) {
                     $.ajaxSettings.beforeSend(xhr, settings);
@@ -600,11 +879,17 @@
                             //
                             var link = "";
                             var url = "{% url 'service_view_page' 0 %}".replace(0, response[i].id);
-                            if (response[i].charging_model === 1) {
-                                link = '<a href="' + url + '" class="btn btn-success btn-xs">' + gettext('Access it!') + '</a>'; // href
+
+                            if (response[i].type !== 'C') {
+                                if (response[i].charging_model === 1) {
+                                    link = '<a href="' + url + '" class="btn btn-success btn-xs">' + gettext('Access it!') + '</a>'; // href
+                                }
+                                else {
+                                    link = '<a href="' + url + '" class="btn btn-success btn-xs">' + gettext('Get it!') + ' <i class="fa fa-shopping-cart"></i></a>'; // href
+                                }
                             }
                             else {
-                                link = '<a href="' + url + '" class="btn btn-success btn-xs">' + gettext('Get it!') + ' <i class="fa fa-shopping-cart"></i></a>'; // href
+                                link = '<a href="' + url + '" class="btn btn-success btn-xs">' + gettext('Get help!') + '</a>'; // href
                             }
                             var price = (response[i].price === 0) ? gettext('FREE') : response[i].unit + " " + response[i].price;
                             //
@@ -624,7 +909,12 @@
                                 var rating = $(this).find("#srv-rating-" + $(this).attr("id").match(/\d+/)).find("span").first().text();
                                 if (rating !== "None" && !(isNaN(rating))) {
                                     for (var j = 1; j <= Math.ceil(rating) ; j++) {
-                                        $(this).find(".star-rating-" + j).removeClass("fa-star-o").addClass("fa-star");
+                                        if (j > rating) {
+                                            $(this).find(".star-rating-" + j).removeClass("fa-star-o").addClass("fa-star-half-full");
+                                        }
+                                        else{
+                                            $(this).find(".star-rating-" + j).removeClass("fa-star-o").addClass("fa-star");
+                                        }
                                     }
                                 }
                             });
@@ -646,7 +936,6 @@
                     //;
                 },
             });
-
         }
 
         function parseRequest(search) {
@@ -683,14 +972,15 @@
                                 '<span class="fa-stack fa-3x img-responsive img-circle" style="margin-top:-55px">',
                                     logo,
                                 '</span>',
-                                    '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">',
-                                        '<a href="'+url+'" >',
-                                            '<h5 class="text-center" title="'+ service.title +'">' + ((service.title.length > 28) ?  service.title.substring(0, 28) + '...' : service.title.substring(0, 28)) + '</h5>',
-                                        '</a>',
-                                    '</div>',
+                                '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">',
+                                    '<a href="'+url+'" >',
+                                        '<h5 class="text-center" title="'+ service.title +'">' + ((service.title.length > 28) ?  service.title.substring(0, 28) + '...' : service.title.substring(0, 28)) + '</h5>',
+                                    '</a>',
+                                '</div>',
                                 '<div class="row">',
                                     '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-justify">',
-                                        '<p class="clearfix">' + ((service.description.length > 0) ? service.description.substring(0, 130) + '... ' : " ") + link + '</p>',
+                                        '<p class="clearfix">' + ((service.description.length > 0) ? service.description.substring(0, 130) + '...' : "") + '</p>',
+                                        link,
                                     '</div>',
                                 '</div>',
                             '</div>',
@@ -706,7 +996,7 @@
                                     '</div>',
                                     '<div class="col-sm-5 col-lg-5 col-md-5 col-xs-5">',
                                         '<strong class="pull-right">',
-                                            price,
+                                            (service.type === 'C') ? "" : price,
                                         '</strong>',
                                     '</div>',
                                 '</div>',
@@ -765,7 +1055,7 @@
                                     '</div>',
                                     '<div class="col-sm-5 col-lg-5 col-md-5 col-xs-5">',
                                         '<b class="pull-right">',
-                                        price,
+                                        (service.type === 'C') ? "" : price,
                                         '</b>',
                                     '</div>',
                                 '</div>',
@@ -794,7 +1084,12 @@
             if ( type === "M" ) {
                 return '<abbr title="' + gettext('Machine-based service') + '"><span class="fa fa-laptop pull-right fa-2x" ></span></abbr>';
             }
-            return '<abbr title="' + gettext('Human-based service') + '"><span class="fa fa-user pull-right fa-2x" ></span></abbr>';
+            else if ( type === "H" ){
+                return '<abbr title="' + gettext('Human-based service') + '"><span class="fa fa-user pull-right fa-2x" ></span></abbr>';
+            }
+            else {
+                return '<abbr title="' + gettext('Community-based service') + '"><span class="fa fa-users pull-right fa-2x" ></span></abbr>';
+            }
         }
 
         function resultsNotFound() {

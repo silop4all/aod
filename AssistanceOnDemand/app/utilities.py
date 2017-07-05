@@ -9,6 +9,10 @@ from traceback import print_exc
 from datetime import date
 from app.models import Components
 
+import logging
+logger = logging.getLogger(__name__)
+
+
 def sendEmail(receiversList, subject, content, includeHtml):
     try:
         sender = settings.EMAIL_HOST_USER
@@ -21,7 +25,8 @@ def sendEmail(receiversList, subject, content, includeHtml):
             msg.send()
         else:
             send_mail(subject, content, sender, receiversList, fail_silently=False)
-    except:
+    except Exception as ex:
+        logger.error(str(ex))
         if settings.DEBUG:
             print_exc()
         pass
@@ -135,3 +140,41 @@ def compareLanguages(aliasList):
     except:
         print_exc()
         return []
+
+
+def datetime_diff_minutes(d1, d2):
+    """"Return the diff of two datetimes in minutes"""
+    try:
+        diff = d2 - d1
+        return diff.seconds/60.0
+    except: 
+        return -1
+
+def datetime_diff_hours(d1, d2):   
+    """"Return the diff of two datetimes in hours"""
+    try:
+        minutes = datetime_diff_minutes(d1, d2)
+        return minutes / 60.0    
+    except: 
+        return -1
+
+def datetime_diff_days(d1, d2):   
+    """"Return the diff of two datetimes in days"""
+    try:    
+        hours = datetime_diff_hours(d1, d2)
+        return hours / 24.0    
+    except: 
+        return -1    
+
+
+def get_subscription_period(charging_policy_id):
+    """Return teh subscription paypal name based on charging policy id"""
+
+    if charging_policy_id == 4:
+        return "MONTH";
+    elif charging_policy_id == 5:        
+        return "DAY";
+    elif charging_policy_id == 6:                
+        return "WEEK";
+    elif charging_policy_id == 7:   
+        return "YEAR";            

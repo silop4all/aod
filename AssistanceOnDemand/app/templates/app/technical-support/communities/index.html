@@ -1,0 +1,159 @@
+﻿{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load staticfiles %}
+
+{% block extraCss %}
+{% endblock extraCss %}
+
+{% block navbar %}
+    {% include "app/navbar-users.html" %}
+{% endblock navbar %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <div class="container body-content padding-bottom-em-2 padding-top-50">
+   
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+            <li><a href="{% url 'communities_list' %}" class="custom-inactive-breadcrumb"> {% trans 'Communities' %}</a></li>
+            <li class="active">{% trans 'Initiate community' %}</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <main style="padding-top:1%; padding-bottom:1%; border-radius:5px 5px; color: black" class=" highlight-service-banner platform-info-box min-height-700-px">
+            <h2>{% trans 'Initiate a community based service' %}</h2>
+            <hr class="service-hr"/>
+            
+            <form id="CommunityBasedService" name="CommunityBasedService" method="POST" action="{% url 'community' %}">
+                {% csrf_token %}
+                <!--left column-->
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xs-12"  style="border-right: 1px dashed #bdbdbd">
+                        <div class="row form-group">
+                            <div class="col-sm-5 col-md-5 col-lg-4 col-xs-12">
+                                    <label class="control-label"  for="ref_service">{% trans 'Service' %}<span class="highlight-error-message"> *</span></label>
+                            </div>
+                            <div class="col-sm-7 col-md-7 col-lg-8 col-xs-12">
+                                <select class="form-control" id="ref_service" name="ref_service">
+                                    <option value="" selected disabled>-- {% trans 'Select the supported service' %} --</option>
+                                    {% for service in services_list %}
+                                    <option value="{{ service.id }}">{{ service.title|capfirst }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-sm-5 col-md-5 col-lg-4 col-xs-12">
+                                <label class="control-label" for="title">{% trans 'Title' %}<span class="highlight-error-message"> *</span></label>
+                            </div>
+                            <div class="col-sm-7 col-md-7 col-lg-8 col-xs-12">
+                                <input type="text" id="title" name="title" class="form-control" form="CommunityBasedService" maxlength="128" placeholder="{% trans 'title of community and related service' %}" required/>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-sm-5 col-md-5 col-lg-4 col-xs-12">
+                                    <label class="control-label"  for="description">{% trans 'Description' %}<span class="highlight-error-message"> *</span></label>
+                            </div>
+                            <div class="col-sm-7 col-md-7 col-lg-8 col-xs-12">
+                                <textarea  id="description" name="description" rows="10" class="form-control" form="CommunityBasedService" maxlength="4000" placeholder="{% trans 'description of the community service' %}" required></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!--right column-->
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xs-12">
+                        <div class="row form-group margin-bottom-25">
+                            <div class="col-sm-5 col-md-5 col-lg-4 col-xs-12">
+                                <label class="text-left control-label" for="role" >{% trans 'Act as' %} <span class="highlight-error-message"> *</span></label>
+                            </div>
+                            <div class="col-sm-7 col-md-7 col-lg-8 col-xs-12" >
+                                <fieldset class="clearfix">
+                                    <input type="radio" name="role" form="CommunityBasedService" value="1" autofocus checked/> {% trans 'Volunteer'%}
+                                    <input type="radio" name='role' form="CommunityBasedService" value="0" /> {% trans 'Professional' %}
+                                </fieldset>
+                            </div>
+                        </div>
+                        <!--fee-->
+                        <div class="row form-group margin-bottom-25">
+                            <div class="col-sm-5 col-md-5 col-lg-4 col-xs-12">
+                                <label class="text-left control-label" for="fee" title="{% trans 'Enter the fee for your support' %}">{% trans 'Fee' %}</label>
+                            </div>
+                            <div class="col-sm-7 col-md-7 col-lg-8 col-xs-12" title="{% trans 'Enter the fee for your support' %}">
+                                <input type="text" class="form-control" name="fee" id="fee" autocomplete="off"  maxlength="10"  autofocus placeholder="{% trans 'empty for volunteer support' %}" readonly/>    
+                            </div>
+                        </div>
+                        <!--currency-->
+                        <div class="row form-group clearfix margin-bottom-25">
+                            <div class="col-sm-5 col-md-5 col-lg-4 col-xs-12">
+                                <label class="text-left control-label" for="currency" title="{% trans 'Clarify the currency of your fee' %}">{% trans 'Currency' %}</label>
+                            </div>
+                            <div class="col-sm-7 col-md-7 col-lg-7 col-xs-12" title="{% trans 'Clarify the currency of your fee' %}">
+                                <select class="selectpicker form-control show-tick"  name="currency" id="currency" data-max-options="1" data-size="5"  data-header="{% trans 'Clarify the currency of your fee' %}" data-live-search="true" role="list" title="-- {% trans 'Select the currency' %} --" disabled>
+                                    <option value="-1" disabled selected>-- {% trans 'Select the currency of your fee' %} --</option> 
+                                    {% for i in currency_list %}
+                                        <option value="{{ i.letter }}">{{ i.name }}</option> 
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <!--skype-->
+                        <div class="row form-group">
+                            <div class="col-sm-5 col-md-5 col-lg-4 col-xs-12">
+                                <label class="text-left control-label" for="skype" title="{% trans 'Enter your skype account id' %}">{% trans 'Skype id' %}<span class="highlight-error-message"> *</span></label>
+                            </div>
+                            <div class="col-sm-7 col-md-7 col-lg-7 col-xs-12" title="{% trans 'Enter your skype account id' %}">
+                                <input type="text" class="form-control" name="skype" id="skype" autocomplete="off"  maxlength="128"  autofocus required/>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row margin-top-10 clearfix center">
+                    <div class="col-sm-4 col-md-3 col-lg-2 col-xs-12"><h5 class="highlight-error-message">* {% trans 'Required fields' %}</h5></div>
+                    <div class="col-sm-8 col-md-9 col-lg-10 col-xs-12">
+                        <a href="{% url 'communities_list' %}" class="btn btn-default">{% trans 'Cancel' %}</a>
+                        <button type="submit" form="CommunityBasedService" class="btn btn-success">{% trans 'Submit' %}</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+{% endblock content %}
+
+
+{% block scripts %}
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/multiselect-bootstrap/bootstrap-select.min.js' %}"></script> 
+    <script type="text/javascript" src="{% static 'app/scripts/jquery.validate.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/aod.js' %}"></script>
+
+    <script>
+        $(document).ready(function () {
+            AoD.validateCommunityService("#CommunityBasedService");
+
+            $("input[name='role']").change(function(){
+                var role = $("input[name='role']:checked").val();
+                console.log(role);
+                if (role == 0) {
+                    $("#fee").removeAttr("readonly");
+                    $("#currency").removeAttr("disabled");
+                    $(".selectpicker").removeClass("disabled");
+                    $("ul.selectpicker > li").removeClass("disabled");
+                }
+                else {
+                    $("#fee").attr("readonly", "readonly");
+                    $("#fee").val("");
+                    $("#currency").attr("disabled", "disabled");
+                    $("#currency").val("");
+                }
+            })
+           
+        })
+    </script>
+{% endblock scripts %}

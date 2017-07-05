@@ -21,6 +21,8 @@ from app.models import (
     ArticleDocument,
     ArticleVideo,
     CookiePolicy,
+    TaskCategory,
+    EvaluationMetric,
 )
 
 REQUIRED_LANGUAGES = tuple([v[0] for i,v in enumerate(settings.LANGUAGES)])
@@ -115,3 +117,13 @@ translator.register(ArticleVideo, ArticleVideoTranslationOptions)
 class CookiePolicyTranslationOptions(TranslationOptions):
     fields = ('content',)
 translator.register(CookiePolicy, CookiePolicyTranslationOptions)
+
+
+class TaskCategoryTranslationOptions(TranslationOptions):
+    fields = ('title',)
+translator.register(TaskCategory, TaskCategoryTranslationOptions)
+
+
+class EvaluationMetricTranslationOptions(TranslationOptions):
+    fields = ('name',)
+translator.register(EvaluationMetric, EvaluationMetricTranslationOptions)

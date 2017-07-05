@@ -1,0 +1,188 @@
+﻿{% extends "app/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} AoD | {{ title }} {% endblock title %}
+
+{% load staticfiles %}
+
+{% block extraCss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap-table/bootstrap-table.min.css' %}" />
+{% endblock extraCss %}
+
+{% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            <li><a href="{% url 'home_page' %}" class="custom-inactive-breadcrumb"><i class="fa fa-home"></i> {% trans 'Home' %}</a></li>
+            <li><a href="{% url 'communities_list' %}" class="custom-inactive-breadcrumb"> {% trans 'Communities' %}</a></li>
+            <li class="active"> {{ community.service.title|capfirst }}</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <section style="padding-top:1%; padding-bottom:1%; border-radius:5px 5px;" class="col-lg-12 col-md-12 col-sm-12 highlight-service-banner platform-info-box min-height-700-px">
+            <h2>{{ community.service.title|capfirst }}<br><small>{% trans 'Manage your members' %}</small></h2>
+            <hr class="service-hr">
+            <div class="table -responsive">
+                <table id="community-members-table" 
+                        data-classes="table text-nowrap table-striped table-hover"
+                        data-search="true"  
+                        data-show-toggle="false"
+                        data-show-columns="true"
+                        data-card-view="false"
+                        data-click-to-select="false"
+                        data-pagination="true"
+                        data-page-list="10, 20, 30, 50" 
+                        data-sort-name="title" data-sort-order="asc">
+                    <thead class="custom-aod-table-thead">
+                    <tr>
+                        <th data-field="member" data-align="center" data-sortable="true" data-formatter="setMemberFormatter">{% trans 'Member' %}</th>
+                        <th data-field="status" data-align="center" data-sortable="true" data-formatter="setStatusFormatter">{% trans 'Status' %}</th>
+                        <th data-field="is_volunteer" data-align="center" data-sortable="true" data-formatter="setVolunteerFormatter">{% trans 'Volunteer?' %}</th>
+                        <th data-field="is_professional" data-align="center" data-sortable="true" data-formatter="setProfessionalFormatter">{% trans 'Professional?' %}</th>
+                        <th data-field="fee_currency" data-align="center" data-sortable="true" >{% trans 'Fee' %}</th>
+                        <th data-field="skype" data-align="center" data-sortable="true" >{% trans 'Skype ID' %}</th>
+                        <th data-field="actions" data-align="center" data-sortable="true" data-visible="true" data-formatter="setActionsFormatter">{% trans 'Actions' %}</th>
+                    </tr>
+                    </thead>
+                </table>
+
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 margin-top-50" style="clear:both">
+                <center>
+                    <a href="{% url 'communities_list' %}" class="btn btn-default" >{% trans 'Back to communities' %}</a>
+                </center>
+            </div>
+        </section>
+    </div>
+{% endblock content %}
+
+
+{% block scripts %}
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+    <script src="{% static 'app/scripts/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
+    {% with 'app/scripts/bootstrap-table/dist/locale/'|add:bootstrap_table_locale_url as bootstrap_table_locale %}
+        <script type="text/javascript" src="{% static bootstrap_table_locale %}"></script>
+    {% endwith %}
+    <script type="text/javascript">
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                    xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+                }
+            }
+        });
+
+        $(document).ready(function () {
+
+            var members_list = [];
+            {% for m in members_list %}
+                members_list.push({
+                    'member': "{{ m.user.username }}",
+                    'status': "{{ m.is_active }}",
+                    'is_volunteer': "{{ m.is_volunteer }}",
+                    'is_professional': "{{ m.is_professional }}",
+                    'is_owner': "{{ m.is_owner }}",
+                    'skype': "{{ m.skype }}",
+                    'fee_currency': "{% if m.is_professional %}{{ m.fee|unlocalize }} {{ m.currency }}{% else %}{% trans 'Free' %}{% endif %}",
+                    'form': '<form name="manage_community_member" action="{% url 'manage_community_member' community.id m.user_id %}" method="post">'
+                });
+            {% endfor %}
+
+            $('#community-members-table').bootstrapTable({data: members_list});
+
+            $('.fixed-table-body').css('height', 'auto').css('border-top-right-radius', '3px');
+            $("#community-members-table").bootstrapTable('check', 0);
+
+            $('.force-form-submit').click(function () {
+                $.ajax({
+                    type: $(this).parent().parent().attr('method'),
+                    url: $(this).parent().parent().attr('action'),
+                    data: JSON.stringify({ status: $(this).data('status') }),
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    contentType: 'application/json',
+                    complete: function (response) {
+                        location.reload();
+                    }
+                });
+            })
+        })
+
+        function setMemberFormatter(value, row, index) {
+            // add the owner label near to the community owner
+            var label = "";
+            if (row['is_owner'] === "True")
+                label = ' <label class="label label-info">' + gettext('it\'s you') + '</label>';
+            return row['member'] + label;
+        }
+
+        function setStatusFormatter(value, row, index) {
+            // highlight the status of each member
+            
+            if ( row['status'] === "True"){
+                return '<label class="label label-success">{% trans 'Active' %}</label>';
+            }
+            else if ( row['status'] === "False" ) {
+                return '<label class="label label-danger">{% trans 'Not active' %}</label>';
+            }
+            else {
+                return '<label class="label label-warning">{% trans 'Pending' %}</label>';
+            }
+        }
+
+        function setActionsFormatter(value, row, index) {
+            // set action buttons
+                    
+            if (row['is_owner'] === "True")
+                return "";
+  
+            if ( row['status']  === "True") {
+                return [
+                    row['form'],
+                        '<div class="btn-group" role="group" aria-label="{% trans 'Actions' %}">',
+                            '<a href="#" data-status="1" class="btn btn-xs btn-success force-form-submit disabled"><span class="fa fa-check-circle"></span> {% trans 'Accept' %}</a>',
+                            '<a href="#" data-status="0" class="btn btn-xs btn-danger force-form-submit"><span class="fa fa-exclamation-circle"></span> {% trans 'Deny' %}</a>',
+                        '</div>',
+                    '</form>'
+                ].join('');
+            }
+            else  if ( row['status']  === "False") {
+                return [
+                    row['form'],,
+                        '<div class="btn-group" role="group" aria-label="{% trans 'Actions' %}">',
+                            '<a href="#" data-status="1" class="btn btn-xs btn-success force-form-submit "><span class="fa fa-check-circle"></span> {% trans 'Accept' %}</a>',
+                            '<a href="#" data-status="0" class="btn btn-xs btn-danger force-form-submit disabled"><span class="fa fa-exclamation-circle"></span> {% trans 'Deny' %}</a>',
+                        '</div>',
+                    '</form>'
+                ].join('');
+            }
+            else {
+                return [
+                    row['form'],,
+                        '<div class="btn-group" role="group" aria-label="{% trans 'Actions' %}">',
+                            '<a href="#" data-status="1" class="btn btn-xs btn-success force-form-submit "><span class="fa fa-check-circle"></span> {% trans 'Accept' %}</a>',
+                            '<a href="#" data-status="0" class="btn btn-xs btn-danger force-form-submit"><span class="fa fa-exclamation-circle"></span> {% trans 'Deny' %}</a>',
+                        '</div>',    
+                    '</form>'
+                ].join('');
+            }
+        }
+
+        function setVolunteerFormatter(value, row, index) {
+            if ( row['is_volunteer'] === "True" )
+                return '<span class="fa fa-check text-success"></span>';
+            return '';
+        }
+
+        function setProfessionalFormatter(value, row, index) {
+            if ( row['is_professional'] === "True" )
+                return '<span class="fa fa-check text-success"></span>';
+            return '';
+        }
+
+    </script>
+{% endblock %}

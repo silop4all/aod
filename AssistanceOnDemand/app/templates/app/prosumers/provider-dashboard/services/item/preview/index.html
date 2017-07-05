@@ -62,22 +62,22 @@
                 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
                     <li role="presentation" class="active" >
                         <a href="#info" data-toggle="tab" >
-                            <h4><span class="fa fa-bookmark fa-lg"></span> {% trans 'Service details' %}</h4> 
+                            <h4>{% trans 'Service details' %}</h4> 
                         </a>
                     </li>
                     <li role="presentation">
                         <a id="stats_tab" href="#stats" data-toggle="tab" data-resource="{% url 'private_api:service_reviews' service.id %}">
-                            <h4><span class="fa fa-bar-chart-o fa-lg"></span> {% trans 'Statistics' %}</h4>
+                            <h4>{% trans 'Statistics' %}</h4>
                         </a>
                     </li> 
                     <li role="presentation">
                         <a id="support_tab" href="#support" data-toggle="tab" data-resource="{% url 'private_api:service_technical_support' service.id %}" title="{% trans 'Technical support of the service' %}">
-                            <h4><span class="fa fa-cogs fa-lg"></span> {% trans 'Technical support' %}</h4> 
+                            <h4>{% trans 'Technical support' %}</h4> 
                         </a>
                     </li>  
                     <li role="presentation">
                         <a id="reviews_tab" href="#reviews" data-toggle="tab" data-resource="{% url 'private_api:service_reviews' service.id %}">
-                            <h4><span class="fa fa-comments-o fa-lg"></span> {% trans 'Reviews' %}</h4>
+                            <h4>{% trans 'Reviews' %}</h4>
                         </a>
                     </li> 
                 </ul>
@@ -149,8 +149,25 @@
     <script type="text/javascript" src="{{ google_map_url }}" ></script>
     {% endwith %}
     <script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
-
     <script src="{% static 'app/scripts/p4a-lib/consumers/services/item/main.js' %}"></script>
     <script src="{% static 'app/scripts/p4a-lib/google_map.js' %}"></script>
+    <script type="text/javascript">      
+        $(document).ready(function(){
+            var consumers_list = [];
 
+            {% for c in consumers %}
+                consumers_list.push({
+                    'consumer': "{{ c.consumer }}",
+                    'is_completed' : "{{ c.payment_status }}",
+                    'price' : "{{ c.cost|unlocalize }}",
+                    'purchased_date': "{{ c.purchased_date|date }}",
+                    'payment_status': "-",
+                    'payment_date': "-",
+                });
+            {% endfor %}
+
+            $('#stats_table').bootstrapTable({data: consumers_list});
+            $('.fixed-table-body').css('height', 'auto').css('border-top-right-radius', '3px');
+        })
+    </script>
 {% endblock scripts %}

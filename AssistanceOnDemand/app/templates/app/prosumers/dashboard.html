@@ -1,0 +1,982 @@
+{% extends "app/base.html" %}
+    {% load i18n %}
+    {% load l10n %}
+
+    {% block title %} 
+    {% trans 'AoD | Welcome' %} {% if username %} {{ username }} {% else %} user {% endif %} 
+    {% endblock title %}
+
+    {% load staticfiles %}
+
+    {% block extraCss %}
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-tree/jquery.tree.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
+    {% endblock extraCss %}
+
+    {% block content %}
+    <div class="container body-content" style="margin-top: 50px; padding-bottom:2em">
+    
+        {% block breadcrumb %}
+        <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i> {% trans 'Home' %}</li>
+        </ol>
+        {% endblock breadcrumb %}
+
+        <section class="row">
+
+            {% block leftcolumn %}
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    {% block searchModule %}
+                    <section id="search_services_module" class="panel" style="padding-left: 5px; padding-right: 5px">
+                            <!--<form action="{% url 'search_services' %}" method="post" id="service-search-form" name="service-search-form">-->
+                            <form action="{% url 'private_api:search_engine' %}" method="GET" id="service-search-form" name="service-search-form">
+                                <h4 class="text-center bg-primary"  role="heading">
+                                    <span class="fa fa-search fa-lg text-success"></span> {% trans 'Find your services' %}
+                                </h4>
+                                <hr>
+                                <!--form inputs -->
+
+                                <fieldset>
+                                    <!--categories list-->
+                                    <div class="form-group" id="categories-panel">
+                                        <div class="panel-group panel-toggle-arrows" id="categories-id" role="tablist" aria-multiselectable="true" >
+                                            <div class="panel  panel-custom-success">
+                                                <div class="panel-heading" role="tab" id="categories-title">
+                                                      <h4 class="panel-title" title="{% trans 'Categories' %}">
+                                                            <a data-toggle="collapse" data-parent="#categories-id" href="#categories-list" aria-expanded="true" aria-controls="categories-list">
+                                                                {% trans 'Categories' %}
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                            
+                                                <div id="categories-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="categories-title">
+                                                    <div class="panel-body" style="background-color:whitesmoke">
+    
+                                                    <!--append categories tree-->
+                                                    <div id="tree" data-resource="{% url 'private_api:categories_tree' %}" style="margin-left: -40px"></div>
+                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Companies-->
+                                    <div class="form-group" id="companies-panel">
+                                        <div class="panel-group panel-toggle-arrows" id="companies-id" role="tablist" aria-multiselectable="true" >
+                                            <div class="panel panel-custom-success" >
+                                                <div class="panel-heading" role="tab" id="companies-title">
+                                                      <h4 class="panel-title" title="{% trans 'Service providers' %}">
+                                                            <a data-toggle="collapse" data-parent="#companies-id" href="#companies-list" aria-expanded="true" aria-controls="companies-list">
+                                                                {% trans 'Service providers' %}
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                                <div id="companies-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="companies-title">
+                                                    <div class="panel-body" style="background-color:whitesmoke">
+                                                        {% if providers %}
+                                                            {% for provider in providers %}
+                                                            <div class="checkbox">
+                                                                <input type="checkbox" id="provider-{{ provider.id }}" name="provider-{{ provider.id }}" data-id="{{ provider.id }}" data-name="provider-{{ provider.id }}"/> 
+                                                                <label for="provider-{{ provider.id }}" style="line-height:initial">{{ provider.name }}</label>
+                                                                <span class="label label-success pull-right">{{ provider.servNo }} </span>
+                                                            </div>
+                                                            {% endfor %}
+                                                        {% endif %}
+
+                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--types-of-services-->
+                                    <div class="form-group" id="service-types-panel">
+                                        <div class="panel-group panel-toggle-arrows" id="service-types-id" role="tablist" aria-multiselectable="true" style="border-radius:0px!important">
+                                            <div class="panel panel-custom-success">
+                                                <div class="panel-heading" role="tab" id="service-types-title">
+                                                      <h4 class="panel-title" title="{% trans 'Type of services' %}">
+                                                            <a data-toggle="collapse" data-parent="#service-types-id" href="#service-types-list" aria-expanded="true" aria-controls="service-types-list">
+                                                                {% trans 'Type' %}
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                                <div id="service-types-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="service-types-title">
+                                                    <div class="panel-body " style="background-color:whitesmoke">
+                                                        <div class="checkbox">
+                                                            <input type="checkbox" id="human_service_type" name="human_service_type" data-id="h" /> 
+                                                            <label for="human_service_type" style="line-height:initial">{% trans 'Human' %}</label>
+                                                            <span class="label label-success pull-right" >{% if servicesTypes %} {{ servicesTypes.human }} {% endif %}</span>
+                                                        </div>       
+                                                        <div class="checkbox">
+                                                            <input type="checkbox" id="machine_service_type" name="machine_service_type" data-id="m"/> 
+                                                            <label for="machine_service_type" style="line-height:initial">{% trans 'Machine' %}</label>
+                                                            <span class="label label-success pull-right" >{% if servicesTypes %} {{ servicesTypes.machine }} {% endif %}</span>
+                                                        </div>     
+                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--payment policy-->
+                                    <div class="form-group" id="charging-model-panel">
+                                        <div class="panel-group panel-toggle-arrows" id="charging-model-id" role="tablist" aria-multiselectable="true">
+                                            <div class="panel panel-custom-success">
+                                                <div class="panel-heading" role="tab" id="charging-model-title">
+                                                      <h4 class="panel-title" title="{% trans 'Payment policies' %}">
+                                                            <a data-toggle="collapse" data-parent="#charging-model-id" href="#charging-model-list" aria-expanded="true" aria-controls="charging-model-list">
+                                                                {% trans 'Payment policies' %}
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                                <div id="charging-model-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="charging-model-title">
+                                                    <div class="panel-body " style="background-color:whitesmoke">
+                                                    <!-- 2015.04.21 it works. -->
+                                                    {#% if chargingModels %#}
+                                                        {#% for model in chargingModels %#}
+                                                            <!--
+                                                            <div class="checkbox">
+                                                                <label for="charging-model-{#{ model.id }#}">
+                                                                    <input type="checkbox" id="charging-model-{#{ model.id }#}" name="charging-model-{#{ model.id }#}" data-id="{#{ model.id }#}" data-name="charging-model-{#{ model.id }#}"/> 
+                                                                    <span>{#{ model.name }#}</span>
+                                                                    <span class="label label-success pull-right">{#{ model.servNo }#}</span>
+                                                                </label>
+                                                            </div> 
+                                                            -->
+                                                        {#% endfor %#}
+                                                    {#% endif %#}
+                                                    <!-- 2015.04.21 -->
+
+
+                                                    {% if chargingModels %}
+                                                        {% for model in chargingModels %}
+                                                            {% if model.name == "Free" %}
+                                                            <div class="checkbox">
+                                                                <input type="checkbox" id="charging-model-{{ model.id }}" name="charging-model-{{ model.id }}" data-id="{{ model.id }}" data-name="charging-model-{{ model.id }}"/> 
+                                                                <!--<label for="charging-model-{{ model.id }}" style="line-height:initial">{{ model.name }}</label>-->
+                                                                <label for="charging-model-{{ model.id }}" style="line-height:initial">{% trans 'Free' %}</label>
+                                                            </div>
+                                                            <div class="checkbox">
+                                                                <input type="checkbox" id="charging-model-0" name="charging-model-paid" data-id="0" data-name="charging-model-paid"/> 
+                                                                <label for="charging-model-0" style="line-height:initial">{% trans 'Paid' %}</label>
+                                                            </div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--price-->
+                                    <div class="form-group" id="price-panel">
+                                        <div class="panel-group panel-toggle-arrows" id="price-id" role="tablist">
+                                            <div class="panel panel-custom-success">
+                                                <div class="panel-heading" role="tab" id="price-title">
+                                                      <h4 class="panel-title" title="{% trans 'Price' %}">
+                                                            <a data-toggle="collapse" data-parent="#price-id" href="#price-list" aria-expanded="true" aria-controls="price-list">
+                                                                {% trans 'Price' %}
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                                <div id="price-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="price-title">
+                                                    <div class="panel-body" style="background-color:whitesmoke">
+                                                        
+                                                        <div class="price input-group margin-bottom-5">
+                                                            <span for="low_price" class="input-group-addon">{% trans 'From' %}</span>
+                                                            <input type="number" step="0.01" placeholder="{% trans 'min value' %}"  aria-label="{% trans 'Define the minimum price' %}" min="0" id="low_price" data-parent=".price" data-min="0.00" data-max="9999999.00" max="9999999.00" class="form-control" style="background: whitesmoke;">
+                                                            <span class="input-group-addon">&#8364;</span>                                   
+                                                        </div>
+
+                                                        <div class="price input-group">
+                                                            <span for="high_price" class="input-group-addon">{% trans 'Up to' %}</span>
+                                                            <input type="number" step="0.01" placeholder="{% trans 'max value' %}"  aria-label="{% trans 'Define the maximum price' %}" min="0" id="high_price" max="9999999.00" data-parent=".price" data-min="0.00" data-max="9999999.00" class="form-control" style="background: whitesmoke">
+                                                            <span class="input-group-addon">&#8364;</span>                                   
+                                                        </div> 
+                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--QoS-->
+                                    <div class="form-group" id="quality-of-service-panel">
+                                        <div class="panel-group panel-toggle-arrows" id="quality-of-service-id" role="tablist" aria-multiselectable="true">
+                                            <div class="panel panel-custom-success">
+                                                <div class="panel-heading" role="tab" id="quality-of-service-title">
+                                                      <h4 class="panel-title" title="{% trans 'Searches based on Quality of Services measured by serviced users from zero (worst) to five (best)' %}.">
+                                                            <a data-toggle="collapse" data-parent="#quality-of-service-id" href="#quality-of-service-list" aria-expanded="true" aria-controls="quality-of-service-list">
+                                                                {% trans 'Quality of Service' %}
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                                <div id="quality-of-service-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="quality-of-service-title">
+                                                    <div class="panel-body " style="background-color:whitesmoke;">    
+                                                        <div id="qos">
+                                                            <div class="input-group margin-bottom-5" style="max-width: 90%">
+                                                                <span class="input-group-addon">
+                                                                    <span class="fa fa-star-o star-colorize-yellow" role="img" alt="{% trans 'Minimum value of quality of service (rating)' %}"></span>
+                                                                </span>
+                                                                <input type="number" step="0.1" placeholder="{% trans 'minimum rating' %}" min="0" max="5" id="low_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control" style="background: whitesmoke">
+                                                            </div>
+                                                            <div class="input-group" style="max-width: 90%">
+                                                                <span class="input-group-addon">
+                                                                    <span class="fa fa-star star-colorize-yellow" role="img" alt="{% trans 'Maximum value of quality of service (rating)' %}"></span>
+                                                                </span>
+                                                                <input type="number" step="0.1" placeholder="{% trans 'maximum rating' %}" min="0" max="5" id="high_QoS" data-parent="#qos" data-min="0.00" data-max="5.00" class="form-control" style="background: whitesmoke">
+                                                            </div>
+                                                        </div> 
+                                                          <div>
+                                                            <span class="fa fa-info-circle text-primary"></span> 
+                                                            <span style="font-size: 12px">{% trans 'Set the QoS range of your interest' %}</span>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--distance-->
+                                    <div class="form-group" id="location-panel">
+                                        <div class="panel-group panel-toggle-arrows" id="location-id" role="tablist">
+                                            <div class="panel panel-custom-success">
+                                                <div class="panel-heading" role="tab" id="location-title">
+                                                      <h4 class="panel-title" title="{% trans 'Searches for services offered around your current location' %}">
+                                                            <a data-toggle="collapse" data-parent="#location-id" href="#location-list" aria-expanded="true" aria-controls="location-list">
+                                                                {% trans 'Your current location' %}
+                                                                <i class="fa fa-angle-double-up pull-right"></i>
+                                                            </a>
+                                                      </h4>
+                                                </div>
+                                                <div id="location-list" class="panel-collapse collapse" role="tabpanel" aria-labelledby="location-title">
+                                                    <div class="panel-body" style="background-color:whitesmoke">
+                                                        <div class="location input-group" >
+                                                            <input type="number" step="0.01" min="0.00" maxlength="20" class="form-control" placeholder="{% trans 'max distance' %}"> 
+                                                            <span class="input-group-addon">{% trans 'km' %}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="fa fa-info-circle text-primary"></span> 
+                                                            <span style="font-size: 12px">{% trans 'Scan for services within the distance of your interest from your location' %}</span>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                    <hr class="service-hr">
+                                    <div class="col-xs-6 col-lg-6 col-sm-6 col-md-6">
+                                        <button type="reset" class="btn btn-default btn-block">{% trans 'Reset' %}</button>
+                                    </div>
+                                     <div class="col-xs-6 col-lg-6 col-sm-6 col-md-6">
+                                        <button type="button" id="search-btn" class="btn btn-success btn-block">{% trans 'Search' %}</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </section>
+                    {% endblock searchModule %}
+
+                    {% block crowdFunding %}
+                        {% if components.crowd_source_banner %}
+                        <div id="crowd-funding-banner">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title text-center"><span class="fa fa-share-alt fa-lg text-success"></span>  {% trans 'Service is not here?' %}</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-sm-12 col-lg-12 col-xs-12 col-md-2 input-group ">
+                                        <span class="fa fa-info-circle text-info fa-lg cursor-pointer" id="publish-crowd-service-info"> </span>
+                                        <a href="{{ publish_crowd_fund_project }}"> {% trans 'Publish it as a crowd funding service' %}</a>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endblock crowdFunding %}
+                </div>
+            {% endblock leftcolumn %}
+            
+            {% block rightcolumn %}
+                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9" style="background-color:whitesmoke; padding-top:15px;">
+                    {% block contentTopBanner %}
+                        <div class="row">
+                            <!-- service per page dropdown -->
+                            <div class=" col-xs-5 col-sm-4 form-group">
+                                <div id="content-top-banner" style="margin-bottom: 1em;">
+                                    <label for="items-per-page-id" class="pull-left" style="padding-right:3px">{% trans 'Services per page'%} </label>
+                                    <div role="menu" title="{% trans 'Number of services per page' %}">
+                                        <select id="items-per-page-id" name="items-per-page-id" class="form-control" style="max-width:80px!important">
+                                            <option value="15" >15</option>
+                                            <option value="30" selected="selected">30</option>
+                                            <option value="45" >45</option>
+                                            <option value="60" >60</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>  
+                            <!-- Sort by dropdown -->
+                            <div class=" col-xs-4 col-sm-4 form-group">
+                                <label for="sortby" class="pull-left" style="padding-right:3px">{% trans 'Sort by' %} </label>
+                                <div role="menu" class="my-sort-choice" title="{% trans 'Sort the list of registered services' %}" aria-label="{% trans 'Sort the list of registered services' %}">
+                                    <select name="sortby" id="sortby" data-sort="title" class="form-control" style="max-width:200px!important">
+                                        <option value="price" > {% trans 'Price: Low to High' %}</option>
+                                        <option value="-price"> {% trans 'Price: High to Low' %}</option>
+                                        <option value="title" selected>{% trans 'Title: A to Z' %}</option>
+                                        <option value="-title" >{% trans 'Title: Z to A' %}</option>
+                                        <option value="rating" disabled>{% trans 'Rating: High to Low' %}</option>
+                                        <option value="most_popular" disabled>{% trans 'Most popular' %}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- view choices -->
+                            <div class=" col-xs-3 col-sm-4 hidden-xs">
+                                <div class="btn-group pull-right services-view" role="group" data-view="m" aria-label="{% trans 'Service results presentation' %}" style="margin-left:15px">
+                                    <a id="multidata_view" class="btn btn-md btn-default" aria-label="{% trans 'Block of services'%}" data-view="m" href="#"><i class="fa fa-th-large"></i></a>
+                                    <a id="list_view" class="btn btn-md btn-default" aria-label="{% trans 'List of services'%}" data-view="l" href="#"><i class="fa fa-th-list"></i></a>
+                                </div>
+                                <strong class="pull-right">{% trans 'View' %}</strong>
+                            </div>
+                        </div>
+                        <hr class="service-hr" />
+                    {% endblock contentTopBanner %}
+
+                    {% block results %}
+                        <div class="row">
+                            <div id="services-result-multidata" class="service-results-layout" style="min-height: 400px"></div>
+                            <div id="services-result-listview" class="service-results-layout hidden" style="min-height: 25px"></div>
+                        </div>
+                    </div>
+                {% endblock results %}
+            {% endblock rightcolumn %}
+        </section>
+    </div> 
+    {% endblock content %}
+
+
+    {% block scripts %}
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/sweetalert/sweetalert.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/jquery-ui/1.11.3/jquery-ui.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/scripts/jquery-tree/jquery.tree.min.js' %}"></script>
+        <script type="text/javascript"> var limit=15;//"{{limit}}";  var sortby = -1;//"{{ sortby }}"; </script>
+
+
+
+        <script type="text/javascript">
+            var form = '#service-search-form';
+
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        xhr.setRequestHeader("X-CSRFToken", new Cookies().getValue('csrftoken'));
+                    }
+                }
+            });
+
+            $(document).ready(function () {
+                // get categories as a tree
+                getCategories();
+                getResults(form, null);
+
+                $(".panel-toggle-arrows").click(function () {
+                    toggleArrows($(this));
+                });
+
+
+                $(".rating-stars").click(function () {
+                    swapRatingStarColor($(this).attr("id").match(/\d+/));
+
+                });
+                $(".rating-stars").hover(function () {
+                    swapRatingStarColor($(this).attr("id").match(/\d+/));
+                });
+
+                //
+                // Keep selected the sort_by user choice
+                //
+                $("#content-top-banner").find("#sortby :selected").prop('selected', false);
+                //$("#sortby option[value='{{ sortby }}']").attr('selected', 'selected');
+                $("#sortby option[value='" + sortby + "']").attr('selected', 'selected');
+
+                //
+                //  Keep limit user choice
+                //
+                $("#content-top-banner").find("#items-per-page-id :selected").prop('selected', false);
+                //$("#items-per-page-id option[value='{{ limit }}']").attr('selected', 'selected');
+                $("#items-per-page-id option[value='" + limit + "']").attr('selected', 'selected');
+
+            }).on('click', "#search-btn", function (event) {
+                event.preventDefault();
+
+                var request = "";
+
+                var search = {
+                    owners: [],
+                    categories: [],
+                    types: [],
+                    models: [],
+                    minPrice: null,
+                    maxPrice: null,
+                    distance: null,
+                    lat: null,
+                    lon: null,
+                    minQoS: null,
+                    maxQoS: null,
+                    sortby: $("#sortby").val(),//$("#sortby").data().sort,
+                    view: $(".services-view").data().view
+                }
+
+                // get list of owner(s)
+                $("div#companies-id").find('input:checked').each(function (i) {
+                    search.owners.push($(this).data().id);
+                });
+                // categories
+                $("div#categories-id").find('input:checked').each(function (i) {
+                    search.categories.push($(this).data().id);
+                });
+                // types
+                $("div#service-types-id").find('input:checked').each(function (i) {
+                    search.types.push($(this).data().id);
+                });
+                // charging model
+                $("div#charging-model-id").find('input:checked').each(function (i) {
+                    search.models.push($(this).data().id);
+                });
+                // price
+                search.minPrice = $("#low_price").val();
+                search.maxPrice = $("#high_price").val();
+
+                if (search.minPrice < 0 || search.maxPrice < 0) {
+                    swal({
+                        html: false,
+                        title: gettext("Invalid input"),
+                        text: gettext('The price values must be non negative numbers!'),
+                        type: "warning",
+                        confirmButtonText: gettext("Continue"),
+                        confirmButtonColor: "#d9534f"
+                    });
+                    return;
+                }
+                if (search.minPrice > search.maxPrice) {
+                    swal({
+                        html: false,
+                        title: gettext("Invalid input"),
+                        text: gettext('The maximum price value must be greater than (or equal with) the minimum one!'),
+                        type: "warning",
+                        confirmButtonText: gettext("Continue"),
+                        confirmButtonColor: "#d9534f"
+                    });
+                    return;
+                }
+
+                // QoS
+                if ($("#low_QoS").val() !== "") {
+                    search.minQoS = $("#low_QoS").val();
+                };
+                if ($("#high_QoS").val() !== "") {
+                    search.maxQoS = $("#high_QoS").val();
+                }
+                if (search.minQoS < 0 || search.minQoS > 5) {
+                    swal({
+                        html: false,
+                        title: gettext("Invalid input"),
+                        text: gettext('The minimum value of Quality of Service field is out of range. Please enter a value in range [0,5]!'),
+                        type: "warning",
+                        confirmButtonText: gettext("Continue"),
+                        confirmButtonColor: "#d9534f"
+                    });
+                    return;
+                }
+                if (search.maxQoS < 0 || search.maxQoS > 5) {
+                    swal({
+                        html: false,
+                        title: gettext("Invalid input"),
+                        text: gettext("The maximum value of Quality of Service field is out of range. Please enter a value in range [0,5]!"),
+                        type: "warning",
+                        confirmButtonText: gettext("Continue"),
+                        confirmButtonColor: "#d9534f"
+                    });
+                    return;
+                }
+                if (search.minQoS > search.maxQoS) {
+                    swal({
+                        html: false,
+                        title: gettext("Invalid input"),
+                        text: gettext("The maximum value of Quality of Service field must be greater than (or equal with) the corresponding minimum one!"),
+                        type: "warning",
+                        confirmButtonText: gettext("Continue"),
+                        confirmButtonColor: "#d9534f"
+                    });
+                    return;
+                }
+
+
+                // distance threshold
+                search.distance = $("div#location-id").find('input').val();
+                if (search.distance < 0) {
+                    swal({
+                        html: false,
+                        title: gettext("Invalid input"),
+                        text: gettext("The distance value must be a non negative number. Keep in mind that this value maps to kilometers."),
+                        type: "warning",
+                        confirmButtonText: gettext("Continue"),
+                        confirmButtonColor: "#d9534f"
+                    });
+                    return;
+                }
+                // inform user for location tracking
+                if (search.distance !== "") {
+                    swal({
+                        html: false,
+                        title: gettext("AoD message"),
+                        text: gettext("The AoD platform wants your permission to track your location. Do you agree with this action?"),
+                        type: "info",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-primary",
+                        confirmButtonText: gettext("Yes, I agree!"),
+                        cancelButtonText: gettext("No, I do not agree!"),
+                        cancelButtonClass: "btn-danger",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            swal({
+                                html: false,
+                                title: gettext("Search progress"),
+                                text: gettext("AoD scans the services that meet your requirements"),
+                                type: "success",
+                                confirmButtonText: gettext("Continue"),
+                                confirmButtonColor: "btn-primary",
+                            });
+                        } else {
+                            swal({
+                                html: false,
+                                title: gettext("Search progress"),
+                                text: gettext("The service searching was aborted."),
+                                type: "warning",
+                                confirmButtonText: gettext("Continue"),
+                                confirmButtonColor: "#d9534f"
+                            });
+                        }
+                    });
+                }
+
+                // get user coordinates
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        console.log(parseFloat(position.coords.latitude));
+                        console.log(parseFloat(position.coords.longitude));
+                        search.lat = parseFloat(position.coords.latitude);
+                        search.lon = parseFloat(position.coords.longitude);  
+                    })
+                }
+                //search.lat = 49.602235199999996;
+                //search.lon = 6.1337418999999995;
+                console.info(search);
+
+                getResults(form, search);
+
+            }).on("click", "#charging-model-1", function () {
+                if ($(this).is(':checked')) {
+                    if (!$("#charging-model-0").is(':checked')) {
+                        $("#low_price").attr('readonly', true).val('');
+                        $("#high_price").attr('readonly', true).val('');
+                    }
+                    else {
+                        $("#low_price").attr('readonly', false);
+                        $("#high_price").attr('readonly', false);
+                    }
+                }
+                else {
+                    $("#low_price").attr('readonly', false);
+                    $("#high_price").attr('readonly', false);
+                }
+
+            }).on("click", "#charging-model-0", function () {
+                if ($(this).is(':checked')) {
+                    $("#low_price").attr('readonly', false);
+                    $("#high_price").attr('readonly', false);
+                }
+                else {
+                    if ($("#charging-model-1").is(':checked')) {
+                        $("#low_price").attr('readonly', true).val('');
+                        $("#high_price").attr('readonly', true).val('');
+                    }
+                    else {
+                        $("#low_price").attr('readonly', false);
+                        $("#high_price").attr('readonly', false);
+                    }
+                }
+            }).on("mouseenter", ".on-mouseover > div", function () {
+                //
+                // Highlight service box
+                //
+                $(this).addClass("highlight-service-banner");
+            }).on("mouseleave", ".on-mouseover > div", function () {
+                //
+                // Skip highlight from service box
+                //
+                $(this).removeClass("highlight-service-banner");
+            }).on('click', "#list_view", function () {
+                //
+                // Services in block view
+                // 
+                $("#services-result-listview").removeClass('hidden');
+                $("#services-result-multidata").addClass('hidden');
+            }).on('click', "#multidata_view", function () {
+                //
+                // Services in list view
+                //
+                $("#services-result-listview").addClass('hidden');
+                $("#services-result-multidata").removeClass('hidden');
+            });
+
+
+            function toggleArrows(element) {
+                //
+                //  Swap the direction of search engine
+                //
+                if (element.find(" .panel-collapse").hasClass("in")) {
+                    element.find("i").removeClass("fa-angle-double-down").addClass("fa-angle-double-up");
+                }
+                else {
+                    element.find("i").addClass("fa-angle-double-down").removeClass("fa-angle-double-up");
+                }
+
+            }
+
+
+            function getCategories() {
+                //
+                // Load tree of categories and append it in search engine
+                //
+                $.ajax({
+                    type: 'GET',
+                    url: $('#tree').data('resource'),
+                    data: { level: 0 },
+                    headers: { "accept": "application/json", "content-type": "application/json" },
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    contentType: 'application/json',
+                    success: function (response) {
+                        var options = '';
+                        var data = response.results;
+            
+                        var startList = '<ul><li>';
+                        var startListInvisible = '<ul><li class="collapsed">';
+                        var endList = '</li></ul>';
+                        for (var root in data) {
+                            var childs = data[root].children;
+
+                            options += [
+                                ((childs.length > 0) ? startListInvisible : startList),
+                                '<input type="checkbox" id="category-' + data[root].id + '" name="category-'+data[root].id+'" data-id="'+data[root].id+'" data-name="category-'+data[root].id+'"/>',
+                                '<label for="category-' + data[root].id + '"> ' + data[root].title + '</label>',
+                            ].join('');
+
+                
+                            for (var i in childs) {
+                                var leafs = childs[i].children;
+                                options += [
+                                    ((leafs .length> 0) ? startListInvisible : startList),
+                                    '<input type="checkbox" id="category-' + childs[i].id + '" name="category-' + childs[i].id + '" data-id="' + childs[i].id + '" data-name="category-' + childs[i].id + '"/>',
+                                    '<label for="category-' + childs[i].id + '"> ' + childs[i].title + '</label>',
+                                ].join('');
+
+                    
+                                for (var j in leafs) {
+                                    options += [
+                                        startList,
+                                            '<input type="checkbox" id="category-' + leafs[j].id + '" name="category-' + leafs[j].id + '" data-id="' + leafs[j].id + '" data-name="category-' + leafs[j].id + '"/>',
+                                                '<label for="category-' + leafs[j].id + '"> ' + leafs[j].title + '</label>',
+                                        endList
+                                    ].join('');
+                                }
+                                options += endList;
+                            }
+                            options += endList;
+                        }
+                        $('#tree').append(options);
+                        $('#tree').tree({
+                            collapsible: true,
+                            dnd: false,
+                            onCheck: {
+                                node: 'expand'
+                            },
+                            onUncheck: {
+                                node: 'collapse'
+                            }
+                        });
+                        $('#tree').css('border', 'none');
+                        $(".daredevel-tree-anchor").css("margin-top", '4px');
+
+                    },
+                    error: function (response) {
+                        console.error(response);
+                    },
+                    complete: function () {
+                    }
+                });
+
+            }
+
+            function getResults(form, payload) {
+                //
+                // Retrieve the search results and append them
+                //
+                payload = parseRequest(payload);
+                $.ajax({
+                    type: $(form).attr('method'),
+                    url: $(form).attr('action'),
+                    data: payload,
+                    beforeSend: function (xhr, settings) {
+                        $.ajaxSettings.beforeSend(xhr, settings);
+                    },
+                    success: function (json) {
+                        var response = json.results;
+                        var multidata = "";
+                        var listview = "";
+                        if (!!response.length) {
+                            for (var i in response) {
+                                //
+                                // Load service image
+                                //
+                                var image = '';
+                                if (response[i].image !== null) {
+                                    image += [
+                                        '<div style="height:130px; min-height:130px;">',
+                                            '<img class="img-responsive" style="border-bottom: 1px solid #ebebea; height: 130px !important" src="' + response[i].image_path + '" alt="' + gettext("Image relative to the service") + response[i].title + '">',
+                                        '</div>'
+                                    ].join('');
+                                }
+                                else {
+                                    image += '<div style="height:130px; min-height:130px; background-color: #ecebeb"></div>';
+                                }
+                                //
+                                // Load provider logo
+                                // 
+                                var logo = "";
+                                //if (response[i].logo !== null || response[i].logo !== undefined || response[i].logo !== "") {
+                                //    logo += '<img src="/media/app/users/logos/' + response[i].logo + '" alt="' + response[i].logo + '" class="img-circle img-responsive" style="border: 1px solid whitesmoke;  min-height: 126px; max-height: 126px" />';
+                                //}
+                                //else {
+                                logo += [
+                                    '<span class="fa-stack fa-1x" >',
+                                        '<i class="fa fa-circle fa-stack-2x" style="color: #d7d5d5;"></i>',
+                                        '<i class="fa fa-user fa-stack-1x" style="color: #ebebea"></i>',
+                                    '</span>'
+                                ].join('');
+                                //
+                                // Service link
+                                //
+                                var link = "";
+                                var url = "{% url 'service_view_page' 0 %}".replace(0, response[i].id);
+                                if (response[i].charging_model === 1) {
+                                    link = '<a href="' + url + '" class="btn btn-success btn-xs">' + gettext('Access it!') + '</a>'; // href
+                                }
+                                else {
+                                    link = '<a href="' + url + '" class="btn btn-success btn-xs">' + gettext('Get it!') + ' <i class="fa fa-shopping-cart"></i></a>'; // href
+                                }
+                                var price = (response[i].price === 0) ? gettext('FREE') : response[i].unit + " " + response[i].price;
+                                //
+                                // Load service in block view
+                                //
+                                multidata += appendServiceMultidata(response[i], image, logo, link, price);
+                                $("#services-result-multidata").html(multidata);
+                                //
+                                // Load services in list view
+                                //
+                                listview += appendServiceListView(response[i], image, logo, link, price);
+                                $("#services-result-listview").html(listview);
+                                //
+                                // Set the stars of any service based on its rating value
+                                //
+                                $(".service-banner").each(function () {
+                                    var rating = $(this).find("#srv-rating-" + $(this).attr("id").match(/\d+/)).find("span").first().text();
+                                    if (rating !== "None" && !(isNaN(rating))) {
+                                        for (var j = 1; j <= Math.ceil(rating) ; j++) {
+                                            $(this).find(".star-rating-" + j).removeClass("fa-star-o").addClass("fa-star");
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                        else {
+                            multidata += resultsNotFound();
+                            $("#services-result-multidata").html(multidata);
+                            listview = resultsNotFound();
+                            $("#services-result-listview").html(listview);
+                        }
+                    },
+                    error: function (error) { },
+                    complete: function (response) {
+                        //;
+                    },
+                });
+
+            }
+
+            function parseRequest(search) {
+                var request = "";
+                if (search !== null) {
+                    request += "owners=" + ((search.owners.length > 0) ? search.owners.toString() + "&" : "null&");
+                    request += (search.categories.length > 0) ? "categories=" + search.categories.toString() + "&" : "";
+                    request += (search.types.length > 0) ? "types=" + search.types.toString() + "&" : "";
+                    request += (search.models.length > 0) ? "models=" + search.models.toString() + "&" : "";
+                    request += parseStringFilter("minPrice", search.minPrice);
+                    request += parseStringFilter("maxPrice", search.maxPrice);
+                    request += parseStringFilter("distance", search.distance);
+                    request += parseStringFilter("lat", search.lat);
+                    request += parseStringFilter("lon", search.lon);
+                    request += parseStringFilter("minQoS", search.minQoS);
+                    request += parseStringFilter("maxQoS", search.maxQoS);
+                    request += (search.sortby !== null) ? "sortby=" + search.sortby : "";
+                }
+                return request;
+            }
+
+            function parseStringFilter(name, value) {
+                return (value !== null && value !== "") ? name + "=" + value + "&" : "";
+            }
+
+            function appendServiceMultidata(service, image, logo, link, price) {
+                // return service item for block
+                return [
+                    '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 on-mouseover service-banner" id="srv-' + service.id + '"  style="margin-bottom:25px !important">',
+                        '<div class="thumbnail" style="min-height:380px!important;">',
+                            image,
+                            '<div class="caption">',
+                                '<div style="min-height:200px; max-height:200px">',
+                                    '<span class="fa-stack fa-3x img-responsive img-circle" style="margin-top:-55px">',
+                                        logo,
+                                    '</span>',
+                                    '<div class="row col-lg-12 col-sm-12 col-md-12 col-xs-12">',
+                                        '<h4 class="text-center">' + service.title.toUpperCase() + '</h4>',
+                                    '</div>',
+                                    '<div class="row">',
+                                        '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-justify">',
+                                            '<p class="clearfix">' + ((service.description.length > 0) ? service.description.substring(0, 130) + '...' : "") + '</p>',
+                                            link,
+                                        '</div>',
+                                    '</div>',
+                                '</div>',
+                                '<div style="min-height:50px; max-height:50px">',
+                                    '<div class="row">',
+                                        '<div class="col-sm-7 col-lg-7 col-md-7 col-xs-7" id="srv-rating-' + service.id + '" >',
+                                            '<span><strong>' + ((service.average_rating === null) ? gettext('None') : service.average_rating) + ' </strong></span> ',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-1"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-2"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-3"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-4"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-5"></span>',
+                                        '</div>',
+                                        '<div class="col-sm-5 col-lg-5 col-md-5 col-xs-5">',
+                                            '<strong class="pull-right">',
+                                                price,
+                                            '</strong>',
+                                        '</div>',
+                                    '</div>',
+                                    '<div class="row">',
+                                        '<div class="col-sm-8 col-lg-8 col-md-8 col-xs-8">',
+                                            '<em> ',
+                                                '<span class="fa fa-comments-o fa-1x text-primary"></span> ',
+                                                service.total_reviews + " " + ((service.total_reviews === 1) ? gettext('reviews') : gettext('review')),
+                                            '</em>',
+                                        '</div>',
+                                        '<div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">',
+                                                '<abbr title="' + ((service.type === "M") ? gettext('Machine-based service') : gettext('Human-based service')) + '"><span class="fa fa-laptop pull-right fa-2x" ></span></abbr>',
+                                        '</div>',
+                                    '</div>',
+                                '</div>',
+                            '</div>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+            }
+
+            function appendServiceListView(service, image, logo, link, price) {
+                // return service item for list
+                return [
+                    '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 on-mouseover service-banner" id="srv-' + service.id + '" style="margin-bottom: 3% ;min-height:inherit; margin-left:5px">',
+                        '<div class="row thumbnail">',
+                            '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">',
+                                image,
+                            '</div>',
+                            '<div class="caption col-xs-12 col-sm-8 col-md-8 col-lg-8">',
+                                '<div class="row">',
+                                    '<div class="col-sm-3 col-md-3 col-lg-3">',
+                                        logo,
+                                    '</div>',
+                                    '<div class="col-sm-9 col-md-9 col-lg-9">',
+                                        '<h4>' + service.title.toUpperCase() + '</h4>',
+                                        '<div class="row">',
+                                            '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">',
+                                                '<p class="clearfix">' + ((service.description.length > 0) ? service.description.substring(0, 120) + '...' : "") + '</p>',
+                                                link,
+                                            '</div>',
+                                        '</div>',
+                                    '<br>',
+                                    '<div class="row">',
+                                        '<div class="col-sm-7 col-lg-7 col-md-7 col-xs-7" id="srv-rating-' + service.id + '" >',
+                                            '<span><b>' + ((service.average_rating === null) ? gettext('None') : service.average_rating) + ' </b></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-1"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-2"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-3"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-4"></span>',
+                                            '<span class="fa fa-star-o star-colorize-yellow star-rating-5"></span>',
+                                        '</div>',
+                                        '<div class="col-sm-5 col-lg-5 col-md-5 col-xs-5">',
+                                            '<b class="pull-right">',
+                                            price,
+                                            '</b>',
+                                        '</div>',
+                                    '</div>',
+                                    '<div class="row">',
+                                        '<div class="col-sm-8 col-lg-8 col-md-8 col-xs-8">',
+                                            '<em> ',
+                                                '<span class="fa fa-comments-o fa-1x text-primary"></span> ',
+                                                service.total_reviews + " " + ((service.total_reviews === 1) ? gettext('reviews') : gettext('review')),
+                                            '</em>',
+                                        '</div>',
+                                        '<div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">',
+                                            '<abbr title="' + ((service.type === "M") ? gettext('Machine-based service') : gettext('Human-based service')) + '"><span class="fa fa-laptop pull-right fa-2x" ></span></abbr>',
+                                        '</div>',
+                                    '</div>',
+                                '</div>',
+                            '</div>',
+                        '</div>',
+                    '</div>',
+                '</div>'
+
+                ].join('');
+
+            }
+
+            function resultsNotFound() {
+                return [
+                    '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">',
+                        '<div class="alert alert-danger jumbotron">',
+                            '<h4 style="font-size: x-large" class="text-center">',
+                                gettext("Results not found!"),
+                            '</h4>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+            }
+
+
+        </script>
+    {% endblock scripts %}

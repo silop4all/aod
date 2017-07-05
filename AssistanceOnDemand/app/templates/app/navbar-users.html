@@ -34,11 +34,13 @@
                             </span>
                         </a>   
                         <ul class="dropdown-menu under-construction" role="menu" aria-labelledby="settings_menu">
+                            {% if request.session.is_provider %}
                             <li role="presentation">
                                 <a href="{% url 'provider_dashboard' %}" title="{% trans 'Show the services you provide on AoD' %}" role="menuitem" tabindex="-1">
                                     <span class="fa fa-archive fa-fw"></span> {% trans 'My offerings' %}
                                 </a>
                             </li>
+                            {% endif %}
                             <li role="presentation">
                                 <a href="{% url 'consumer_dashboard' %}" title="{% trans 'Show the services you have purchased' %}" role="menuitem" tabindex="-1">
                                     <span class="fa fa-area-chart fa-fw"></span> {% trans 'My collection' %}
@@ -56,20 +58,37 @@
                             </li>
                             {% endif %}
                             <li role="separator" class="divider"></li>
-                            <li role="presentation">
-                                <a href="{% url 'user_profile' username %}" title="{% trans 'Manage your account' %}" role="menuitem" tabindex="-1">
-                                    <span class="fa fa-user fa-fw"></span> {% trans 'Account settings' %}
+
+                            {% if components.community_technical_support %}
+                            <li >
+                                <a href="{% url 'communities_list' %}" title="{% trans 'Communities' %}" class="under-construction">
+                                    <span class="fa fa-group fa-fw"></span> {% trans 'Communities' %}
                                 </a>
                             </li>
+                            {% endif %}
+
+                            <li role="separator" class="divider"></li>
+                            <li role="presentation">
+                                <a href="{% url 'user_profile' username %}" title="{% trans 'Manage your account' %}" role="menuitem" tabindex="-1">
+                                    <span class="fa fa-cog fa-fw"></span> {% trans 'Account settings' %}
+                                </a>
+                            </li>
+                            {% if paypal_integration == True and request.session.is_provider == True %}
+                            <li role="presentation">
+                                <a href="{% url 'payment_settings' %}" title="{% trans 'Manage your payment settings' %}" role="menuitem" tabindex="-1">
+                                    <span class="fa fa-credit-card fa-fw"></span> {% trans 'Payment settings' %}
+                                </a>
+                            </li>
+                            {% endif %}
 
                             <li >
                                 <a href="{% url 'user_calendar' username %}" title="{% trans 'My calendar' %}" class="under-construction">
-                                    <span class="fa fa-bell-o fa-fw"></span> {% trans 'My calendar' %}
+                                    <span class="fa fa-calendar fa-fw"></span> {% trans 'My calendar' %}
                                 </a>
                             </li>
 
                             <li >
-                                <a href="#" title="{% trans 'My Notifications' %}" class="under-construction">
+                                <a href="#" title="{% trans 'My Notifications' %}" class="under-construction hidden">
                                     <span class="fa fa-bell-o fa-fw"></span> {% trans 'My Notifications' %}
                                 </a>
                             </li>

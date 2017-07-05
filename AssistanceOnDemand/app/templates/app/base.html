@@ -1,4 +1,4 @@
-﻿{% load analytical %}
+{% load analytical %}
 <!DOCTYPE html>
 
 <html lang="{{LANGUAGE_CODE}}">
@@ -16,7 +16,7 @@
         {% get_current_language as LANGUAGE_CODE %}
 
         <link rel="shortcut icon" type="image/png" href="{{ favicon.favicon.url  }}" />
-        <title>{% block title%} {% trans 'Welcome on AoD app' %} {% endblock title %}</title>
+        <title>{% block title%} {% trans 'Welcome to Assistance on Demand' %} {% endblock title %}</title>
    
         {% with 'app/content/'|add:theme.url as bootstrap_static %}
             <link rel="stylesheet" type="text/css" href="{% static bootstrap_static %}" />
@@ -164,7 +164,7 @@
                     </div>
                     <div class="col-sm-3 col-md-3 col-xs-12">
                         <!-- Social media -->
-                        <span>{% trans 'Follow us on social networks' %}</span>
+                        <span>{% trans 'Follow us' %}</span>
                         <hr style="margin-top:1px">
                         {% for sn in social_networks %}
                             <div class="row">
@@ -287,6 +287,18 @@
                 });
                 {% endif %}
 
+                /*
+                $("#show-hide").click(function(){
+                    console.log($(this).attr('aria-pressed'));
+                    if ( $(this).attr('aria-pressed') === false) {
+                        $("iframe").css("height", "300px");
+                    }
+                    else {
+                        $("iframe").css("height", "200px");
+                    }
+                });
+                */
+
                 $(".nav.navbar-nav li.dropdown").mouseover(function () {
                     $(this).addClass('open');
                 }).mouseleave(function () {
@@ -306,30 +318,7 @@
                     $("#current_language_code").attr('value', $(this).attr('id'));
                     $('#submit_language_code').submit();
                 });
-
-
-                $('iframe').ready(function() {
-                    frameContents = $("iframe").contents();
-                    /*
-                    $("iframe#show-hide").change(function(){
-                        alert('show-hide');
-                        frameContents.find("#show-hide").css("height", "500px");
-                        console.log($(this).attr('aria-pressed'));
-
-                        if ( $(this).attr('aria-pressed') === false) {
-                            $("iframe").css("height", "300px");
-                        }
-                        else {
-                            $("iframe").css("height", "200px");
-                        }
-                    });
-                    */
-                }).on('click', "#reset", function(){
-                    alert('paizei');
-                });
-
-
-            });
+            })
         </script>
 
         {% block scripts %}
