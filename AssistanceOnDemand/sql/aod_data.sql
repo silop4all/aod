@@ -188,7 +188,7 @@ INSERT INTO `ml_categories` (`id`, `title`, `title_de`, `title_el`, `title_en`, 
 
 
 insert into `app_evaluation_metrics` values 
-(1, 'Usability', 'Measures the easiness a user can experience while he uses the service', 1, 0, 5, 1),
-(2, 'Usefulness', 'Measures how much useful is the service', 1, 0, 5, 1),
-(3, 'Effectiveness', 'Measures the degree that the service satisfies the needs of user', 1, 0, 5, 1),
-(4, 'Availability', 'Measures how much available is the service during a day', 1, 0, 5, 1);
+(1, 'Usability', 'Usability', 'Usability', 'Usability', 'Usability', 'Usability', 'Usability', 'Measures the easiness a user can experience while he uses the service', 1, 0, 5, 1),
+(2, 'Usefulness', 'Usefulness', 'Usefulness', 'Usefulness', 'Usefulness', 'Usefulness', 'Usefulness', 'Measures how much useful is the service', 1, 0, 5, 1),
+(3, 'Effectiveness', 'Effectiveness', 'Effectiveness', 'Effectiveness', 'Effectiveness', 'Effectiveness', 'Effectiveness', 'Measures the degree that the service satisfies the needs of user', 1, 0, 5, 1),
+(4, 'Availability', 'Availability', 'Availability', 'Availability', 'Availability', 'Availability', 'Availability', 'Measures how much available is the service during a day', 1, 0, 5, 1);

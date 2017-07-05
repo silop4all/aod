@@ -113,6 +113,8 @@ $ sudo cp /home/ubuntu/aod/* /opt/prosperity/
 $ sudo chown aod:aod -R /opt/prosperity/
 $ sudo find /opt/prosperity/AssistanceOnDemand/ -type d -exec chmod 755 {} \;
 $ sudo find /opt/prosperity/AssistanceOnDemand/ -type f -exec chmod 644 {} \;
+$ sudo chmod -R 775 /opt/prosperity/AssistanceOnDemand/media
+$ sudo chmod -R 777 /opt/prosperity/AssistanceOnDemand/logs
 ```
 
 Then, install the packages included in ```requirements.txt``` using the command:
@@ -172,9 +174,9 @@ WSGIScriptAlias / /opt/prosperity/AssistanceOnDemand/AssistanceOnDemand/wsgi.py
 WSGIPythonPath /opt/prosperity/AssistanceOnDemand/AssistanceOnDemand/
 
 # In production mode the media must be served from apache web server. Therefore, uncomment the next block if configuration.
-# In case of path /prosperity/assistance-on-demand, see below:  
+# The default path is /. In case that path  /prosperity/assistance-on-demand/, see below:  
 #
-# Alias /prosperity/assistance-on-demand/static /opt/prosperity/ AssistanceOnDemand/static
+# Alias /prosperity/assistance-on-demand/static /opt/prosperity/AssistanceOnDemand/static
 # Alias /prosperity/assistance-on-demand/media /opt/prosperity/AssistanceOnDemand/media
 # 
 # <Directory /opt/prosperity/AssistanceOnDemand/static>
@@ -484,8 +486,6 @@ $ cd /opt/prosperity/AssistanceOnDemand/
 $ sudo python manage.py makemigrations
 $ sudo python manage.py migrate
 $ sudo python manage.py update_translation_fields
-$ sudo python manage.py makemigrations
-$ sudo python manage.py migrate
 $ sudo python manage.py collectstatic --noinput
 $ sudo chown aod:aod -R /opt/prosperity/AssistanceOnDemand/
 $ sudo mysql -uaod -paod aod < /opt/prosperity/AssistanceOnDemand/sql/aod_data.sql
