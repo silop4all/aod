@@ -1,3 +1,4 @@
+
 import re
 import sys
 from django.views.decorators.csrf import csrf_exempt
@@ -976,11 +977,10 @@ class ServiceReviewsList(generics.ListAPIView):
               - application/yaml
     """
     serializer_class = ServiceReviewsSerializer
-    queryset = ConsumersToServices.objects.all()
 
     def get_queryset(self):
         service = self.kwargs['service']
-        queryset = ConsumersToServices.objects.filter(service=service)
+        queryset = ConsumersToServices.objects.filter(service=service).exclude(review_date__isnull=True).exclude(rating__isnull=True).order_by('-review_date')
         return queryset
 
 
@@ -1080,7 +1080,7 @@ class ConsumerServicesList(generics.ListAPIView):
 
     def get_queryset(self):
         consumer = self.kwargs['pk']
-        queryset = ConsumersToServices.objects.filter(consumer=consumer)
+        queryset = ConsumersToServices.objects.filter(consumer=consumer, nas_aware=False)
         return queryset
 
 
@@ -1124,15 +1124,12 @@ class ConsumerAssistServicesList(generics.ListAPIView):
               - application/xml
               - application/yaml
     """
-    queryset = NasConsumersToServices.objects.all()
+    queryset = ConsumersToServices.objects.all()
     serializer_class = ConsumerAssistServicesSerializer
     
     def get_queryset(self):
-        user = self.kwargs['pk']
-        #consumer = Consumers.objects.get(user_id=user)
-        #queryset = NasConsumersToServices.objects.filter(consumer=consumer.id)
         consumer = self.kwargs['pk']
-        queryset = NasConsumersToServices.objects.filter(consumer=consumer)
+        queryset = ConsumersToServices.objects.filter(consumer=consumer, nas_aware=True)
         return queryset
 
 class ConsumerAssistServicesConfigurationList(generics.ListAPIView):
@@ -1180,13 +1177,11 @@ class ConsumerAssistServicesConfigurationList(generics.ListAPIView):
     """
 
     serializer_class = ConsumerAssistServicesConfigurationSerializer
-    queryset = NasConsumersToServices.objects.all()
 
     def get_queryset(self):
-        user = self.kwargs['pk']
-        consumer = Consumers.objects.get(user_id=user)
         service = self.kwargs['service']
-        queryset = NasConsumersToServices.objects.filter(consumer=consumer.id).filter(service=service)
+        consumer = self.kwargs['pk']
+        queryset = ConsumersToServices.objects.filter(consumer=consumer).filter(service=service)
         return queryset
 
 class AssistanceConfigurationList(generics.CreateAPIView):
@@ -1396,11 +1391,25 @@ class SearchEngine(generics.ListAPIView):
     serializer_class = ServiceSerializer
 
     def get_queryset(self):
+        """
+        By default, sort is based on title.
+        In case of QoS - cost aware filtering, the sort is performed using the following priority:
+          1. review_score (greater to lower),
+          2. price (lower to greater)
+          3. reviews_count (number of reviews - greater to lower)
+        """
+
         from app import utilities
         from django.db.models import Avg
 
         query = self.request.query_params
-        servicesList = Services.objects.all()
+        # fetch only released services
+        servicesList = Services.objects.filter(is_visible=True)
+
+        qos_cost_filtering = False
+        if (query.get("minQoS", None) is not None or query.get("maxQoS", None) is not None) and\
+            (query.get("minPrice") not in ["", None] or query.get("maxPrice") not in ["", None] or query.get("models") is not  None):
+            qos_cost_filtering = True
 
         #  Filter services based on their providers
         if 'owners' in query:
@@ -1439,45 +1448,177 @@ class SearchEngine(generics.ListAPIView):
                     if 'maxPrice' in query and query.get("maxPrice") not in ["", None]:
                         servicesList = servicesList.filter(price__lte=float(query.get("maxPrice")))
 
+        # Filter based on min-/max QoS
+        if query.get("minQoS", None) is not None:
+            servicesList = servicesList.filter(review_score__gte=float(query.get("minQoS")))
+        if query.get("maxQoS", None) is not None:
+            servicesList = servicesList.filter(review_score__lte=float(query.get("maxQoS")))            
+
         servicesList = servicesList.values_list('id', flat=True)
         uniqueServiceList = set(list(servicesList))
         print uniqueServiceList
         services = Services.objects.filter(pk__in=set(list(servicesList)))
 
+        # Filter based on distance
         if query.get("distance") not in ["", None] and  query.get("lat") not in ["", None] and query.get("lon") not in ["", None]:
             for service in services:
                 # check location
                 if service.location_constraint == True:
                     distance = utilities.getDistance(float(query.get("lat")), float(query.get("lon")), service.latitude, service.longitude) 
-                    print distance                       
-
                     if 0 <= float(distance) <= float(query.get("distance")): 
-                        # check QoS
-                        rating = ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0]
-                        reviews = ConsumersToServices.objects.filter(service_id=service.id).count()
-
-                        if query.get("minQoS") != None and query.get("maxQoS") != None:
-                            if int(reviews) > 0 and float(query.get("minQoS")) <= float(rating) <= float(query.get("maxQoS")):
-                                pass
-                            else:
-                                uniqueServiceList.remove(service.id)
-                    else:
-                        uniqueServiceList.remove(service.id)
-        else:
-            for service in services:
-                # check QoS
-                rating = ConsumersToServices.objects.filter(service_id=service.id).aggregate(Avg('rating')).values()[0]
-                reviews = ConsumersToServices.objects.filter(service_id=service.id).count()
-                                
-                if query.get("minQoS") != None and query.get("maxQoS") != None:
-                    if int(reviews) > 0 and float(query.get("minQoS")) <= float(rating) <= float(query.get("maxQoS")):
-                        print service.id, "OK"
+                        pass
                     else:
                         uniqueServiceList.remove(service.id)
         
-        order_by = query.get("sortby") if "sortby" in query else "id"
-        queryset = Services.objects.filter(pk__in=uniqueServiceList).order_by(order_by)
-        return queryset
+        # Sorting
+        if qos_cost_filtering:
+            return Services.objects.filter(pk__in=uniqueServiceList).order_by('-review_score', 'price', '-reviews_count')
+        else:
+            order_by = query.get("sortby") if "sortby" in query else "title"
+            return Services.objects.filter(pk__in=uniqueServiceList).order_by(order_by)
+
+class RecommendationEngine(generics.ListAPIView):
+    """
+        Retrieve services based on latest user's search (try different)
+        ---
+        GET:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: owners
+                description: Filter services based on providers
+                type: string
+                paramType: query
+              - name: categories
+                description: Filter services based on categories
+                type: string
+                paramType: query
+              - name: types
+                description: Filter services based on the type (H or M)
+                type: string
+                paramType: query
+              - name: models
+                description: Filter services based on the free (1) or paid policy (0)
+                type: integer
+                paramType: query
+              - name: distance
+                description: Filter services based on distance from lat and lon
+                type: float
+                paramType: query
+              - name: lat
+                description: Current latitude 
+                type: float
+                paramType: query
+              - name: lon
+                description: Current longitude 
+                type: float
+                paramType: query
+              - name: minQoS
+                description: Filter services based on minimum QoS
+                type: float
+                paramType: query
+              - name: maxQoS
+                description: Filter services based on maximum QoS
+                type: float
+                paramType: query
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 500
+                message: Interval Server Error
+
+            consumes:
+              - application/json
+            produces:
+              - application/json
+              - application/xml
+    """
+
+    serializer_class = ServiceSerializer
+
+    def get_queryset(self):
+        """Retrieve services based on latest user's search (try different)"""
+
+        from app import utilities
+
+        query = self.request.query_params
+        servicesList = Services.objects.filter(is_visible=True)
+
+        #  Filter services based on their providers
+        if 'owners' in query:
+            if query.get('owners', None) not in ["", "null", None]:
+                owners = str(query.get('owners', None)).split(',')
+                owners = map(int, owners)
+                if  type(owners) is list and len(owners):
+                    servicesList = servicesList.filter(owner_id__in=owners)
+
+        # Filter services based on categories
+        if 'categories' in query:
+            categories = str(query.get('categories', None)).split(',')
+            categories = map(int, categories)
+            if  type(categories) is list and len(categories):
+                servicesList = servicesList.filter(categories__pk__in=categories)
+
+        # Filter services based on types
+        if 'types' in query:
+            types = str(query.get('types', None)).split(',')
+            if  type(types) is list and len(types):
+                servicesList = servicesList.filter(type__in=types)
+
+        # Filter services based on charging models
+        if 'models' in query:
+            models = str(query.get('models', None)).split(',')
+            models = map(int, models)
+
+            # Map: free->1, paid->0
+            if type(models) is list and len(models):
+                if models == [1]:
+                    servicesList = servicesList.filter(charging_policy_id=1)
+                elif models == [0]:
+                    servicesList = servicesList.exclude(charging_policy_id=1)
+                    if 'minPrice' in query and query.get("minPrice") not in ["", None]:
+                        servicesList = servicesList.filter(price__gte=float(query.get("minPrice")))
+                    if 'maxPrice' in query and query.get("maxPrice") not in ["", None]:
+                        servicesList = servicesList.filter(price__lte=float(query.get("maxPrice")))
+
+        # Filter based on min-/max QoS
+        if query.get("minQoS", None) is not None:
+            servicesList = servicesList.filter(review_score__gte=float(query.get("minQoS")))
+        if query.get("maxQoS", None) is not None:
+            servicesList = servicesList.filter(review_score__lte=float(query.get("maxQoS")))            
+
+        servicesList = servicesList.values_list('id', flat=True)
+        uniqueServiceList = set(list(servicesList))
+        print uniqueServiceList
+        services = Services.objects.filter(pk__in=set(list(servicesList)))
+
+        # Filter based on distance
+        if query.get("distance") not in ["", None] and  query.get("lat") not in ["", None] and query.get("lon") not in ["", None]:
+            for service in services:
+                # check location
+                if service.location_constraint == True:
+                    distance = utilities.getDistance(float(query.get("lat")), float(query.get("lon")), service.latitude, service.longitude) 
+                    if 0 <= float(distance) <= float(query.get("distance")): 
+                        pass
+                    else:
+                        uniqueServiceList.remove(service.id)
+        
+        # Refine previous query ordering by QoS DESC
+        return Services.objects.filter(pk__in=uniqueServiceList).order_by('-review_score', '-reviews_count')
 
 class SearchArticlesList(generics.ListAPIView):
     """
@@ -1608,7 +1749,6 @@ class CustomSearchEngine(MultipleModelAPIView):
             (articlesList.filter(service_id__in=uniqueServiceList),ArticleSerializer,'articles')
         ]
 
-
 class KeywordsEngine(generics.ListAPIView):
     """
         Retrieve services based on user keywords
@@ -1671,7 +1811,6 @@ class KeywordsEngine(generics.ListAPIView):
 
         else:
           return Services.objects.exclude(is_visible=False).order_by('title')
-
 
 class CustomKeywordsEngine(MultipleModelAPIView):
     """
@@ -1744,4 +1883,4 @@ class CustomKeywordsEngine(MultipleModelAPIView):
             return [
                 (Services.objects.exclude(is_visible=False).order_by('title'), ServiceSerializer,'services'),
                 (Article.objects.exclude(visible=False).order_by('title'), ArticleSerializer,'articles')
-            ]
+            ]          

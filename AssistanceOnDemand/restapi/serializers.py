@@ -143,11 +143,11 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     def get_total_reviews(self, obj):
         """Count the number of consumer reviews per service"""
-        return obj.service_consumers.count()
+        return obj.reviews_count
 
     def get_average_rating(self, obj):
         """Fetch the average rating of consumer reviews per service"""
-        return ConsumersToServices.objects.filter(service_id=obj.id).aggregate(Avg('rating')).values()[0]
+        return obj.review_score
 
     def get_image_path(self, obj):
         """Fix the URL of image"""
@@ -201,7 +201,8 @@ class ServiceTechicalSupportSerializer(serializers.ModelSerializer):
 class ServiceReviewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ConsumersToServices
-        fields = ('id', 'consumer', 'rating', 'rating_rationale', 'purchased_date', )
+        fields = ('id', 'consumer', 'rating', 'rating_rationale', 'purchased_date', 
+            'advantages', 'disadvantages', 'review_date')
         depth = 2
 
 class ConsumerServicesSerializer(serializers.ModelSerializer):
@@ -223,6 +224,7 @@ class DetailedServiceSerializer(serializers.ModelSerializer):
     keywords        = ServiceKeywordsSerializer(read_only=True, many=True)
     configuration   = ConfigurationSerializer(read_only=True, many=True)
     technical_support = ServiceTechnicalSupportSerializer(read_only=True, many=True)
+    reviews = ServiceReviewsSerializer(read_only=True, many=True)
 
     def get_image_path(self, obj):
         """Fix the URL of image"""
@@ -241,7 +243,7 @@ class DetailedServiceSerializer(serializers.ModelSerializer):
             'usage_guidelines', 'is_public', 'constraints', 
             'language_constraint', 'location_constraint', 'latitude', 'longitude',  
             'created_date', 'modified_date', 'image', 'image_path', 'coverage', 'skype',
-            'languages', 'keywords', 'configuration', 'technical_support', 
+            'languages', 'keywords', 'configuration', 'technical_support', 'reviews'
         )
         depth = 1
 
@@ -250,7 +252,7 @@ class ConsumerAssistServicesSerializer(serializers.ModelSerializer):
     """Services information that carers have purchased on behalf a consumer"""
     service = ServiceSerializer(read_only=True, many=False)
     class Meta:
-        model = NasConsumersToServices
+        model = ConsumersToServices 
         fields = ('pk', 'service', )
         depth = 1
 
@@ -265,7 +267,7 @@ class ConsumerAssistServicesConfigurationSerializer(serializers.ModelSerializer)
     configuration = AssistanceConfigurationSerializer(read_only=True, many=True)
 
     class Meta:
-        model = NasConsumersToServices
+        model = ConsumersToServices
         fields = ('id', 'configuration', ) 
         depth = 1
 
