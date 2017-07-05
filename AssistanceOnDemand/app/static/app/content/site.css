@@ -1,25 +1,25 @@
-﻿body {
+﻿/*body {
     padding-top: 50px;
     padding-bottom: 20px;
     line-height: 2em;
-    /*font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;*/
-}
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;
+}*/
 
 /* Set padding to keep content from hitting the edges */
-.body-content {
+/*.body-content {
     padding-left: 15px;
     padding-right: 15px;
-}
+}*/
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/*input,
 select,
 textarea {
     max-width: 280px;
-}
+}*/
 
 /* styles for validation helpers */
-.field-validation-error {
+/*.field-validation-error {
     color: #b94a48;
 }
 
@@ -41,24 +41,24 @@ input[type="checkbox"].input-validation-error {
 
 .validation-summary-valid {
     display: none;
-}
+}*/
 
 
 
 /* Highlight any element - simulate 3D view */
-.highlight-service-banner, .highlight-profile-information {
+/*.highlight-service-banner, .highlight-profile-information {
     -webkit-box-shadow: 0px 3px 6px 5px rgba(192, 193, 195, 0.77);
     -moz-box-shadow: -1px 3px 6px 5px rgba(192, 193, 195, 0.77);
     box-shadow: 0px 0px 22px 5px rgba(192, 193, 195, 0.77)
-}
+}*/
 
 /* Fill any star icon (rating purposes) */
-.star-colorize-yellow {
+/*.star-colorize-yellow {
     color:#ffbb00;background-color:transparent
-}
+}*/
 
 /* Disable the box shadow of a bootstrap button, if needed */
-.disable-btn-box-shadow {
+/*.disable-btn-box-shadow {
     color: #fff !important;
     -webkit-box-shadow: none!important;
     -moz-box-shadow: none!important;
@@ -73,32 +73,30 @@ input[type="checkbox"].input-validation-error {
 }
 
 .disable-btn-box-shadow:active:hover {
-    /*color: #000!important;*/
     color: #fff;
     -webkit-box-shadow: none!important;
     -moz-box-shadow: none!important;
     box-shadow: none!important;
-}
+}*/
 
-#list_view:hover, #multidata_view:hover {
+/*#list_view:hover, #multidata_view:hover {
     color: forestgreen;
-}
+}*/
 
 
 /* Profile management*/
-.highlight-cover-image-banner {
+/*.highlight-cover-image-banner {
     background-color: forestgreen!important;
-}
+}*/
 
-#profile-management-outer-box {
-    background-color: rgba(179, 179, 179, 0.24)!important;/* #dee1e4*/ 
+/*#profile-management-outer-box {
+    background-color: rgba(179, 179, 179, 0.24) !important; 
     -webkit-box-shadow: 5px 5px 11px -2px #e2e5d6!important;
     -moz-box-shadow: 5px 5px 11px -2px #e2e5d6!important;
     box-shadow: 5px 5px 11px -2px #dcdecf!important
-}
+}*/
 
-.personal-info-box_bak {
-    /* 1st approach for boxes -unused */
+/*.personal-info-box_bak {
     border:2px solid forestgreen; 
     background-color: whitesmoke; padding:20px 10px 10px 10px; 
     -webkit-box-shadow: 5px 5px 11px -2px rgba(179,179,179,1);
@@ -108,17 +106,17 @@ input[type="checkbox"].input-validation-error {
 }
 
 .personal-info-box, .service-basic-info-box {
-    border-top:6px outset #0026ff!important; 
+    border-top:6px outset #0026ff !important; 
     border-radius:3px 3px; background-color:whitesmoke!important; 
     padding:10px 10px 10px 10px!important;
     -webkit-box-shadow: 5px 5px 11px -2px rgba(179,179,179,1)!important;
     -moz-box-shadow: 5px 5px 11px -2px rgba(179,179,179,1)!important;
     box-shadow: 5px 5px 11px -2px rgba(179,179,179,1)!important;
-}
+}*/
 
-.personal-info-profile-img {
+/*.personal-info-profile-img {
     padding:10px 10px 10px 10px; 
-    border:1px outset #0026ff; 
+    border:1px outset #0026ff;*/ 
     
     /*
     border:2px outset #6874b7; 
@@ -130,9 +128,9 @@ input[type="checkbox"].input-validation-error {
     border-bottom-right-radius: 10px; 
     border-top-left-radius: 10px;
     */
-}
+/*}*/
 
-.contact-info-box {
+/*.contact-info-box {
     border-top:6px outset #ffbb00; 
     border-radius:3px 3px; background-color:whitesmoke; 
     padding:10px 10px 10px 10px; 
@@ -156,21 +154,21 @@ input[type="checkbox"].input-validation-error {
     -webkit-box-shadow: 5px 5px 11px -2px rgba(179,179,179,1);
     -moz-box-shadow: 5px 5px 11px -2px rgba(179,179,179,1);
     box-shadow: 5px 5px 11px -2px rgba(179,179,179,1);
-}
+}*/
 
-.profile-hr, .service-hr {
+/*.profile-hr, .service-hr {
     display: block; 
     height: 1px;
     border: 0; 
     border-top: 1px solid #ccc;
     margin: 1em 0; 
     padding: 0; 
-}
+}*/
 
 
 
 /* Service management (CRUD) */
-.service-registration-background {
+/*.service-registration-background {
     background-color: rgba(179, 179, 179, 0.24) !important;  
     -webkit-box-shadow: 5px 5px 11px -2px #e2e5d6!important;
     -moz-box-shadow: 5px 5px 11px -2px #e2e5d6!important;
@@ -187,9 +185,9 @@ input[type="checkbox"].input-validation-error {
     -moz-box-shadow: 5px 5px 11px -2px rgba(179,179,179,1)!important;
     box-shadow: 5px 5px 11px -2px rgba(179,179,179,1)!important;
     z-index:1
-}
+}*/
 
-.nav-pills>li>a {
+/*.nav-pills>li>a {
     border-radius:15px;
     background-color:rgba(67, 180, 67, 0.72) !important;
     border: 2px double green;
@@ -211,10 +209,10 @@ input[type="checkbox"].input-validation-error {
     border: 2px double rgb(176, 176, 176);
     margin-left: 5px;
     color: #999;
-}
+}*/
 
 /* Pager: custom previous and next buttons */
-.service-pager-box {
+/*.service-pager-box {
     border-top:1px solid rgba(179, 179, 179, 0.57) !important;    
     background-color:whitesmoke!important; 
     padding:10px 10px 10px 10px!important; 
@@ -233,7 +231,7 @@ input[type="checkbox"].input-validation-error {
 }
 .pager li#register-btn>a:hover {
     color:#fff !important;
-    background-color:rgba(67, 180, 67, 0.72)!important;
+    background-color:rgba(67, 180, 67, 0.72) !important;
     border:1px solid rgb(25, 126, 25) !important;
 }
 .pager li>a,.pager li>span {
@@ -247,27 +245,27 @@ input[type="checkbox"].input-validation-error {
     width:80px;
     -webkit-transition:width 1s, height 1s, background-color 1s, -webkit-transform 1s;
     transition:width 1s, height 1s, background-color 1s, transform 1s;
-}
+}*/
 
 
 /* button effect */
-.btn {
+/*.btn {
     -webkit-transition:width 1s, height 1s, background-color 1s, -webkit-transform 1s!important;
     transition:width 1s, height 1s, background-color 1s, transform 1s!important;
-}
+}*/
 
 
-.service-consumer-view-box {
+/*.service-consumer-view-box {
     border-radius:3px 3px; background-color:whitesmoke; 
     padding:10px 10px 10px 10px; 
     margin-bottom: 2%;
     -webkit-box-shadow: 5px 5px 11px -2px rgba(179,179,179,1);
     -moz-box-shadow: 5px 5px 11px -2px rgba(179,179,179,1);
     box-shadow: 5px 5px 11px -2px rgba(179,179,179,1);
-}
+}*/
 
 /* text over profile logo*/
-#text
+/*#text
 {
     z-index:100;
     position:absolute;    
@@ -279,15 +277,15 @@ input[type="checkbox"].input-validation-error {
     top:+122px;
     border-radius:0px 0px 5px 5px;
     width: 148px  
-}
+}*/
 
 /*Colorize the * of labels' mandatory fields */
-.mandatory-field {
+/*.mandatory-field {
     color: #800000 !important
-}
+}*/
 
 
-.custom-inactive-breadcrumb {
+/*.custom-inactive-breadcrumb {
     color: forestgreen!important;
 }
 
@@ -299,7 +297,7 @@ input[type="checkbox"].input-validation-error {
 .navbar-btn-limited-padding {
     padding-left:0 !important; 
     padding-right: 0!important
-}
+}*/
 
 
 
@@ -337,35 +335,34 @@ input[type="checkbox"].input-validation-error {
 }*/
 
 /* overwrite bootstrap options */
-input[type=checkbox], input[type=radio] {
+/*input[type=checkbox], input[type=radio] {
     vertical-align: middle;
     position: relative;
     bottom: 1px;
-    /*bottom: 2.5px;*/
 }
 input[type=radio] {
     bottom: 2px;
-}
+}*/
 
 
 /* AoD custom table options */
-.custom-aod-table           { border: 1px solid #51A951!important; }
+/*.custom-aod-table           { border: 1px solid #51A951!important; }
 .custom-aod-table-td        { border-top: 1px solid #51A951!important; }
 .custom-aod-table-thead     { background-color: #51A951; color: #fff; border-top-right-radius: 4px}
 .custom-aod-table-th        { border-bottom: 1px solid #51A951!important; }
-.custom-tab-black-color     { color: black; }
+.custom-tab-black-color     { color: black; }*/
 
 
 /* custom panel classes*/
-.panel-custom-success { border-color: #51A951; }
+/*.panel-custom-success { border-color: #51A951; }
 .panel-custom-success > .panel-heading {
     color: #fff;
     background-color: #51A951;
     border-color: #51A951;
-}
+}*/
 
 /*  Padding/margin pixels */
-.padding-top-10             { padding-top: 10px; }
+/*.padding-top-10             { padding-top: 10px; }
 .padding-top-20             { padding-top: 20px; }
 .padding-top-50             { padding-top: 50px; }
 .padding-bottom-10          { padding-bottom: 10px; }
@@ -376,10 +373,10 @@ input[type=radio] {
 .padding-right-20           { padding-right: 20px; }
 .margin-right-5             { margin-right: 5px; }
 .margin-left-20             { margin-left: 20px; }
-.margin-left-40             { margin-left: 40px; }
+.margin-left-40             { margin-left: 40px; }*/
 
 /*  Padding/margin percent */
-.margin-top-10              { margin-top: 10px; }
+/*.margin-top-10              { margin-top: 10px; }
 .margin-top-50              { margin-top: 50px; }
 .margin-bottom-5            { margin-bottom: 5px; }
 .margin-bottom-10           { margin-bottom: 10px; }
@@ -402,24 +399,24 @@ input[type=radio] {
 
 
 .margin-right-percent-10    { margin-right: 10%; }
-.margin-left-percent-10     { margin-left: 10%; }
+.margin-left-percent-10     { margin-left: 10%; }*/
 
 
 /* font size */
-.font-size-pt-14    { font-size: 14pt; }
+/*.font-size-pt-14    { font-size: 14pt; }
 .font-size-pt-16    { font-size: 16pt; }
 .font-size-pt-18    { font-size: 18pt; }
 
 .font-size-px-16    { font-size: 16px; }
-.font-size-px-18    { font-size: 18px; }
+.font-size-px-18    { font-size: 18px; }*/
 
 /* custom text classes */
-.text-justify       { text-align: justify; }
+/*.text-justify       { text-align: justify; }*/
 
 
 
 /* Cursor attributes */
-.cursor-auto            { cursor: auto; }
+/*.cursor-auto            { cursor: auto; }
 .cursor-default         { cursor: default; }
 .cursor-none            { cursor: none; }
 .cursor-context-menu    { cursor: context-menu; }
@@ -450,23 +447,23 @@ input[type=radio] {
 .cursor-se-resize       { cursor: se-resize; }
 .cursor-sw-resize       { cursor: sw-resize; }
 .cursor-nesw-resize     { cursor: nesw-resize; }
-.cursor-nwse-resize     { cursor: nwse-resize; }
+.cursor-nwse-resize     { cursor: nwse-resize; }*/
 
 
 /* Custom progress bar attributes */
-.progress-bar-height-10 { height: 10px; }
+/*.progress-bar-height-10 { height: 10px; }*/
 
 
 /* set height*/
-.min-height-700-px{ min-height: 700px; }
+/*.min-height-700-px{ min-height: 700px; }*/
 
 
 /* set width*/
-.set-width-percent-1 { width: 1%; }
+/*.set-width-percent-1 { width: 1%; }*/
 
 
 
 /* colors */
-.color-black        { color: black; }
+/*.color-black        { color: black; }*/
 
 

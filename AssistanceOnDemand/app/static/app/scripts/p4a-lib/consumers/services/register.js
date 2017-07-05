@@ -113,14 +113,30 @@ $(document).ready(function () {
     //
     // actions on charging policy change
     //
-    if ($("#charging_policy :selected").attr('value') == "1") {
+    var choice = $("#charging_policy :selected").attr('value');
+
+    if (choice == "1") {
         $("#price").val('0.00').attr('readonly', true);
         $("#price").parent().removeClass("has-error");
         $("#unit").attr('readonly', true);
+
+        $("#common-payment-fields").addClass('hidden');
+        $("#payment-policy").addClass('hidden');
+        $("#subscription-policy").addClass('hidden');
     }
     else {
         $("#price").val('').removeAttr('readonly', false);
         $("#unit").removeAttr('readonly', false);
+        $("#common-payment-fields").removeClass('hidden');
+
+        if (choice == 2 || choice == 3){
+            $("#payment-policy").removeClass('hidden');
+            $("#subscription-policy").addClass('hidden');
+        }
+        else if ( choice > 3 ) {
+            $("#payment-policy").addClass('hidden');
+            $("#subscription-policy").removeClass('hidden');
+        }
     }
 }).on('click', "#availability_pb", function (event) {
     //
@@ -187,6 +203,7 @@ $(document).ready(function () {
     AoD.validateConfirmServiceForm("#ConfirmServiceForm");
 }).on('click', "#update-btn", function (event) {
     AoD.validateConfirmServiceForm("#ConfirmServiceForm");
+
 });
 
 

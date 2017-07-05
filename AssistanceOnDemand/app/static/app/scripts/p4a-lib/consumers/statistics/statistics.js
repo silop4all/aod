@@ -122,6 +122,7 @@ $(document).on('all.bs.table', collectionSelector, function (name, args) {
     $(this).bootstrapTable('check', 0);
 }).on('check.bs.table ', collectionSelector, function (name, service) {
 
+    // fetch service details
     $.ajax({
         type: 'GET',
         url: "/api/v1/services/" + service.id + "/details",
@@ -159,7 +160,7 @@ $(document).on('all.bs.table', collectionSelector, function (name, args) {
             $("#bought-service-categories").html(categories.slice(0, -1));
 
             if (response.price > 0) {
-                $("#bought-service-price").html(response.unit + " " + Math.round(response.price, 2));
+                $("#bought-service-price").html(response.unit + " " + response.price);
             }
             else {
                 $("#bought-service-price").html("-");
@@ -340,6 +341,92 @@ $(document).on('all.bs.table', collectionSelector, function (name, args) {
             $(".bought-service-view").fadeIn();
         }
     });
+
+    // fecth service reviews
+    $.ajax({
+        type: 'GET',
+        url: "/api/v1/services/" + service.id + "/reviews",
+        beforeSend: function (xhr, settings) {
+            $.ajaxSettings.beforeSend(xhr, settings);
+        },
+        headers: { "Accept": "application/json" },
+        contentType: 'application/json',
+        success: function (response) {
+            var htmlReviews = "";
+            var sum = 0.0;
+            var count = 0;
+            var reviewItems = "";
+
+            for (var j in response.results) { 
+                sum += parseFloat(response.results[j].rating);
+                count += 1;
+
+                reviewItems += [
+                    '<li class="media" style="padding:5px; border: 2px solid #ddd">',
+                        '<div class="media-body">',
+                            '<h5 class="media-heading">',
+                                '<span class="fa fa-user text-muted"></span>',
+                                '<strong class="margin-right-5"> ' + response.results[j].consumer.user.username + '</strong>',
+                                '<span><span class="fa fa-calendar text-muted"></span> ' + response.results[j].review_date.replace('T',' ').replace('Z',' ') + '</span> ',                                                         
+                                '<span class="text-right pull-right"> ' + gettext('Score')+ ': <span class="badge">' + response.results[j].rating.toFixed(1) + '/5.0</span></span>',                                                         
+                            '</h5>',
+                            '<br>',
+                            '<p><span class="text-success">' + gettext('Positive') + ' (+)</span>. ' + response.results[j].advantages + '</p>',
+                            '<p><span class="text-danger">' + gettext('Negative') + ' (-)</span>.  ' + response.results[j].disadvantages + '</p>',
+                            '<p>' + response.results[j].rating_rationale + '</p>',
+                        '</div>',
+                    '</li>'
+                ].join('')
+            }
+
+            var score = (count) > 0 ? parseFloat(sum/count) : 0.0;
+            var scoreHtml = [
+                '<div class="clearfix row">',
+                    '<div class="margin-bottom-10 col-lg-12 col-xs-12 col-md-12 col-sm-12">',
+                        '<span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-1"></span>',
+                        '<span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-2"></span>',
+                        '<span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-3"></span>',
+                        '<span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-4"></span>',
+                        '<span class="fa fa-star-o fa-lg star-colorize-yellow star-rating-5"></span> ',                                    
+                        '<strong class="label label-success margin-right-5">' + score.toFixed(1) +'/5.0</strong>',
+                        '<span class="margin-right-5">' + gettext('from') + '</span>',
+                        count + " " + ((count == 1) ?  gettext('review'): gettext('reviews')),
+                    '</div>',                            
+                '</div>',
+                '<div class="tab-content">',
+                    '<div class="tab-pane active fade in has-padding" id="messages-tue">',
+                        '<ul class="media-list">',
+                            reviewItems,
+                        '</ul>',
+                    '</div>',
+                '</div>'                
+            ].join('');
+
+            // Append HTML reviews
+            $("#bought-service-reviews").empty().append(scoreHtml);
+
+            // Updates the stars layout
+            if (score !== "None" && !(isNaN(score))) {
+                for (var j = 1; j <= Math.ceil(score) ; j++) {
+                    if (j > score){
+                        $("#bought-service-reviews").find(".star-rating-" + j).removeClass("fa-star-o").addClass("fa-star-half-full");
+                    }
+                    else{
+                        $("#bought-service-reviews").find(".star-rating-" + j).removeClass("fa-star-o").addClass("fa-star");
+                    }
+                }
+            }            
+
+        },
+        error: function (response) {
+            // 
+        },
+        complete: function () {
+        }        
+    });
+
+
+
 }).on('click', '.access-resource', function () {
     var targetVideo = $(this).attr('href');
     $(targetVideo).toggle('fast');

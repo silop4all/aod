@@ -64,39 +64,14 @@ $(document).ready(function () {
 
 
 }).on('click', '#stats_tab', function () {
-    var loading = new AjaxView($("#stats_container"));
-    loading.show();
-
-    $.ajax({
-        type: 'GET',
-        url: $(this).data('resource'),
-        beforeSend: function (xhr, settings) {
-            $.ajaxSettings.beforeSend(xhr, settings);
-        },
-        success: function (response) {
-            console.log(gettext("Get stats"));
-            var data = [];
-            $("#stats_table").bootstrapTable({ data: data });
-            if (data.length === 0) {
-                $('#stats_table').parent().css("height", "80px");
-            }
-        },
-        error: function (response) {
-            console.error(gettext('error'));
-        },
-        complete: function () {
-            loading.hide();
-        }
-    });
-
-    //$('.fixed-table-body').css('height', 'auto');
+    // load from server
 
 }).on('click', '#support_tab', function () {
     //
     // Load technical support for service
     //
-    var loading = new AjaxView($("#support_container"));
-    loading.show();
+    // var loading = new AjaxView($("#support_container"));
+    // loading.show();
     var skype = "";
     var materialsList = "";
 
@@ -199,86 +174,30 @@ $(document).ready(function () {
             console.error('error');
         },
         complete: function () {
-            loading.hide();
+            // loading.hide();
         }
     });
 
 }).on('click', '.access-resource', function () {
+
     var targetVideo = $(this).attr('href');
     $(targetVideo).toggle('fast');
+
 }).on('click', '#reviews_tab', function () {
-    var loading = new AjaxView($("#reviews_container"));
-    loading.show();
 
-    $.ajax({
-        type: 'GET',
-        url: $(this).data('resource'),
-        beforeSend: function (xhr, settings) {
-            $.ajaxSettings.beforeSend(xhr, settings);
-        },
-        success: function (response) {
-            var reviewsNum = response.results.length;
-            var reviewsSum = 0;
-            var counters = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-            var text = [
-                    '<div class="jumbotron text-center" style="background-color: white;">',
-                        gettext('No users feedback.'),
-                    '</div>'
-            ].join('');
-
-            $("#reviews_number").text(reviewsNum);
-            if (reviewsNum) {
-                text = '';
-                for (var i in response.results) {
-                    if (response.results[i].rating != null && response.results[i].rating != "") {
-                        console.log(i - reviewsNum - 1);
-                        text += [
-                            '<div style="clear:both; ' + ((i != reviewsNum - 1) ? 'border-bottom:1px solid rgba(190, 190, 190, 0.70)' : '') + '" class="row margin-bottom-10">',
-                                '<div class="col-sm-4 col-lg-4 col-md-4 col-xs-12" >',
-                                    '<center>',
-                                        '<span class="fa-stack fa-3x">',
-                                            '<span class="fa fa-circle fa-stack-2x" style="color: #d7d5d5 "></span>',
-                                            '<span class="fa fa-user fa-stack-1x" style="color: #ebebea"></span>',
-                                        '</span>',
-                                        '<h6 ><span> By <a href="#" title="' + gettext("User feedback for the service") + '">' + response.results[i].consumer.user.lastname + " " + response.results[i].consumer.user.name + '</a></span></h6>',
-                                        '<h6 ><span class="fa fa-calendar text-primary"></span> ' + response.results[i].purchased_date.split('T')[0] + '</h6>',
-                                    '</center>',
-                                '</div>',
-                                '<div class="col-sm-8 col-lg-8 col-md-8 col-xs-12" >',
-                                    '<div style="clear:both">',
-                                        '<span class="fa fa-star-o fa-lg  star-colorize-yellow star-rating-1"></span>',
-                                        '<span class="fa fa-star-o fa-lg  star-colorize-yellow star-rating-2"></span>',
-                                        '<span class="fa fa-star-o fa-lg  star-colorize-yellow star-rating-3"></span>',
-                                        '<span class="fa fa-star-o fa-lg  star-colorize-yellow star-rating-4"></span>',
-                                        '<span class="fa fa-star-o fa-lg  star-colorize-yellow star-rating-5"></span>',
-                                        '<span>  ' + response.results[i].rating + ' / 5</span>',
-                                    '</div>',
-                                    '<div class="text-justify">',
-                                        '<span>' + response.results[i].rating_rationale + '</span>',
-                                    '</div>',
-                                '</div>',
-                            '</div>'
-                        ].join('');
-                        reviewsSum += response.results[i].rating;
-                        counters[response.results[i].rating]++;
-                    }
-                }
-                $("#reviews_column").html(text);
+    // Updates the stars layout
+    var score = parseFloat($("#review_score").text());
+    if (score !== "None" && !(isNaN(score))) {
+        for (var j = 1; j <= Math.ceil(score) ; j++) {
+            if (j > score){
+                $("#stars-area").find(".star-rating-" + j).removeClass("fa-star-o").addClass("fa-star-half-full");
             }
             else{
-                $(".reviews_container").html(text);
+                $("#stars-area").find(".star-rating-" + j).removeClass("fa-star-o").addClass("fa-star");
             }
-            //$("#reviews_average").html(Math.round(reviewsSum / reviewsNum), 2);
-            $("#reviews_average").html((reviewsSum / reviewsNum));
-            loadReviewBars(reviewsNum, counters);
-        },
-        error: function (response) {
-            console.error('error');
-        },
-        complete: function () {
-            loading.hide();
         }
-    });
+    }   
+
 }).on('mouseover', ".list-group-item", function () {
     $(this).addClass('active');
 }).on('mouseleave', ".list-group-item", function () {

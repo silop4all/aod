@@ -203,7 +203,6 @@ var AoD = AoD || (function () {
                 }
             });
             $(currentForm).validate().settings.ignore = "";
-            console.log($(currentForm).serializeObject());
         },
         validatePaymentServiceForm: function (form) {
             //
@@ -296,7 +295,6 @@ var AoD = AoD || (function () {
             //    }
             //});
             //$(form).validate().settings.ignore = "";
-            console.log($(form).serializeObject());
         },
         validateConstraintsServiceForm: function(form){
             //
@@ -409,6 +407,9 @@ var AoD = AoD || (function () {
                     is_visible: {
                         required: true
                     },
+                    community_support: {
+                        required: true
+                    },
                     terms: {
                         required: true
                     }
@@ -416,6 +417,9 @@ var AoD = AoD || (function () {
                 messages: {
                     is_visible: {
                         required: gettext('Clarify if you want to publish your service on users')
+                    },
+                    community_support: {
+                        required: gettext('Clarify if you want to initiate a community for the service')
                     },
                     terms: {
                         required: gettext("Please read the <strong>Terms of usage</strong> and then check the box if you agree with it"),
@@ -983,6 +987,296 @@ var AoD = AoD || (function () {
                 }
             });
         },
+        //
+        // Validate ML task form
+        //
+        validateMLTaskForm: function (form) {
+            preRegValidator = $(form).validate({
+                errorClass: errorClass,
+                errorElement: "span",
+                rules: {
+                    ServiceName: {
+                        required: true
+                    },
+                    Description: {
+                        required: true
+                    },
+                    EstimatedTime: {
+                        required: true,
+                        notEqualWithStr: ""
+                    },
+                    Category: {
+                        required: true,
+                        notEqualWithStr: ""
+                    },
+                    DueDate: {
+                        required: true
+                    },
+                    DifficultyLevel: {
+                        required: true,
+                        notEqualWithStr: ""
+                    },
+                    PayAmount: {
+                        required: true
+                    },
+                    PayMethod: {
+                        required: true,
+                        notEqualWithStr: ""
+                    },
+                    Comments: {
+                        maxlength: 200
+                    }
+                },
+                messages: {
+                    ServiceName: {
+                        required: gettext('Please enter the name of the task'),
+                    },
+                    Description: {
+                        required: gettext('Please enter the description of the task'),
+                    },
+                    EstimatedTime: {
+                        required: gettext('Please declare the estimated time of the task'),
+                    },
+                    Category: {
+                        required: gettext('Please clarify the task'),
+                    },
+                    DueDate: {
+                        required: gettext('Please declare the due date of the task'),
+                    },
+                    DifficultyLevel: {
+                        required: gettext('Please enter the difficulty level of the task'),
+                    },
+                    PayAmount: {
+                        required: gettext('Please enter the payment amount')
+                    },
+                    PayMethod: {
+                        required: gettext('Please declare the payment method'),
+                    },
+                    Comments: {
+                        maxlength: gettext('Please enter at most 200 characters'),
+                    }
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element);
+                    error.addClass(eSettings.highlightTextClass);
+                    element.parent().addClass(eSettings.highlightClass);
+                },
+                success: function (error) {
+                    error.parent().removeClass(eSettings.highlightClass);
+                    error.removeClass(errorClass);
+                    error.parent().find($("span")).remove();
+                }
+            });
+        },
+        //
+        // Set cookie value in browser
+        //
+        createCookie: function(name, value, days) {
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                var expires = "; expires=" + date.toGMTString();
+            }
+            else var expires = "";               
+
+            document.cookie = name + "=" + value + expires + "; path=/";
+        },
+        //
+        // Validate community service
+        //
+        validateCommunityService: function (currentForm) {
+            $(currentForm).validate({
+                errorClass: errorClass,
+                errorElement: "div",
+                rules: {
+                    title: {
+                        required: true,
+                        maxlength: 128
+                    },
+                    description: {
+                        required: true,
+                    },
+                    ref_service: {
+                        required: true,
+                        notEqualWithStr: ""
+                    },
+                    skype: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    title: {
+                        required: gettext("Please enter the title of your service"),
+                    },
+                    description: {
+                        required: gettext("Please describe the service you offer"),
+                    },
+                    ref_service: {
+                        required: gettext("Please clarify the service that your community will provide support"),
+                        notEqualWithStr: gettext("Please clarify the service that your community will provide support")
+                    },
+                    skype: {
+                        required: gettext("Please enter your skype account id"),
+                    },
+                },
+                errorPlacement: function (error, element) {
+                    if (element.attr("name") === "ref_service") {
+                        error.insertAfter(element.parent());
+                        error.addClass(eSettings.highlightTextClass).addClass("col-sm-offset-2 col-md-offset-2 col-lg-offset-2 col-lg-12 col-md-10 col-sm-10");
+                    } else {
+                        error.insertAfter(element);
+                        error.addClass(eSettings.highlightTextClass);
+                    }
+                    element.parent().addClass(eSettings.highlightClass);
+                },
+                success: function (error) {
+                    if (error.parent().find($("#ref_service")).length > 0) {
+                        error.parent().removeClass(eSettings.highlightClass);
+                        error.removeClass(errorClass);
+                    }
+                    else {
+                        error.parent().removeClass(eSettings.highlightClass);
+                        error.removeClass(errorClass);
+                        error.parent().find($("div")).remove();
+                    }
+                },
+                submitHandler: function (currentForm) {
+                    // submit form
+                    currentForm.submit();
+                }
+            });
+        },
+        //
+        // Validate member community request
+        //
+        validateCommunityMember: function (currentForm) {
+            $(currentForm).validate({
+                errorClass: errorClass,
+                errorElement: "div",
+                rules: {
+                    fee: {
+                        required: false,
+                        min: 0,
+                        number: true
+                    },
+                    skype: {
+                        required: true,
+                   },
+                },
+                messages: {
+                    fee: {
+                        required: gettext("Please enter a non negative fee"),
+                    },
+                    skype: {
+                        required: gettext("Please enter your skype account id"),
+                    },
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element);
+                    error.addClass(eSettings.highlightTextClass);
+                    element.parent().addClass(eSettings.highlightClass);
+                },
+                success: function (error) {
+                    error.parent().removeClass(eSettings.highlightClass);
+                    error.removeClass(errorClass);
+                    error.parent().find($("div")).remove();
+                }
+            });
+        },
+        //
+        // validate Review form of service
+        //
+        validateReviewServiceForm: function(form){
+            $(form).validate({
+                errorClass: errorClass,
+                errorElement: "span",
+                rules: {
+                    rating_rationale: {
+                        required: true,
+                        maxlength: 250
+                    },
+                    advantages: {
+                        required: false,
+                        maxlength: 250
+                    },
+                    disadvantages: {
+                        required: false,
+                        maxlength: 250
+                    },
+                    evaluation_metric_1: {
+                        required: true
+                    },
+                    evaluation_metric_2: {
+                        required: true
+                    },
+                    evaluation_metric_3: {
+                        required: true,
+                    },
+                    evaluation_metric_4: {
+                        required: true
+                    },
+                },
+                messages: {
+                    rating_rationale: {
+                        required: gettext('Please enter your comments'),
+                    }
+                },
+                errorPlacement: function (error, element) {
+                    if (element.attr('type') === "radio") {
+                        error.insertBefore(element);
+                    }
+                    else {                 
+                        error.insertAfter(element);
+                    }
+                    error.addClass(eSettings.highlightTextClass);
+                    element.parent().addClass(eSettings.highlightClass);
+                },
+                success: function (error) {
+                    error.parent().removeClass(eSettings.highlightClass);
+                    error.removeClass(errorClass);
+                    error.parent().find($("span")).remove();
+                }
+            });
+        },
+        //
+        // Validate payment settings
+        //
+        validatePaymentSettings: function (currentForm) {
+            $(currentForm).validate({
+                errorClass: errorClass,
+                errorElement: "div",
+                rules: {
+                    username: {
+                        required: true,
+                        minlegth: 64,
+                        maxlength: 512
+                    },
+                    password: {
+                        required: true,
+                        minlegth: 64,
+                        maxlength: 512
+                   }
+                },
+                messages: {
+                    username: {
+                        required: gettext("Please enter a non negative fee"),
+                    },
+                    password: {
+                        required: gettext("Please enter your skype account id"),
+                    }
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element);
+                    error.addClass(eSettings.highlightTextClass);
+                    element.parent().addClass(eSettings.highlightClass);
+                },
+                success: function (error) {
+                    error.parent().removeClass(eSettings.highlightClass);
+                    error.removeClass(errorClass);
+                    error.parent().find($("div")).remove();
+                }
+            });
+        },    
     }
 
 })();
