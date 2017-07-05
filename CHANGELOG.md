@@ -1,5 +1,33 @@
 # Change Log
 
+## 2017-04-18
+- Finalize the community-based support
+- Implement the service rating (include multiple metrics, adv/dis)
+- Implement the QoS-cost aware filtering
+- Implement the Try different approach
+- Search services via keywords  
+    + render the same presentation template for any type of search
+
+
+## 2017-02-28
+- Updates:
+    + remove placeholder from login form
+    + resize & limit the title of services    
+    + hide not working preferences from top menu
+    + filter the length of articles, change header size (customized index)
+    + hide geographical constraints from service preview (if not exists)
+    + increase the maximun chars threshold in service description (4K)
+    + fix conflict among app logo and user logo
+    + fix links and images included in articles (customized index)
+
+## 2017-02-10
+- Add modules for paypal, payment component
+- Add Paypal btn in service preview (customer perspective)
+
+
+## 2017-02-02
+- Publish task in ML (required integration with IAM)
+
 ## 2016-12-08
 - Browse services without login
 
