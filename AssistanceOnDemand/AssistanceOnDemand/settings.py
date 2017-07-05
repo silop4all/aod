@@ -205,11 +205,9 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
+        'standard': {
+            'format' : "[%(asctime)s] - [%(name)s:%(lineno)s] - [%(levelname)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
         },
     },
     'filters': {
@@ -223,15 +221,22 @@ LOGGING = {
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         },
-        'file_debug': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': str(PROJECT_ROOT) + '/debug.log',
+        'null': {
+            'level':'DEBUG',
+            'class':'django.utils.log.NullHandler',
         },
-        'file_error': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': str(PROJECT_ROOT) + '/error.log',
+        'logfile': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': str(PROJECT_ROOT) + "/logs/access.log",
+            'maxBytes': 1024*1024,
+            'backupCount': 3,
+            'formatter': 'standard',
+        },
+        'console':{
+            'level':'INFO',
+            'class':'logging.StreamHandler',
+            'formatter': 'standard'
         },
     },
     'loggers': {
@@ -240,19 +245,26 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
-        'django.request': {
-            'handlers': ['file_debug'],
-            'level': 'DEBUG',
+        'django': {
+            'handlers':['console'],
             'propagate': True,
+            'level':'WARN',
         },
-        'django.request': {
-            'handlers': ['file_error'],
-            'level': 'ERROR',
-            'propagate': True,
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'app': {
+            'handlers': ['logfile'],
+            'level': 'DEBUG',
+        },
+        'restapi': {
+            'handlers': ['logfile'],
+            'level': 'DEBUG',
         },
     }
 }
-
 #==================================
 #   TEST RUNNER CONFIGURATION  
 #==================================
@@ -278,6 +290,11 @@ SERVICES_TECHNICAL_SUPPORT = "app/services/technical-support/"
 #   PRESENTATION THEME COOKIE
 #==================================
 THEME_COOKIE_NAME = "aod_theme"
+
+#==================================
+#   COMMUNITY COOKIE
+#==================================
+COMMUNITY_COOKIE_NAME = "aod_community"
 
 #==================================
 #   GRAPPELLI THEME SETTINGS   
@@ -524,8 +541,18 @@ OPENAM_INTEGRATION = False
 CLIENT_ID = {CLIENT_ID_In_OPENAM}
 CLIENT_SECRET = {CLIENT_SECRET_IN_OPENAM}
 OAUTH_SERVER = {IP:PORT}
-CALLBACK_URL = '/callback/openam'
+CALLBACK_URL = '/en/callback/openam'
 REDIRECT_URL = AOD_HOST['PROTOCOL'] + "://" + AOD_HOST['IP'] + ':' + str(AOD_HOST['PORT']) + AOD_HOST['PATH'] + CALLBACK_URL
+
+#==============================================
+#   INTEGRATION WITH PAYMENT COMPONENT/PAYPAL      
+#==============================================
+PAYPAL_INTEGRATION = True
+PAYMENT_BASE = "https://192.168.1.44:8000"
+PAYPAL_LOGO = "https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png"
+PAYPAL_BUY_NOW_IMG = "https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_buynow_107x26.png"
+PAYPAL_SUBSCRIBE_IMG = "https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_subscribe_113x26.png"
+PAYPAL_UNSUBSCRIBE_IMG = "https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_unsubscribe_113x26.png"
 
 #==================================
 #   INTEGRATION WITH SOCIAL NETWORK
