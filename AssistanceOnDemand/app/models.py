@@ -408,15 +408,16 @@ class Services(models.Model):
     is_visible = models.BooleanField(max_length=1, default=True, blank=False, null=False, help_text=_('Click the checkbox if the provider wants to publish it in the platform'))
     community_support = models.BooleanField(null=False, blank=False, default=False)
     review_score = models.FloatField(blank=False, null=False, default=0.0)
-    reviews_count = models.IntegerField(blank=False, null=False, default=0)    
+    reviews_count = models.IntegerField(blank=False, null=False, default=0)
     created_date = models.DateTimeField(blank=False, null=True, default=timezone.now)
-    modified_date = models.DateTimeField(blank=False, null=False, default=timezone.now) 
+    modified_date = models.DateTimeField(blank=False, null=False, default=timezone.now)
+    resource_link = models.TextField(blank=True, null=True, help_text="The link of the service's resource")
 
     # availability -> is_public
     # is_available -> is_visible
     #rm cover = models.CharField(max_length=128, blank=True, null=False)   
     #rm software = models.FileField(upload_to='app/services/packages', blank=True, null=False)
-    #rm link = models.CharField(max_length=100, blank=True, null=True)
+
 
     class Meta:
         verbose_name        = _("Service")

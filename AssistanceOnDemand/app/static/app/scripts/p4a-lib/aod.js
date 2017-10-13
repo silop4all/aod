@@ -281,19 +281,31 @@ var AoD = AoD || (function () {
             //
             // validate Usage Tab
             //
-            //preRegValidator = $(form).validate({
-            //    errorClass: errorClass,
-            //    errorElement: "div",
-            //    rules: {
-            //    },
-            //    messages: {
-            //    },
-            //    errorPlacement: function (error, element) {
+            preRegValidator = $(form).validate({
+                errorClass: errorClass,
+                errorElement: "div",
+                rules: {
+                    resource_link: {
+                        required: true
+                    }
+                },
+                messages: {
+                    resource_link: {
+                        required: gettext("Please define the URL of the resource"),
+                    },
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element);
+                    error.addClass(eSettings.highlightTextClass);
+                    element.parent().addClass(eSettings.highlightClass);
+                },
+                success: function (error) {
+                    error.parent().removeClass(eSettings.highlightClass);
+                    error.removeClass(errorClass);
+                    error.parent().find($("div")).remove();
 
-            //    },
-            //    success: function (error) {
-            //    }
-            //});
+                }
+            });
             //$(form).validate().settings.ignore = "";
         },
         validateConstraintsServiceForm: function(form){

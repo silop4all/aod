@@ -9,6 +9,15 @@
         <hr class="service-hr">
 
         <div class="row form-group">
+            <div class="col-sm-3 col-md-3  col-lg-3 col-xs-12">
+                <label class="pull-right control-label" for="resource_link">{% trans 'Link' %} <span class="highlight-error-message"> *</span></label>
+            </div>
+            <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls">
+                <input type="url" id="resource_link" name="resource_link" value="{% if service.resource_link %}{{ service.resource_link }}{% endif %}" class="form-control" form="UsageServiceForm" placeholder="{% trans 'Enter the link of the resource' %}" required/>
+            </div>
+        </div>
+
+        <div class="row form-group">
             <div class="col-sm-3 col-md-3  col-lg-3  col-xs-12">
                 <label class="text-right control-label hidden-xs" for="requirements">{% trans 'Technical requirements' %}</label>
                 <label class="text-left control-label visible-xs" for="requirements">{% trans 'Technical requirements' %}</label>
@@ -29,15 +38,6 @@
         </div>
 
         <!--
-        <div class="row form-group">
-            <div class="col-sm-3 col-md-3  col-lg-3 col-xs-12">
-                <label class="pull-right control-label" for="srv_link">{% trans 'Link' %}</label>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12 input-group controls" title="{% trans 'URL/Link/API' %}">
-                <input type="url" id="srv_link" name="srv_link" value="{{ service.link }}" class="form-control" form="insert-new-service" placeholder="{% trans 'Enter any link, if needed' %}" />
-            </div>
-        </div>
-
         <div class="row form-group">
             <div class="col-sm-3 col-md-3  col-lg-3 col-xs-12">
                 <label class="pull-right control-label" for="srv_software">{% trans 'Software/Package' %}</label>

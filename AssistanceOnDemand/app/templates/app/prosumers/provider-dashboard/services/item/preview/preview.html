@@ -111,6 +111,18 @@
                     </p>
                 </div>
             </div>
+            <!-- license -->
+            {% if service.resource_link %}
+            <div class="row">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                    <label class="text-right hidden-xs">{% trans 'Resource' %}</label>
+                    <label class="text-left visible-xs">{% trans 'Resource' %}</label>
+                </div>
+                <div class="col-md-7 col-sm-7 col-lg-8 col-xs-12" title="{% trans 'The resource of this service' %}">
+                    <a href="{{ service.resource_link|safe }}" id="resource_link" target="_blank">{% trans 'Access the link' %} <span class="fa fa-external-link"></span></a>
+                </div>
+            </div>
+            {% endif %}
             <!--requirements-->
             {% if service.requirements %}
             <div class="row">

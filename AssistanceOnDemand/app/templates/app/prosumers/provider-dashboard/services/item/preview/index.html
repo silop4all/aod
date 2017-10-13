@@ -146,7 +146,7 @@
     <script src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
     <script src="{% static 'app/scripts/p4a-lib/ajax-load.js' %}"></script>
     {% with 'https://maps.googleapis.com/maps/api/js?key='|add:google_maps_key as google_map_url %}
-    <script type="text/javascript" src="{{ google_map_url }}" ></script>
+    <script type="text/javascript" src="{{ google_map_url }}&language={{ LANGUAGE_CODE }}" ></script>
     {% endwith %}
     <script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
     <script src="{% static 'app/scripts/p4a-lib/consumers/services/item/main.js' %}"></script>

@@ -402,7 +402,7 @@
                                                             {% trans 'You are subscriber of this service' %}
                                                         {% endif %}
                                                     <p>
-                                                    <a href="/media/app/users/logos/1.jpg" class="btn btn-md btn-success"  id="access-service-resources" target="_blank"> {% trans 'Access the resources' %} <span class="fa fa-hand-o-up"></span> </a>
+                                                    <a href="{{ service.resource_link|safe }}" class="btn btn-md btn-success"  id="access-service-resources" target="_blank"> {% trans 'Access the resources' %} <span class="fa fa-hand-o-up"></span> </a>
                                                 {% else %}
                                                     {% if  service.charging_policy_id == 2 or service.charging_policy_id == 3 %}
                                                     <form  action="{% url 'create_paypal_payment' service.id %}" method="post">
@@ -426,7 +426,7 @@
                                                 {% if not is_provider %}
                                                     {% if is_service_used and permission_to_access_resource %}
                                                         <p><span class="fa fa-check-circle text-success"></span> {% trans 'You use this service' %}<p>
-                                                        <a href="/media/app/users/logos/1.jpg" class="btn btn-md btn-success" id="access-service-resources" target="_blank"> {% trans 'Access the resources' %} <span class="fa fa-hand-o-up"></span> </a>
+                                                        <a href="{{ service.resource_link|safe }}" class="btn btn-md btn-success" id="access-service-resources" target="_blank"> {% trans 'Access the resources' %} <span class="fa fa-hand-o-up"></span> </a>
                                                     {% else %}
                                                         <form id="UseServiceForm" name="UseServiceForm" action="{% url 'use_service' service.id %}" method="post">
                                                             {% csrf_token %}

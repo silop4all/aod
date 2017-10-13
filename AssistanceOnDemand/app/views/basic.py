@@ -1403,6 +1403,7 @@ class ServiceCreate(View):
                 longitude=payload["longitude"],
                 skype=payload["skype"] if "skype" in payload else None,
                 coverage=payload["coverage"],
+                resource_link=payload.get("resource_link", None),
                 is_visible= bool(int(payload["is_visible"])),
                 community_support = bool(int(payload["community_support"])),
                 modified_date=dt,
@@ -1633,6 +1634,7 @@ class ServiceView(View):
                 longitude=payload["longitude"],
                 skype=payload["skype"] if "skype" in payload else None,
                 coverage=payload["coverage"],
+                resource_link=payload.get("resource_link", None),
                 community_support = bool(int(payload["community_support"])),
                 is_visible=bool(int(payload["is_visible"])),
                 modified_date=datetime.today()
@@ -3397,8 +3399,6 @@ class ServiceDownloadResourceView(View):
                         consumer_to_services = consumer_to_services.filter(purchased_date__gt=now, end_date__lt=now)
                     else: 
                         consumer_to_services = consumer_to_services.filter(end_date__isnull=True)
-
-                    print consumer_to_services
 
                     resource_downloads = 0
                     if consumer_to_services.count() > 0:
