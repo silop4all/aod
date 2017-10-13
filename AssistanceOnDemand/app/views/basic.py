@@ -1778,6 +1778,14 @@ class ServiceUpdateView(View):
             user_id = request.session['id']
             provider = Providers.objects.get(user_id=user_id)
             service = Services.objects.get(pk=pk)
+            payment = None
+
+            if service.charging_policy_id in [2, 3] and ServicePayment.objects.filter(service_id=service.id).exists():
+                payment = ServicePayment.objects.get(service_id=service.id)
+            elif service.charging_policy_id in [4,5,6,7] and ServiceRecurringPayment.objects.filter(service_id=service.id).exists():
+                payment = ServiceRecurringPayment.objects.get(service_id=service.id)
+
+            print(service.price)
 
             # load template
             return render(request, template,
@@ -1795,7 +1803,8 @@ class ServiceUpdateView(View):
                     'recurring_payment_frequency_choices': RECURRING_PAYMENT_FREQUENCY_CHOICES,
                     'recurring_payment_type_choices': RECURRING_PAYMENT_TYPE_CHOICES,
                     'frequency_interval_choices': FREQUENCY_INTERVAL_CHOICES,
-                    'cycles_choices': CYCLES_CHOICES                    
+                    'cycles_choices': CYCLES_CHOICES,                    
+                    'payment': payment
                 }))
         except: 
             if settings.DEBUG:

@@ -85,6 +85,14 @@ $(document).ready(function () {
         $('#languages').selectpicker('val', selectedLanguages);
     }
 
+    //
+    // Force change on charging policy if edit action
+    //
+    var currChargingPolicy = parseInt($("#charging_policy").data('value'));
+    if (currChargingPolicy > 0) {
+        $("#charging_policy").change()
+    }
+
 }).on('click', "div#service-registration-wizard > div > ul > li", function () {
     //
     // Prevent click event on disabled tabs. 
@@ -125,7 +133,8 @@ $(document).ready(function () {
         $("#subscription-policy").addClass('hidden');
     }
     else {
-        $("#price").val('').removeAttr('readonly', false);
+        //$("#price").val('').removeAttr('readonly', false);
+        $("#price").removeAttr('readonly', false);
         $("#unit").removeAttr('readonly', false);
         $("#common-payment-fields").removeClass('hidden');
 

@@ -1,16 +1,16 @@
 {% extends "app/base.html" %}
 {% load i18n %}
 {% load l10n %}
-{% block title %} AoD | {% trans 'Register your services' %} {% endblock title %}
+{% load staticfiles %}
+{% load app_tags %}
 
- {% load staticfiles %}
+{% block title %} AoD | {% trans 'Register your services' %} {% endblock title %}
 
 {% block extraCss %}
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/my-tooltip.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/sweetalert/sweetalert.css' %}" />
 {% endblock extraCss %}
-
 
 {% block content %}
     <div class="container body-content margin-top-50 padding-bottom-em-2">

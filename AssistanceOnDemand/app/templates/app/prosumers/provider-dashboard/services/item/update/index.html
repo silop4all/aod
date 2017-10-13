@@ -1,9 +1,11 @@
 {% extends "app/base.html" %}
 {% load i18n %}
 {% load l10n %}
+{% load staticfiles %}
+{% load app_tags %}
+
 {% block title %} AoD | {% trans 'Edit your service' %} {% endblock title %}
 
- {% load staticfiles %}
 
 {% block extraCss %}
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui/1.11.3/jquery-ui.min.css' %}" />

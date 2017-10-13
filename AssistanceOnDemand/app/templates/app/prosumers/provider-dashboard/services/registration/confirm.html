@@ -1,5 +1,8 @@
 ﻿{% load i18n %}
 {% load l10n %}
+{% load staticfiles %}
+{% load app_tags %}
+
 <div class="service-basic-info-box">
     {% if service %}
     <form  id="ConfirmServiceForm" name="ConfirmServiceForm" action="{% url 'public_service_view' service.id %}" method="put">

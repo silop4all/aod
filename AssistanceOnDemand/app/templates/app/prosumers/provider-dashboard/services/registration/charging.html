@@ -1,5 +1,8 @@
 ﻿{% load i18n %}
 {% load l10n %}
+{% load staticfiles %}
+{% load app_tags %}
+
 <div class="service-basic-info-box">
     <form  id="PaymentServiceForm" name="BasicServiceForm" action="#basic">
         <div class="row form-group">
@@ -14,7 +17,7 @@
                 <label class="text-left control-label visible-xs" for="charging_policy" title="{% trans 'Charging model of the service' %}">{% trans 'Charging model' %}<span class="highlight-error-message"> *</span></label>
             </div>
             <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12 input-group controls" title="{% trans 'Charging model of the service' %}" role="presentation" id="charging_policy_node">
-                <select class="selectpicker form-control"  name="charging_policy" id="charging_policy" data-max-options="1" data-size="6"  data-header="{% trans 'Choose a charging model' %}" data-live-search="false" role="list" autofocus required>
+                <select class="selectpicker form-control" data-value="{% if service.charging_policy_id %}{{ service.charging_policy_id }}{% else %}-1{% endif %}" name="charging_policy" id="charging_policy" data-max-options="1" data-size="6"  data-header="{% trans 'Choose a charging model' %}" data-live-search="false" role="list" autofocus required>
                     <option value="-1" disabled selected>-- {% trans 'Choose the charging model' %} --</option> 
                         {% for i in charging_models %}
                             {% if service %}
@@ -58,7 +61,7 @@
             <div class="col-lg-5 col-sm-5 col-md-5">
             </div>
         </div>
-        <div id="common-payment-fields" class="hidden">
+        <div id="common-payment-fields" {% if service.charging_policy_id|pay_free_of_charge %} class="hidden" {% endif %}>
             <!--cost-->
             <div class="row form-group">
                 <div class="col-sm-3 col-xs-12">
@@ -67,9 +70,9 @@
                 </div>
                 <div class="col-md-9 col-sm-9 col-lg-9 col-xs-12 input-group controls" title="{% trans 'Cost of the service usage' %}">
                     {% if service %}
-                    <input type="number" step="0.01" min="0.00" class="form-control"  value="{% if service.price %}{{ service.price|unlocalize }}{% else %}0.00{% endif %}" name="price" id="price" autocomplete="off" placeholder="{% trans 'The price of the service' %}" required />    
+                    <input type="number" step="0.01" min="0.00" class="form-control"  value="{% if service.price|unlocalize %}{{ service.price|unlocalize }}{% else %}0.00{% endif %}" name="price" id="price" autocomplete="off" placeholder="{% trans 'The price of the service' %}" required />    
                     {% else %}
-                    <input type="number" step="0.01" min="0.00" class="form-control"  name="price" id="price" autocomplete="off" placeholder="{% trans 'The price of the service' %}" required />
+                    <input type="number" step="0.01" min="0.00" class="form-control" value="0.00" name="price" id="price" autocomplete="off" placeholder="{% trans 'The price of the service' %}" required />
                     {% endif %}
                 </div>
             </div>
@@ -103,7 +106,7 @@
             </div>  
         </div>  
         <!--payment fields-->
-        <div id="payment-policy" class="hidden">
+        <div id="payment-policy" {% if service.charging_policy_id|pay_as_subscriber %} class="hidden" {% endif %}>
             <div class="row form-group">
                 <div class="col-sm-3 col-xs-12">
                     <label class="text-right control-label hidden-xs" for="payment_type">{% trans 'Payment type' %}<span class="highlight-error-message"> *</span></label>
@@ -166,7 +169,7 @@
             </div> 
         </div>        
         <!--plan-->
-        <div id="subscription-policy" class="hidden">
+        <div id="subscription-policy" {% if service.charging_policy_id|pay_per_use_or_one_off %} class="hidden" {% endif %}>
             <!--merchant_preferences-->
             <div class="row form-group">
                 <div class="col-sm-3 col-xs-12">
