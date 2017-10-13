@@ -165,7 +165,12 @@ class Callback(viewsets.ViewSet):
                 elif userExistence == 1:
                     user = updateUserProfile(username, fullProfileJson)
                     updateUserRoles(user.id, roles, fullProfileJson)
-                    updateUserAccessToken(user.id, accessTokenJsonData)
+
+                    # check if token exists. If not, insert it. Otherwise, update it.
+                    if Tokens.objects.filter(user_id=user.id).exists():
+                        updateUserAccessToken(user.id, accessTokenJsonData)
+                    else:
+                        insertUserAccessToken(user.id, accessTokenJsonData)
 
                 # check if integration with Social Network
                 if socialNetworkIntegration():
