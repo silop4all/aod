@@ -1613,6 +1613,9 @@ class ServiceView(View):
             if settings.DEBUG:
                 print payload
 
+            # keep the charging_policy of service before its moditication.
+            old_service = Services.objects.only('charging_policy_id').get(pk=pk)
+
             # Update service
             Services.objects.filter(pk=pk).update(
                 title=payload['title'], 
@@ -1704,6 +1707,106 @@ class ServiceView(View):
                     email_list = Users.objects.filter(id__in=users_list).values_list('email', flat=True)
                     sendEmail(email_list, _("[P4ALL] Community notification"), content, False)
 
+            # Payment choices: delete and insert instead of update
+            if ServicePayment.objects.filter(service_id=service.id).exists():
+                ServicePayment.objects.get(service_id=service.id).delete()
+            if ServiceRecurringPayment.objects.filter(service_id=service.id).exists():
+                ServiceRecurringPayment.objects.get(service_id=service.id).delete()
+
+            if  service.charging_policy_id == 1:
+                pass
+            elif service.charging_policy_id in [2,3]:
+                # if payment (sale/authorize)
+                servicePayment = ServicePayment(
+                    service=Services.objects.get(pk=service.id), 
+                    payment_type=payload['payment_type'],
+                    tax=payload.get('tax', 0.0),
+                    handling_fee=payload['handling_fee'],
+                    shipping=payload.get('shipping', 0.0),
+                    shipping_discount=payload['shipping_discount'],
+                    insurance=payload['insurance']
+                )
+                servicePayment.save()
+                logger.info("Store the service sale-payment details")
+
+            elif service.charging_policy_id in [4,5,6,7]:
+                # recurring payment
+                recurring_payment = ServiceRecurringPayment.objects.create(
+                    service=Services.objects.get(pk=service.id), 
+                    rec_payment_type =payload.get('rec_payment_type'),
+                    rec_payment_def_type=payload.get('rec_payment_def_type'),
+                    frequency=get_subscription_period(service.charging_policy_id),
+                    frequency_interval=payload.get('frequency_interval', 0),
+                    cycles=payload.get('cycles', 0),
+                    tax=payload.get('tax', 0.0),
+                    shipping=payload.get('shipping', 0.0),
+                    merchant_setup_fee=payload.get('merchant_preferences', 0.0),
+                )
+
+                # IAM - access token
+                access_token = Tokens.objects.get(user_id=request.session['id']).access_token
+          
+                # Paypal - access token
+                paypal_token = retrieve_paypal_access_token(service.owner.user.id)
+                if paypal_token is None or paypal_token == "":
+                    raise Exception("The Paypal token of the service provider is empty.")
+
+                payload = {
+                    "name": "Plan for the service {}".format(service.title),
+                    "description": "Plan with {} payment type".format(recurring_payment.rec_payment_def_type),
+                    "type": recurring_payment.rec_payment_type,
+                    "payment_definitions": [
+                        {
+                            "name": "Regular Payment Definition",
+                            "type": recurring_payment.rec_payment_def_type.upper(),
+                            "frequency": recurring_payment.frequency.upper(),
+                            "frequency_interval": str(recurring_payment.frequency_interval),
+                            "amount": {
+                                "value": service.price,
+                                "currency": service.unit,
+                            },
+                            "cycles": "12",
+                            "charge_models": [
+                                {
+                                    "type": "SHIPPING",
+                                    "amount": {
+                                        "value": recurring_payment.shipping,
+                                        "currency": service.unit,
+                                    }
+                                },
+                                {
+                                    "type": "TAX",
+                                    "amount": {
+                                        "value": recurring_payment.tax,
+                                        "currency": service.unit,
+                                    }
+                                }
+                            ]
+                        },
+                    ],
+                    "merchant_preferences": {
+                        "setup_fee": {
+                            "value": recurring_payment.merchant_setup_fee,
+                            "currency": service.unit,
+                        },
+                        "return_url": domainURL() + reverse('execute_paypal_billing_agreement', kwargs={'pk': service.id}),
+                        "cancel_url": domainURL() + reverse('skip_paypal_billing_agreement', kwargs={'pk': service.id}),
+                        "auto_bill_amount": "YES",
+                        "initial_fail_amount_action": "CONTINUE",
+                        "max_fail_attempts": "0"
+                    }
+                }    
+
+                # create and activate a billing plan
+                billing_plan = p4a_payment.BillingPlan(access_token, paypal_token)
+                (http_status, response_json) = billing_plan.create(payload)
+
+                if int(http_status) in [200, 201]:
+                    plan_id = response_json['plan']['id']
+                    ServiceRecurringPayment.objects.filter(pk=recurring_payment.id).update(plan_id=plan_id)
+                    (http_status, response_json) = billing_plan.activate(plan_id)
+
+          
             response = {"id": service.id, "success_url": reverse('provider_dashboard'), "media_url": reverse("upload_service_media", kwargs={'pk': service.id}), "sn_integration": False}
             return JsonResponse(data=response, status=status.HTTP_200_OK)
         except Exception as e:
