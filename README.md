@@ -55,7 +55,8 @@ $ sudo apt-get install python-pip git unzip vim
 ```
 
 #### Install MySQL server and create a database
-Be sure to set a root password to avoid problems-```bash
+Be sure to set a root password to avoid problems.
+```bash
 $ sudo apt-get install mysql-server python-mysqldb libmysqlclient-dev
 $ sudo mysql_secure_installation   
 $ sudo service mysql restart       
