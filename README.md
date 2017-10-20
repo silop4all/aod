@@ -55,17 +55,15 @@ $ sudo apt-get install python-pip git unzip vim
 ```
 
 #### Install MySQL server and create a database
-```bash
-$ sudo apt-get install mysql-server
-$ sudo apt-get install python-mysqldb
-$ sudo apt-get install libmysqlclient-dev      
+Be sure to set a root password to avoid problems-```bash
+$ sudo apt-get install mysql-server python-mysqldb libmysqlclient-dev
 $ sudo mysql_secure_installation   
 $ sudo service mysql restart       
 $ sudo service mysql status  
 ```
 
 ```bash
-$ mysql –uroot -p
+$ sudo mysql -uroot -p
 ```
 ```sql
 create database `aod` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_unicode_ci; 
@@ -77,11 +75,7 @@ quit
 
 #### Install Apache web server
 ```bash
-$ sudo apt-get install apache2
-$ sudo apt-get install libapache2-mod-python
-$ sudo apt-get install libapache2-mod-wsgi
-$ sudo apt-get install rcconf
-$ sudo apt-get install dialog
+$ sudo apt-get install apache2 libapache2-mod-python libapache2-mod-wsgi rcconf dialog
 $ sudo apachectl status 
 $ sudo service apache2 restart 
 ```
@@ -97,7 +91,7 @@ $ sudo apt-get install libjpeg8 libjpeg62-dev libfreetype6 libfreetype6-dev
 #### Install python packages
 The python packages must be installed given that python with version 2.7 has already pre-installed in Ubuntu 14.04. The VM administrator needs to install the python pip package. To check the version of the python as well as the installed python packages, the VM administrator can use:
 ```bash
-$ sudo python –V
+$ sudo python -V
 $ sudo pip freeze
 ```
 
@@ -250,7 +244,7 @@ Set the email account for AoD application. AoD uses to send notifications where 
 
 __Type__: `String`
 
-> Note: It is required to use only `gmail` accounts.
+> Note: It is required to use only `gmail` accounts. This is usuall the email address of the user.
 
 ---
 
