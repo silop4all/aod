@@ -28,7 +28,7 @@ def api_root(request, format=None):
         'Categories':           reverse('CategoriesList', request=request, format=format),
         'Guided_network':       reverse('CarerAssistConsumerList', request=request, format=format),
         'Tags':                 reverse('CarerAssistConsumerList', request=request, format=format),
-        'Services_congiguration':reverse('ServiceConfigurationList', request=request, format=format),
+        'Services_congiguration': reverse('ServiceConfigurationList', request=request, format=format),
         'Members':              reverse('UsersList', request=request, format=format),
     })
 
@@ -54,14 +54,15 @@ class ItExperienceList(generics.ListAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
               - application/xml
     """
     serializer_class = ItExperienceSerializer
-    queryset = ItExperience.objects.all()    
+    queryset = ItExperience.objects.all()
+
 
 class UsersList(generics.CreateAPIView):
     """
@@ -93,7 +94,7 @@ class UsersList(generics.CreateAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - application/json
@@ -134,7 +135,7 @@ class UserRolesList(generics.ListAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -173,7 +174,7 @@ class TagList(generics.ListAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -205,7 +206,7 @@ class CategoriesList(generics.ListCreateAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -237,7 +238,7 @@ class CategoriesList(generics.ListCreateAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - application/json
@@ -247,6 +248,7 @@ class CategoriesList(generics.ListCreateAPIView):
     """
     queryset = Categories.objects.all()
     serializer_class = CategorySerializer
+
 
 class TreeCategoriesList(generics.ListAPIView):
     """
@@ -278,7 +280,7 @@ class TreeCategoriesList(generics.ListAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -295,6 +297,7 @@ class TreeCategoriesList(generics.ListAPIView):
         else:
             return queryset
 
+
 class CategoriesResource(generics.RetrieveDestroyAPIView):
     """
         Category resource
@@ -306,7 +309,7 @@ class CategoriesResource(generics.RetrieveDestroyAPIView):
                 type: integer
                 description: Primary key
                 required: true
-            
+
             responseMessages:
               - code: 200
                 message: OK
@@ -321,7 +324,7 @@ class CategoriesResource(generics.RetrieveDestroyAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -351,12 +354,13 @@ class CategoriesResource(generics.RetrieveDestroyAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
     """
 
     queryset = Categories.objects.all()
     serializer_class = CategorySerializer
     lookup_field = ('pk')
+
 
 class ChargingPoliciesList(generics.ListAPIView):
     """
@@ -388,7 +392,7 @@ class ChargingPoliciesList(generics.ListAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -397,7 +401,7 @@ class ChargingPoliciesList(generics.ListAPIView):
     queryset = ChargingPolicies.objects.all()
     serializer_class = ChargingPolicySerializer
     filter_backends = (filters.SearchFilter,)
-    search_fields   = ('name', 'description')
+    search_fields = ('name', 'description')
 
 
 class ServicesList(generics.ListCreateAPIView):
@@ -440,7 +444,7 @@ class ServicesList(generics.ListCreateAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -474,7 +478,7 @@ class ServicesList(generics.ListCreateAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - application/json
@@ -483,13 +487,15 @@ class ServicesList(generics.ListCreateAPIView):
               - application/xml
 
     """
-    queryset            = Services.objects.all()
-    serializer_class    = ServiceSerializer
+    queryset = Services.objects.all()
+    serializer_class = ServiceSerializer
 
-    filter_backends     = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
-    filter_fields       = ('type',  'charging_policy')
-    search_fields       = ('title', 'description')
-    ordering_fields     = ('title', 'created_date')
+    filter_backends = (filters.DjangoFilterBackend,
+                       filters.SearchFilter, filters.OrderingFilter,)
+    filter_fields = ('type',  'charging_policy')
+    search_fields = ('title', 'description')
+    ordering_fields = ('title', 'created_date')
+
 
 class ServicesResource(generics.RetrieveUpdateDestroyAPIView):
     """
@@ -521,7 +527,7 @@ class ServicesResource(generics.RetrieveUpdateDestroyAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -562,7 +568,7 @@ class ServicesResource(generics.RetrieveUpdateDestroyAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - application/json
@@ -608,7 +614,7 @@ class ServicesResource(generics.RetrieveUpdateDestroyAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - multipart/form-data 
@@ -642,12 +648,13 @@ class ServicesResource(generics.RetrieveUpdateDestroyAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
     """
 
     serializer_class = ServiceSerializer
     queryset = Services.objects.all()
     lookup_field = ('pk')
+
 
 class DetailedServiceResource(generics.RetrieveAPIView):
     """
@@ -679,7 +686,7 @@ class DetailedServiceResource(generics.RetrieveAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -690,6 +697,7 @@ class DetailedServiceResource(generics.RetrieveAPIView):
     serializer_class = DetailedServiceSerializer
     queryset = Services.objects.all()
     lookup_field = ('pk')
+
 
 class ServiceConfigList(generics.RetrieveAPIView):
     """
@@ -721,7 +729,7 @@ class ServiceConfigList(generics.RetrieveAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -732,6 +740,7 @@ class ServiceConfigList(generics.RetrieveAPIView):
     serializer_class = ServiceConfigurationsSerializer
     queryset = Services.objects.all()
     lookup_field = ('pk')
+
 
 class ServiceLanguagesList(generics.RetrieveAPIView):
     """
@@ -763,7 +772,7 @@ class ServiceLanguagesList(generics.RetrieveAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -774,6 +783,7 @@ class ServiceLanguagesList(generics.RetrieveAPIView):
     serializer_class = ServiceLanguagesListSerializer
     queryset = Services.objects.all()
     lookup_field = ('pk')
+
 
 class ServiceMaterialsList(generics.RetrieveAPIView):
     """
@@ -805,7 +815,7 @@ class ServiceMaterialsList(generics.RetrieveAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -816,6 +826,7 @@ class ServiceMaterialsList(generics.RetrieveAPIView):
     serializer_class = ServiceTechicalSupportSerializer
     queryset = Services.objects.all()
     lookup_field = ('pk')
+
 
 class ServiceMaterialResource(generics.RetrieveAPIView):
     """
@@ -847,7 +858,7 @@ class ServiceMaterialResource(generics.RetrieveAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -858,6 +869,7 @@ class ServiceMaterialResource(generics.RetrieveAPIView):
     serializer_class = ServiceTechnicalSupportSerializer
     queryset = ServicesToTechnicalSupport.objects.all()
     lookup_field = ('pk')
+
 
 class ServiceKeywordsList(generics.RetrieveAPIView):
     """
@@ -889,7 +901,7 @@ class ServiceKeywordsList(generics.RetrieveAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -897,9 +909,10 @@ class ServiceKeywordsList(generics.RetrieveAPIView):
               - application/yaml
     """
 
-    serializer_class = ServiceKeywordsListSerializer#ServiceKeywordsSerializer
+    serializer_class = ServiceKeywordsListSerializer  # ServiceKeywordsSerializer
     queryset = Services.objects.all()
     lookup_field = ('pk')
+
 
 class SupportedLanguagesResource(generics.ListAPIView):
     """
@@ -925,7 +938,7 @@ class SupportedLanguagesResource(generics.ListAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -935,6 +948,7 @@ class SupportedLanguagesResource(generics.ListAPIView):
 
     serializer_class = ServiceLanguagesSerializer
     queryset = ServiceLanguages.objects.all()
+
 
 class ServiceReviewsList(generics.ListAPIView):
     """
@@ -969,7 +983,7 @@ class ServiceReviewsList(generics.ListAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -980,7 +994,8 @@ class ServiceReviewsList(generics.ListAPIView):
 
     def get_queryset(self):
         service = self.kwargs['service']
-        queryset = ConsumersToServices.objects.filter(service=service).exclude(review_date__isnull=True).exclude(rating__isnull=True).order_by('-review_date')
+        queryset = ConsumersToServices.objects.filter(service=service).exclude(
+            review_date__isnull=True).exclude(rating__isnull=True).order_by('-review_date')
         return queryset
 
 
@@ -1022,7 +1037,7 @@ class ServiceConfigurationList(generics.UpdateAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - application/json
@@ -1068,7 +1083,7 @@ class ConsumerServicesList(generics.ListAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -1080,7 +1095,8 @@ class ConsumerServicesList(generics.ListAPIView):
 
     def get_queryset(self):
         consumer = self.kwargs['pk']
-        queryset = ConsumersToServices.objects.filter(consumer=consumer, nas_aware=False)
+        queryset = ConsumersToServices.objects.filter(
+            consumer=consumer, nas_aware=False)
         return queryset
 
 
@@ -1117,7 +1133,7 @@ class ConsumerAssistServicesList(generics.ListAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -1126,11 +1142,13 @@ class ConsumerAssistServicesList(generics.ListAPIView):
     """
     queryset = ConsumersToServices.objects.all()
     serializer_class = ConsumerAssistServicesSerializer
-    
+
     def get_queryset(self):
         consumer = self.kwargs['pk']
-        queryset = ConsumersToServices.objects.filter(consumer=consumer, nas_aware=True)
+        queryset = ConsumersToServices.objects.filter(
+            consumer=consumer, nas_aware=True)
         return queryset
+
 
 class ConsumerAssistServicesConfigurationList(generics.ListAPIView):
     """
@@ -1168,7 +1186,7 @@ class ConsumerAssistServicesConfigurationList(generics.ListAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             produces:
               - application/json
@@ -1181,8 +1199,10 @@ class ConsumerAssistServicesConfigurationList(generics.ListAPIView):
     def get_queryset(self):
         service = self.kwargs['service']
         consumer = self.kwargs['pk']
-        queryset = ConsumersToServices.objects.filter(consumer=consumer).filter(service=service)
+        queryset = ConsumersToServices.objects.filter(
+            consumer=consumer).filter(service=service)
         return queryset
+
 
 class AssistanceConfigurationList(generics.CreateAPIView):
     """
@@ -1217,7 +1237,7 @@ class AssistanceConfigurationList(generics.CreateAPIView):
               - code: 409
                 message: Conflict
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - application/json
@@ -1260,7 +1280,7 @@ class ArticlesList(generics.ListAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - application/json
@@ -1275,6 +1295,7 @@ class ArticlesList(generics.ListAPIView):
         topic_id = self.kwargs['topic']
         queryset = Article.objects.filter(topic_id=topic_id, visible=True)
         return queryset
+
 
 class PublishQuestionList(generics.CreateAPIView):
     """
@@ -1306,7 +1327,7 @@ class PublishQuestionList(generics.CreateAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - application/json
@@ -1316,6 +1337,7 @@ class PublishQuestionList(generics.CreateAPIView):
     """
     serializer_class = PublishQuestionSerializer
     queryset = IncomingQuestions.objects.all()
+
 
 class SearchEngine(generics.ListAPIView):
     """
@@ -1379,7 +1401,7 @@ class SearchEngine(generics.ListAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - application/json
@@ -1408,7 +1430,7 @@ class SearchEngine(generics.ListAPIView):
 
         qos_cost_filtering = False
         if (query.get("minQoS", None) is not None or query.get("maxQoS", None) is not None) and\
-            (query.get("minPrice") not in ["", None] or query.get("maxPrice") not in ["", None] or query.get("models") is not  None):
+                (query.get("minPrice") not in ["", None] or query.get("maxPrice") not in ["", None] or query.get("models") is not None):
             qos_cost_filtering = True
 
         #  Filter services based on their providers
@@ -1416,20 +1438,21 @@ class SearchEngine(generics.ListAPIView):
             if query.get('owners', None) not in ["", "null", None]:
                 owners = str(query.get('owners', None)).split(',')
                 owners = map(int, owners)
-                if  type(owners) is list and len(owners):
+                if type(owners) is list and len(owners):
                     servicesList = servicesList.filter(owner_id__in=owners)
 
         # Filter services based on categories
         if 'categories' in query:
             categories = str(query.get('categories', None)).split(',')
             categories = map(int, categories)
-            if  type(categories) is list and len(categories):
-                servicesList = servicesList.filter(categories__pk__in=categories)
+            if type(categories) is list and len(categories):
+                servicesList = servicesList.filter(
+                    categories__pk__in=categories)
 
         # Filter services based on types
         if 'types' in query:
             types = str(query.get('types', None)).split(',')
-            if  type(types) is list and len(types):
+            if type(types) is list and len(types):
                 servicesList = servicesList.filter(type__in=types)
 
         # Filter services based on charging models
@@ -1444,15 +1467,19 @@ class SearchEngine(generics.ListAPIView):
                 elif models == [0]:
                     servicesList = servicesList.exclude(charging_policy_id=1)
                     if 'minPrice' in query and query.get("minPrice") not in ["", None]:
-                        servicesList = servicesList.filter(price__gte=float(query.get("minPrice")))
+                        servicesList = servicesList.filter(
+                            price__gte=float(query.get("minPrice")))
                     if 'maxPrice' in query and query.get("maxPrice") not in ["", None]:
-                        servicesList = servicesList.filter(price__lte=float(query.get("maxPrice")))
+                        servicesList = servicesList.filter(
+                            price__lte=float(query.get("maxPrice")))
 
         # Filter based on min-/max QoS
         if query.get("minQoS", None) is not None:
-            servicesList = servicesList.filter(review_score__gte=float(query.get("minQoS")))
+            servicesList = servicesList.filter(
+                review_score__gte=float(query.get("minQoS")))
         if query.get("maxQoS", None) is not None:
-            servicesList = servicesList.filter(review_score__lte=float(query.get("maxQoS")))            
+            servicesList = servicesList.filter(
+                review_score__lte=float(query.get("maxQoS")))
 
         servicesList = servicesList.values_list('id', flat=True)
         uniqueServiceList = set(list(servicesList))
@@ -1460,22 +1487,24 @@ class SearchEngine(generics.ListAPIView):
         services = Services.objects.filter(pk__in=set(list(servicesList)))
 
         # Filter based on distance
-        if query.get("distance") not in ["", None] and  query.get("lat") not in ["", None] and query.get("lon") not in ["", None]:
+        if query.get("distance") not in ["", None] and query.get("lat") not in ["", None] and query.get("lon") not in ["", None]:
             for service in services:
                 # check location
                 if service.location_constraint == True:
-                    distance = utilities.getDistance(float(query.get("lat")), float(query.get("lon")), service.latitude, service.longitude) 
-                    if 0 <= float(distance) <= float(query.get("distance")): 
+                    distance = utilities.getDistance(float(query.get("lat")), float(
+                        query.get("lon")), service.latitude, service.longitude)
+                    if 0 <= float(distance) <= float(query.get("distance")):
                         pass
                     else:
                         uniqueServiceList.remove(service.id)
-        
+
         # Sorting
         if qos_cost_filtering:
             return Services.objects.filter(pk__in=uniqueServiceList).order_by('-review_score', 'price', '-reviews_count')
         else:
             order_by = query.get("sortby") if "sortby" in query else "title"
             return Services.objects.filter(pk__in=uniqueServiceList).order_by(order_by)
+
 
 class RecommendationEngine(generics.ListAPIView):
     """
@@ -1539,7 +1568,7 @@ class RecommendationEngine(generics.ListAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - application/json
@@ -1563,20 +1592,21 @@ class RecommendationEngine(generics.ListAPIView):
             if query.get('owners', None) not in ["", "null", None]:
                 owners = str(query.get('owners', None)).split(',')
                 owners = map(int, owners)
-                if  type(owners) is list and len(owners):
+                if type(owners) is list and len(owners):
                     servicesList = servicesList.filter(owner_id__in=owners)
 
         # Filter services based on categories
         if 'categories' in query:
             categories = str(query.get('categories', None)).split(',')
             categories = map(int, categories)
-            if  type(categories) is list and len(categories):
-                servicesList = servicesList.filter(categories__pk__in=categories)
+            if type(categories) is list and len(categories):
+                servicesList = servicesList.filter(
+                    categories__pk__in=categories)
 
         # Filter services based on types
         if 'types' in query:
             types = str(query.get('types', None)).split(',')
-            if  type(types) is list and len(types):
+            if type(types) is list and len(types):
                 servicesList = servicesList.filter(type__in=types)
 
         # Filter services based on charging models
@@ -1591,15 +1621,19 @@ class RecommendationEngine(generics.ListAPIView):
                 elif models == [0]:
                     servicesList = servicesList.exclude(charging_policy_id=1)
                     if 'minPrice' in query and query.get("minPrice") not in ["", None]:
-                        servicesList = servicesList.filter(price__gte=float(query.get("minPrice")))
+                        servicesList = servicesList.filter(
+                            price__gte=float(query.get("minPrice")))
                     if 'maxPrice' in query and query.get("maxPrice") not in ["", None]:
-                        servicesList = servicesList.filter(price__lte=float(query.get("maxPrice")))
+                        servicesList = servicesList.filter(
+                            price__lte=float(query.get("maxPrice")))
 
         # Filter based on min-/max QoS
         if query.get("minQoS", None) is not None:
-            servicesList = servicesList.filter(review_score__gte=float(query.get("minQoS")))
+            servicesList = servicesList.filter(
+                review_score__gte=float(query.get("minQoS")))
         if query.get("maxQoS", None) is not None:
-            servicesList = servicesList.filter(review_score__lte=float(query.get("maxQoS")))            
+            servicesList = servicesList.filter(
+                review_score__lte=float(query.get("maxQoS")))
 
         servicesList = servicesList.values_list('id', flat=True)
         uniqueServiceList = set(list(servicesList))
@@ -1607,18 +1641,20 @@ class RecommendationEngine(generics.ListAPIView):
         services = Services.objects.filter(pk__in=set(list(servicesList)))
 
         # Filter based on distance
-        if query.get("distance") not in ["", None] and  query.get("lat") not in ["", None] and query.get("lon") not in ["", None]:
+        if query.get("distance") not in ["", None] and query.get("lat") not in ["", None] and query.get("lon") not in ["", None]:
             for service in services:
                 # check location
                 if service.location_constraint == True:
-                    distance = utilities.getDistance(float(query.get("lat")), float(query.get("lon")), service.latitude, service.longitude) 
-                    if 0 <= float(distance) <= float(query.get("distance")): 
+                    distance = utilities.getDistance(float(query.get("lat")), float(
+                        query.get("lon")), service.latitude, service.longitude)
+                    if 0 <= float(distance) <= float(query.get("distance")):
                         pass
                     else:
                         uniqueServiceList.remove(service.id)
-        
+
         # Refine previous query ordering by QoS DESC
         return Services.objects.filter(pk__in=uniqueServiceList).order_by('-review_score', '-reviews_count')
+
 
 class SearchArticlesList(generics.ListAPIView):
     """
@@ -1651,7 +1687,7 @@ class SearchArticlesList(generics.ListAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - application/json
@@ -1674,10 +1710,11 @@ class SearchArticlesList(generics.ListAPIView):
                 for i in str(topics).split(','):
                     if i.isdigit():
                         topicsList.append(i)
-                if  type(topicsList) is list and len(topicsList):
+                if type(topicsList) is list and len(topicsList):
                     return articles.filter(topic_id__in=topicsList)
             return Article.objects.filter(topic_id__in=[])
         return articles
+
 
 class CustomSearchEngine(MultipleModelAPIView):
     """
@@ -1699,12 +1736,15 @@ class CustomSearchEngine(MultipleModelAPIView):
                 for i in str(categories).split(','):
                     if i.isdigit():
                         categoriesList.append(i)
-            if  type(categoriesList) is list and len(categoriesList):
-                servicesList = servicesList.filter(categories__pk__in=categoriesList)
+            if type(categoriesList) is list and len(categoriesList):
+                servicesList = servicesList.filter(
+                    categories__pk__in=categoriesList)
 
-        # Find out where services provide the incoming type of technical support
+        # Find out where services provide the incoming type of technical
+        # support
         if 'technical_support' in self.request.query_params:
-            technicalSupport = self.request.query_params.get('technical_support', None)
+            technicalSupport = self.request.query_params.get(
+                'technical_support', None)
             technicalSupportList = list()
             if technicalSupport not in [u'', '', None]:
                 for i in str(technicalSupport).split(','):
@@ -1716,8 +1756,8 @@ class CustomSearchEngine(MultipleModelAPIView):
                         else:
                             technicalSupportList.append(i)
                 if type(technicalSupportList) is list and len(technicalSupportList):
-                    available = set(list(ServicesToTechnicalSupport.objects.\
-                        filter(technical_support_id__in=technicalSupportList).values_list('service_id', flat=True)))
+                    available = set(list(ServicesToTechnicalSupport.objects.
+                                         filter(technical_support_id__in=technicalSupportList).values_list('service_id', flat=True)))
                     servicesList = servicesList.filter(pk__in=available)
 
         # Filter based on service IDs
@@ -1738,16 +1778,19 @@ class CustomSearchEngine(MultipleModelAPIView):
                 for i in str(topics).split(','):
                     if i.isdigit():
                         topicsList.append(i)
-                if  type(topicsList) is list and len(topicsList):
+                if type(topicsList) is list and len(topicsList):
                     articlesList = articlesList.filter(topic_id__in=topicsList)
-        
+
         servicesList = servicesList.values_list('id', flat=True)
         uniqueServiceList = set(list(servicesList))
-        
+
         return [
-            (Services.objects.filter(pk__in=uniqueServiceList),ServiceSerializer,'services'),
-            (articlesList.filter(service_id__in=uniqueServiceList),ArticleSerializer,'articles')
+            (Services.objects.filter(pk__in=uniqueServiceList),
+             ServiceSerializer, 'services'),
+            (articlesList.filter(service_id__in=uniqueServiceList),
+             ArticleSerializer, 'articles')
         ]
+
 
 class KeywordsEngine(generics.ListAPIView):
     """
@@ -1780,7 +1823,7 @@ class KeywordsEngine(generics.ListAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - application/json
@@ -1798,19 +1841,21 @@ class KeywordsEngine(generics.ListAPIView):
         user_input = self.request.GET.get('q', None)
 
         if user_input not in ["", None]:
-          user_input = user_input.lower()
-          keywords = re.split('[,;| ]+', user_input)
-          keyword_list = [str(term) for term in keywords if len(term) > 2]
+            user_input = user_input.lower()
+            keywords = re.split('[,;| ]+', user_input)
+            keyword_list = [str(term) for term in keywords if len(term) > 2]
 
-          services_list = list()
-          for keyword in keyword_list:
-              ids_list = Services.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword)).exclude(is_visible=False).values_list('id', flat=True)
-              services_list += ids_list
+            services_list = list()
+            for keyword in keyword_list:
+                ids_list = Services.objects.filter(Q(title__icontains=keyword) | Q(
+                    description__icontains=keyword)).exclude(is_visible=False).values_list('id', flat=True)
+                services_list += ids_list
 
-          return Services.objects.filter(pk__in=services_list).distinct().order_by('title')
+            return Services.objects.filter(pk__in=services_list).distinct().order_by('title')
 
         else:
-          return Services.objects.exclude(is_visible=False).order_by('title')
+            return Services.objects.exclude(is_visible=False).order_by('title')
+
 
 class CustomKeywordsEngine(MultipleModelAPIView):
     """
@@ -1843,7 +1888,7 @@ class CustomKeywordsEngine(MultipleModelAPIView):
               - code: 404
                 message: Not found
               - code: 500
-                message: Interval Server Error
+                message: Internal Server Error
 
             consumes:
               - application/json
@@ -1868,19 +1913,134 @@ class CustomKeywordsEngine(MultipleModelAPIView):
             services_list = list()
             articles_list = list()
             for keyword in keyword_list:
-                ids_list = Services.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword)).exclude(is_visible=False).values_list('id', flat=True)
+                ids_list = Services.objects.filter(Q(title__icontains=keyword) | Q(
+                    description__icontains=keyword)).exclude(is_visible=False).values_list('id', flat=True)
                 services_list += ids_list
-                article_ids_list = Article.objects.filter(Q(title__icontains=keyword) | Q(content__icontains=keyword)).exclude(visible=False).values_list('id', flat=True)
+                article_ids_list = Article.objects.filter(Q(title__icontains=keyword) | Q(
+                    content__icontains=keyword)).exclude(visible=False).values_list('id', flat=True)
                 articles_list += article_ids_list
 
             return [
-                (Services.objects.filter(pk__in=services_list).distinct().order_by('title'), ServiceSerializer,'services'),
-                (Article.objects.filter(pk__in=articles_list).distinct().order_by('title'), ArticleSerializer,'articles')
+                (Services.objects.filter(pk__in=services_list).distinct(
+                ).order_by('title'), ServiceSerializer, 'services'),
+                (Article.objects.filter(pk__in=articles_list).distinct(
+                ).order_by('title'), ArticleSerializer, 'articles')
             ]
 
         else:
 
             return [
-                (Services.objects.exclude(is_visible=False).order_by('title'), ServiceSerializer,'services'),
-                (Article.objects.exclude(visible=False).order_by('title'), ArticleSerializer,'articles')
-            ]          
+                (Services.objects.exclude(is_visible=False).order_by(
+                    'title'), ServiceSerializer, 'services'),
+                (Article.objects.exclude(visible=False).order_by(
+                    'title'), ArticleSerializer, 'articles')
+            ]
+
+
+class ConsumerMailCarersList(generics.ListAPIView):
+    """
+        Retrieve the list of carers that assist the given user.
+        Filter them by using the user's mail.
+        ---
+        GET:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: mail
+                description: The mail of the user that carers take care about
+                type: email
+                paramType: path
+                required: true                
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 500
+                message: Internal Server Error
+
+            consumes:
+              - application/json
+            produces:
+              - application/json
+              - application/xml
+    """
+
+    serializer_class = CarerSerializer
+
+    def get_queryset(self):
+        """Retrieve the list of carers that assist the given user.
+        Filter them by using the user's mail.      
+        """
+        consumer_mail = self.kwargs['mail']
+        carers_qs = CarersAssistConsumers.objects.filter(consumer__user__email=consumer_mail).values_list('carer_id', flat=True)
+        carers_list = list(set(carers_qs))
+        queryset = Carers.objects.select_related('user').filter(pk__in=carers_list, is_active=True)
+        return queryset
+
+
+class ConsumerUidCarersList(generics.ListAPIView):
+    """
+        Retrieve the list of carers that assist the given user.
+        Filter them by using the user's username.
+        
+        ---
+        GET:
+            omit_parameters:
+              - form
+
+            parameters:
+              - name: uid
+                description: The username of the user that the carers take care about
+                type: string
+                paramType: path
+                required: true                
+
+            responseMessages:
+              - code: 200
+                message: OK
+              - code: 204
+                message: No content
+              - code: 301
+                message: Moved permanently
+              - code: 400
+                message: Bad Request
+              - code: 401
+                message: Unauthorized
+              - code: 403
+                message: Forbidden
+              - code: 404
+                message: Not found
+              - code: 500
+                message: Internal Server Error
+
+            consumes:
+              - application/json
+            produces:
+              - application/json
+              - application/xml
+    """
+
+    serializer_class = CarerSerializer
+
+    def get_queryset(self):
+        """Retrieve the list of carers that assist the given user.
+        Filter them by using the user's username.
+        """
+        consumer_username= self.kwargs['uid']
+        carers_qs = CarersAssistConsumers.objects.filter(consumer__user__username=consumer_username).values_list('carer_id', flat=True)
+        carers_list = list(set(carers_qs))
+        queryset = Carers.objects.select_related('user').filter(pk__in=carers_list, is_active=True)
+        return queryset
