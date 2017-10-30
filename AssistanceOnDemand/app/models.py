@@ -12,7 +12,7 @@ from django.utils.translation import ugettext as _
 from datetime import datetime
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import (
-    RichTextUploadingField, 
+    RichTextUploadingField,
     RichTextUploadingFormField
 )
 from filebrowser.fields import FileBrowseField
@@ -46,26 +46,27 @@ RECURRING_PAYMENT_DEF_TYPE_CHOICES = (
     ("Trial", "Trial payment")
 )
 RECURRING_PAYMENT_FREQUENCY_CHOICES = (
-    ("MONTH", _("Month")), 
-    ("DAY", _("Day")), 
-    ("WEEK", _("week")), 
+    ("MONTH", _("Month")),
+    ("DAY", _("Day")),
+    ("WEEK", _("week")),
     ("YEAR", _("Year"))
 )
-FREQUENCY_INTERVAL_CHOICES = zip(range(0,13), range(0,13)) 
-CYCLES_CHOICES = zip(range(1,13), range(1,13)) 
-
+FREQUENCY_INTERVAL_CHOICES = zip(range(0, 13), range(0, 13))
+CYCLES_CHOICES = zip(range(1, 13), range(1, 13))
 
 
 class Logo(models.Model):
     """
     Keep the application logo
     """
-    title       = models.CharField(max_length=32, blank=False, null=False)
-    placeholder = models.CharField(max_length=96, blank=False, null=False, default="Welcome in platform")
-    logo        = FileBrowseField(_("logo"), max_length=500, directory="logos", extensions=settings.FILEBROWSER_EXTENSIONS['Image'], blank=False, null=False)
-    selected    = models.BooleanField(default=False, blank=False, null=False)
+    title = models.CharField(max_length=32, blank=False, null=False)
+    placeholder = models.CharField(
+        max_length=96, blank=False, null=False, default="Welcome in platform")
+    logo = FileBrowseField(_("logo"), max_length=500, directory="logos",
+                           extensions=settings.FILEBROWSER_EXTENSIONS['Image'], blank=False, null=False)
+    selected = models.BooleanField(default=False, blank=False, null=False)
 
-    class Meta :
+    class Meta:
         verbose_name = _("App Logo")
         verbose_name_plural = _("App Logos")
 
@@ -79,10 +80,11 @@ class Favicon(models.Model):
     Keep the application favicon
     """
     title = models.CharField(max_length=32, blank=False, null=False)
-    favicon = FileBrowseField(_("favicon"), max_length=500, directory="favicons", extensions=settings.FILEBROWSER_EXTENSIONS['Image'], blank=False, null=False)
+    favicon = FileBrowseField(_("favicon"), max_length=500, directory="favicons",
+                              extensions=settings.FILEBROWSER_EXTENSIONS['Image'], blank=False, null=False)
     selected = models.BooleanField(default=False, blank=False, null=False)
 
-    class Meta :
+    class Meta:
         verbose_name = _("App Favicon")
         verbose_name_plural = _("App Favicons")
 
@@ -96,12 +98,15 @@ class Metadata(models.Model):
     Keep the content of HTML meta elements
     """
     title = models.CharField(max_length=64, blank=False, null=False)
-    description = models.TextField(blank=False, null=False, help_text="Enter the application's description that is included in HTML meta element with `name` -> `description`")
-    keywords = models.CharField(max_length=128, blank=False, null=False, help_text="Enter the application's keywords that are included in the HTML meta element with `name` -> `keywords`")
-    author = models.CharField(max_length=32, blank=False, null=False, help_text="Enter the application's author that is included in the HTML meta element with `name` -> `author`")
+    description = models.TextField(
+        blank=False, null=False, help_text="Enter the application's description that is included in HTML meta element with `name` -> `description`")
+    keywords = models.CharField(max_length=128, blank=False, null=False,
+                                help_text="Enter the application's keywords that are included in the HTML meta element with `name` -> `keywords`")
+    author = models.CharField(max_length=32, blank=False, null=False,
+                              help_text="Enter the application's author that is included in the HTML meta element with `name` -> `author`")
     active = models.BooleanField(default=True, null=False, blank=False)
 
-    class Meta :
+    class Meta:
         verbose_name = _("App Metadata")
         verbose_name_plural = _("App Metadata")
 
@@ -114,11 +119,11 @@ class SocialNetwork(models.Model):
     """
     Keep the links of social networks related to the app
     """
-    title   = models.CharField(max_length=32, blank=False, null=False)
-    url     = models.URLField(blank=True, null=True)
+    title = models.CharField(max_length=32, blank=False, null=False)
+    url = models.URLField(blank=True, null=True)
     visible = models.BooleanField(default=True, blank=False, null=False)
-    
-    class Meta :
+
+    class Meta:
         verbose_name = _("Social Network")
         verbose_name_plural = _("Social Networks")
 
@@ -131,9 +136,10 @@ class Components(models.Model):
     """
     Depict the AoD components 
     """
-    name = models.CharField(max_length=127, blank=False, null=False, unique=True)
+    name = models.CharField(max_length=127, blank=False,
+                            null=False, unique=True)
     description = models.TextField(null=False, blank=False)
-    is_enabled  = models.BooleanField(default=False, blank=False, null=False)
+    is_enabled = models.BooleanField(default=False, blank=False, null=False)
 
     def __unicode__(self):
         return self.name
@@ -144,10 +150,12 @@ class Components(models.Model):
 
 
 class LanguageFlag(models.Model):
-    alias   = models.CharField(max_length=4, blank=False, null=False, unique=True)
-    flag    = FileBrowseField(_("flag"), max_length=500, directory="languages", extensions=settings.FILEBROWSER_EXTENSIONS['Image'], blank=False, null=False)
+    alias = models.CharField(max_length=4, blank=False,
+                             null=False, unique=True)
+    flag = FileBrowseField(_("flag"), max_length=500, directory="languages",
+                           extensions=settings.FILEBROWSER_EXTENSIONS['Image'], blank=False, null=False)
 
-    class Meta :
+    class Meta:
         verbose_name = _("App Language Flag")
         verbose_name_plural = _("App Language Flags")
 
@@ -160,16 +168,20 @@ class ContactUs(models.Model):
     """
     Store the contact details of the application
     """
-    skype_id = models.CharField(max_length=64, null=False, blank=False, unique=True, help_text="Hint: Entert the Skype id that characterizes the application")
-    skype_button_id = models.CharField(max_length=255, null=False, blank=False, unique=True, help_text="Hint: Enter the string that is generated from skype online service. It is included to JS file to be displayed the skype button")
-    phone = models.CharField(max_length=15, null=False, blank=False, help_text="Hint: Enter the phone number for contact purposes")
-    email = models.EmailField(max_length=100, null=False, blank=False, help_text="Hint: Enter the email account that users can access")
+    skype_id = models.CharField(max_length=64, null=False, blank=False, unique=True,
+                                help_text="Hint: Entert the Skype id that characterizes the application")
+    skype_button_id = models.CharField(max_length=255, null=False, blank=False, unique=True,
+                                       help_text="Hint: Enter the string that is generated from skype online service. It is included to JS file to be displayed the skype button")
+    phone = models.CharField(max_length=15, null=False, blank=False,
+                             help_text="Hint: Enter the phone number for contact purposes")
+    email = models.EmailField(max_length=100, null=False, blank=False,
+                              help_text="Hint: Enter the email account that users can access")
     address = models.CharField(max_length=255, null=True, blank=True)
     active = models.BooleanField(null=False, blank=False, default=False)
 
     class Meta:
-        db_table            = "app_contact_us"
-        verbose_name        = _("App contact details")
+        db_table = "app_contact_us"
+        verbose_name = _("App contact details")
         verbose_name_plural = _("App contact details")
 
 
@@ -177,15 +189,19 @@ class IncomingQuestions(models.Model):
     """
     Store the questions of registered or anonymous users
     """
-    user = models.CharField(max_length=128, null=False, blank=False, help_text="Name and lastname of user/visitor")
-    email = models.EmailField(max_length=128, null=False, blank=False, help_text="Email info of user")
-    topic = models.CharField(max_length=64, null=False, blank=False, help_text="The thematic area of question")
-    message = models.TextField(max_length=500, null=False, blank=False, help_text="The question of the user")
+    user = models.CharField(max_length=128, null=False, blank=False,
+                            help_text="Name and lastname of user/visitor")
+    email = models.EmailField(
+        max_length=128, null=False, blank=False, help_text="Email info of user")
+    topic = models.CharField(max_length=64, null=False,
+                             blank=False, help_text="The thematic area of question")
+    message = models.TextField(
+        max_length=500, null=False, blank=False, help_text="The question of the user")
     pub_date = models.DateTimeField(blank=False, null=False, auto_now=True)
 
     class Meta:
-        db_table            = "app_questions"
-        verbose_name        = _("App incoming question")
+        db_table = "app_questions"
+        verbose_name = _("App incoming question")
         verbose_name_plural = _("App incoming questions")
 
 
@@ -198,9 +214,9 @@ class ItExperience(models.Model):
     description = models.CharField(max_length=255, blank=False)
 
     class Meta:
-        ordering            = ["level"]
-        db_table            = "app_it_experience"
-        verbose_name        = _("IT skill level")
+        ordering = ["level"]
+        db_table = "app_it_experience"
+        verbose_name = _("IT skill level")
         verbose_name_plural = _("IT skill levels")
 
 
@@ -210,14 +226,15 @@ class Tags(models.Model):
         - Relationship: One tag is associated with M categories
     """
 
-    title = models.CharField(max_length=128, null=False, blank=False, unique=True)
+    title = models.CharField(max_length=128, null=False,
+                             blank=False, unique=True)
 
     def __unicode__(self):
         """ Get the tag's title """
         return self.title
 
     class Meta:
-        verbose_name        = _("Tag")
+        verbose_name = _("Tag")
         verbose_name_plural = _("Tags")
 
 
@@ -227,13 +244,16 @@ class Categories(models.Model):
         - Relationship: One category contains N tags
         - Tree-view of categories
     """
-    
-    title       = models.CharField(max_length=128, null=False, blank=False, unique=False)
+
+    title = models.CharField(max_length=128, null=False,
+                             blank=False, unique=False)
     description = models.CharField(max_length=300, null=False, blank=False)
-    category    = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank = True, related_name='children')
-    question    = models.CharField(max_length=255, null=False, blank=False, unique=False)
+    category = models.ForeignKey(
+        'self', on_delete=models.SET_NULL, null=True, blank=True, related_name='children')
+    question = models.CharField(
+        max_length=255, null=False, blank=False, unique=False)
     # derive an intermediate table due to the many-to-many relationship
-    tags        = models.ManyToManyField(Tags)
+    tags = models.ManyToManyField(Tags)
 
     def __unicode__(self):
         """ Get the category's title """
@@ -248,26 +268,32 @@ class Users(models.Model):
     """
     Store a collection of AoD users which have any role to it.
     """
-    
-    GENDER_CHOICES = (('M', 'Mr'),("W", "Miss"))
+
+    GENDER_CHOICES = (('M', 'Mr'), ("W", "Miss"))
 
     name = models.CharField(max_length=63, blank=False, null=False)
     lastname = models.CharField(max_length=63, blank=False, null=False)
-    gender = models.CharField(max_length=1, choices = GENDER_CHOICES)
-    username = models.CharField(max_length=127, blank=False, unique=True, null=False)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    username = models.CharField(
+        max_length=127, blank=False, unique=True, null=False)
     pwd = models.CharField(max_length=128, blank=False, null=False)
     email = models.EmailField(max_length=255, blank=False, null=False)
-    mobile = models.CharField(max_length=15, blank=False, default="000000000000000")
+    mobile = models.CharField(
+        max_length=15, blank=False, default="000000000000000")
     country = models.CharField(max_length=128, blank=False, default="Greece")
     city = models.CharField(max_length=128, blank=False, null=True)
     address = models.CharField(max_length=255, blank=False, null=True)
     postal_code = models.CharField(max_length=16, blank=False, null=True)
-    logo = models.ImageField(upload_to='app/users/logos', blank=True, null=False) 
-    cover = models.ImageField(upload_to='app/users/covers', blank=True, null=False) 
+    logo = models.ImageField(
+        upload_to='app/users/logos', blank=True, null=False)
+    cover = models.ImageField(
+        upload_to='app/users/covers', blank=True, null=False)
     experience = models.ForeignKey(ItExperience)
     categories = models.ManyToManyField(Categories)
-    registration = models.DateTimeField('registration date', null=False, default=timezone.now)
-    community_participation = models.BooleanField(null=False, blank=False, default=False)
+    registration = models.DateTimeField(
+        'registration date', null=False, default=timezone.now)
+    community_participation = models.BooleanField(
+        null=False, blank=False, default=False)
     last_login = models.DateTimeField('last login', default=timezone.now)
     is_active = models.BooleanField(default=False, blank=False, null=False)
 
@@ -289,13 +315,14 @@ class UserRole(models.Model):
     """
 
     user = models.ForeignKey(Users)
-    crowd_fund_participation = models.BooleanField(default=True, blank=False, null=False)
-    crowd_fund_notification = models.BooleanField(default=True, blank=False, null=False)
+    crowd_fund_participation = models.BooleanField(
+        default=True, blank=False, null=False)
+    crowd_fund_notification = models.BooleanField(
+        default=True, blank=False, null=False)
     is_active = models.BooleanField(default=False, blank=False, null=False)
-    
-    
+
     class Meta:
-        abstract=True
+        abstract = True
         ordering = ["id"]
 
     def __unicode__(self):
@@ -308,7 +335,7 @@ class Providers(UserRole):
     Store the list of users that provide services in the AoD platform
     """
     company = models.CharField(max_length=128, null=True, blank=False)
-    
+
     class Meta:
         verbose_name = _("Provider")
         verbose_name_plural = _("Providers")
@@ -327,7 +354,7 @@ class Carers(models.Model):
     """
     Store a list of registered users as carers that assist at least a consumer
     """
-    
+
     user = models.ForeignKey(Users)
     is_active = models.BooleanField(default=False, blank=False, null=False)
 
@@ -344,20 +371,22 @@ class CarersAssistConsumers(models.Model):
     """
     Associate each carer with the consumers for which is responsible to setup a network of assistance services
     """
-    
-    carer       = models.ForeignKey(Carers)
-    consumer    = models.ForeignKey(Consumers)
+
+    carer = models.ForeignKey(Carers)
+    consumer = models.ForeignKey(Consumers)
     # consumer response event (1->true)
-    response    = models.BooleanField(default=False, blank=False, null=False)
+    response = models.BooleanField(default=False, blank=False, null=False)
     # consumer response (1->grant privileges)
-    state       = models.BooleanField(default=False, blank=False, null=False)
+    state = models.BooleanField(default=False, blank=False, null=False)
     #created_at  = models.DateTimeField(auto_now_add=True)
-    created_at  = models.DateTimeField(blank=False, null=False, default="1970-01-01 00:00:00")
-    updated_at  = models.DateTimeField(blank=False, null=False, default="1970-01-01 00:00:00", auto_now_add=False) 
+    created_at = models.DateTimeField(
+        blank=False, null=False, default="1970-01-01 00:00:00")
+    updated_at = models.DateTimeField(
+        blank=False, null=False, default="1970-01-01 00:00:00", auto_now_add=False)
 
     class Meta:
-        db_table            = "app_carers_assist_consumers"
-        verbose_name        = _("Carer Assist Consumer")
+        db_table = "app_carers_assist_consumers"
+        verbose_name = _("Carer Assist Consumer")
         verbose_name_plural = _("Carers Assist Consumers")
 
 
@@ -365,13 +394,14 @@ class ChargingPolicies(models.Model):
     """
     Store the supported charging policies by Assistance On Demand platform
     """
-    
-    name = models.CharField(max_length=128, null=False, blank=False, unique=True)
+
+    name = models.CharField(max_length=128, null=False,
+                            blank=False, unique=True)
     description = models.TextField(null=False, blank=False)
 
     class Meta:
-        db_table            = "app_charging_policies"
-        verbose_name        = _("Charging Policy")
+        db_table = "app_charging_policies"
+        verbose_name = _("Charging Policy")
         verbose_name_plural = _("Charging Policies")
 
     def __unicode__(self):
@@ -383,44 +413,59 @@ class Services(models.Model):
     Store a list of offered services
     """
 
-    title = models.CharField(max_length=128, null=False, blank=False, unique=False)
+    title = models.CharField(max_length=128, null=False,
+                             blank=False, unique=False)
     description = models.TextField(null=False, blank=False)
-    image = models.ImageField(upload_to=settings.SERVICES_IMAGE_PATH, blank=True, null=False)  
-    version = models.CharField(max_length=10, blank=True, null=True, help_text=_("Define the version of the service if it is machine-based one"))
-    license = models.CharField(max_length=30, blank=True, null=True, help_text=_("Define the licenses of the service if it is machine-based one"))
-    type = models.CharField(max_length=1, choices = TYPE_CHOICES)
+    image = models.ImageField(
+        upload_to=settings.SERVICES_IMAGE_PATH, blank=True, null=False)
+    version = models.CharField(max_length=10, blank=True, null=True, help_text=_(
+        "Define the version of the service if it is machine-based one"))
+    license = models.CharField(max_length=30, blank=True, null=True, help_text=_(
+        "Define the licenses of the service if it is machine-based one"))
+    type = models.CharField(max_length=1, choices=TYPE_CHOICES)
     categories = models.ManyToManyField(Categories)
     charging_policy = models.ForeignKey(ChargingPolicies)
     owner = models.ForeignKey(Providers)
-    price = models.FloatField(blank=False, null=True, default="0.0", help_text=_("Define the price of the service"))
+    price = models.FloatField(blank=False, null=True, default="0.0", help_text=_(
+        "Define the price of the service"))
     unit = models.TextField(max_length=10, null=False, blank=False)
     requirements = models.TextField(max_length=500, null=True, blank=True)
     installation_guide = models.TextField(null=True, blank=True)
     usage_guidelines = models.TextField(blank=True, null=True)
-    is_public = models.BooleanField(max_length=1, default=True, blank=False, null=False, help_text=_("Define the scope of the service; use True for public access on it or False to limit the users that can access it "))
-    language_constraint = models.BooleanField(default=True, blank=False, null=False)
-    location_constraint = models.BooleanField(default=True, blank=False, null=False)
+    is_public = models.BooleanField(max_length=1, default=True, blank=False, null=False, help_text=_(
+        "Define the scope of the service; use True for public access on it or False to limit the users that can access it "))
+    language_constraint = models.BooleanField(
+        default=True, blank=False, null=False)
+    location_constraint = models.BooleanField(
+        default=True, blank=False, null=False)
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
-    coverage = models.FloatField(null=True, blank=True, help_text=_("The radius in km where the provider can offer this service"))
-    constraints = models.TextField(null=True, blank=True, help_text=_("Free text to enter other constraints"))
+    coverage = models.FloatField(null=True, blank=True, help_text=_(
+        "The radius in km where the provider can offer this service"))
+    constraints = models.TextField(null=True, blank=True, help_text=_(
+        "Free text to enter other constraints"))
     skype = models.CharField(max_length=63, null=True, blank=True)
-    is_visible = models.BooleanField(max_length=1, default=True, blank=False, null=False, help_text=_('Click the checkbox if the provider wants to publish it in the platform'))
-    community_support = models.BooleanField(null=False, blank=False, default=False)
+    is_visible = models.BooleanField(max_length=1, default=True, blank=False, null=False, help_text=_(
+        'Click the checkbox if the provider wants to publish it in the platform'))
+    community_support = models.BooleanField(
+        null=False, blank=False, default=False)
     review_score = models.FloatField(blank=False, null=False, default=0.0)
     reviews_count = models.IntegerField(blank=False, null=False, default=0)
-    created_date = models.DateTimeField(blank=False, null=True, default=timezone.now)
-    modified_date = models.DateTimeField(blank=False, null=False, default=timezone.now)
-    resource_link = models.TextField(blank=True, null=True, help_text="The link of the service's resource")
+    created_date = models.DateTimeField(
+        blank=False, null=True, default=timezone.now)
+    modified_date = models.DateTimeField(
+        blank=False, null=False, default=timezone.now)
+    resource_link = models.TextField(
+        blank=True, null=True, help_text="The link of the service's resource")
 
     # availability -> is_public
     # is_available -> is_visible
-    #rm cover = models.CharField(max_length=128, blank=True, null=False)   
-    #rm software = models.FileField(upload_to='app/services/packages', blank=True, null=False)
-
+    # rm cover = models.CharField(max_length=128, blank=True, null=False)
+    # rm software = models.FileField(upload_to='app/services/packages',
+    # blank=True, null=False)
 
     class Meta:
-        verbose_name        = _("Service")
+        verbose_name = _("Service")
         verbose_name_plural = _("Services")
 
     def __unicode__(self):
@@ -432,10 +477,11 @@ class NasTemporarySetup(models.Model):
     Store temporarily the current services that a carer selects on behalf of consumer and its timestamp. It works like a queue.
     """
 
-    service     = models.ForeignKey(Services)
-    carer       = models.ForeignKey(Carers)
-    consumer    = models.ForeignKey(Consumers)
-    created_at  = models.DateTimeField(auto_now_add=True, blank=False, null=False)
+    service = models.ForeignKey(Services)
+    carer = models.ForeignKey(Carers)
+    consumer = models.ForeignKey(Consumers)
+    created_at = models.DateTimeField(
+        auto_now_add=True, blank=False, null=False)
 
     class Meta:
         db_table = "app_nas_temp_setup"
@@ -451,9 +497,9 @@ class ServiceKeywords(models.Model):
     title = models.CharField(max_length=50, null=False, blank=False)
 
     class Meta:
-        db_table            = "app_services_keywords"
-        ordering            = ["service_id"]
-        verbose_name        = _("Service Keyword")
+        db_table = "app_services_keywords"
+        ordering = ["service_id"]
+        verbose_name = _("Service Keyword")
         verbose_name_plural = _("Service Keywords")
 
     def __unicode__(self):
@@ -470,8 +516,8 @@ class ServiceLanguages(models.Model):
     alias = models.CharField(max_length=10, null=False, blank=False)
 
     class Meta:
-        db_table            = "app_services_languages"
-        ordering            = ["service_id"]
+        db_table = "app_services_languages"
+        ordering = ["service_id"]
         verbose_name_plural = _("Service Languages")
 
     def __unicode__(self):
@@ -483,15 +529,15 @@ class ServiceConfiguration(models.Model):
     """
     The configuration of a service that the provider registers
     """
-    service     = models.ForeignKey(Services, related_name='configuration')
-    parameter   = models.CharField(max_length=512, null=False, blank=False)
-    value       = models.CharField(max_length=255, null=False, blank=False)
-    is_default  = models.BooleanField(default=True, blank=False, null=False)
+    service = models.ForeignKey(Services, related_name='configuration')
+    parameter = models.CharField(max_length=512, null=False, blank=False)
+    value = models.CharField(max_length=255, null=False, blank=False)
+    is_default = models.BooleanField(default=True, blank=False, null=False)
 
     class Meta:
-        db_table            = "app_services_configuration"
-        ordering            = ["service_id"]
-        verbose_name        = _("Service Configuration")
+        db_table = "app_services_configuration"
+        ordering = ["service_id"]
+        verbose_name = _("Service Configuration")
         verbose_name_plural = _("Service Configuration")
 
 
@@ -500,18 +546,18 @@ class TechnicalSupport(models.Model):
     Store a list of technical support types such as documents, video etc
     """
 
-    type        = models.CharField(max_length=64, null=False, blank=False)
+    type = models.CharField(max_length=64, null=False, blank=False)
     description = models.TextField(null=True, blank=False)
     alias = models.CharField(max_length=32, blank=False, null=True)
 
     class Meta:
-        db_table            = "app_technical_support_types"
-        ordering            = ["type"]
-        verbose_name        = _("Technical Support")
+        db_table = "app_technical_support_types"
+        ordering = ["type"]
+        verbose_name = _("Technical Support")
         verbose_name_plural = _("Technical Support")
 
     def __unicode__(self):
-        return self.type    
+        return self.type
 
 
 class ServicesToTechnicalSupport(models.Model):
@@ -521,24 +567,27 @@ class ServicesToTechnicalSupport(models.Model):
 
     service = models.ForeignKey(Services, related_name="technical_support")
     technical_support = models.ForeignKey(TechnicalSupport)
-    title = models.CharField(max_length=255, null=False) 
+    title = models.CharField(max_length=255, null=False)
     description = models.TextField(null=True, blank=False)
     software_dependencies = models.TextField(null=True, blank=False)
     link = models.CharField(max_length=300, default="")
     #path = models.FileField(upload_to=settings.SERVICES_TECHNICAL_SUPPORT, default=settings.SERVICES_TECHNICAL_SUPPORT + '/test.pdf')
-    path = models.TextField(default=settings.MEDIA_URL + settings.SERVICES_TECHNICAL_SUPPORT + '/test.pdf')
+    path = models.TextField(default=settings.MEDIA_URL +
+                            settings.SERVICES_TECHNICAL_SUPPORT + '/test.pdf')
     extension = models.CharField(max_length=15, default="unknown")
-    created_date = models.DateTimeField(blank=False, null=True, default=timezone.now)
-    modified_date = models.DateTimeField(blank=False, null=False, auto_now=True)
+    created_date = models.DateTimeField(
+        blank=False, null=True, default=timezone.now)
+    modified_date = models.DateTimeField(
+        blank=False, null=False, auto_now=True)
     visible = models.BooleanField(default=True, blank=False, null=False)
 
     class Meta:
-        db_table            = "app_services_technical_support"
-        ordering            = ["service", "technical_support"]
+        db_table = "app_services_technical_support"
+        ordering = ["service", "technical_support"]
         verbose_name_plural = _("Service Technical Support")
 
     def __unicode__(self):
-        return self.id 
+        return self.id
 
 
 class ConsumersToServices(models.Model):
@@ -556,13 +605,17 @@ class ConsumersToServices(models.Model):
     advantages = models.TextField(max_length=350, blank=False, null=True)
     disadvantages = models.TextField(max_length=350, blank=False, null=True)
     rating_rationale = models.TextField(blank=False, null=True)
-    nas_aware = models.BooleanField(blank=False, null=False, default=False, help_text="Flag that action is comning from NAS or not")
+    nas_aware = models.BooleanField(
+        blank=False, null=False, default=False, help_text="Flag that action is comning from NAS or not")
     review_date = models.DateTimeField(blank=False, null=True)
     is_completed = models.BooleanField(default=False, blank=False, null=False)
-    access_resource = models.BooleanField(default=False, blank=False, null=False)
+    access_resource = models.BooleanField(
+        default=False, blank=False, null=False)
     download = models.IntegerField(default=0, blank=False, null=False)
-    purchased_date = models.DateTimeField(help_text="Date that user starts to use service")
-    end_date  = models.DateTimeField(null=True, default=None, help_text="Date that user stops to use service")
+    purchased_date = models.DateTimeField(
+        help_text="Date that user starts to use service")
+    end_date = models.DateTimeField(
+        null=True, default=None, help_text="Date that user stops to use service")
 
     class Meta:
         db_table = "app_consumers_services"
@@ -573,11 +626,11 @@ class NasConfiguration(models.Model):
     """
     The configuration of a service that the carer selects (carer can overwrite the provider default settings)
     """
-    nas         = models.ForeignKey(ConsumersToServices, related_name='configuration')
-    parameter   = models.CharField(max_length=512, null=False, blank=False)
-    value       = models.CharField(max_length=255, null=False, blank=False)
-    is_default  = models.BooleanField(default=True, blank=False, null=False)
-    updated     = models.DateTimeField(auto_now_add=True)
+    nas = models.ForeignKey(ConsumersToServices, related_name='configuration')
+    parameter = models.CharField(max_length=512, null=False, blank=False)
+    value = models.CharField(max_length=255, null=False, blank=False)
+    is_default = models.BooleanField(default=True, blank=False, null=False)
+    updated = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = "app_network_services_configuration"
@@ -589,55 +642,60 @@ class Tokens(models.Model):
     The access tokens in case of IAM/OPENAM usage
     """
 
-    user            = models.ForeignKey(Users)
-    access_token    = models.CharField(max_length=512, null=False, blank=False)
-    refresh_token   = models.CharField(max_length=512, null=False, blank=False)
-    expires_in      = models.IntegerField(null=False, blank=False)
-    scope           = models.CharField(max_length=64, null=False, blank=False)
-    token_type      = models.CharField(max_length=16, null=False, blank=False)
-    
+    user = models.ForeignKey(Users)
+    access_token = models.CharField(max_length=512, null=False, blank=False)
+    refresh_token = models.CharField(max_length=512, null=False, blank=False)
+    expires_in = models.IntegerField(null=False, blank=False)
+    scope = models.CharField(max_length=64, null=False, blank=False)
+    token_type = models.CharField(max_length=16, null=False, blank=False)
+
     class Meta:
-        db_table            = "app_oauth2_tokens"
-        verbose_name        = _("Token")
+        db_table = "app_oauth2_tokens"
+        verbose_name = _("Token")
         verbose_name_plural = _("Tokens")
 
 
 class Topic(models.Model):
     """ Topics for frequently asked Questions """
-    title           = models.CharField(max_length=128, null=False, blank=False, unique=True)
-    description     = models.CharField(max_length=512, null=True, blank=False)
-    created_date    = models.DateTimeField(blank=False, null=True, default=timezone.now)
-    modified_date   = models.DateTimeField(blank=False, null=True, auto_now=True)
-    visible         = models.BooleanField(default=True, blank=False, null=False)
-    protected       = models.BooleanField(default=False, blank=False, null=False)
-    
+    title = models.CharField(max_length=128, null=False,
+                             blank=False, unique=True)
+    description = models.CharField(max_length=512, null=True, blank=False)
+    created_date = models.DateTimeField(
+        blank=False, null=True, default=timezone.now)
+    modified_date = models.DateTimeField(blank=False, null=True, auto_now=True)
+    visible = models.BooleanField(default=True, blank=False, null=False)
+    protected = models.BooleanField(default=False, blank=False, null=False)
+
     def __unicode__(self):
         return self.title
 
     class Meta:
-        db_table            = "app_faq_topics"
-        verbose_name        = _("Topic")
+        db_table = "app_faq_topics"
+        verbose_name = _("Topic")
         verbose_name_plural = _("Topics")
 
 
 class Article(models.Model):
     """ Article per F.A.Q. topic """
-    title           = models.CharField(max_length=128, null=False, blank=False, unique=True)
-    topic           = models.ForeignKey(Topic, related_name='articles')
-    service         = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, blank=True, related_name="service")
-    content         = RichTextUploadingField('contents')
-    published_date  = models.DateTimeField(blank=False, null=True, default=timezone.now)
-    modified_date   = models.DateTimeField(blank=False, null=False, auto_now=True)
-    visible         = models.BooleanField(default=True, blank=False, null=False)
-    protected       = models.BooleanField(default=False, blank=False, null=False)
-        
+    title = models.CharField(max_length=128, null=False,
+                             blank=False, unique=True)
+    topic = models.ForeignKey(Topic, related_name='articles')
+    service = models.ForeignKey(
+        Services, on_delete=models.SET_NULL, null=True, blank=True, related_name="service")
+    content = RichTextUploadingField('contents')
+    published_date = models.DateTimeField(
+        blank=False, null=True, default=timezone.now)
+    modified_date = models.DateTimeField(
+        blank=False, null=False, auto_now=True)
+    visible = models.BooleanField(default=True, blank=False, null=False)
+    protected = models.BooleanField(default=False, blank=False, null=False)
 
     def __unicode__(self):
         return self.title
 
     class Meta:
-        db_table            = "app_faq_articles"
-        verbose_name        = _("Article")
+        db_table = "app_faq_articles"
+        verbose_name = _("Article")
         verbose_name_plural = _("Articles")
 
 
@@ -645,20 +703,24 @@ class ArticleDocument(models.Model):
     """
     Upload documents for articles
     """
-    article         = models.ForeignKey(Article, related_name='docs')
-    title           = models.CharField(max_length=64, null=False, blank=False, unique=True)
-    description     = models.CharField(max_length=255, null=True, blank=True, unique=True)
-    published_date  = models.DateTimeField(blank=False, null=False, auto_now=True)
-    element         = FileBrowseField(_("document"), max_length=500, directory="support/documents", extensions=settings.FILEBROWSER_EXTENSIONS['Document'], blank=True, null=True)
-    visible         = models.BooleanField(default=True, blank=False, null=False)
-    protected       = models.BooleanField(default=False, blank=False, null=False)
+    article = models.ForeignKey(Article, related_name='docs')
+    title = models.CharField(max_length=64, null=False,
+                             blank=False, unique=True)
+    description = models.CharField(
+        max_length=255, null=True, blank=True, unique=True)
+    published_date = models.DateTimeField(
+        blank=False, null=False, auto_now=True)
+    element = FileBrowseField(_("document"), max_length=500, directory="support/documents",
+                              extensions=settings.FILEBROWSER_EXTENSIONS['Document'], blank=True, null=True)
+    visible = models.BooleanField(default=True, blank=False, null=False)
+    protected = models.BooleanField(default=False, blank=False, null=False)
 
     def __unicode__(self):
         return self.title
 
     class Meta:
-        db_table            = "app_articles_documents"
-        verbose_name        = _("Article Document")
+        db_table = "app_articles_documents"
+        verbose_name = _("Article Document")
         verbose_name_plural = _("Article Documents")
 
 
@@ -666,20 +728,24 @@ class ArticleVideo(models.Model):
     """
     Upload videos for articles
     """
-    article         = models.ForeignKey(Article, related_name='videos')
-    title           = models.CharField(max_length=64, null=False, blank=False, unique=True)
-    description     = models.CharField(max_length=255, null=True, blank=True, unique=True)
-    published_date  = models.DateTimeField(blank=False, null=False, auto_now=True)
-    element         = FileBrowseField(_("video"), max_length=500, directory="support/videos", extensions=settings.FILEBROWSER_EXTENSIONS['Video'], blank=True, null=True)
-    visible         = models.BooleanField(default=True, blank=False, null=False)
-    protected       = models.BooleanField(default=False, blank=False, null=False)
+    article = models.ForeignKey(Article, related_name='videos')
+    title = models.CharField(max_length=64, null=False,
+                             blank=False, unique=True)
+    description = models.CharField(
+        max_length=255, null=True, blank=True, unique=True)
+    published_date = models.DateTimeField(
+        blank=False, null=False, auto_now=True)
+    element = FileBrowseField(_("video"), max_length=500, directory="support/videos",
+                              extensions=settings.FILEBROWSER_EXTENSIONS['Video'], blank=True, null=True)
+    visible = models.BooleanField(default=True, blank=False, null=False)
+    protected = models.BooleanField(default=False, blank=False, null=False)
 
     def __unicode__(self):
         return self.title
 
     class Meta:
-        db_table            = "app_articles_videos"
-        verbose_name        = _("Article Video")
+        db_table = "app_articles_videos"
+        verbose_name = _("Article Video")
         verbose_name_plural = _("Article Videos")
 
 
@@ -688,43 +754,46 @@ class Theme(models.Model):
     Store details about the themes that app administrator uploads in static files
     """
 
-    hint = [str(i) + " pixels" for i in range(0,21)]
-    RADIUS_CHOICES = zip( range(0,21), hint )
+    hint = [str(i) + " pixels" for i in range(0, 21)]
+    RADIUS_CHOICES = zip(range(0, 21), hint)
 
-    title           = models.CharField(max_length=32, null=False, blank=False, unique=True)
-    url             = models.CharField(max_length=254, null=False, blank=False, unique=True, help_text="Help: Upload this css file in app/static/app/content/ directory and run python manage.py collectstatic --noinput cmd")
-    success_base    = RGBColorField()
-    primary_base    = RGBColorField()
-    info_base       = RGBColorField()
-    warning_base    = RGBColorField()
-    danger_base     = RGBColorField()
-    radius          = models.IntegerField(choices=RADIUS_CHOICES, blank=False, null=False, default=0)
-    is_visible      = models.BooleanField(default=False, blank=False, null=False)
-    is_default      = models.BooleanField(default=False, blank=False, null=False)
-    created_date    = models.DateTimeField(blank=False, null=False, auto_now=True)
+    title = models.CharField(max_length=32, null=False,
+                             blank=False, unique=True)
+    url = models.CharField(max_length=254, null=False, blank=False, unique=True,
+                           help_text="Help: Upload this css file in app/static/app/content/ directory and run python manage.py collectstatic --noinput cmd")
+    success_base = RGBColorField()
+    primary_base = RGBColorField()
+    info_base = RGBColorField()
+    warning_base = RGBColorField()
+    danger_base = RGBColorField()
+    radius = models.IntegerField(
+        choices=RADIUS_CHOICES, blank=False, null=False, default=0)
+    is_visible = models.BooleanField(default=False, blank=False, null=False)
+    is_default = models.BooleanField(default=False, blank=False, null=False)
+    created_date = models.DateTimeField(blank=False, null=False, auto_now=True)
 
     def __unicode__(self):
         return self.title
 
     class Meta:
-        db_table            = "app_themes"
-        verbose_name        = _("App Theme")
+        db_table = "app_themes"
+        verbose_name = _("App Theme")
         verbose_name_plural = _("App Themes")
 
 
 class UserTheme(models.Model):
-    
-    user        = models.ForeignKey(Users)
-    theme       = models.ForeignKey(Theme)
-    pub_date    = models.DateTimeField(blank=False, null=False, auto_now=True)
+
+    user = models.ForeignKey(Users)
+    theme = models.ForeignKey(Theme)
+    pub_date = models.DateTimeField(blank=False, null=False, auto_now=True)
 
     def __unicode__(self):
         return self.theme.title
 
     class Meta:
-        db_table            = "app_user_themes"
-        unique_together     = ('user', 'theme',)
-        verbose_name        = _("User Preferred Theme")
+        db_table = "app_user_themes"
+        unique_together = ('user', 'theme',)
+        verbose_name = _("User Preferred Theme")
         verbose_name_plural = _("User Preferred Themes")
 
 
@@ -732,23 +801,26 @@ class CookiePolicy(models.Model):
     """Cookie policy content"""
     title = models.CharField(max_length=32, null=False, blank=False)
     content = RichTextUploadingField('contents')
-    published_date = models.DateTimeField(blank=False, null=True, default=timezone.now)
-    modified_date = models.DateTimeField(blank=False, null=False, auto_now=True)
+    published_date = models.DateTimeField(
+        blank=False, null=True, default=timezone.now)
+    modified_date = models.DateTimeField(
+        blank=False, null=False, auto_now=True)
     active = models.BooleanField(default=True, blank=False, null=False)
 
     def __unicode__(self):
         return self.title
 
     class Meta:
-        db_table            = "app_cookie_policy"
-        verbose_name        = _("Cookie Policy")
+        db_table = "app_cookie_policy"
+        verbose_name = _("Cookie Policy")
         verbose_name_plural = _("Cookie Policy")
 
 
 class TaskCategory(models.Model):
     """Keep the categories of Microlabora task
     """
-    title = models.CharField(max_length=255, blank=False, null=False, help_text=_("Microlabora categories"))
+    title = models.CharField(max_length=255, blank=False,
+                             null=False, help_text=_("Microlabora categories"))
 
     def __unicode__(self):
         """The title of ML category
@@ -766,7 +838,8 @@ class Community(models.Model):
 
     title = models.CharField(max_length=128, null=False, blank=False)
     service = models.ForeignKey(Services, related_name="community_services")
-    ref_service = models.ForeignKey(Services, related_name="services", null=True, on_delete=models.SET_NULL)
+    ref_service = models.ForeignKey(
+        Services, related_name="services", null=True, on_delete=models.SET_NULL)
     is_active = models.BooleanField(null=False, blank=False, default=False)
     created_at = models.DateTimeField(auto_now=True)
     updated_date = models.DateTimeField(auto_now_add=True)
@@ -786,7 +859,8 @@ class CommunityMember(models.Model):
     message = models.TextField(max_length=1000, null=True, blank=True)
     fee = models.FloatField(null=True, blank=True)
     currency = models.CharField(max_length=10,  null=True, blank=True)
-    is_professional = models.BooleanField(null=False, blank=False, default=False)
+    is_professional = models.BooleanField(
+        null=False, blank=False, default=False)
     is_volunteer = models.BooleanField(null=False, blank=False, default=True)
     skype = models.CharField(max_length=128, blank=True, null=True)
     is_active = models.NullBooleanField()
@@ -806,7 +880,8 @@ class PlatformCommunityMember(models.Model):
     message = models.TextField(max_length=1000, null=True, blank=True)
     fee = models.FloatField(null=True, blank=True)
     currency = models.CharField(max_length=10,  null=True, blank=True)
-    is_professional = models.BooleanField(null=False, blank=False, default=False)
+    is_professional = models.BooleanField(
+        null=False, blank=False, default=False)
     is_volunteer = models.BooleanField(null=False, blank=False, default=True)
     skype = models.CharField(max_length=128, blank=True, null=True)
     is_active = models.NullBooleanField()
@@ -825,11 +900,15 @@ class PlatformCommunityMember(models.Model):
 class EvaluationMetric(models.Model):
     """Keep the available evaluation metrics
     """
-    name = models.CharField(max_length=96, blank=False, null=False, unique=True)
+    name = models.CharField(max_length=96, blank=False,
+                            null=False, unique=True)
     description = models.CharField(max_length=512, blank=True, null=True)
-    weight = models.FloatField(null=False, blank=False, default=1.0, validators=[MinValueValidator(1.0), MaxValueValidator(2.0)])
-    min_score = models.SmallIntegerField(null=False, blank=False, default=0, validators=[MinValueValidator(0), MinValueValidator(0)], help_text=_("Note: Set minimum score as 0"))
-    max_score = models.SmallIntegerField(null=False, blank=False, default=5, validators=[MinValueValidator(5), MaxValueValidator(5)], help_text=_("Note: Set maximum score as 5"))
+    weight = models.FloatField(null=False, blank=False, default=1.0, validators=[
+                               MinValueValidator(1.0), MaxValueValidator(2.0)])
+    min_score = models.SmallIntegerField(null=False, blank=False, default=0, validators=[
+                                         MinValueValidator(0), MinValueValidator(0)], help_text=_("Note: Set minimum score as 0"))
+    max_score = models.SmallIntegerField(null=False, blank=False, default=5, validators=[
+                                         MinValueValidator(5), MaxValueValidator(5)], help_text=_("Note: Set maximum score as 5"))
     is_active = models.BooleanField(null=False, blank=False, default=True)
 
     class Meta:
@@ -840,13 +919,15 @@ class EvaluationMetric(models.Model):
     def __unicode__(self):
         return self.name
 
-   
+
 class ConsumerServiceEvaluation(models.Model):
     """Keep consumer metric's score per service
     """
-    consumer = models.ForeignKey(Consumers, null=True, on_delete=models.SET_NULL)
+    consumer = models.ForeignKey(
+        Consumers, null=True, on_delete=models.SET_NULL)
     service = models.ForeignKey(Services, null=True)
-    evaluation_metric = models.ForeignKey(EvaluationMetric, null=True, on_delete=models.SET_NULL)
+    evaluation_metric = models.ForeignKey(
+        EvaluationMetric, null=True, on_delete=models.SET_NULL)
     score = models.SmallIntegerField(null=False, blank=False, default=0.0)
     updated_date = models.DateTimeField(auto_now_add=True)
 
@@ -858,16 +939,18 @@ class ConsumerServiceEvaluation(models.Model):
 #===============
 # payment dev
 #===============
+
+
 class TrackUserSearch(models.Model):
     """Track the user input during the latest search"""
     user = models.ForeignKey(Users)
     preferences = models.TextField(null=True, blank=False)
-    created_at = models.DateTimeField(auto_now=True)    
+    created_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = "app_track_user_search"
         verbose_name = _("TrackUserSearch")
-        verbose_name_plural = verbose_name    
+        verbose_name_plural = verbose_name
 
     def __unicode__(self):
         return self.id
@@ -893,7 +976,8 @@ class PaypalCredentials(models.Model):
 class ServicePayment(models.Model):
     """Keep payment metadata per service (no recurring payments)"""
     service = models.ForeignKey(Services)
-    payment_type = models.CharField(max_length=36, blank=False, null=False, help_text="sale or authorize")
+    payment_type = models.CharField(
+        max_length=36, blank=False, null=False, help_text="sale or authorize")
     tax = models.DecimalField(max_digits=10, decimal_places=2)
     handling_fee = models.DecimalField(max_digits=10, decimal_places=2)
     shipping = models.DecimalField(max_digits=10, decimal_places=2)
@@ -905,9 +989,9 @@ class ServicePayment(models.Model):
         return self.service.title
 
     class Meta:
-        db_table            = "app_service_payment_details"
-        verbose_name        = _("Service payment details")
-        verbose_name_plural = verbose_name        
+        db_table = "app_service_payment_details"
+        verbose_name = _("Service payment details")
+        verbose_name_plural = verbose_name
 
 
 class ServiceRecurringPayment(models.Model):
@@ -915,10 +999,14 @@ class ServiceRecurringPayment(models.Model):
 
     service = models.ForeignKey(Services)
     plan_id = models.CharField(max_length=128, blank=False, null=True)
-    rec_payment_type = models.CharField(max_length=20, choices = RECURRING_PAYMENT_TYPE_CHOICES)
-    rec_payment_def_type = models.CharField(max_length=20, choices = RECURRING_PAYMENT_DEF_TYPE_CHOICES)
-    frequency = models.CharField(max_length=10, choices = RECURRING_PAYMENT_FREQUENCY_CHOICES)
-    frequency_interval = models.SmallIntegerField(choices=FREQUENCY_INTERVAL_CHOICES)
+    rec_payment_type = models.CharField(
+        max_length=20, choices=RECURRING_PAYMENT_TYPE_CHOICES)
+    rec_payment_def_type = models.CharField(
+        max_length=20, choices=RECURRING_PAYMENT_DEF_TYPE_CHOICES)
+    frequency = models.CharField(
+        max_length=10, choices=RECURRING_PAYMENT_FREQUENCY_CHOICES)
+    frequency_interval = models.SmallIntegerField(
+        choices=FREQUENCY_INTERVAL_CHOICES)
     cycles = models.SmallIntegerField(choices=CYCLES_CHOICES)
     tax = models.DecimalField(max_digits=10, decimal_places=2)
     shipping = models.DecimalField(max_digits=10, decimal_places=2)
@@ -931,4 +1019,4 @@ class ServiceRecurringPayment(models.Model):
     class Meta:
         db_table = "app_service_recurring_payment_details"
         verbose_name = _("Service recurring payment details")
-        verbose_name_plural = verbose_name           
+        verbose_name_plural = verbose_name
