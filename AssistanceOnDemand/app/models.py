@@ -1020,3 +1020,22 @@ class ServiceRecurringPayment(models.Model):
         db_table = "app_service_recurring_payment_details"
         verbose_name = _("Service recurring payment details")
         verbose_name_plural = verbose_name
+
+
+class TermsUsage(models.Model):
+    """Terms of usage content"""
+    title = models.CharField(max_length=32, null=False, blank=False)
+    content = RichTextUploadingField('contents')
+    published_date = models.DateTimeField(
+        blank=False, null=True, default=timezone.now)
+    modified_date = models.DateTimeField(
+        blank=False, null=False, auto_now=True)
+    active = models.BooleanField(default=True, blank=False, null=False)
+
+    def __unicode__(self):
+        return self.title
+
+    class Meta:
+        db_table = "app_terms_usage"
+        verbose_name = _("Terms of Usage")
+        verbose_name_plural = _("Terms of Usage")

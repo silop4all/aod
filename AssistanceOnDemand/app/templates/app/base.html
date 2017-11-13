@@ -1,4 +1,4 @@
-{% load analytical %}
+﻿{% load analytical %}
 <!DOCTYPE html>
 
 <html lang="{{LANGUAGE_CODE}}">
@@ -61,7 +61,7 @@
         <!--div class="" style="background-color: whitesmoke">-->
             <div class="flc-prefsEditor-separatedPanel fl-prefsEditor-separatedPanel margin-top-38">
                 <!-- This is the div that will contain the Preference Editor component -->
-                <div class="flc-slidingPanel-panel flc-prefsEditor-iframe"></div>
+                <div class="flc-slidingPanel-panel flc-prefsEditor-iframe" style="height:100%"></div>
                 <!-- This div is for the sliding panel that shows and hides the Preference Editor controls -->
                 <div class="fl-panelBar">
                     <span class="fl-prefsEditor-buttons">
@@ -140,6 +140,7 @@
                     <div class="col-sm-3 col-md-3 col-xs-12 pull-left">
                         <span>{% trans 'Terms of use' %}</span> 
                         <hr style="margin-top:2px">
+                        <a href="{% url 'terms_of_usage' %}" style="color: white">{% trans 'Terms and Conditions' %}</a>
                     </div>
                     <div class="col-sm-3 col-md-3 col-xs-12">
                         <span>{% trans 'Privacy policy' %}</span> 
@@ -264,6 +265,16 @@
         <script type="text/javascript" src="{% static 'app/scripts/ui_options/infusion-all.js' %}"></script>
         {% endif %}
         <script type="text/javascript" src="{% static 'app/scripts/p4a-lib/cookies.js' %}"></script>
+        {% if components.ui_options_banner %}
+            <script type="text/javascript">
+                $(document).on('click', "#show-hide", function (event) {
+                    var displayFrame = $(this).attr('aria-pressed');
+                    if (displayFrame) {
+                        $(".flc-iframe .fl-prefsEditor-separatedPanel-iframe").css('height', '100%');
+                    }
+                });
+            </script>
+        {% endif %}
         <script type="text/javascript">
             {% if components.ui_options_banner == False %}
             $(window).load(function () { // makes sure the whole site is loaded
@@ -278,26 +289,14 @@
                 // init UI options
                 //
                 {% if components.ui_options_banner %}
-                fluid.uiOptions.prefsEditor(".flc-prefsEditor-separatedPanel", {
-                    tocTemplate: "{% static 'app/content/ui_options/components/tableOfContents/html/TableOfContents.html' %}",
-                    terms: {
-                        templatePrefix: "{% static 'app/content/ui_options/framework/preferences/html' %}",
-                        messagePrefix: "{% static 'app/content/ui_options/framework/preferences/messages' %}"
-                    }
-                });
+                    fluid.uiOptions.prefsEditor(".flc-prefsEditor-separatedPanel", {
+                        tocTemplate: "{% static 'app/content/ui_options/components/tableOfContents/html/TableOfContents.html' %}",
+                        terms: {
+                            templatePrefix: "{% static 'app/content/ui_options/framework/preferences/html' %}",
+                            messagePrefix: "{% static 'app/content/ui_options/framework/preferences/messages' %}"
+                        }
+                    });
                 {% endif %}
-
-                /*
-                $("#show-hide").click(function(){
-                    console.log($(this).attr('aria-pressed'));
-                    if ( $(this).attr('aria-pressed') === false) {
-                        $("iframe").css("height", "300px");
-                    }
-                    else {
-                        $("iframe").css("height", "200px");
-                    }
-                });
-                */
 
                 $(".nav.navbar-nav li.dropdown").mouseover(function () {
                     $(this).addClass('open');
@@ -320,6 +319,8 @@
                 });
             })
         </script>
+
+
 
         {% block scripts %}
         {% endblock scripts %}

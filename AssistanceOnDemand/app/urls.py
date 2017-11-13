@@ -66,6 +66,7 @@ patterns = patterns('',
     url('^change_language/$',                                       'app.views.changeLanguage',                         name='change_lang_custom'),
     url(r'^logout/$',                                               Logout.as_view(),                                   name='logout'),
     url(r'^it-experience/$',                                        ItExperienceView.as_view(),                         name="it_familiarity"),
+    url(r'^terms-of-usage/$',                                       TermsView.as_view(),                                    name="terms_of_usage"),
     #=========================================
     ## Profile management
     #=========================================

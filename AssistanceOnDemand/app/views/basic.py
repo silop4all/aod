@@ -3527,3 +3527,20 @@ class ServiceDownloadResourceView(View):
             logger.exception(str(ex))
             return redirect(reverse('service_view_page', kwargs={'pk', pk}))
         
+
+class TermsView(View):
+
+    template = 'app/terms.html'
+
+    def get(self, request):
+        """Render the terms of usage layout"""
+        try:
+            return render(request, self.template,
+                context_instance = RequestContext(request, 
+                {
+                    "title": _("Terms and Conditions"),
+                    'terms': TermsUsage.objects.get(active=True)
+                }))
+        except Exception as ex:
+            logger.exception(str(ex))
+            raise Http404        
