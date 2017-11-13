@@ -1,5 +1,14 @@
 # Change Log
 
+## 2017-11-13
+ - Manage the Terms of Usage through the db. Only one entry can be active.
+ - Migrate is required:
+     + `python manage makemigrations`
+     + `python manage migrate`
+     + `python manage update_translation_fields`
+     + Insert default _Terms of Usage_ from [sql script](https://github.com/silop4all/aod/blob/master/AssistanceOnDemand/sql/aod_data.sql) (`insert into app_terms_usage ...`)
+
+
 ## 2017-04-18
 - Finalize the community-based support
 - Implement the service rating (include multiple metrics, adv/dis)
