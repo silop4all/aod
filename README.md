@@ -616,7 +616,7 @@ Type the URL `http://<host_ip>:<host_port>/<language_code>/admin/` from your bro
 
 ## Acknowledgements
 
-This project has received funding from the European Union’s Seventh Framework Programme for research, technological development and demonstration under grant agreement no 610510. Visit [developerspace.gpii.net](http://developerspace.gpii.net/) to find more useful resources.
+This project has received funding from the European Union’s Seventh Framework Programme for research, technological development and demonstration under grant agreement no 610510. Visit [ds.gpii.net](http://ds.gpii.net/) to find more useful resources.
 
 ![Prosperity4All logo](P4A.png "")
 
